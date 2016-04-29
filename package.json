@@ -4,7 +4,7 @@
   "description": "A better way to plan your events",
   "main": "index.js",
   "scripts": {
-    "test": "npm test"
+    "test": "gulp test"
   },
   "repository": {
     "type": "git",

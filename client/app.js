@@ -5,15 +5,15 @@ angular.module('covey', [
 .config(($routeProvider) => {
   $routeProvider
     .when('/', {
-      templateURL: 'views/index.html',
+      templateUrl: 'views/index.html',
       controller: 'loginController',
     })
     .when('/coveys', {
-      templateURL: 'views/coveys.html',
+      templateUrl: 'views/coveys.html',
       controller: 'coveysController',
     })
     .when('/covey', {
-      templateURL: 'views/covey.html',
+      templateUrl: 'views/covey.html',
       controller: 'coveysController',
     });
 })

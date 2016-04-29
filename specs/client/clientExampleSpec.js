@@ -1,9 +1,20 @@
-'use strict';
-
-describe('Running', function () {
-
-  it('Should be running a test', function () {
-    expect([1,2,3][1]).to.equal(2);
+describe('Running', () => {
+  it('Should be running a test', () => {
+    expect([1, 2, 3][1]).to.equal(2);
   });
+});
 
+describe('Routing', () => {
+  let $route;
+  beforeEach(module('covey'));
+
+  beforeEach(inject(($injector) => {
+    $route = $injector.get('$route');
+  }));
+
+  it('Should have /coveys route, template, and controller', () => {
+    expect($route.routes['/coveys']).to.be.defined;
+    expect($route.routes['/coveys'].controller).to.equal('coveysController');
+    expect($route.routes['/coveys'].templateUrl).to.equal('views/coveys.html');
+  });
 });

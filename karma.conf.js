@@ -20,6 +20,18 @@ module.exports = function (config) {
       'specs/client/clientExampleSpec.js',
     ],
 
+    preprocessors: {
+      'client/app.js': ['babel'],
+      'client/scripts/**/*.js': ['babel'],
+      'specs/**/*.js': ['babel'],
+    },
+
+    babelPreprocessor: {
+      options: {
+        presets: ['es2015']
+      }
+    },
+
     reporters: ['spec'],
 
     browsers: ['PhantomJS'],

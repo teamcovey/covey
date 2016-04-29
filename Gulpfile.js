@@ -13,7 +13,7 @@ var paths = {
 // Runs client-side tests
 gulp.task('karma', function (done) {
   new KarmaServer({
-    configFile: '/Users/skyefree/Documents/web-projects/hackreactor/covey/karma.conf.js'
+    configFile: __dirname + '/karma.conf.js'
   }, done).start();
 });
 

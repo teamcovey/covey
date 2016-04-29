@@ -1,5 +1,5 @@
 {
-    "extends": ["airbnb", "angular"],
+    "extends": "airbnb",
     "plugins": [
         "react"
     ]

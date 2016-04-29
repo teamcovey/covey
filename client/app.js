@@ -9,7 +9,7 @@ angular.module('covey', [
 .config(($routeProvider) => {
   $routeProvider
     .when('/', {
-      templateUrl: 'views/index.html',
+      templateUrl: 'index.html',
       controller: 'loginController',
     })
     .when('/coveys', {

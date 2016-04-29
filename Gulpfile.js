@@ -5,7 +5,7 @@ var exec = require('child_process').exec;
 var paths = {
   // all our client app js files, not including 3rd party js files
   scripts: ['client/app.js', 'client/scripts/**/*.js'],
-  html: ['client/app/views/*.html', 'client/index.html'],
+  html: ['client/views/*.html', 'client/index.html'],
   styles: ['client/styles/*.css'],
   test: ['specs/**/*.js']
 };

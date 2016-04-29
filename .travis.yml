@@ -6,5 +6,6 @@ services:
 before_install:
   - mysql -e 'create database IF NOT EXISTS test;' -uroot
 before_script:
+  - npm install -g bower
   - bower install
   - node server/server.js &

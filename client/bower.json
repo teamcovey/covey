@@ -1,0 +1,18 @@
+{
+  "name": "covey",
+  "homepage": "https://github.com/teamcovey/covey",
+  "authors": [
+    "Team Covey"
+  ],
+  "description": "A better way to plan your events",
+  "main": "",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

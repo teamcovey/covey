@@ -1,5 +1,5 @@
 const app         = require('../config/server-config.js');
-// const route       = require('./router-helpers');
+const route       = require('./router-helpers');
 // can set up different routes for each path
 const bodyParser  = require('body-parser');
 const morgan = require('morgan');
@@ -10,22 +10,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(morgan('dev'));
 
-// app.post('/api/login', route.login);
+app.get('/api/auth', route.getUser);
 
-// app.post('/api/signup', route.signup);
+app.get('/api/coveys', route.getAllCoveys);
 
-// app.post('/api/events', route.addEvent);
+app.post('/api/coveys', route.addCovey);
 
-// app.get('/api/events/:id', route.getAllUserEvents);
+app.delete('/api/coveys/:id', route.removeCovey);
 
-// app.delete('/api/events/:id', route.removeUserEvent);
+app.put('/api/coveys/:id', route.updateCovey);
 
-// app.post('/api/directions', route.getEventDirections);
-
-// app.put('/api/users/:id', route.updateUserLocation);
-
-// app.put('/api/events/:id', route.updateEvent);
-
-
+app.get('/api/coveys/:id', route.getCovey);
 
 module.exports = app;

@@ -1,2 +1,3 @@
-# NPM Modules #
+# Dependencies #
 node_modules/*
+client/bower_components/*

@@ -26,3 +26,4 @@ gulp.task('mocha', function(done) {
 });
 
 // TODO: npm test should call gulp test which should do tasks mocha, karma
+gulp.task('test', ['mocha', 'karma']);

@@ -4,7 +4,7 @@
   "description": "A better way to plan your events",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm test"
   },
   "repository": {
     "type": "git",
@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/teamcovey/covey#readme",
   "devDependencies": {
+    "babel-core": "^6.7.7",
     "babel-register": "^6.7.2",
     "chai": "^3.5.0",
     "eslint": "^2.8.0",

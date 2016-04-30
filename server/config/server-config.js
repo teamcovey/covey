@@ -1,5 +1,6 @@
-// var db      = require('./app/config.js');
-// reinsert when db is added.
+/* eslint-disable */
+const db = require('./config.js');
+/* eslint-enable */
 
 const express = require('express');
 

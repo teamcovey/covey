@@ -1,6 +1,6 @@
 // var User         = require('../models/user.js');
 // var Users        = require('../collections/users.js');
-// var Event        = require('../models/event.js');
+// var Covey        = require('../models/covey.js');
 // var API_KEYS = require('../api_keys.js');
 
 exports.getUsage = (req, res) => {

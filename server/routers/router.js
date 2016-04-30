@@ -1,7 +1,7 @@
-const app         = require('../config/server-config.js');
-const route       = require('./router-helpers');
+const app = require('../config/server-config.js');
+const route = require('./router-helpers');
 // can set up different routes for each path
-const bodyParser  = require('body-parser');
+const bodyParser = require('body-parser');
 const morgan = require('morgan');
 
 app.use(bodyParser.json());

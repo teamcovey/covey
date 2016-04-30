@@ -1,0 +1,14 @@
+<li class="panel panel-info">
+  <div ng-click="expandRides()" class="panel-heading">OTHER STUFF</div>
+  <div class="panel-body">
+    <div ng-hide="expandRide">You're riding with: {{cars[0]}}</div>
+    <ul ng-show="expandRide" class="list-unstyled">
+      <li ng-repeat="car in cars track by $index" class="panel" style="width:100%;border-color:#0191C8">
+        <form ng-submit="addNewCar(car)">
+          <input type="text" name="carName" ng-model="car" style="margin:2px;width:75%;border:none"></input>
+        </form>
+      </li>
+    </ul>
+    <button ng-show="expandRide" ng-click="addCar()" class="panel" style="width:100%;border-color:#000">add car</button>
+  </div>
+</li>

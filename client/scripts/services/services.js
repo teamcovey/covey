@@ -37,7 +37,7 @@ coveyServices.factory('coveysFactory', ($http) =>
       })
         .then((response) => response, (response) => response);
     },
-    // Delets a covey, based on user request
+    // Deletes a covey, based on user request
     deleteCovey: (coveyId) => {
       const requestUrl = '/api/coveys/'.concat(coveyId);
       return $http.delete(requestUrl)

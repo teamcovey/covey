@@ -19,6 +19,9 @@ angular.module('covey', [
     .when('/covey', {
       templateUrl: 'views/covey.html',
       controller: 'coveyController',
+    })
+    .otherwise({
+      redirectTo: '/',
     });
 })
 .run(() => {

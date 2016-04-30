@@ -10,6 +10,10 @@ exports.getUsage = (req, res) => {
   res.status(200).send('Welcome to Covey');
 };
 
+exports.login = (req, res) => {
+  res.status(200).send('Please login (Login page goes here). Now visit: /api/auth/facebook to login');
+};
+
 exports.addCovey = (req, res) => {
   res.status(201).send('created Covey');
 };

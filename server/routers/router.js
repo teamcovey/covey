@@ -52,19 +52,21 @@ app.use(passport.session());
 
 app.get('/', route.getUsage);
 
-app.get('api/auth', route.getUser);
+app.get('/api/auth', route.login);
 
-app.get('api/auth/facebook', passport.athenticate('facebook', { scope: ['email'] }));
+app.get('/api/auth/facebook', passport.authenticate('facebook', { scope: ['email'] }));
 
-app.get('api/auth/facebook/return',
+app.get('/api/auth/facebook/return',
 	passport.authenticate('facebook', { failureRedirect: 'api/auth' }),
   (req, res) => res.redirect('/')
 );
 
-app.get('api/logout', (req, res) => {
+app.get('/api/logout', (req, res) => {
   req.logout();
   req.session.destroy(() => res.redirect('/'));
 });
+
+app.get('/api/user', userCheck.ensureLoggedIn('/api/auth'), route.getUser);
 
 app.get('/api/coveys', userCheck.ensureLoggedIn('/api/auth'), route.getAllCoveys);
 

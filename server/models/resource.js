@@ -3,7 +3,7 @@ const User = require('./user.js');
 const Covey = require('./covey.js');
 
 const Resource = db.Model.extend({
-  tableName: 'resourcess',
+  tableName: 'resources',
   covey: () => this.belongsTo(Covey),
   user: () => this.belongsToMany(User),
 });

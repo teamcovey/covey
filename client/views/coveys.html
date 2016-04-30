@@ -1,0 +1,24 @@
+<!-- We are using switch to swap between the 'no events' and 'has events' views-->
+<div class="container" ng-switch on="hasEvents">
+  <!-- 'No events' view -->
+  <div class="row" ng-switch-default>
+    <div class="col-md-1">
+    </div>
+    <div class="cold-md-10">
+      <h2>You have no coveys...</h2>
+      <h4>Click here to create one!</h4>
+    </div>
+    <div class="col-md-1">
+    </div>
+  </div>
+  <!-- 'Has events' view -->
+  <div class="row" ng-switch-when="true">
+    <div class="col-md-1">
+    </div>
+    <div class="cold-md-10">
+      <h2>Here are all your awesome coveys!!</h2>
+    </div>
+    <div class="col-md-1">
+    </div>
+  </div>
+</div>

@@ -4,39 +4,14 @@ const route = require('./router-helpers');
 // can set up different routes for each path
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
+
+// Authentication
+const passport = require('../config/passport.js');
+const userCheck = require('connect-ensure-login');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 
-// authentication
-// const passport = require('passport');
-// const Strategy = require('passport-facebook').Strategy;
-const passport = require('../config/auth.js');
-const userCheck = require('connect-ensure-login');
-
-// passport.use(new Strategy(
-//   {
-//     // clientID: process.env.CLIENT_ID,
-//     // clientSecret: process.env.CLIENT_SECRET,
-//     clientID: '1304925519520920',
-//     clientSecret: 'c6ab5f1c5e9818ba2472fd1337506cfe',
-//     callbackURL: 'http://localhost:3000/api/auth/facebook/return',
-//     profileFields: ['id', 'displayName', 'name', 'gender', 'emails', 'picture.type(large)'],
-//   },
-//   // TODO: Once db available, hook-up accessToken <-> user here
-//   (accessToken, refreshToken, profile, cb) => cb(null, profile)
-// ));
-
-// // Serialize users into and deserialize users out of the session.
-// // TODO: change this to: supply the user ID when serializing,
-// // and querying the user record by ID from the database when deserializing.
-// passport.serializeUser((user, cb) => {
-//   cb(null, user);
-// });
-
-// passport.deserializeUser((obj, cb) => {
-//   cb(null, obj);
-// });
-
+// Initialize
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -45,24 +20,9 @@ app.use(morgan('dev'));
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Authentication routes
+// Routes: app
 app.get('/', route.getUsage);
 
-app.get('/api/auth', route.login);
-
-app.get('/api/auth/facebook', passport.authenticate('facebook', { scope: ['email'] }));
-
-app.get('/api/auth/facebook/return',
-	passport.authenticate('facebook', { failureRedirect: '/api/auth' }),
-  (req, res) => res.redirect('/')
-);
-
-app.get('/api/logout', (req, res) => {
-  req.logout();
-  req.session.destroy(() => res.redirect('/'));
-});
-
-// API routes
 app.get('/api/user', userCheck.ensureLoggedIn('/api/auth'), route.getUser);
 
 app.get('/api/coveys', userCheck.ensureLoggedIn('/api/auth'), route.getAllCoveys);
@@ -78,5 +38,24 @@ app.get('/api/coveys/:id', userCheck.ensureLoggedIn('/api/auth'), route.getCovey
 app.post('/api/signup', route.signup);
 
 app.delete('/api/removeuser', route.removeUser);
+
+// Routes: authentication
+app.get('/api/auth', route.login);
+
+app.get('/api/auth/facebook',
+  passport.authenticate('facebook', { scope: ['email'] })
+);
+
+app.get('/api/auth/facebook/return',
+  passport.authenticate('facebook', { failureRedirect: '/api/auth' }),
+  (req, res) => res.redirect('/')
+);
+
+app.get('/api/logout',
+  (req, res) => {
+    req.logout();
+    req.session.destroy(() => res.redirect('/'));
+  }
+);
 
 module.exports = app;

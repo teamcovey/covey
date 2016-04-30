@@ -11,7 +11,7 @@ exports.getUsage = (req, res) => {
 };
 
 exports.login = (req, res) => {
-  res.status(200).send('Please login (Login page goes here). Now visit: /api/auth/facebook to login');
+  res.status(200).send('Please login (Login page goes here). Now visit: /api/auth/facebook');
 };
 
 exports.addCovey = (req, res) => {

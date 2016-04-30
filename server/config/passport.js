@@ -26,5 +26,3 @@ passport.deserializeUser((obj, cb) => {
 });
 
 module.exports = passport;
-
-

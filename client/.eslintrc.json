@@ -1,0 +1,12 @@
+{
+  "extends": "../.eslintrc.json",
+
+  "rules": {
+    "no-param-reassign": ["error", { "props": false }]
+  },
+
+  "globals": {
+    "$scope": true,
+    "angular": true
+  }
+} 

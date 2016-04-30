@@ -1,0 +1,49 @@
+<div class="container covey">
+  <div class="row covey-nav">
+    <div class="col-xs-offset-10 col-xs-2">
+      <img class="icon" src="styles/assets/quailMini.png">
+      <button type="button" class="btn btn-default btn-md hamburger">
+        <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+  <div class="row covey-title">
+    <div class="col-xs-offset-4 col-xs-4">
+      <h3>{{covey}}</h3>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-offset-1 col-sm-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">Details</div>
+        <div class="panel-body details-panel">
+          <p>
+            Location
+            Time
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-offset-2 col-sm-4">
+      <ul id="draggablePanelList" class="list-unstyled">
+        <li class="panel panel-info">
+          <div class="panel-heading">Rides</div>
+          <div class="panel-body">
+            <button ng-click="addCar" class="panel" style="width:100%;border-color:#000">add car</button>
+            
+          </div>
+        </li>
+        <li class="panel panel-info">
+          <div class="panel-heading">Supplies</div>
+          <div class="panel-body">
+            <p>
+              Beer
+              Chips
+            </p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

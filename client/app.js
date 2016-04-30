@@ -16,7 +16,7 @@ angular.module('covey', [
       templateUrl: 'views/coveys.html',
       controller: 'coveysController',
     })
-    .when('/covey', {
+    .when('/covey/:id', {
       templateUrl: 'views/covey.html',
       controller: 'coveyController',
     })

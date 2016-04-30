@@ -1,10 +1,12 @@
 const app = require('../config/server-config.js');
 const route = require('./router-helpers');
+
 // can set up different routes for each path
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+
 // authentication
 const passport = require('passport');
 const Strategy = require('passport-facebook').Strategy;

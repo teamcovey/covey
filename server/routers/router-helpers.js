@@ -3,6 +3,10 @@
 // var Event        = require('../models/event.js');
 // var API_KEYS = require('../api_keys.js');
 
+exports.getUsage = (req, res) => {
+  res.status(200).send('Welcome to Covey');
+};
+
 exports.addCovey = (req, res) => {
   res.status(201).send('created Covey');
 };

@@ -10,6 +10,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(morgan('dev'));
 
+app.get('/', route.getUsage);
+
 app.get('/api/auth', route.getUser);
 
 app.get('/api/coveys', route.getAllCoveys);

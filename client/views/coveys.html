@@ -1,24 +1,21 @@
+<!-- TODO: REMOVE SCRIPT/STYLE TAGS BEFORE COMMIT -->
+<link rel="stylesheet" type="text/css" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+<script src="../bower_components/angular/angular.min.js"></script>
+<script src="../scripts/controllers/covey.js"></script>
 <!-- We are using switch to swap between the 'no events' and 'has events' views-->
-<div class="container" ng-switch on="hasEvents">
-  <!-- 'No events' view -->
-  <div class="row" ng-switch-default>
-    <div class="col-md-1">
-    </div>
-    <div class="cold-md-10">
-      <h2>You have no coveys...</h2>
-      <h4>Click here to create one!</h4>
-    </div>
-    <div class="col-md-1">
-    </div>
-  </div>
+<!-- TODO: REMOVE NG-APP FROM DIV TAG-->
+<div ng-controller="coveysController" class="container" ng-switch on="hasEvents">
   <!-- 'Has events' view -->
   <div class="row" ng-switch-when="true">
-    <div class="col-md-1">
+    <div class="cold-md-10 col-md-offset-1">
+      <h1 class="text-center">Here are all your awesome coveys!!</h1>
     </div>
-    <div class="cold-md-10">
-      <h2>Here are all your awesome coveys!!</h2>
-    </div>
-    <div class="col-md-1">
+  </div>
+  <!-- 'No events' view -->
+  <div class="row" ng-switch-default>
+    <div class="cold-md-10 col-md-offset-1">
+      <h1 class="text-center">You have no coveys...</h1>
+      <h4 class="text-center">Click here to create a covey!</h4>
     </div>
   </div>
 </div>

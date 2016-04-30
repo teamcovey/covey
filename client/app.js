@@ -1,5 +1,6 @@
 angular.module('covey', [
   // TODO: Add additional dependencies
+  'covey.covey',
   'ngRoute',
 ])
 .config(($routeProvider) => {
@@ -14,7 +15,7 @@ angular.module('covey', [
     })
     .when('/covey', {
       templateUrl: 'views/covey.html',
-      controller: 'coveysController',
+      controller: 'coveyController',
     });
 })
 .run(() => {

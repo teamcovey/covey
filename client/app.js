@@ -1,5 +1,6 @@
 angular.module('covey', [
   // TODO: Add additional dependencies
+  'covey.attendees',
   'covey.supplies',
   'covey.rides',
   'covey.covey',

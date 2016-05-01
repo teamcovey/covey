@@ -8,14 +8,12 @@
       <p>
         {{details.location}} @ {{details.time}}
       </p>
-      <p>Attendees: {{friends}}</p>
     </div>
     <div ng-show="editDetails">
       <form ng-submit="editDetails = !editDetails; updateCovey()">
         <input type="text" name="eventName" ng-model="details.eventName" style="margin:2px;width:75%;border:none"></input>
         <input type="text" name="time" ng-model="details.time" style="margin:2px;width:75%;border:none"></input>
         <input type="text" name="location" ng-model="details.location" style="margin:2px;width:75%;border:none"></input>
-        <input type="text" name="attendees" ng-model="details.attendees" style="margin:2px;width:75%;border:none"></input>
         <input type="submit" id="submit" value="Update" />
       </form>
     </div>

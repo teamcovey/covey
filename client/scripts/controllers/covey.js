@@ -26,6 +26,12 @@ angular.module('covey.covey', [])
     templateUrl: 'views/coveyDetails.html',
   }
 ))
+.directive('coveyAttendees', () => (
+  {
+    templateUrl: 'views/coveyAttendees.html',
+    controller: 'attendeesController',
+  }
+))
 .directive('rides', () => (
   {
     templateUrl: 'views/rides.html',

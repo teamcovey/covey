@@ -1,5 +1,7 @@
 angular.module('covey', [
   // TODO: Add additional dependencies
+  'covey.supplies',
+  'covey.rides',
   'covey.covey',
   'ngRoute',
 ])

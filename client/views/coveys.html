@@ -1,19 +1,44 @@
-<!-- TODO: REMOVE SCRIPT/STYLE TAGS BEFORE COMMIT -->
-<link rel="stylesheet" type="text/css" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
-<script src="../bower_components/angular/angular.min.js"></script>
-<script src="../scripts/controllers/covey.js"></script>
-<!-- We are using switch to swap between the 'no events' and 'has events' views-->
-<!-- TODO: REMOVE NG-APP FROM DIV TAG-->
-<div ng-controller="coveysController" class="container" ng-switch on="hasEvents">
-  <!-- 'Has events' view -->
+<!-- We are using switch to swap between the 'no coveys' and 'has coveys' views-->
+<div ng-controller="coveysController" class="container" ng-switch on="hasCoveys">
+  <!-- Hamburger menu -->
+  <div class="row" ng-controller="hamburgerController">
+        <div class="col-md-1 col-md-offset-11" ng-click="toggleMenu()">
+          <img class="hamburger-button" src="../styles/img/hamburger-button.png">
+        </div>
+        <div class="col-md-12" ng-show="showMenu" ng-click="toggleMenu()">
+            <ul class="hamburger-menu">
+              <a href="#"><li class="hamburger-menu-item">ABOUT US</li></a>
+              <a href="#"><li class="hamburger-menu-item hamburger-menu-item-last">LOGOUT</li></a>
+            </ul>
+        </div>
+  </div>
+  <!-- 'Has coveys' view -->
   <div class="row" ng-switch-when="true">
-    <div class="cold-md-10 col-md-offset-1">
-      <h1 class="text-center">Here are all your awesome coveys!!</h1>
+    <div class="cold-md-12 text-center">
+        <div class="row">
+          <div class="col-md-12">
+            <h3>My Coveys</h3>
+          </div>
+        </div>
+        <div class-"row" ng-repeat="covey in coveys">
+          <div class="col-md-12 text-left covey-tile" ng-click="goToCovey(covey.id)">
+            <img src="{{ covey.image }}" class="mycoveys-event-image"/>
+            <h4>{{ covey.name }}</h4>
+            <h5>@{{ covey.date }}</h5>
+            <h5>{{ covey.description }}</h5>
+          </div>
+        </div>
     </div>
   </div>
-  <!-- 'No events' view -->
+  <!-- Error view -->
+  <div class="row" ng-switch-when="error">
+    <div class="cold-md-12">
+      <h1 class="text-center">There was an error retrieving your coveys =(</h1>
+    </div>
+  </div>
+  <!-- 'No coveys' view -->
   <div class="row" ng-switch-default>
-    <div class="cold-md-10 col-md-offset-1">
+    <div class="cold-md-12">
       <h1 class="text-center">You have no coveys...</h1>
       <h4 class="text-center">Click here to create a covey!</h4>
     </div>

@@ -1,11 +1,63 @@
-const coveys = angular.module('coveys', []);
+const testData = [
+  {
+    name: 'Brochella 2016',
+    description: 'Eat, sleep, rave, repeat',
+    date: 'April 15th, 2016',
+    admin: true,
+    attending: true,
+    image: '../styles/img/200x200.png',
+    id: '12345',
+  },
+  {
+    name: 'Burning man',
+    description: 'Hang out with Toben in the desert',
+    date: 'August 28th, 2016',
+    admin: false,
+    attending: true,
+    image: '../styles/img/200x200.png',
+    id: '12345',
+  },
+  {
+    name: 'Camping at Redwood National and State Park',
+    description: 'Drink beer with the bears',
+    date: 'July 4th, 2016',
+    admin: false,
+    attending: false,
+    image: '../styles/img/200x200.png',
+    id: '12345',
+  },
+];
 
-coveys.controller('coveysController', ($scope) => {
-  $scope.hasEvents = false;
+const coveys = angular.module('coveys', ['covey.services']);
 
-  const getEvents = () => {
-    // TODO: Implement after creating events service
+coveys.controller('coveysController', ($scope, $location, coveysFactory) => {
+  $scope.hasCoveys = 'true';
+  // Setting to testData for now, will update once server isrunning
+  $scope.coveys = testData;
+
+  $scope.goToCovey = (id) => {
+    $location.path('/coveys/'.concat(id));
   };
 
-  getEvents();
+  const getCoveys = () => {
+    let status;
+    let data;
+    coveysFactory
+      .getCoveys()
+      .then((response) => {
+        status = response.status;
+        data = response.data;
+        if (status !== 200) {
+          $scope.hasCoveys = 'error';
+        } else {
+          if (data.coveys.length === 0) {
+            $scope.hasCoveys = 'false';
+          } else {
+            $scope.coveys = data.coveys;
+          }
+        }
+      });
+  };
+
+  getCoveys();
 });

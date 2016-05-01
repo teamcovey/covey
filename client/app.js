@@ -4,6 +4,8 @@ angular.module('covey', [
   'covey.supplies',
   'covey.rides',
   'covey.covey',
+  'coveys',
+  'hamburger',
   'ngRoute',
 ])
 .config(($routeProvider) => {

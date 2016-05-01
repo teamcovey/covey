@@ -24,4 +24,6 @@ app.put('/api/coveys/:id', route.updateCovey);
 
 app.get('/api/coveys/:id', route.getCovey);
 
+app.post('/api/signup', route.signup);
+
 module.exports = app;

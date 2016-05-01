@@ -20,13 +20,12 @@ db.knex.schema.hasTable('users').then((exists) => {
   if (!exists) {
     db.knex.schema.createTable('users', (user) => {
       user.increments('id').primary();
-      // user.string('username', 20).unique();
+      user.string('facebookId').unique();
       user.string('firstName', 25);
       user.string('lastName', 25);
       user.string('email', 60);
       user.string('gender', 20);
       user.string('photoUrl', 100);
-      // user.string('password', 20);
       user.string('phoneNumber', 20);
       user.string('accessToken');
       user.string('refreshToken');

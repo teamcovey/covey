@@ -18,21 +18,10 @@
       <div covey-details></div>
     </div>
     <div class="col-sm-offset-2 col-sm-4">
-      <ul id="draggablePanelList" class="list-unstyled">
-        <!-- ng-show/hide between rides and rides-edit directives -->
+      <ul class="list-unstyled">
         <div rides></div>
         <div supplies></div>
       </ul>
-
-
-      <div ng-switch on="selection">
-          <div class="animate-switch" ng-switch-when="ridesClicked">rides edit div</div>
-          <div class="animate-switch" ng-switch-when="suppliesClicked">supplies edit div</div>
-          <div class="animate-switch" ng-switch-default>plain rides div</div>
-          <div class="animate-switch" ng-switch-default>plain supplies div</div>
-      </div>
-
-
     </div>
   </div>
 </div>

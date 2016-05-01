@@ -1,14 +1,27 @@
 <li class="panel panel-info">
-  <div ng-click="expandRides()" class="panel-heading">OTHER STUFF</div>
+  <div class="panel-heading">
+    Rides
+    <span ng-click="expandRides()" style="float:right;" class="glyphicon glyphicon-pencil"></span>
+  </div>
   <div class="panel-body">
-    <div ng-hide="expandRide">You're riding with: {{cars[0]}}</div>
+    <div ng-hide="expandRide">You're riding with: {{rides.rides[0].driverName}}</div>
     <ul ng-show="expandRide" class="list-unstyled">
-      <li ng-repeat="car in cars track by $index" class="panel" style="width:100%;border-color:#0191C8">
-        <form ng-submit="addNewCar(car)">
-          <input type="text" name="carName" ng-model="car" style="margin:2px;width:75%;border:none"></input>
-        </form>
+      <li ng-repeat="ride in rides.rides track by $index">
+          <div ng-hide="editMode" class="panel" style="width:100%;height:35px;border-color:#0191C8">
+            {{ride.driverName}}
+            <button ng-click="editMode = !editMode" class="btn btn-sm" style="float:right;"><span class="glyphicon glyphicon-pencil"></span></button>
+          </div>
+          <div ng-show="editMode" class="panel" style="width:100%;height:100px;border-color:#0191C8">
+            <form ng-submit="editMode = !editMode; submitRide(ride)">
+              <input type="text" name="driverName" ng-model="ride.driverName" style="margin:2px;width:75%;border:none"></input>
+              <input type="text" name="timeToLeave" ng-model="ride.timeToLeave" style="margin:2px;width:75%;border:none"></input>
+              <input type="text" name="passengers" ng-model="ride.passengers" style="margin:2px;width:75%;border:none"></input>
+              <input type="submit" id="submit" value="Update" />
+            </form>
+            <button ng-click="deleteRide(ride)">Delete</button>
+          </div>
       </li>
     </ul>
-    <button ng-show="expandRide" ng-click="addCar()" class="panel" style="width:100%;border-color:#000">add car</button>
+    <button ng-show="expandRide" ng-click="addNewRide()" class="panel" style="width:100%;border-color:#000">add car</button>
   </div>
 </li>

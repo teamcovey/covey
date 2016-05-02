@@ -1,33 +1,3 @@
-const testData = [
-  {
-    name: 'Brochella 2016',
-    description: 'Eat, sleep, rave, repeat',
-    date: 'April 15th, 2016',
-    admin: true,
-    attending: true,
-    image: '../styles/img/200x200.png',
-    id: '12345',
-  },
-  {
-    name: 'Burning man',
-    description: 'Hang out with Toben in the desert',
-    date: 'August 28th, 2016',
-    admin: false,
-    attending: true,
-    image: '../styles/img/200x200.png',
-    id: '12345',
-  },
-  {
-    name: 'Camping at Redwood National and State Park',
-    description: 'Drink beer with the bears',
-    date: 'July 4th, 2016',
-    admin: true,
-    attending: true,
-    image: '../styles/img/200x200.png',
-    id: '12345',
-  },
-];
-
 const coveys = angular.module('coveys', ['covey.services']);
 
 coveys.controller('coveysController', ($scope, $location, $rootScope, coveysFactory) => {

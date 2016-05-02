@@ -18,18 +18,21 @@
             <form ng-submit="editMode = !editMode; submitRide(ride)">
               <input type="text" name="driverName" class="panel-input" ng-model="ride.driverName"></input>
               <input type="text" name="timeToLeave" class="panel-input" ng-model="ride.timeToLeave"></input>
-
-              <div ng-click="removePassenger(passenger, ride)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="passenger in ride.passengers" style="background-color:green;display:inline-block;padding:1px;margin:3px;width:30px;height:30px;line-height:30px;font-size:13px;text-align:center;">
-                {{mouseOverTrue ? 'X' : passenger.charAt(0) + passenger.split(' ')[1].charAt(0)}}
+              <div>
+                <div ng-click="removePassenger(passenger, ride)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="passenger in ride.passengers" style="background-color:green;display:inline-block;padding:1px;margin:3px;width:30px;height:30px;line-height:30px;font-size:13px;text-align:center;">
+                  {{mouseOverTrue ? 'X' : passenger.charAt(0) + passenger.split(' ')[1].charAt(0)}}
+                </div>
               </div>
 
-              <div ng-click="addPassenger(friend, ride)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="friend in details.attendees | alreadyPassenger: ride.passengers" style="background-color:yellow;display:inline-block;padding:1px;margin:3px;width:30px;height:30px;line-height:30px;font-size:13px;text-align:center;">
-                {{mouseOverTrue ? '+' : friend.charAt(0) + friend.split(' ')[1].charAt(0)}}
+              <div>
+                <div ng-click="addPassenger(friend, ride)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="friend in details.attendees | alreadyPassenger: ride.passengers" style="background-color:yellow;display:inline-block;padding:1px;margin:3px;width:30px;height:30px;line-height:30px;font-size:13px;text-align:center;">
+                  {{mouseOverTrue ? '+' : friend.charAt(0) + friend.split(' ')[1].charAt(0)}}
+                </div>
               </div>
 
               <input type="submit" id="submit" value="Update" />
             </form>
-            <button ng-click="deleteRide(ride)">Delete</button>
+            <button ng-click="deleteRide(ride); editMode = !editMode;">Delete</button>
           </div>
       </li>
     </ul>

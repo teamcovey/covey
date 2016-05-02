@@ -49,6 +49,9 @@ angular.module('covey.rides', [])
   $scope.deleteRide = (ride) => {
     $scope.rides.rides.splice(ride.id - 1, 1);
     // make PUT or DEL request to update supply
+    $scope.rides.rides.forEach((currentRide, index) => {
+      currentRide.id = index + 1;
+    });
   };
 
   $scope.addPassenger = (passenger, ride) => {

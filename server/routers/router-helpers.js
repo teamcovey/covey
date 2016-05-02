@@ -19,6 +19,7 @@ exports.getUser = (req, res) => {
 };
 
 exports.signup = (req, res) => {
+  // console.log(req.body);
   const facebookId = req.body.facebookId;
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
@@ -28,33 +29,44 @@ exports.signup = (req, res) => {
   const phoneNumber = req.body.phoneNumber;
   const accessToken = req.body.accessToken;
   const refreshToken = req.body.refreshToken;
-  new User({ facebookId: facebookId })
-    .fetch()
-    .then((found) => {
-      if (found) {
-        console.log('Sorry, that facebook acount is already in the database!');
-        res.status(409).send({ success: false });
-      } else {
-        Users.create({
-          facebookId: facebookId,
-          firstName: firstName,
-          lastName: lastName,
-          email: email,
-          gender: gender,
-          photoUrl: photoUrl,
-          phoneNumber: phoneNumber,
-          accessToken: accessToken,
-          refreshToken: refreshToken,
-        })
-        .then((user) => {
-          res.status(201).send({ id: user.attributes.id, success: true });
-        })
-        .catch((err) => {
-          console.error('Error signing up new user', err);
-          res.status(404).send(err);
-        });
-      }
-    });
+  if (facebookId) {
+    new User({ facebookId })
+      .fetch()
+      .then((found) => {
+        if (found) {
+          console.log('Facebook acount is already in the database!');
+          res.status(409).send({
+            success: false,
+            errorMessage: 'Sorry, that facebook acount is already in the database!',
+          });
+        } else {
+          Users.create({
+            facebookId,
+            firstName,
+            lastName,
+            email,
+            gender,
+            photoUrl,
+            phoneNumber,
+            accessToken,
+            refreshToken,
+          })
+          .then((user) => {
+            res.status(201).send({ id: user.attributes.id, success: true });
+          })
+          .catch((err) => {
+            console.error('Error signing up new user', err);
+            res.status(404).send(err);
+          });
+        }
+      });
+  } else {
+    // console.error('Error no facebookId defined');
+    // res.status(404).send('Error no facebookId defined');
+    // res.json(404, { errorMessage: 'no facebookId' });
+    res.status(404).json({ errorMessage: 'no facebookId' });
+    // res.send({ error: 'message' });
+  }
 };
 exports.getAllCoveys = (req, res) => {
   res.status(200).send('sending all Coveys');

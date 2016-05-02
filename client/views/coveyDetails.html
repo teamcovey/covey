@@ -1,7 +1,7 @@
 <div class="panel panel-default">
   <div class="panel-heading">
     Details
-    <span ng-click="editDetails = !editDetails" style="float:right;" class="glyphicon glyphicon-pencil"></span>
+    <span ng-click="editDetails = !editDetails" class="pencil-button glyphicon glyphicon-pencil"></span>
   </div>
   <div class="panel-body details-panel">
     <div ng-hide="editDetails">
@@ -11,9 +11,9 @@
     </div>
     <div ng-show="editDetails">
       <form ng-submit="editDetails = !editDetails; updateCovey()">
-        <input type="text" name="eventName" ng-model="details.eventName" style="margin:2px;width:75%;border:none"></input>
-        <input type="text" name="time" ng-model="details.time" style="margin:2px;width:75%;border:none"></input>
-        <input type="text" name="location" ng-model="details.location" style="margin:2px;width:75%;border:none"></input>
+        <input type="text" name="eventName" class="panel-input" ng-model="details.eventName"></input>
+        <input type="text" name="time" class="panel-input" ng-model="details.time"></input>
+        <input type="text" name="location" class="panel-input" ng-model="details.location"></input>
         <input type="submit" id="submit" value="Update" />
       </form>
     </div>

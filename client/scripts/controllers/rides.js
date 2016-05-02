@@ -32,4 +32,9 @@ angular.module('covey.rides', [])
     console.log(ride);
     // make PUT or POST request to add/update ride
   };
+
+  $scope.deleteRide = (ride) => {
+    $scope.rides.rides.splice(ride.id - 1, 1);
+    // make PUT or DEL request to update supply
+  };
 });

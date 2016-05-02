@@ -1,26 +1,26 @@
 <li class="panel panel-info">
   <div class="panel-heading">
     Supplies
-    <span ng-click="expandSupplies()" style="float:right;" class="glyphicon glyphicon-pencil"></span>
+    <span ng-click="expandSupplies()" class="pencil-button glyphicon glyphicon-pencil"></span>
   </div>
   <div class="panel-body">
     <div ng-hide="expandSupply">You're bringing: {{supplies.supplies[0].supplyName}}</div>
     <ul ng-show="expandSupply" class="list-unstyled">
       <li ng-repeat="supply in supplies.supplies track by $index">
-        <div ng-hide="editMode" class="panel" style="width:100%;height:35px;border-color:#0191C8">
+        <div ng-hide="editMode" class="panel panel-static">
           {{supply.supplyName}}
-          <button ng-click="editMode = !editMode" class="btn btn-sm" style="float:right;"><span class="glyphicon glyphicon-pencil"></span></button>
+          <button ng-click="editMode = !editMode" class="btn btn-sm pencil-button"><span class="glyphicon glyphicon-pencil"></span></button>
         </div>
-        <div ng-show="editMode" class="panel" style="width:100%;height:100px;border-color:#0191C8">
+        <div ng-show="editMode" class="panel panel-edit">
           <form ng-submit="editMode = !editMode; submitSupply(supply)">
-            <input type="text" name="supplyName" ng-model="supply.supplyName" style="margin:2px;width:75%;border:none"></input>
-            <input type="text" name="suppliers" ng-model="supply.suppliers" style="margin:2px;width:75%;border:none"></input>
+            <input type="text" name="supplyName" class="panel-input" ng-model="supply.supplyName"></input>
+              <input type="text" name="suppliers" class="panel-input" ng-model="supply.suppliers"></input>
             <input type="submit" id="submit" value="Update" />
           </form>
           <button ng-click="deleteSupply(supply)">Delete</button>
         </div>
       </li>
     </ul>
-    <button ng-show="expandSupply" ng-click="addNewSupply()" class="panel" style="width:100%;border-color:#000">add supply</button>
+    <button ng-show="expandSupply" ng-click="addNewSupply()" class="panel panel-add">add supply</button>
   </div>
 </li>

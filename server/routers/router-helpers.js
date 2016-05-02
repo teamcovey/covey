@@ -15,7 +15,45 @@ exports.addCovey = (req, res) => {
 };
 
 exports.getUser = (req, res) => {
-  res.status(200).send('got a User');
+  console.log(req.body);
+  const userId = req.body.userId;
+
+  if (userId) {
+    new User({ id: userId })
+      .fetch()
+      .then((foundUser) => {
+        if (foundUser) {
+          console.log('user is: ', foundUser);
+          res.status(200).send({
+            user: foundUser,
+          });
+        } else {
+          res.status(404).send('Could not find user in database');
+        }
+      })
+      .catch((err) => {
+        console.error('Could not find user in database: ', err);
+        res.status(404).send(err);
+      });
+  } else {
+    res.status(404).json({ errorMessage: 'no userId' });
+  }
+  // res.status(200).send('got a User');
+};
+
+exports.removeUser = (req, res) => {
+  const userId = req.body.userId;
+  console.log('in removeUser: ', req.body);
+  User.where({ id: userId })
+    .destroy({})
+    .then((user) => {
+      // console.log('Found 1 user event in removeUserEvent');
+      res.json(user);
+    })
+    .catch((err) => {
+      console.log('Could not find user in removeUser', err);
+      res.status(404).json(err);
+    });
 };
 
 exports.signup = (req, res) => {
@@ -36,7 +74,6 @@ exports.signup = (req, res) => {
         if (found) {
           console.log('Facebook acount is already in the database!');
           res.status(409).send({
-            success: false,
             errorMessage: 'Sorry, that facebook acount is already in the database!',
           });
         } else {

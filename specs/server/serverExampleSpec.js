@@ -28,7 +28,7 @@ describe('Testing endpoint HTTP response types', () => {
   it('response to /api/auth', (done) => {
     request(server)
       .get('/api/auth')
-      .expect(200)
+      .expect(404)
       .end(done);
   });
 
@@ -76,41 +76,34 @@ describe('Testing endpoint HTTP response types', () => {
 });
 
 describe('Testing user signup api /api/signup', () => {
-  const server = require('../../server/server.js');
+  // const server = require('../../server/server.js');
+  let server;
+  let userId;
   const newUser = JSON.stringify({ email: 'fools@me.com',
-    facebookId: 'wastedId8',
+    facebookId: 'wastedId4',
     firstName: 'Spider',
     lastName: 'Monkey',
     gender: 'male',
     photoUrl: 'http://something.com/nope.jpg',
   });
 
-  // beforeEach(() => {
-  //   /* eslint-disable */
-  //   server = require('../../server/server.js');
-  //   /* eslint-enable */
-  // });
+  beforeEach(() => {
+    /* eslint-disable */
+    server = require('../../server/server.js');
+    /* eslint-enable */
+  });
 
   it('response to /api/auth with no data', (done) => {
     request(server)
       .post('/api/signup')
-      // .field('name', 'my awesome avatar')
       .type('json')
-      .send({ name: 'foo' })
+      .send({ name: 'foo' })  // without a facebookId field, this will fail
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(404)
       .end((err, res) => {
-    // Calling the end function will send the request
         if (err) {
           done(err);
-          // console.log('err is');
-          // console.log('*', err, '*');
-          // console.log(err.status);
         } else if (res) {
-          // console.log('res is :');
-          // // console.log(res);
-          // console.log('res status is :');
-          // console.log(res.status);
           done();
         }
       });
@@ -129,10 +122,27 @@ describe('Testing user signup api /api/signup', () => {
         if (err) {
           done(err);
         } else if (res) {
-          // console.log('res is :');
-          // // console.log(res);
-          // console.log('res status is :');
-          // console.log(res.status);
+          // console.log(res.body);
+          userId = JSON.stringify({ userId: res.body.id });
+          done();
+        }
+      });
+  });
+
+  it('response to /api/removeuser with userId should delete the user', (done) => {
+    request(server)
+      .del('/api/removeuser')
+      .type('json')
+      .send(userId)
+      // .expect('Content-Type', 'application/json; charset=utf-8')
+      .expect(200)
+      .end((err, res) => {
+    // Calling the end function will send the request
+    // errs are generated from the expect statements and passed to end as the first argument
+        if (err) {
+          done(err);
+        } else if (res) {
+          // console.log(res);
           done();
         }
       });

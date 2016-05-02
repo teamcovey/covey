@@ -12,7 +12,7 @@ app.use(morgan('dev'));
 
 app.get('/', route.getUsage);
 
-app.get('/api/auth', route.getUser);
+app.post('/api/auth', route.getUser);
 
 app.get('/api/coveys', route.getAllCoveys);
 
@@ -25,5 +25,7 @@ app.put('/api/coveys/:id', route.updateCovey);
 app.get('/api/coveys/:id', route.getCovey);
 
 app.post('/api/signup', route.signup);
+
+app.delete('/api/removeuser', route.removeUser);
 
 module.exports = app;

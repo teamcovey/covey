@@ -13,7 +13,7 @@ describe('Covey Controllers: ', () => {
 
     beforeEach(() => {
       $scope = {};
-      let controller = $controller('coveyController', { $scope: $scope });
+      let controller = $controller('coveyController', { $scope });
     });
 
     it('sets the grad to strong if username is longer than 6 chars', () => {
@@ -32,7 +32,7 @@ describe('Covey Controllers: ', () => {
       $scope.details = {
         attendees: ['Freddie Ryder', 'Rahim Dharssi', 'Toben Green', 'Skye Free'],
       };
-      let controller = $controller('attendeesController', { $scope: $scope });
+      let controller = $controller('attendeesController', { $scope });
     });
 
     it('should add friend to covey attendees list', () => {
@@ -67,7 +67,12 @@ describe('Covey Controllers: ', () => {
       $scope.details = {
         attendees: ['Freddie Ryder', 'Rahim Dharssi', 'Toben Green', 'Skye Free'],
       };
-      let controller = $controller('ridesController', { $scope: $scope });
+      let controller = $controller('ridesController', { $scope });
+    });
+
+    it('should display driver for car current user is riding in', () => {
+      $scope.user = 'Toben Green';
+      expect($scope.getUsersCar()).to.equal('Freddie');
     });
 
     it('should expand rides panel to edit mode when clicked', () => {
@@ -130,7 +135,12 @@ describe('Covey Controllers: ', () => {
       $scope.details = {
         attendees: ['Freddie Ryder', 'Rahim Dharssi', 'Toben Green', 'Skye Free'],
       };
-      let controller = $controller('suppliesController', { $scope: $scope });
+      let controller = $controller('suppliesController', { $scope });
+    });
+
+    it('should display responsibilities for current user', () => {
+      $scope.user = 'Toben Green';
+      expect($scope.getUsersResponsibilities()).to.equal('Beer, Chips');
     });
 
     it('should expand supplies panel to edit mode when clicked', () => {

@@ -3,7 +3,7 @@ angular.module('covey.covey', [])
 .controller('coveyController', function ($scope) {
   /* Get Logged In User */
   // TODO: user id from local storage set on login
-  $scope.user = 'Skye';
+  $scope.user = 'Skye Free';
   $scope.testUser = () => {
     const size = $scope.testingUser.length;
     if (size > 6) {

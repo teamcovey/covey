@@ -16,7 +16,7 @@ angular.module('covey.rides', [])
     rides: [
       {
         id: 1, covey_id: 1, driverName: 'Rahim', timeToLeave: '3PM',
-        passengers: [$scope.details.attendees[0]],
+        passengers: [$scope.details.attendees[0], $scope.details.attendees[3]],
       },
       {
         id: 2, covey_id: 1, driverName: 'Freddie', timeToLeave: '3PM',
@@ -26,6 +26,19 @@ angular.module('covey.rides', [])
   };
 
   $scope.expandRide = false;
+
+  $scope.getUsersCar = () => {
+    const rides = $scope.rides.rides;
+    let ridingWith = '';
+    for (let i = 0; i < rides.length; i++) {
+      if (rides[i].passengers.indexOf($scope.user) > -1) {
+        ridingWith = rides[i].driverName;
+        break;
+      }
+    }
+    return ridingWith;
+  };
+
   $scope.addNewRide = () => {
     $scope.rides.rides.push({
       id: $scope.rides.rides.length + 1,

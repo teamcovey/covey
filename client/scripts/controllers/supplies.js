@@ -21,6 +21,17 @@ angular.module('covey.supplies', [])
 
   $scope.expandSupply = false;
 
+  $scope.getUsersResponsibilities = () => {
+    const supplies = $scope.supplies.supplies;
+    let responsibilities = '';
+    for (let i = 0; i < supplies.length; i++) {
+      if (supplies[i].suppliers.indexOf($scope.user) > -1) {
+        responsibilities += `${supplies[i].supplyName}, `;
+      }
+    }
+    return responsibilities.slice(0, -2);
+  };
+
   $scope.addNewSupply = () => {
     $scope.supplies.supplies.push({
       id: $scope.supplies.supplies.length + 1,

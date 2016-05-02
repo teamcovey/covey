@@ -4,7 +4,7 @@ node_js:
 services: 
   - 'postgresql'
 before_install:
-  - psql -c 'create database postgres;' -U postgres
+  # - psql -c 'create database postgres;' -U postgres
 before_script:
   - npm install -g bower
   - bower install

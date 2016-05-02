@@ -38,7 +38,6 @@ exports.getUser = (req, res) => {
   } else {
     res.status(404).json({ errorMessage: 'no userId' });
   }
-  // res.status(200).send('got a User');
 };
 
 exports.removeUser = (req, res) => {
@@ -47,7 +46,6 @@ exports.removeUser = (req, res) => {
   User.where({ id: userId })
     .destroy({})
     .then((user) => {
-      // console.log('Found 1 user event in removeUserEvent');
       res.json(user);
     })
     .catch((err) => {
@@ -98,11 +96,7 @@ exports.signup = (req, res) => {
         }
       });
   } else {
-    // console.error('Error no facebookId defined');
-    // res.status(404).send('Error no facebookId defined');
-    // res.json(404, { errorMessage: 'no facebookId' });
     res.status(404).json({ errorMessage: 'no facebookId' });
-    // res.send({ error: 'message' });
   }
 };
 exports.getAllCoveys = (req, res) => {
@@ -120,7 +114,6 @@ exports.updateCovey = (req, res) => {
 exports.getCovey = (req, res) => {
   const coveyId = req.params.id;
 
-  // console.log('req stuff: ', req.params, req.body);
   Covey.where({ id: coveyId })
     .fetch()
     .then((covey) => {

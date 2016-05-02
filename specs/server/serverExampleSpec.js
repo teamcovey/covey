@@ -122,7 +122,6 @@ describe('Testing user signup api /api/signup', () => {
         if (err) {
           done(err);
         } else if (res) {
-          // console.log(res.body);
           userId = JSON.stringify({ userId: res.body.id });
           done();
         }
@@ -134,15 +133,11 @@ describe('Testing user signup api /api/signup', () => {
       .del('/api/removeuser')
       .type('json')
       .send(userId)
-      // .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(200)
       .end((err, res) => {
-    // Calling the end function will send the request
-    // errs are generated from the expect statements and passed to end as the first argument
         if (err) {
           done(err);
         } else if (res) {
-          // console.log(res);
           done();
         }
       });

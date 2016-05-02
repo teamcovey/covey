@@ -1,5 +1,4 @@
-<!-- We are using switch to swap between the 'no coveys' and 'has coveys' views-->
-<div ng-controller="coveysController" class="container" ng-switch on="hasCoveys">
+<div class="container">
   <!-- Hamburger menu -->
   <div class="row" ng-controller="hamburgerController">
         <div class="col-md-1 col-md-offset-11" ng-click="toggleMenu()">
@@ -12,12 +11,102 @@
             </ul>
         </div>
   </div>
+  <!-- Covey creation modal -->
+  <div class="row" ng-controller="createCoveyController" ng-show="visible">
+    <!-- This div will create a grayed-out background when the moda pops up -->
+    <div class="row gray-out-bg">
+      <div class="col-md-12">
+      </div>
+    </div>
+    <!-- This div will show an error modal if the covey is not successfully created -->
+    <div class="col-md-12 alert alert-danger covey-creation-error text-center" ng-show="errorVisible">
+      <div class="row">
+        <div class="col-md-12">
+          <span class="glyphicon glyphicon-remove close-covey-modal-icon" ng-click="toggleErrorVisibility()"></span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <h4>There was an error creating your covey. Please try again</h4>
+        </div>
+      </div>
+    </div>
+    <!-- This is the div for the covey creation modal -->
+    <div class="col-md-12 covey-creation-modal">
+      <div class="row">
+        <div class="col-md-12">
+          <span class="glyphicon glyphicon-remove close-covey-modal-icon" ng-click="toggleModalVisibility()"></span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <h4>Create a Covey</h4>
+        </div>
+        <div class="col-md-12 text-right">
+          <form class="form-horizontal">
+            <div class="form-group">
+              <div class="col-sm-2">
+                <label for="eventName">Event Name</label>
+              </div>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="eventName" placeholder="Event Name" ng-model="eventName">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-2">
+                <label for="eventName">Location</label>
+              </div>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="eventLocation" placeholder="Location" ng-model="eventLocation">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-2">
+                <label for="eventName">Start</label>
+              </div>
+              <div class="col-sm-10">
+                <input type="date" class="form-control" id="eventStartDate" ng-model="eventStart">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-2">
+                <label for="eventName">End</label>
+              </div>
+              <div class="col-sm-10">
+                <input type="date" class="form-control" id="eventEndDate" ng-model="eventEnd">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-2">
+                <label for="eventName">Description</label>
+              </div>
+              <div class="col-sm-10">
+                <textarea class="form-control event-description-input" id="eventDescription" rows="3" maxlength="1000" placeholder="Description" ng-model="eventDescription"></textarea>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-2 col-sm-offset-10">
+                <button type="submit" class="btn btn-primary" ng-click="submitCovey()">Create</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- 'Has coveys' view -->
-  <div class="row" ng-switch-when="true">
-    <div class="cold-md-12 text-center">
+  <!-- We are using switch to swap between the 'no coveys' and 'has coveys' views-->
+  <div ng-controller="coveysController" ng-switch on="hasCoveys">
+    <div class="row" ng-switch-when="true">
+      <div class="cold-md-12 text-center">
         <div class="row">
           <div class="col-md-12">
             <h3>My Coveys</h3>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2 col-md-offset-10">
+            <button class="btn btn-primary" ng-click="toggleCreateCoveyModal()"><b>+ Create</b></button>
           </div>
         </div>
         <div class-"row" ng-repeat="covey in coveys">
@@ -28,19 +117,20 @@
             <h5>{{ covey.description }}</h5>
           </div>
         </div>
+      </div>
     </div>
-  </div>
-  <!-- Error view -->
-  <div class="row" ng-switch-when="error">
-    <div class="cold-md-12">
-      <h1 class="text-center">There was an error retrieving your coveys =(</h1>
+    <!-- Error view -->
+    <div class="row" ng-switch-when="error">
+      <div class="cold-md-12">
+        <h1 class="text-center">There was an error retrieving your coveys =(</h1>
+      </div>
     </div>
-  </div>
-  <!-- 'No coveys' view -->
-  <div class="row" ng-switch-default>
-    <div class="cold-md-12">
-      <h1 class="text-center">You have no coveys...</h1>
-      <h4 class="text-center">Click here to create a covey!</h4>
+    <!-- 'No coveys' view -->
+    <div class="row" ng-switch-default>
+      <div class="cold-md-12">
+        <h1 class="text-center">You have no coveys...</h1>
+        <h4 class="text-center">Click here to create a covey!</h4>
+      </div>
     </div>
   </div>
 </div>

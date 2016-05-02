@@ -30,13 +30,17 @@ const testData = [
 
 const coveys = angular.module('coveys', ['covey.services']);
 
-coveys.controller('coveysController', ($scope, $location, coveysFactory) => {
+coveys.controller('coveysController', ($scope, $location, $rootScope, coveysFactory) => {
   $scope.hasCoveys = 'true';
   // Setting to testData for now, will update once server isrunning
   $scope.coveys = testData;
 
   $scope.goToCovey = (id) => {
     $location.path('/coveys/'.concat(id));
+  };
+
+  $scope.toggleCreateCoveyModal = () => {
+    $rootScope.$broadcast('toggleCreateCoveyModal');
   };
 
   const sortCoveysByAttendingStatus = (arrayOfCoveys) => {
@@ -71,11 +75,11 @@ coveys.controller('coveysController', ($scope, $location, coveysFactory) => {
             $scope.hasCoveys = 'false';
           } else {
             $scope.coveys = data.coveys;
+            sortCoveysByAttendingStatus($scope.coveys);
           }
         }
       });
   };
 
   getCoveys();
-  sortCoveysByAttendingStatus($scope.coveys);
 });

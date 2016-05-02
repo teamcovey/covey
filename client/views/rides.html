@@ -25,7 +25,7 @@
               </div>
 
               <div>
-                <div ng-click="addPassenger(friend, ride)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="friend in details.attendees | alreadyPassenger: ride.passengers" style="background-color:yellow;display:inline-block;padding:1px;margin:3px;width:30px;height:30px;line-height:30px;font-size:13px;text-align:center;">
+                <div ng-click="addPassenger(friend, ride)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="friend in details.attendees | alreadyPassenger: rides.rides" style="background-color:yellow;display:inline-block;padding:1px;margin:3px;width:30px;height:30px;line-height:30px;font-size:13px;text-align:center;">
                   {{mouseOverTrue ? '+' : friend.charAt(0) + friend.split(' ')[1].charAt(0)}}
                 </div>
               </div>

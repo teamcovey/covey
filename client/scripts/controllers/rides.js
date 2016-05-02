@@ -1,8 +1,12 @@
 angular.module('covey.rides', [])
 .filter('alreadyPassenger', function () {
-  return (attendees, passengers) => {
+  return (attendees, rides) => {
+    let allPassengers = [];
+    rides.forEach((ride) => {
+      allPassengers = allPassengers.concat(ride.passengers);
+    });
     return attendees.filter((passenger) => (
-      passengers.indexOf(passenger) === -1
+      allPassengers.indexOf(passenger) === -1
     ));
   };
 })

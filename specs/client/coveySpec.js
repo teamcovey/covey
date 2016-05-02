@@ -121,7 +121,7 @@ describe('Covey Controllers: ', () => {
     });
   });
 
-  // describe('ridesController', () => {
+  // describe('suppliesController', () => {
   //   let $scope;
   //   let controller;
 
@@ -130,7 +130,7 @@ describe('Covey Controllers: ', () => {
   //     $scope.details = {
   //       attendees: ['Freddie Ryder', 'Rahim Dharssi', 'Toben Green', 'Skye Free'],
   //     };
-  //     let controller = $controller('ridesController', { $scope: $scope });
+  //     let controller = $controller('suppliesController', { $scope: $scope });
   //   });
 
   //   it('should expand rides panel to edit mode when clicked', () => {

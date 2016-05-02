@@ -21,8 +21,8 @@ const testData = [
     name: 'Camping at Redwood National and State Park',
     description: 'Drink beer with the bears',
     date: 'July 4th, 2016',
-    admin: false,
-    attending: false,
+    admin: true,
+    attending: true,
     image: '../styles/img/200x200.png',
     id: '12345',
   },
@@ -37,6 +37,23 @@ coveys.controller('coveysController', ($scope, $location, coveysFactory) => {
 
   $scope.goToCovey = (id) => {
     $location.path('/coveys/'.concat(id));
+  };
+
+  const sortCoveysByAttendingStatus = (arrayOfCoveys) => {
+    const coveysArray = arrayOfCoveys;
+    for (let i = 0; i < coveysArray.length; i++) {
+      for (let j = 0; j < coveysArray.length - 1; j++) {
+        if (!coveysArray[j].admin && coveysArray[j + 1].admin) {
+          const temp = coveysArray[j];
+          coveysArray[j] = coveysArray[j + 1];
+          coveysArray[j + 1] = temp;
+        } else if (!coveysArray[j].attending && coveysArray[j + 1].attending) {
+          const temp = coveysArray[j];
+          coveysArray[j] = coveysArray[j + 1];
+          coveysArray[j + 1] = temp;
+        }
+      }
+    }
   };
 
   const getCoveys = () => {
@@ -60,4 +77,5 @@ coveys.controller('coveysController', ($scope, $location, coveysFactory) => {
   };
 
   getCoveys();
+  sortCoveysByAttendingStatus($scope.coveys);
 });

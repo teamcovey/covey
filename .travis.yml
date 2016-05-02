@@ -8,4 +8,4 @@ before_install:
 before_script:
   - npm install -g bower
   - bower install
-  - node server/server.js &
+  # - node server/server.js &

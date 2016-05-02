@@ -5,11 +5,16 @@
   </div>
   <div class="panel-body details-panel">
     <div ng-hide="editAttendees">
-      <p>Attendees: {{friends}}</p>
+      <div ng-repeat="friend in details.attendees" style="background-color:grey;display:inline-block;padding:1px;margin:3px;width:40px;height:40px;line-height:40px;font-size:16px;text-align:center;">
+        {{friend.charAt(0) + friend.split(' ')[1].charAt(0)}}
+      </div>
     </div>
     <div ng-show="editAttendees">
-      <form ng-submit="editAttendees = !editAttendees; updateCovey()">
-        <input type="text" name="attendees" class="panel-input" ng-model="details.attendees"></input>
+      <form ng-submit="editAttendees = !editAttendees; addFriend(newFriend)">
+        <div ng-click="removeFriend(friend)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="friend in details.attendees" style="background-color:red;display:inline-block;padding:1px;margin:3px;width:40px;height:40px;line-height:40px;font-size:16px;text-align:center;">
+          {{mouseOverTrue ? 'X' : friend.charAt(0) + friend.split(' ')[1].charAt(0)}}
+        </div>
+        <input type="text" name="attendees" placeholder="...add friend" class="panel-input" ng-model="newFriend"></input>
         <input type="submit" id="submit" value="Update" />
       </form>
     </div>

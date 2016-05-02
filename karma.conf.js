@@ -18,6 +18,7 @@ module.exports = function (config) {
 
       // our client-side spec files - in order
       'specs/client/clientExampleSpec.js',
+      'specs/client/coveySpec.js',
     ],
 
     preprocessors: {
@@ -28,8 +29,8 @@ module.exports = function (config) {
 
     babelPreprocessor: {
       options: {
-        presets: ['es2015']
-      }
+        presets: ['es2015'],
+      },
     },
 
     reporters: ['spec'],
@@ -38,7 +39,7 @@ module.exports = function (config) {
 
     autoWatch: false,
 
-    singleRun: true
+    singleRun: true,
 
   });
 };

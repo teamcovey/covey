@@ -2,10 +2,10 @@ language: 'node_js'
 node_js:
   - 'node'
 services: 
-  - 'mysql'
+  - 'postgresql'
 before_install:
-  - mysql -e 'create database IF NOT EXISTS test;' -uroot
+  # - psql -c 'create database postgres;' -U postgres
 before_script:
   - npm install -g bower
   - bower install
-  - node server/server.js &
+  # - node server/server.js &

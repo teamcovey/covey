@@ -28,7 +28,7 @@ describe('Testing endpoint HTTP response types', () => {
   it('response to /api/auth', (done) => {
     request(server)
       .get('/api/auth')
-      .expect(200)
+      .expect(404)
       .end(done);
   });
 
@@ -65,5 +65,81 @@ describe('Testing endpoint HTTP response types', () => {
       .get('/api/coveys/4')
       .expect(200)
       .end(done);
+  });
+
+  it('response to POST /api/signup', (done) => {
+    request(server)
+      .get('/api/signup')
+      .expect(404)
+      .end(done);
+  });
+});
+
+describe('Testing user signup api /api/signup', () => {
+  // const server = require('../../server/server.js');
+  let server;
+  let userId;
+  const newUser = JSON.stringify({ email: 'fools@me.com',
+    facebookId: 'wastedId4',
+    firstName: 'Spider',
+    lastName: 'Monkey',
+    gender: 'male',
+    photoUrl: 'http://something.com/nope.jpg',
+  });
+
+  beforeEach(() => {
+    /* eslint-disable */
+    server = require('../../server/server.js');
+    /* eslint-enable */
+  });
+
+  it('response to /api/auth with no data', (done) => {
+    request(server)
+      .post('/api/signup')
+      .type('json')
+      .send({ name: 'foo' })  // without a facebookId field, this will fail
+      .expect('Content-Type', 'application/json; charset=utf-8')
+      .expect(404)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          done();
+        }
+      });
+  });
+
+  it('response to /api/auth with new user data', (done) => {
+    request(server)
+      .post('/api/signup')
+      .type('json')
+      .send(newUser)
+      .expect('Content-Type', 'application/json; charset=utf-8')
+      .expect(201)
+      .end((err, res) => {
+    // Calling the end function will send the request
+    // errs are generated from the expect statements and passed to end as the first argument
+        if (err) {
+          done(err);
+        } else if (res) {
+          userId = JSON.stringify({ userId: res.body.id });
+          done();
+        }
+      });
+  });
+
+  it('response to /api/removeuser with userId should delete the user', (done) => {
+    request(server)
+      .del('/api/removeuser')
+      .type('json')
+      .send(userId)
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          done();
+        }
+      });
   });
 });

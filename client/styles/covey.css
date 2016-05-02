@@ -71,4 +71,16 @@ span.glyphicon-menu-hamburger {
   float: right;
 }
 
+.panel-users {
+  background-color:grey;display:inline-block;padding:1px;margin:3px;width:30px;height:30px;line-height:30px;font-size:13px;text-align:center;
+}
+
+.panel-current-users {
+  background-color:green;display:inline-block;padding:1px;margin:3px;width:30px;height:30px;line-height:30px;font-size:13px;text-align:center;
+}
+
+.panel-potential-users {
+  background-color:yellow;display:inline-block;padding:1px;margin:3px;width:30px;height:30px;line-height:30px;font-size:13px;text-align:center;
+}
+
 /* rides.html css */

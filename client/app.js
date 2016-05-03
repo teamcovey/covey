@@ -4,6 +4,10 @@ angular.module('covey', [
   'covey.supplies',
   'covey.rides',
   'covey.covey',
+  'covey.services',
+  'createCovey',
+  'coveys',
+  'hamburger',
   'ngRoute',
 ])
 .config(($routeProvider) => {
@@ -16,9 +20,12 @@ angular.module('covey', [
       templateUrl: 'views/coveys.html',
       controller: 'coveysController',
     })
-    .when('/covey', {
+    .when('/coveys/:coveyId', {
       templateUrl: 'views/covey.html',
       controller: 'coveyController',
+    })
+    .otherwise({
+      redirectTo: '/',
     });
 })
 .run(() => {

@@ -31,7 +31,7 @@ const testData = [
 
 const coveys = angular.module('coveys', ['covey.services']);
 
-coveys.controller('coveysController', ($scope, $location, $rootScope, coveysFactory) => {
+coveys.controller('coveysController', function ($scope, $location, $rootScope, coveysFactory) {
   $scope.hasCoveys = 'true';
   // Setting to testData for now, will update once server isrunning
   $scope.coveys = testData;
@@ -75,7 +75,7 @@ coveys.controller('coveysController', ($scope, $location, $rootScope, coveysFact
       .then((response) => {
         status = response.status;
         data = response.data;
-        if (status === undefined) {
+        if (data.coveys === undefined || status === undefined) {
           // When hasCoveys is equal to 'error' a different view will be displayed on the page
           $scope.hasCoveys = 'error';
         } else {
@@ -90,5 +90,5 @@ coveys.controller('coveysController', ($scope, $location, $rootScope, coveysFact
       });
   };
   // Automatically gets all coveys on page load
-  $scope.getCoveys();
+  // $scope.getCoveys();
 });

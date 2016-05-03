@@ -1,8 +1,8 @@
 const coveyServices = angular.module('covey.services', []);
 
 // The 'Coveys' factory is responsible for interacting with the /api/coveys endpoint
-coveyServices.factory('coveysFactory', ($http) =>
-  ({
+coveyServices.factory('coveysFactory', function ($http) {
+  return ({
     // Gets the full set of coveys for this user
     getCoveys: () => {
       const requestUrl = '/api/coveys';
@@ -43,5 +43,5 @@ coveyServices.factory('coveysFactory', ($http) =>
       return $http.delete(requestUrl)
         .then((response) => response, (response) => response);
     },
-  })
-);
+  });
+});

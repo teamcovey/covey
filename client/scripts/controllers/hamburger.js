@@ -1,6 +1,6 @@
 const hamburger = angular.module('hamburger', []);
 
-hamburger.controller('hamburgerController', ($scope) => {
+hamburger.controller('hamburgerController', function ($scope) {
   $scope.showMenu = false;
   // Toggles visibility of hamburger meny
   $scope.toggleMenu = () => {

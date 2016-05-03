@@ -1,20 +1,10 @@
 angular.module('covey.covey', [])
 
 .controller('coveyController', function ($scope) {
-  /* Get Logged In User */
-  // TODO: user id from local storage set on login
+  // TODO: get user id/details from local storage
   $scope.user = 'Skye Free';
-  $scope.testUser = () => {
-    const size = $scope.testingUser.length;
-    if (size > 6) {
-      $scope.grade = 'strong';
-    } else {
-      $scope.grade = 'weak';
-    }
-  };
 
-  /* Covey Logic */
-  // on /covey load, use factory GET request for covey table events details
+  // on /covey load, use factory GET request for covey table details
   $scope.details = {
     id: 1,
     eventName: 'Camping With Friends',
@@ -24,8 +14,8 @@ angular.module('covey.covey', [])
   };
 
   $scope.updateCovey = () => {
-    console.log($scope.details);
     // make PUT request to update covey event details
+    console.log($scope.details);
   };
 })
 .directive('coveyDetails', () => (

@@ -7,22 +7,6 @@ describe('Covey Controllers: ', () => {
     $controller = _$controller_;
   }));
 
-  describe('coveyController', () => {
-    let $scope;
-    let controller;
-
-    beforeEach(() => {
-      $scope = {};
-      let controller = $controller('coveyController', { $scope });
-    });
-
-    it('sets the grad to strong if username is longer than 6 chars', () => {
-      $scope.testingUser = 'longerthansix';
-      $scope.testUser();
-      expect($scope.grade).to.equal('strong');
-    });
-  });
-
   describe('attendeesController', () => {
     let $scope;
     let controller;
@@ -72,7 +56,12 @@ describe('Covey Controllers: ', () => {
 
     it('should display driver for car current user is riding in', () => {
       $scope.user = 'Toben Green';
-      expect($scope.getUsersCar()).to.equal('Freddie');
+      expect($scope.getUsersCar()).to.equal('You\'re riding in Freddie\'s car.');
+    });
+
+    it('should say "Youre driving" if current user is a driver', () => {
+      $scope.user = 'Rahim Dharssi';
+      expect($scope.getUsersCar()).to.equal('You\'re driving!');
     });
 
     it('should expand rides panel to edit mode when clicked', () => {
@@ -102,6 +91,21 @@ describe('Covey Controllers: ', () => {
       expect($scope.rides.rides[length - 1].driverName).to.equal('Skye');
     });
 
+    it('should remove passenger from passengers lists if a passenger becomes a driver', () => {
+      const newRide = {
+        id: $scope.rides.rides.length + 1,
+        covey_id: 1,
+        driverName: 'Skye Free',
+        timeToLeave: '6PM',
+        passengers: 'John Smith',
+      };
+      $scope.submitRide(newRide);
+      const length = $scope.rides.rides.length;
+      expect(length).to.equal(3);
+      expect($scope.rides.rides[length - 1].driverName).to.equal('Skye Free');
+      expect($scope.rides.rides[0].passengers.join('')).to.equal(['Freddie Ryder'].join(''));
+    });
+
     it('should delete ride from rides array', () => {
       const ride = {
         id: 2,
@@ -109,7 +113,7 @@ describe('Covey Controllers: ', () => {
       $scope.deleteRide(ride);
       const length = $scope.rides.rides.length;
       expect(length).to.equal(1);
-      expect($scope.rides.rides[length - 1].driverName).to.equal('Rahim');
+      expect($scope.rides.rides[length - 1].driverName).to.equal('Rahim Dharssi');
     });
 
     it('should add new passenger to ride\'s passengers', () => {
@@ -124,6 +128,9 @@ describe('Covey Controllers: ', () => {
       $scope.removePassenger(passenger, { id: 1 });
       expect($scope.rides.rides[0].passengers.indexOf(passenger)).to.equal(-1);
     });
+
+    // if user is driver, cannot be chosen as a passenger
+    // if passenger becomes a driver, it should remove passenger for any passenger lists
   });
 
   describe('suppliesController', () => {

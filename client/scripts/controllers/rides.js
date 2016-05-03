@@ -1,26 +1,15 @@
 angular.module('covey.rides', [])
-.filter('alreadyPassenger', function () {
-  return (attendees, rides) => {
-    let allPassengers = [];
-    rides.forEach((ride) => {
-      allPassengers = allPassengers.concat(ride.passengers);
-    });
-    return attendees.filter((passenger) => (
-      allPassengers.indexOf(passenger) === -1
-    ));
-  };
-})
 .controller('ridesController', function ($scope) {
-  // TODO: GET rides table details for covey_id (can access to covey $scope.details)
+  // TODO: use factory function to GET rides details for covey_id (can access via $scope.details)
   $scope.rides = {
     rides: [
       {
-        id: 1, covey_id: 1, driverName: 'Rahim', timeToLeave: '3PM',
+        id: 1, covey_id: 1, driverName: $scope.details.attendees[1], timeToLeave: '3PM',
         passengers: [$scope.details.attendees[0], $scope.details.attendees[3]],
       },
       {
         id: 2, covey_id: 1, driverName: 'Freddie', timeToLeave: '3PM',
-        passengers: [$scope.details.attendees[1], $scope.details.attendees[2]],
+        passengers: [$scope.details.attendees[2]],
       },
     ],
   };
@@ -32,7 +21,10 @@ angular.module('covey.rides', [])
     let ridingWith = '';
     for (let i = 0; i < rides.length; i++) {
       if (rides[i].passengers.indexOf($scope.user) > -1) {
-        ridingWith = rides[i].driverName;
+        ridingWith = `You're riding in ${rides[i].driverName}'s car.`;
+        break;
+      } else if (rides[i].driverName === $scope.user) {
+        ridingWith = 'You\'re driving!';
         break;
       }
     }
@@ -52,8 +44,21 @@ angular.module('covey.rides', [])
     $scope.expandRide = !$scope.expandRide;
   };
 
+  const checkPassenger = (driver) => {
+    let isPassenger = null;
+    $scope.rides.rides.forEach((ride) => {
+      if (ride.passengers.indexOf(driver) > -1) {
+        isPassenger = ride.id;
+      }
+    });
+    return isPassenger;
+  };
+
   $scope.submitRide = (ride) => {
     // make PUT or POST request to add/update ride
+    const isPassenger = checkPassenger(ride.driverName);
+    if (isPassenger !== null) $scope.removePassenger(ride.driverName, { id: isPassenger });
+
     $scope.rides.rides[ride.id - 1] = {
       id: ride.id,
       covey_id: 1,
@@ -81,5 +86,16 @@ angular.module('covey.rides', [])
         $scope.rides.rides[ride.id - 1].passengers.splice(index, 1);
       }
     });
+  };
+})
+.filter('alreadyPassenger', function () {
+  return (attendees, rides) => {
+    let allPassengers = [];
+    rides.forEach((ride) => {
+      allPassengers = allPassengers.concat(ride.passengers).concat(ride.driverName);
+    });
+    return attendees.filter((passenger) => (
+      allPassengers.indexOf(passenger) === -1
+    ));
   };
 });

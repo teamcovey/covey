@@ -19,6 +19,8 @@ module.exports = function (config) {
       // our client-side spec files - in order
       'specs/client/clientExampleSpec.js',
       'specs/client/coveySpec.js',
+      'specs/client/myCoveysSpec.js',
+      'specs/client/createCoveySpec.js',
     ],
 
     preprocessors: {

@@ -4,6 +4,8 @@ angular.module('covey', [
   'covey.supplies',
   'covey.rides',
   'covey.covey',
+  'covey.services',
+  'createCovey',
   'coveys',
   'hamburger',
   'ngRoute',

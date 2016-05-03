@@ -18,12 +18,34 @@ describe('loading express', () => {
   });
 });
 
-describe('Testing endpoint HTTP response types', () => {
+describe('Testing unauthorized API attempts', () => {
   let server;
+
   beforeEach(() => {
     /* eslint-disable */
     server = require('../../server/server.js');
     /* eslint-enable */
+  });
+
+  it('should respond with 302 (redirect) if authentication fails', (done) => {
+    request(server)
+      .get('/api/user')
+      .end((err, res) => {
+        should.not.exist(err);
+        res.status.should.be.equal(302);
+        done();
+      });
+  });
+
+  it('should redirect to "/api/auth" if authentication fails', (done) => {
+    request(server)
+      .get('/api/user')
+      .expect(302)
+      .end((err, res) => {
+        should.not.exist(err);
+        res.header.location.should.be.equal('/api/auth');
+        done();
+      });
   });
 
   it('response to /api/auth', (done) => {
@@ -32,36 +54,59 @@ describe('Testing endpoint HTTP response types', () => {
       .expect(404)
       .end(done);
   });
+});
 
-  xit('response to GET /api/coveys', (done) => {
+
+describe('Testing authorized endpoint HTTP response types', () => {
+  const passportStub = require('passport-stub-js');
+  let server;
+  beforeEach(() => {
+    /* eslint-disable */
+    server = require('../../server/server.js');
+    /* eslint-enable */
+    passportStub.install(server);
+    passportStub.login({ username: 'john.doe' });
+  });
+
+  it('should repond with 200 when logged in', (done) => {
+    request(server)
+      .get('/api/user')
+      .end((err, res) => {
+        should.not.exist(err);
+        res.status.should.be.equal(200);
+        done();
+      });
+  });
+
+  it('response to GET /api/coveys', (done) => {
     request(server)
       .get('/api/coveys')
       .expect(200)
       .end(done);
   });
 
-  xit('response to POST /api/coveys', (done) => {
+  it('response to POST /api/coveys', (done) => {
     request(server)
       .post('/api/coveys')
       .expect(201)
       .end(done);
   });
 
-  xit('response to DELETE /api/coveys/:id', (done) => {
+  it('response to DELETE /api/coveys/:id', (done) => {
     request(server)
       .del('/api/coveys/4')
       .expect(200)
       .end(done);
   });
 
-  xit('response to PUT /api/coveys/:id', (done) => {
+  it('response to PUT /api/coveys/:id', (done) => {
     request(server)
       .put('/api/coveys/4')
       .expect(200)
       .end(done);
   });
 
-  xit('response to GET /api/coveys/:id', (done) => {
+  it('response to GET /api/coveys/:id', (done) => {
     request(server)
       .get('/api/coveys/4')
       .expect(200)
@@ -141,50 +186,6 @@ describe('Testing user signup api /api/signup', () => {
         } else if (res) {
           done();
         }
-      });
-  });
-});
-
-describe('Testing Authentication / Authorized API access', () => {
-  const passportStub = require('passport-stub-js');
-  let server;
-
-  beforeEach(() => {
-    /* eslint-disable */
-    server = require('../../server/server.js');
-    /* eslint-enable */
-    passportStub.install(server);
-  });
-
-  it('should respond with 302 (redirect) if authentication fails', (done) => {
-    request(server)
-      .get('/api/user')
-      .end((err, res) => {
-        should.not.exist(err);
-        res.status.should.be.equal(302);
-        done();
-      });
-  });
-
-  it('should redirect to "/api/auth" if authentication fails', (done) => {
-    request(server)
-      .get('/api/user')
-      .expect(302)
-      .end((err, res) => {
-        should.not.exist(err);
-        res.header.location.should.be.equal('/api/auth');
-        done();
-      });
-  });
-
-  it('should repond with 200 when logged in', (done) => {
-    passportStub.login({ username: 'john.doe' });
-    request(server)
-      .get('/api/user')
-      .end((err, res) => {
-        should.not.exist(err);
-        res.status.should.be.equal(200);
-        done();
       });
   });
 });

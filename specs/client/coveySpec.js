@@ -16,6 +16,44 @@ describe('Covey Controllers: ', () => {
       $scope.details = {
         attendees: ['Freddie Ryder', 'Rahim Dharssi', 'Toben Green', 'Skye Free'],
       };
+      $scope.supplies = {
+        supplies: [
+          {
+            id: 1, covey_id: 1, supplyName: 'Beer', suppliers: [$scope.details.attendees[2], $scope.details.attendees[0]],
+          },
+          {
+            id: 2, covey_id: 1, supplyName: 'Chips', suppliers: [$scope.details.attendees[2]],
+          },
+        ],
+      };
+      $scope.rides = {
+        rides: [
+          {
+            id: 1, covey_id: 1, driverName: $scope.details.attendees[1], timeToLeave: '3PM',
+            passengers: [$scope.details.attendees[0], $scope.details.attendees[3]],
+          },
+          {
+            id: 2, covey_id: 1, driverName: 'Freddie', timeToLeave: '3PM',
+            passengers: [$scope.details.attendees[2]],
+          },
+        ],
+      };
+      $scope.checkPassenger = (driver) => {
+        let isPassenger = null;
+        $scope.rides.rides.forEach((ride) => {
+          if (ride.passengers.indexOf(driver) > -1) {
+            isPassenger = ride.id;
+          }
+        });
+        return isPassenger;
+      };
+      $scope.removePassenger = (passenger, ride) => {
+        $scope.rides.rides[ride.id - 1].passengers.forEach((currentPassenger, index) => {
+          if (currentPassenger === passenger) {
+            $scope.rides.rides[ride.id - 1].passengers.splice(index, 1);
+          }
+        });
+      };
       let controller = $controller('attendeesController', { $scope });
     });
 
@@ -39,6 +77,14 @@ describe('Covey Controllers: ', () => {
       $scope.removeFriend(newFriend);
       const length = $scope.details.attendees.length;
       expect($scope.details.attendees[length - 1]).to.equal('Skye Free');
+    });
+
+    it('should remove uninvited attendee from all other lists', () => {
+      const removed = 'Toben Green';
+      $scope.removeFriend(removed);
+      expect($scope.rides.rides[1].passengers.indexOf(removed)).to.equal(-1);
+      expect($scope.supplies.supplies[0].suppliers.indexOf(removed)).to.equal(-1);
+      expect($scope.supplies.supplies[1].suppliers.indexOf(removed)).to.equal(-1);
     });
   });
 

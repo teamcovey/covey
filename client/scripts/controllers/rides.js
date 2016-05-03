@@ -44,7 +44,7 @@ angular.module('covey.rides', [])
     $scope.expandRide = !$scope.expandRide;
   };
 
-  const checkPassenger = (driver) => {
+  $scope.checkPassenger = (driver) => {
     let isPassenger = null;
     $scope.rides.rides.forEach((ride) => {
       if (ride.passengers.indexOf(driver) > -1) {
@@ -56,7 +56,7 @@ angular.module('covey.rides', [])
 
   $scope.submitRide = (ride) => {
     // make PUT or POST request to add/update ride
-    const isPassenger = checkPassenger(ride.driverName);
+    const isPassenger = $scope.checkPassenger(ride.driverName);
     if (isPassenger !== null) $scope.removePassenger(ride.driverName, { id: isPassenger });
 
     $scope.rides.rides[ride.id - 1] = {

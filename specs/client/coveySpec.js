@@ -174,9 +174,6 @@ describe('Covey Controllers: ', () => {
       $scope.removePassenger(passenger, { id: 1 });
       expect($scope.rides.rides[0].passengers.indexOf(passenger)).to.equal(-1);
     });
-
-    // if user is driver, cannot be chosen as a passenger
-    // if passenger becomes a driver, it should remove passenger for any passenger lists
   });
 
   describe('suppliesController', () => {

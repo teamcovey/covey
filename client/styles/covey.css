@@ -43,7 +43,6 @@ span.glyphicon-menu-hamburger {
   color: #000;
 }
 
-/* supplies.html css */
 .panel-static {
   width: 100%;
   height: 35px;
@@ -82,5 +81,3 @@ span.glyphicon-menu-hamburger {
 .panel-potential-users {
   background-color:yellow;display:inline-block;padding:1px;margin:3px;width:30px;height:30px;line-height:30px;font-size:13px;text-align:center;
 }
-
-/* rides.html css */

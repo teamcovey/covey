@@ -18,6 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
 app.use(morgan('dev'));
 app.use(passport.initialize());
+// mockUser = name: { givenName: "Jonathon", familyName: "Kresner" }
 app.use(passport.session());
 
 // Routes: app

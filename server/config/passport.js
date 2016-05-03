@@ -1,5 +1,14 @@
+// 'use strict';
+
 const passport = require('passport');
 const Strategy = require('passport-facebook').Strategy;
+
+// if (process.env.NODE_ENV == 'test') {
+  // const Strategy = require('passport-mock').Strategy;
+// } else {
+//  const Strategy = require('passport-facebook').Strategy;
+// }
+
 
 passport.use(new Strategy(
   {

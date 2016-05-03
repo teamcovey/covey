@@ -36,10 +36,14 @@
     "karma-sinon": "^1.0.4",
     "karma-spec-reporter": "0.0.26",
     "mocha": "^2.4.5",
+    "passport-mocked": "0.0.5",
+    "passport-stub": "^1.1.1",
+    "passport-stub-js": "^0.1.0",
     "phantomjs-prebuilt": "^2.1.7",
+    "should": "^8.3.1",
     "sinon": "^1.17.3",
-    "supertest": "^1.2.0",
-    "should": "^8.3.1"
+    "superagent": "^1.8.3",
+    "supertest": "^1.2.0"
   },
   "dependencies": {
     "babel-cli": "^6.7.7",

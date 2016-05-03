@@ -145,7 +145,12 @@ describe('Testing user signup api /api/signup', () => {
   });
 });
 
-// const app = require('../../server/server.js').app;
+
+const passportStub = require('passport-stub-js');
+const server = require('../../server/server.js');
+passportStub.install(server);
+//const request = request(app);
+
 
 describe('Authentication', () => {
   let server;
@@ -154,7 +159,6 @@ describe('Authentication', () => {
     server = require('../../server/server.js');
     /* eslint-enable */
   });
-
 
   it('should respond with 302 (redirect) if authentication fails', (done) => {
     request(server)
@@ -176,22 +180,21 @@ describe('Authentication', () => {
         done();
       });
   });
+});
 
-  // it('should redirect to "/login" if authentication fails', function (done) {
-  //   var post = {
-  //     email: 'berry@example.com',
-  //     password: 'fakepassword'
-  //   };
-  //   request(app)
-  //     .post(baseUrl)
-  //     .send(post)
-  //     .expect(302)
-  //     .end(function (err, res) {
-  //       should.not.exist(err);
-  //       // confirm the redirect
-  //       res.header.location.should.include('/login');
-  //       done();
-  //     });
-  // });
+describe('GET /api/user', () => {
+  it('should respond with 401 if not logged in', (done) => {
+    request(server)
+      .get('/admin')
+      .expect(401);
+      done();
+  });
 
+  it('should repond with 200 when logged in', (done) => {
+    passportStub.login({ username: 'john.doe' });
+    request(server)
+      .get('/api/user')
+      .expect(200);
+      done();
+  });
 });

@@ -1,4 +1,4 @@
-describe('Routing', () => {
+describe('Create Covey', () => {
   let $controller;
   let $rootScope;
   beforeEach(module('createCovey'));
@@ -7,11 +7,19 @@ describe('Routing', () => {
     $controller = _$controller_;
     $rootScope = _$rootScope_;
   }));
-
-  it('Should toggle modal visibility', () => {
+  it('Create modal should not be visible by default', () => {
     const $scope = {};
     const controller = $controller('createCoveyController', { $scope: $scope });
     expect($scope.visible).to.equal(false);
+  });
+  it('Error modal should not be visible by default', () => {
+    const $scope = {};
+    const controller = $controller('createCoveyController', { $scope: $scope });
+    expect($scope.errorVisible).to.equal(false);
+  });
+  it('Should toggle visibility of create modal', () => {
+    const $scope = {};
+    const controller = $controller('createCoveyController', { $scope: $scope });
     $rootScope.$broadcast('toggleCreateCoveyModal');
     expect($scope.visible).to.equal(true);
   });

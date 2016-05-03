@@ -23,21 +23,11 @@ app.use(passport.session());
 // Routes: app
 app.get('/', route.getUsage);
 
-app.get('/api/user', auth, route.getUser);
+app.post('/api/signup', route.signup);
 
-app.get('/api/coveys', auth, route.getAllCoveys);
+app.get('/api/auth/:userId', route.getUser);
 
-app.post('/api/coveys', auth, route.addCovey);
-
-app.delete('/api/coveys/:id', auth, route.removeCovey);
-
-app.put('/api/coveys/:id', auth, route.updateCovey);
-
-app.get('/api/coveys/:id', auth, route.getCovey);
-
-app.post('/api/signup', auth, route.signup);
-
-app.delete('/api/removeuser', auth, route.removeUser);
+app.delete('/api/removeuser/:userId', route.removeUser);
 
 // Routes: authentication
 app.get('/api/auth', route.login);
@@ -57,5 +47,15 @@ app.get('/api/logout',
     req.session.destroy(() => res.redirect('/'));
   }
 );
+
+app.get('/api/coveys/:userId', route.getAllCoveys);
+
+app.post('/api/coveys', route.addCovey);
+
+app.delete('/api/coveys/:coveyId', route.removeCovey);
+
+app.put('/api/coveys/:coveyId', route.updateCovey);
+
+app.get('/api/coveys/:coveyid', route.getCovey);
 
 module.exports = app;

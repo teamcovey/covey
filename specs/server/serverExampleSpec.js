@@ -79,9 +79,9 @@ describe('Testing authorized endpoint HTTP response types', () => {
       });
   });
 
-  it('response to GET /api/coveys', (done) => {
+  it('response to GET /api/coveys/1', (done) => {
     request(server)
-      .get('/api/coveys')
+      .get('/api/coveys/1')
       .expect(200)
       .end(done);
   });
@@ -122,7 +122,7 @@ describe('Testing authorized endpoint HTTP response types', () => {
   });
 });
 
-describe('Testing user signup api /api/signup', () => {
+describe('Testing user api enpoints', () => {
   // const server = require('../../server/server.js');
   let server;
   let userId;
@@ -140,7 +140,7 @@ describe('Testing user signup api /api/signup', () => {
     /* eslint-enable */
   });
 
-  it('response to /api/auth with no data', (done) => {
+  it('response to /api/signup with no data', (done) => {
     request(server)
       .post('/api/signup')
       .type('json')
@@ -156,7 +156,7 @@ describe('Testing user signup api /api/signup', () => {
       });
   });
 
-  it('response to /api/auth with new user data', (done) => {
+  it('response to /api/signup with new user data', (done) => {
     request(server)
       .post('/api/signup')
       .type('json')
@@ -169,17 +169,16 @@ describe('Testing user signup api /api/signup', () => {
         if (err) {
           done(err);
         } else if (res) {
-          userId = JSON.stringify({ userId: res.body.id });
+          userId = res.body.id;
           done();
         }
       });
   });
 
-  it('response to /api/removeuser with userId should delete the user', (done) => {
+  it(`response to /api/removeuser/${userId} with userId should delete the user`, (done) => {
     request(server)
-      .del('/api/removeuser')
+      .del(`/api/removeuser/${userId}`)
       .type('json')
-      .send(userId)
       .expect(200)
       .end((err, res) => {
         if (err) {

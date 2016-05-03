@@ -1,0 +1,83 @@
+.covey {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  font-family: Calibri;
+  color: #0191C8;
+}
+
+.covey-nav {
+  margin-top: 1%;
+  text-align: center;
+}
+
+.icon {
+  width: 25%;
+  height: 25%;
+  padding-right: 5px;
+}
+
+button.hamburger {
+  background-color: #fff;
+  border-color: #0191C8;
+}
+
+/* overrides bootstrap hover color change: */
+button.hamburger:hover {
+  background-color: #fff;
+  border-color: #0191C8;
+}
+
+span.glyphicon-menu-hamburger {
+  width: 100%;
+  background-color: #fff;
+  color: #0191C8;
+}
+
+.covey-title {
+  text-align: center;
+}
+
+.panel-body {
+  color: #000;
+}
+
+.panel-static {
+  width: 100%;
+  height: 35px;
+  border-color: #0191C8;
+}
+
+.panel-edit {
+  width: 100%;
+  height: 150px;
+  border-color: #0191C8;
+}
+
+.panel-input {
+  margin: 2px;
+  width: 75%;
+  border: none;
+}
+
+.panel-add {
+  width: 100%;
+  border-color: #000;
+}
+
+.pencil-button {
+  float: right;
+}
+
+.panel-users {
+  background-color:grey;display:inline-block;padding:1px;margin:3px;width:30px;height:30px;line-height:30px;font-size:13px;text-align:center;
+}
+
+.panel-current-users {
+  background-color:green;display:inline-block;padding:1px;margin:3px;width:30px;height:30px;line-height:30px;font-size:13px;text-align:center;
+}
+
+.panel-potential-users {
+  background-color:yellow;display:inline-block;padding:1px;margin:3px;width:30px;height:30px;line-height:30px;font-size:13px;text-align:center;
+}

@@ -1,0 +1,48 @@
+<li class="panel panel-info">
+  <!-- PANEL HEADING -->
+  <div class="panel-heading">
+    Supplies
+    <span ng-click="expandSupplies()" class="pencil-button glyphicon glyphicon-pencil"></span>
+  </div>
+  <div class="panel-body">
+
+    <!-- BASIC PANEL VIEW -->
+    <div ng-hide="expandSupply">You're bringing: {{getUsersResponsibilities()}}</div>
+
+    <!-- PANEL VIEW IN EDIT MODE -->
+    <ul ng-show="expandSupply" class="list-unstyled">
+      <li ng-repeat="supply in supplies.supplies track by $index">
+        <div ng-hide="editMode" class="panel panel-static">
+          {{supply.supplyName}}
+          <!-- DISPLAY SUPPLIERS -->
+          <div ng-repeat="friend in supply.suppliers" class="panel-users">
+              {{friend.charAt(0) + friend.split(' ')[1].charAt(0)}}
+          </div>
+          <button ng-click="editMode = !editMode" class="btn btn-sm pencil-button"><span class="glyphicon glyphicon-pencil"></span></button>
+        </div>
+
+        <!-- INDIVIDUAL SUPPLY EDIT VIEW -->
+        <div ng-show="editMode" class="panel panel-edit">
+          <form ng-submit="editMode = !editMode; submitSupply(supply)">
+            <input type="text" name="supplyName" class="panel-input" ng-model="supply.supplyName"></input>
+            <!-- DISPLAY SUPPLIERS -->
+            <div>
+              <div ng-click="removeSupplier(supplier, supply)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="supplier in supply.suppliers" class="panel-current-users">
+                {{mouseOverTrue ? 'X' : supplier.charAt(0) + supplier.split(' ')[1].charAt(0)}}
+              </div>
+            </div>
+            <!-- DISPLAY POTENTIAL SUPPLIERS -->
+            <div>
+              <div ng-click="addSupplier(friend, supply)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="friend in details.attendees | alreadySupplier: supply.suppliers" class="panel-potential-users">
+                {{mouseOverTrue ? '+' : friend.charAt(0) + friend.split(' ')[1].charAt(0)}}
+              </div>
+            </div>
+            <input type="submit" id="submit" value="Update" />
+          </form>
+          <button ng-click="deleteSupply(supply); editMode = !editMode">Delete</button>
+        </div>
+      </li>
+    </ul>
+    <button ng-show="expandSupply" ng-click="addNewSupply()" class="panel panel-add">add supply</button>
+  </div>
+</li>

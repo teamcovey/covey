@@ -145,19 +145,15 @@ describe('Testing user signup api /api/signup', () => {
   });
 });
 
-
-const passportStub = require('passport-stub-js');
-const server = require('../../server/server.js');
-passportStub.install(server);
-//const request = request(app);
-
-
-describe('Authentication', () => {
+describe('Testing Authentication / Authorized API access', () => {
+  const passportStub = require('passport-stub-js');
   let server;
+
   beforeEach(() => {
     /* eslint-disable */
     server = require('../../server/server.js');
     /* eslint-enable */
+    passportStub.install(server);
   });
 
   it('should respond with 302 (redirect) if authentication fails', (done) => {
@@ -180,21 +176,15 @@ describe('Authentication', () => {
         done();
       });
   });
-});
-
-describe('GET /api/user', () => {
-  it('should respond with 401 if not logged in', (done) => {
-    request(server)
-      .get('/admin')
-      .expect(401);
-      done();
-  });
 
   it('should repond with 200 when logged in', (done) => {
     passportStub.login({ username: 'john.doe' });
     request(server)
       .get('/api/user')
-      .expect(200);
-      done();
+      .end((err, res) => {
+        should.not.exist(err);
+        res.status.should.be.equal(200);
+        done();
+      });
   });
 });

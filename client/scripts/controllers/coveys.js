@@ -1,3 +1,4 @@
+// Test data. To be removed once server is up.
 const testData = [
   {
     name: 'Brochella 2016',
@@ -34,15 +35,18 @@ coveys.controller('coveysController', ($scope, $location, $rootScope, coveysFact
   $scope.hasCoveys = 'true';
   // Setting to testData for now, will update once server isrunning
   $scope.coveys = testData;
-
+  // Routes user to the specified covey (based on id)
   $scope.goToCovey = (id) => {
     $location.path('/coveys/'.concat(id));
   };
-
+  /*
+   *  Triggered whenever the 'create' button is clicked.
+   *  Will toggle visibility of the create covey modal.
+   */
   $scope.toggleCreateCoveyModal = () => {
     $rootScope.$broadcast('toggleCreateCoveyModal');
   };
-
+  // Sorts coveys based on whether the user is planning/attending/not attending
   $scope.sortCoveysByAttendingStatus = (arrayOfCoveys) => {
     const coveysArray = arrayOfCoveys;
     for (let i = 0; i < coveysArray.length; i++) {
@@ -59,7 +63,10 @@ coveys.controller('coveysController', ($scope, $location, $rootScope, coveysFact
       }
     }
   };
-
+  /*
+   * Gets all coveys from the server (for the current user)
+   * TODO: Refactor based on actual server implementation
+   */
   $scope.getCoveys = () => {
     let status;
     let data;
@@ -69,9 +76,11 @@ coveys.controller('coveysController', ($scope, $location, $rootScope, coveysFact
         status = response.status;
         data = response.data;
         if (status === undefined) {
+          // When hasCoveys is equal to 'error' a different view will be displayed on the page
           $scope.hasCoveys = 'error';
         } else {
           if (data.coveys.length === 0) {
+            // When hasCoveys is equal to 'false' a different view will be displayed on the page
             $scope.hasCoveys = 'false';
           } else {
             $scope.coveys = data.coveys;
@@ -80,6 +89,6 @@ coveys.controller('coveysController', ($scope, $location, $rootScope, coveysFact
         }
       });
   };
-
+  // Automatically gets all coveys on page load
   $scope.getCoveys();
 });

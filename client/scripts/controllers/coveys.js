@@ -1,3 +1,33 @@
+const testData = [
+  {
+    name: 'Brochella 2016',
+    description: 'Eat, sleep, rave, repeat',
+    date: 'April 15th, 2016',
+    admin: true,
+    attending: true,
+    image: '../styles/img/200x200.png',
+    id: '12345',
+  },
+  {
+    name: 'Burning man',
+    description: 'Hang out with Toben in the desert',
+    date: 'August 28th, 2016',
+    admin: false,
+    attending: true,
+    image: '../styles/img/200x200.png',
+    id: '12345',
+  },
+  {
+    name: 'Camping at Redwood National and State Park',
+    description: 'Drink beer with the bears',
+    date: 'July 4th, 2016',
+    admin: true,
+    attending: true,
+    image: '../styles/img/200x200.png',
+    id: '12345',
+  },
+];
+
 const coveys = angular.module('coveys', ['covey.services']);
 
 coveys.controller('coveysController', ($scope, $location, $rootScope, coveysFactory) => {
@@ -13,7 +43,7 @@ coveys.controller('coveysController', ($scope, $location, $rootScope, coveysFact
     $rootScope.$broadcast('toggleCreateCoveyModal');
   };
 
-  const sortCoveysByAttendingStatus = (arrayOfCoveys) => {
+  $scope.sortCoveysByAttendingStatus = (arrayOfCoveys) => {
     const coveysArray = arrayOfCoveys;
     for (let i = 0; i < coveysArray.length; i++) {
       for (let j = 0; j < coveysArray.length - 1; j++) {
@@ -30,7 +60,7 @@ coveys.controller('coveysController', ($scope, $location, $rootScope, coveysFact
     }
   };
 
-  const getCoveys = () => {
+  $scope.getCoveys = () => {
     let status;
     let data;
     coveysFactory
@@ -38,18 +68,18 @@ coveys.controller('coveysController', ($scope, $location, $rootScope, coveysFact
       .then((response) => {
         status = response.status;
         data = response.data;
-        if (status !== 200) {
+        if (status === undefined) {
           $scope.hasCoveys = 'error';
         } else {
           if (data.coveys.length === 0) {
             $scope.hasCoveys = 'false';
           } else {
             $scope.coveys = data.coveys;
-            sortCoveysByAttendingStatus($scope.coveys);
+            $scope.sortCoveysByAttendingStatus($scope.coveys);
           }
         }
       });
   };
 
-  getCoveys();
+  $scope.getCoveys();
 });

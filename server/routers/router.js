@@ -84,4 +84,8 @@ app.delete('/api/suppliers/:carId/:userId', route.removeSupplier);
 
 app.post('/api/suppliers/:carId/:userId', route.addSupplier);
 
+app.post('/api/coveys/:coveyId/:userId', route.addAttendee);
+
+app.delete('/api/coveys/:coveyId/:userId', route.removeAttendee);
+
 module.exports = app;

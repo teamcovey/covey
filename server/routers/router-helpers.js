@@ -423,6 +423,39 @@ exports.updateCovey = (req, res) => {
   res.status(200).send('updated a Covey');
 };
 
+exports.addAttendee = (req, res) => {
+  const coveyId = req.params.resourceId;
+  const userId = req.params.userId;
+
+  knex('coveys_users')
+      .returning('covey_id')
+      .insert({ user_id: userId, covey_id: coveyId })
+  .then((coveyIs) => {
+    res.status(201).send({ id: coveyIs[0], success: true });
+  })
+  .catch((err) => {
+    res.status(404).send(err);
+  });
+};
+
+exports.removeAttendee = (req, res) => {
+  const coveyId = req.params.coveyId;
+  const userId = req.params.userId;
+
+  knex('coveys_users')
+    .where('user_id', userId)
+    .andWhere('covey_id', coveyId)
+    .del()
+    .then((affectedRows) => {
+      console.log('deleted rows were: ', affectedRows);
+      res.json({ success: true });
+    })
+    .catch((err) => {
+      console.log('error in deleting coveys_users rows: ', err);
+      res.status(404).json(err);
+    });
+};
+
 exports.getCovey = (req, res) => {
   const coveyId = req.params.id;
 

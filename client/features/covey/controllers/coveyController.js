@@ -17,27 +17,4 @@ angular.module('covey.covey', [])
     // make PUT request to update covey event details
     console.log($scope.details);
   };
-})
-.directive('coveyDetails', () => (
-  {
-    templateUrl: 'views/coveyDetails.html',
-  }
-))
-.directive('coveyAttendees', () => (
-  {
-    templateUrl: 'views/coveyAttendees.html',
-    controller: 'attendeesController',
-  }
-))
-.directive('rides', () => (
-  {
-    templateUrl: 'views/rides.html',
-    controller: 'ridesController',
-  }
-))
-.directive('supplies', () => (
-  {
-    templateUrl: 'views/supplies.html',
-    controller: 'suppliesController',
-  }
-));
+});

@@ -23,7 +23,8 @@ exports.login = (req, res) => {
 exports.addCovey = (req, res) => {
   const userId = req.body.userId;
   const name = req.body.name;
-  const time = req.body.time;
+  const startTime = req.body.startTime;
+  const endTime = req.body.endTime;
   const location = req.body.location;
   const address = req.body.address;
   const city = req.body.city;
@@ -34,7 +35,8 @@ exports.addCovey = (req, res) => {
 
   Coveys.create({
     name,
-    time,
+    startTime,
+    endTime,
     location,
     address,
     city,

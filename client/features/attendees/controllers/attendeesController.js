@@ -1,14 +1,28 @@
 angular.module('covey.attendees', [])
-.controller('attendeesController', function ($scope) {
-  $scope.newFriend = '';
+.controller('attendeesController', function ($scope, attendeesHelpers, attendeesService) {
+  $scope.newAttendee = '';
+  const coveyId = 1;
 
-  $scope.addFriend = (newFriend) => {
-    const friendsToAdd = newFriend.split(',');
-    friendsToAdd.forEach((friend) => {
-      $scope.details.attendees.push(friend);
-    });
-    $scope.newFriend = '';
+  $scope.addAttendee = (newAttendee) => {
+    attendeesService.addAttendee(newAttendee, coveyId);
+    $scope.newAttendee = '';
   };
+
+  $scope.removeAttendee = (attendee) => {
+    attendeesService.removeAttendee(attendee, coveyId);
+    attendeesHelpers.removePassenger(attendee, coveyId);
+    attendeesHelpers.removeSupplier(attendee, coveyId);
+  };
+
+  // $scope.newFriend = '';
+
+  // $scope.addFriend = (newFriend) => {
+  //   const friendsToAdd = newFriend.split(',');
+  //   friendsToAdd.forEach((friend) => {
+  //     $scope.details.attendees.push(friend);
+  //   });
+  //   $scope.newFriend = '';
+  // };
 
   const removeFromAttendees = (friend) => {
     $scope.details.attendees.forEach((attendee, index) => {

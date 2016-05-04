@@ -1,6 +1,5 @@
 const User = require('../models/user.js');
 const Users = require('../collections/users.js');
-// const Users        = require('../collections/users.js');
 const Covey = require('../models/covey.js');
 const Coveys = require('../collections/coveys.js');
 const knex = require('../config/config.js').knex;
@@ -8,6 +7,9 @@ const Car = require('../models/car.js');
 const Cars = require('../collections/cars.js');
 const Resource = require('../models/resource.js');
 const Resources = require('../collections/resources.js');
+
+// not using these yet, but they could come into play soon.
+// const Users        = require('../collections/users.js');
 // const API_KEYS = require('../api_keys.js');
 
 exports.getUsage = (req, res) => {
@@ -269,7 +271,6 @@ exports.addRider = (req, res) => {
 };
 
 exports.addResource = (req, res) => {
-  // const userId = req.body.userId;
   const name = req.body.name;
   const quantity = req.body.quantity;
   const type = req.body.type;
@@ -281,10 +282,6 @@ exports.addResource = (req, res) => {
     type,
     covey_id: coveyId,
   })
-  // .then((resource) => knex('resources_users')
-  //     .returning('resource_id')
-  //     .insert({ user_id: userId, resource_id: resource.attributes.id })
-  // )
   .then((resource) => {
     res.status(201).json({ resource, success: true });
   })

@@ -6,7 +6,7 @@ passport.use(new Strategy(
     // clientID: process.env.CLIENT_ID,
     // clientSecret: process.env.CLIENT_SECRET,
     clientID: '1304925519520920',
-    clientSecret: 'c6ab5f1c5e9818ba2472fd1337506cfe',
+    clientSecret: 'CLIENT_SECRET',
     callbackURL: 'http://localhost:3000/api/auth/facebook/return',
     profileFields: ['id', 'displayName', 'name', 'gender', 'emails', 'picture.type(large)'],
   },

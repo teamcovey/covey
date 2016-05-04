@@ -1,12 +1,6 @@
 const passport = require('passport');
 const Strategy = require('passport-facebook').Strategy;
-let keys = {
-  FB_CLIENT_ID: '',
-  FB_CLIENT_SECRET: '',
-};
-if (process.env.COVEYENV === 'PROD') {
-  keys = require('./keys.js');
-}
+const keys = require('./keys.js');
 
 passport.use(new Strategy(
   {

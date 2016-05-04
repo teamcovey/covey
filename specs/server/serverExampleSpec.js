@@ -90,6 +90,7 @@ describe('Testing authorized endpoint HTTP response types', () => {
           done(err);
         } else if (res) {
           coveyId = res.body.id;
+          console.log('created new covey: ', res.body);
           done();
         }
       });
@@ -105,7 +106,7 @@ describe('Testing authorized endpoint HTTP response types', () => {
   it(`response to PUT /api/coveys/${coveyId}`, (done) => {
     request(server)
       .put(`/api/coveys/${coveyId}`)
-      .expect(200)
+      .expect(201)
       .end(done);
   });
 

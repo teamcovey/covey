@@ -12,6 +12,11 @@ const Resources = require('../collections/resources.js');
 // const Users        = require('../collections/users.js');
 // const API_KEYS = require('../api_keys.js');
 
+/*
+We are using both knex and bookshelf in several areas below.  We were unable to get
+bookshelf to create the join tables for us so decided to write the sql by hand.
+*/
+
 exports.getUsage = (req, res) => {
   res.status(200).json('Welcome to Covey');
 };
@@ -394,15 +399,15 @@ exports.removeCovey = (req, res) => {
   const coveyId = req.params.coveyId;
 
   // we will remove the join tables that have the covey_id in them
-  knex('coveys_users')
-    .where('covey_id', coveyId)
-    .del()
-    .then((affectedRows) => {
-      console.log('deleted rows were: ', affectedRows);
-    })
-    .catch((err) => {
-      console.log('error in deleting coveys_users rows: ', err);
-    });
+  // knex('coveys_users')
+  //   .where('covey_id', coveyId)
+  //   .del()
+  //   .then((affectedRows) => {
+  //     console.log('deleted rows were: ', affectedRows);
+  //   })
+  //   .catch((err) => {
+  //     console.log('error in deleting coveys_users rows: ', err);
+  //   });
 
   new Covey({ id: coveyId })
     .destroy()

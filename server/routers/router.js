@@ -27,7 +27,7 @@ app.post('/api/signup', auth, route.signup);
 
 app.get('/api/user/:userId', auth, route.getUser);
 
-app.delete('/api/users/:userId', auth, route.removeUser);
+app.delete('/api/user/:userId', auth, route.removeUser);
 
 app.get('/api/users/:coveyId', auth, route.getAllUsers);
 

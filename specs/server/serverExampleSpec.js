@@ -61,6 +61,8 @@ describe('Testing authorized endpoint HTTP response types', () => {
   // const passportStub = require('passport-stub-js');
   const passportStub = require('passport-stub-es6');
   let server;
+  let coveyId;
+
   beforeEach(() => {
     /* eslint-disable */
     server = require('../../server/server.js');
@@ -83,34 +85,33 @@ describe('Testing authorized endpoint HTTP response types', () => {
     request(server)
       .post('/api/coveys')
       .expect(201)
-      .end(done);
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          coveyId = res.body.id;
+          done();
+        }
+      });
   });
 
-  it('response to GET /api/coveys/1', (done) => {
+  it(`response to GET /api/coveys/${coveyId}`, (done) => {
     request(server)
-      .get('/api/coveys/1')
+      .get(`/api/coveys/${coveyId}`)
       .expect(200)
       .end(done);
   });
 
-
-  it('response to DELETE /api/coveys/:id', (done) => {
+  it(`response to PUT /api/coveys/${coveyId}`, (done) => {
     request(server)
-      .del('/api/coveys/4')
+      .put(`/api/coveys/${coveyId}`)
       .expect(200)
       .end(done);
   });
 
-  it('response to PUT /api/coveys/:id', (done) => {
+  it(`response to DELETE /api/coveys/${coveyId}`, (done) => {
     request(server)
-      .put('/api/coveys/4')
-      .expect(200)
-      .end(done);
-  });
-
-  it('response to GET /api/coveys/:id', (done) => {
-    request(server)
-      .get('/api/coveys/4')
+      .del(`/api/coveys/${coveyId}`)
       .expect(200)
       .end(done);
   });
@@ -141,7 +142,7 @@ describe('Testing user api enpoints', () => {
     /* eslint-enable */
   });
 
-  it('response to /api/signup with no data', (done) => {
+  it('response to POST /api/signup with no data should 404', (done) => {
     request(server)
       .post('/api/signup')
       .type('json')
@@ -157,7 +158,7 @@ describe('Testing user api enpoints', () => {
       });
   });
 
-  it('response to /api/signup with new user data', (done) => {
+  it('response to POST /api/signup with new user data should be a 201', (done) => {
     request(server)
       .post('/api/signup')
       .type('json')
@@ -171,15 +172,25 @@ describe('Testing user api enpoints', () => {
           done(err);
         } else if (res) {
           userId = res.body.id;
-          console.log('got user: ', userId);
           done();
         }
       });
   });
 
-  it(`response to /api/users/${userId} with userId should delete the user`, (done) => {
+  it('should repond with 200 when when logged in and user exists', (done) => {
     request(server)
-      .del(`/api/users/${userId}`)
+      .get(`/api/user/${userId}`)
+      .end((err, res) => {
+        should.not.exist(err);
+        res.status.should.be.equal(200); // TODO: change to 200 when db hooked up
+        done();
+      });
+  });
+
+  it(`response to DELETE /api/user/${userId} with userId 
+    should delete the user and respond with 200`, (done) => {
+    request(server)
+      .del(`/api/user/${userId}`)
       .type('json')
       .expect(200)
       .end((err, res) => {

@@ -2,3 +2,5 @@
 node_modules/*
 client/bower_components/*
 .DS_Store
+
+server/config/keys.js

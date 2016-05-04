@@ -40,32 +40,27 @@ exports.addCovey = (req, res) => {
     details,
     blurb,
   })
-  .then((covey) => {
-    // add covey_id & user_id to coveys_users with isOwner flag true
-    return knex('coveys_users')
+  .then((covey) =>
+    knex('coveys_users')
       .returning('covey_id')
-      .insert({ user_id: userId, covey_id: covey.id, isOwner: true });
-  })
+      .insert({ user_id: userId, covey_id: covey.id, isOwner: true })
+  )
   .then((coveyId) => {
-    console.log('we got c_u back: ', coveyId);
     res.status(201).send({ id: coveyId[0], success: true });
   })
   .catch((err) => {
     res.status(404).send(err);
   });
-  // res.status(201).send('created Covey');
 };
 
 exports.getUser = (req, res) => {
   const userId = req.params.userId;
-  // console.log(req.body);
-  // const userId = req.body.userId;
+
   if (userId) {
     new User({ id: userId })
       .fetch()
       .then((foundUser) => {
         if (foundUser) {
-          // console.log('user is: ', foundUser);
           res.status(200).send({
             user: foundUser,
           });
@@ -84,10 +79,21 @@ exports.getUser = (req, res) => {
 exports.removeUser = (req, res) => {
   const userId = req.params.userId;
 
-  User.where({ id: userId })
-    .destroy({})
-    .then((user) => {
-      res.json(user);
+  // we will remove the join tables that have the user_id in them
+  knex('coveys_users')
+    .where('user_id', userId)
+    .del()
+    .then((affectedRows) => {
+      console.log('deleted rows were: ', affectedRows);
+    })
+    .catch((err) => {
+      console.log('error in deleting coveys_users rows: ', err);
+    });
+
+  new User({ id: userId })
+    .destroy()
+    .then(() => {
+      res.json({ success: true });
     })
     .catch((err) => {
       res.status(404).json(err);
@@ -139,13 +145,45 @@ exports.signup = (req, res) => {
 };
 
 exports.getAllCoveys = (req, res) => {
-  // const userId = req.params.userId;
+  const userId = req.params.userId;
+  // const subquery = knex('coveys_users').where('user_id', '=', userId);
 
-  res.status(200).send('sending all Coveys');
+  knex.from('coveys')
+    .innerJoin('coveys_users', 'coveys.id', 'coveys_users.covey_id')
+    .where('user_id', '=', userId)
+    .then((coveys) => {
+      console.log('got coveys: ', coveys);
+      res.status(200).json(coveys);
+    })
+    .catch((err) => {
+      res.status(404).send(err);
+    });
 };
 
 exports.removeCovey = (req, res) => {
-  res.status(200).send('removed a Covey');
+  const coveyId = req.params.coveyId;
+
+  // we will remove the join tables that have the covey_id in them
+  knex('coveys_users')
+    .where('covey_id', coveyId)
+    .del()
+    .then((affectedRows) => {
+      console.log('deleted rows were: ', affectedRows);
+    })
+    .catch((err) => {
+      console.log('error in deleting coveys_users rows: ', err);
+    });
+
+  new Covey({ id: coveyId })
+    .destroy()
+    .then(() => {
+      res.json({ success: true });
+    })
+    .catch((err) => {
+      res.status(404).json(err);
+    });
+
+  // res.status(200).send('removed a Covey');
 };
 
 exports.updateCovey = (req, res) => {

@@ -1,9 +1,11 @@
-const db = require('../config/config.js');
+const db = require('../config/config.js').db;
 const User = require('./user.js');
+const Car = require('./car.js');
 
 const Covey = db.Model.extend({
   tableName: 'coveys',
-  events: () => this.belongsToMany(User),
+  users: () => this.belongsToMany(User, 'coveys_users', 'covey_id', 'user_id'),
+  rides: () => this.hasMany(Car),
 });
 
 module.exports = Covey;

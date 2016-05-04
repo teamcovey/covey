@@ -29,7 +29,7 @@ describe('Testing unauthorized API attempts', () => {
 
   it('should respond with 302 (redirect) if authentication fails', (done) => {
     request(server)
-      .get('/api/user')
+      .get('/api/user/1')
       .end((err, res) => {
         should.not.exist(err);
         res.status.should.be.equal(302);
@@ -39,7 +39,7 @@ describe('Testing unauthorized API attempts', () => {
 
   it('should redirect to "/api/auth" if authentication fails', (done) => {
     request(server)
-      .get('/api/user')
+      .get('/api/user/1')
       .expect(302)
       .end((err, res) => {
         should.not.exist(err);
@@ -79,19 +79,20 @@ describe('Testing authorized endpoint HTTP response types', () => {
       });
   });
 
-  it('response to GET /api/coveys', (done) => {
-    request(server)
-      .get('/api/coveys')
-      .expect(200)
-      .end(done);
-  });
-
   it('response to POST /api/coveys', (done) => {
     request(server)
       .post('/api/coveys')
       .expect(201)
       .end(done);
   });
+
+  it('response to GET /api/coveys/1', (done) => {
+    request(server)
+      .get('/api/coveys/1')
+      .expect(200)
+      .end(done);
+  });
+
 
   it('response to DELETE /api/coveys/:id', (done) => {
     request(server)
@@ -122,12 +123,12 @@ describe('Testing authorized endpoint HTTP response types', () => {
   });
 });
 
-describe('Testing user signup api /api/signup', () => {
+describe('Testing user api enpoints', () => {
   // const server = require('../../server/server.js');
   let server;
   let userId;
   const newUser = JSON.stringify({ email: 'fools@me.com',
-    facebookId: 'wastedId4',
+    facebookId: 'xxXtestingIdXxx',
     firstName: 'Spider',
     lastName: 'Monkey',
     gender: 'male',
@@ -140,7 +141,7 @@ describe('Testing user signup api /api/signup', () => {
     /* eslint-enable */
   });
 
-  it('response to /api/auth with no data', (done) => {
+  it('response to /api/signup with no data', (done) => {
     request(server)
       .post('/api/signup')
       .type('json')
@@ -156,7 +157,7 @@ describe('Testing user signup api /api/signup', () => {
       });
   });
 
-  it('response to /api/auth with new user data', (done) => {
+  it('response to /api/signup with new user data', (done) => {
     request(server)
       .post('/api/signup')
       .type('json')
@@ -169,17 +170,17 @@ describe('Testing user signup api /api/signup', () => {
         if (err) {
           done(err);
         } else if (res) {
-          userId = JSON.stringify({ userId: res.body.id });
+          userId = res.body.id;
+          console.log('got user: ', userId);
           done();
         }
       });
   });
 
-  it('response to /api/removeuser with userId should delete the user', (done) => {
+  it(`response to /api/users/${userId} with userId should delete the user`, (done) => {
     request(server)
-      .del('/api/removeuser')
+      .del(`/api/users/${userId}`)
       .type('json')
-      .send(userId)
       .expect(200)
       .end((err, res) => {
         if (err) {

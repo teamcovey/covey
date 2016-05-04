@@ -1,5 +1,5 @@
 /* eslint-disable */
-const db = require('./config.js');
+const db = require('./config.js').db;
 /* eslint-enable */
 
 const express = require('express');

@@ -1,12 +1,13 @@
 const passport = require('passport');
 const Strategy = require('passport-facebook').Strategy;
+const keys = require('./keys.js');
 
 passport.use(new Strategy(
   {
     // clientID: process.env.CLIENT_ID,
     // clientSecret: process.env.CLIENT_SECRET,
-    clientID: '1304925519520920',
-    clientSecret: 'CLIENT_SECRET',
+    clientID: keys.FB_CLIENT_ID,
+    clientSecret: keys.FB_CLIENT_SECRET,
     callbackURL: 'http://localhost:3000/api/auth/facebook/return',
     profileFields: ['id', 'displayName', 'name', 'gender', 'emails', 'picture.type(large)'],
   },

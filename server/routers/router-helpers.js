@@ -12,6 +12,11 @@ const Resources = require('../collections/resources.js');
 // const Users        = require('../collections/users.js');
 // const API_KEYS = require('../api_keys.js');
 
+/*
+We are using both knex and bookshelf in several areas below.  We were unable to get
+bookshelf to create the join tables for us so decided to write the sql by hand.
+*/
+
 exports.getUsage = (req, res) => {
   res.status(200).json('Welcome to Covey');
 };
@@ -394,15 +399,16 @@ exports.removeCovey = (req, res) => {
   const coveyId = req.params.coveyId;
 
   // we will remove the join tables that have the covey_id in them
-  knex('coveys_users')
-    .where('covey_id', coveyId)
-    .del()
-    .then((affectedRows) => {
-      console.log('deleted rows were: ', affectedRows);
-    })
-    .catch((err) => {
-      console.log('error in deleting coveys_users rows: ', err);
-    });
+  // it appears that this is done automatically
+  // knex('coveys_users')
+  //   .where('covey_id', coveyId)
+  //   .del()
+  //   .then((affectedRows) => {
+  //     console.log('deleted rows were: ', affectedRows);
+  //   })
+  //   .catch((err) => {
+  //     console.log('error in deleting coveys_users rows: ', err);
+  //   });
 
   new Covey({ id: coveyId })
     .destroy()
@@ -415,11 +421,44 @@ exports.removeCovey = (req, res) => {
 };
 
 exports.updateCovey = (req, res) => {
-  res.status(200).json('updat Covey not implemented yet');
+  const coveyId = req.params.coveyId;
+
+  const name = req.body.name;
+  const startTime = req.body.startTime;
+  const endTime = req.body.endTime;
+  const location = req.body.location;
+  const address = req.body.address;
+  const city = req.body.city;
+  const state = req.body.state;
+  const photoUrl = req.body.photoUrl;
+  const details = req.body.details;
+  const blurb = req.body.blurb;
+
+  Covey.where({ id: coveyId })
+    .fetch()
+    .then((covey) => {
+      covey.set('name', name);
+      covey.set('startTime', startTime);
+      covey.set('endTime', endTime);
+      covey.set('location', location);
+      covey.set('address', address);
+      covey.set('city', city);
+      covey.set('state', state);
+      covey.set('photoUrl', photoUrl);
+      covey.set('details', details);
+      covey.set('blurb', blurb);
+      covey.save()
+        .then((updatedCovey) => {
+          res.status(201).send({ updatedCovey });
+        });
+    })
+  .catch((err) => {
+    res.status(404).json(err);
+  });
 };
 
 exports.addAttendee = (req, res) => {
-  const coveyId = req.params.resourceId;
+  const coveyId = req.params.coveyId;
   const userId = req.params.userId;
 
   knex('coveys_users')

@@ -22,7 +22,8 @@ gulp.task('mocha', function(done) {
   exec('mocha specs/server --compilers js:babel-register', function(err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
-  });
+  })
+  .on('error', process.exit.bind(process, 1));
 });
 
 // TODO: npm test should call gulp test which should do tasks mocha, karma

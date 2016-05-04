@@ -1,6 +1,6 @@
 const passport = require('passport');
 const Strategy = require('passport-facebook').Strategy;
-const keys = require('./keys.js');
+const keys = require('./keys.example.js');
 
 passport.use(new Strategy(
   {

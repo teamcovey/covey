@@ -27,7 +27,9 @@ app.post('/api/signup', route.signup);
 
 app.get('/api/auth/:userId', route.getUser);
 
-app.delete('/api/removeuser/:userId', route.removeUser);
+app.delete('/api/users/:userId', route.removeUser);
+
+app.get('/api/users/:coveyId', route.getAllUsers);
 
 // Routes: authentication
 app.get('/api/auth', route.login);
@@ -57,5 +59,29 @@ app.delete('/api/coveys/:coveyId', route.removeCovey);
 app.put('/api/coveys/:coveyId', route.updateCovey);
 
 app.get('/api/coveys/:coveyid', route.getCovey);
+
+app.post('/api/rides', route.addRide);
+
+app.delete('/api/rides/:carId', route.removeRide);
+
+app.get('/api/rides/:coveyId', route.getAllRides);
+
+app.get('/api/riders/:carId', route.getAllRiders);
+
+app.delete('/api/riders/:carId/:userId', route.removeRider);
+
+app.post('/api/riders/:carId/:userId', route.addRider);
+
+app.post('/api/resources', route.addResource);
+
+app.delete('/api/resources/:resourceId', route.removeResource);
+
+app.get('/api/resources/:coveyId', route.getAllResources);
+
+app.get('/api/suppliers/:resourceId', route.getAllSuppliers);
+
+app.delete('/api/suppliers/:carId/:userId', route.removeSupplier);
+
+app.post('/api/suppliers/:carId/:userId', route.addSupplier);
 
 module.exports = app;

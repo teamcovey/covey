@@ -3,10 +3,11 @@ const Users = require('../collections/users.js');
 // const Users        = require('../collections/users.js');
 const Covey = require('../models/covey.js');
 const Coveys = require('../collections/coveys.js');
-// const db = require('../config/config.js').db;
 const knex = require('../config/config.js').knex;
-// const Car = require('../models/car.js');
-// const Resource = require('../models/resource.js');
+const Car = require('../models/car.js');
+const Cars = require('../collections/cars.js');
+const Resource = require('../models/resource.js');
+const Resources = require('../collections/resources.js');
 // const API_KEYS = require('../api_keys.js');
 
 exports.getUsage = (req, res) => {
@@ -146,14 +147,246 @@ exports.signup = (req, res) => {
 
 exports.getAllCoveys = (req, res) => {
   const userId = req.params.userId;
-  // const subquery = knex('coveys_users').where('user_id', '=', userId);
 
   knex.from('coveys')
     .innerJoin('coveys_users', 'coveys.id', 'coveys_users.covey_id')
     .where('user_id', '=', userId)
     .then((coveys) => {
-      console.log('got coveys: ', coveys);
       res.status(200).json(coveys);
+    })
+    .catch((err) => {
+      res.status(404).send(err);
+    });
+};
+
+exports.addRide = (req, res) => {
+  const userId = req.body.userId;
+  const name = req.body.name;
+  const seats = req.body.seats;
+  const location = req.body.location;
+  const departureTime = req.body.departureTime;
+  const coveyId = req.body.coveyId;
+
+  Cars.create({
+    name,
+    seats,
+    location,
+    departureTime,
+    covey_id: coveyId,
+  })
+  .then((car) => knex('cars_users')
+      .returning('car_id')
+      .insert({ user_id: userId, car_id: car.attributes.id, isDriver: true })
+  )
+  .then((carId) => {
+    res.status(201).send({ id: carId[0], success: true });
+  })
+  .catch((err) => {
+    res.status(404).send(err);
+  });
+};
+
+exports.removeRide = (req, res) => {
+  const carId = req.params.carId;
+
+  // we will remove the join tables that have the user_id in them
+  knex('cars_users')
+    .where('car_id', carId)
+    .del()
+    .then((affectedRows) => {
+      console.log('deleted rows were: ', affectedRows);
+    })
+    .catch((err) => {
+      console.log('error in deleting cars_users rows: ', err);
+    });
+
+  new Car({ id: carId })
+    .destroy()
+    .then(() => {
+      res.json({ success: true });
+    })
+    .catch((err) => {
+      res.status(404).json(err);
+    });
+};
+
+exports.getAllRiders = (req, res) => {
+  const carId = req.params.carId;
+
+  knex.from('users')
+    .innerJoin('cars_users', 'users.id', 'cars_users.user_id')
+    .where('car_id', '=', carId)
+    .then((riders) => {
+      res.status(200).json(riders);
+    })
+    .catch((err) => {
+      res.status(404).send(err);
+    });
+};
+
+exports.getAllRides = (req, res) => {
+  const coveyId = req.params.coveyId;
+
+  knex.from('cars')
+    .where('covey_id', '=', coveyId)
+    .then((cars) => {
+      res.status(200).json(cars);
+    })
+    .catch((err) => {
+      res.status(404).send(err);
+    });
+};
+
+exports.removeRider = (req, res) => {
+  const carId = req.params.carId;
+  const userId = req.params.userId;
+
+  knex('cars_users')
+    .where('user_id', userId)
+    .andWhere('car_id', carId)
+    .del()
+    .then((affectedRows) => {
+      console.log('deleted rows were: ', affectedRows);
+      res.json({ success: true });
+    })
+    .catch((err) => {
+      console.log('error in deleting cars_users rows: ', err);
+      res.status(404).json(err);
+    });
+};
+
+exports.addRider = (req, res) => {
+  const carId = req.params.carId;
+  const userId = req.params.userId;
+
+  knex('cars_users')
+      .returning('car_id')
+      .insert({ user_id: userId, car_id: carId })
+  .then((carIs) => {
+    res.status(201).send({ id: carIs[0], success: true });
+  })
+  .catch((err) => {
+    res.status(404).send(err);
+  });
+};
+
+exports.addResource = (req, res) => {
+  // const userId = req.body.userId;
+  const name = req.body.name;
+  const quantity = req.body.quantity;
+  const type = req.body.type;
+  const coveyId = req.body.coveyId;
+
+  Resources.create({
+    name,
+    quantity,
+    type,
+    covey_id: coveyId,
+  })
+  // .then((resource) => knex('resources_users')
+  //     .returning('resource_id')
+  //     .insert({ user_id: userId, resource_id: resource.attributes.id })
+  // )
+  .then((resource) => {
+    res.status(201).send({ resource, success: true });
+  })
+  .catch((err) => {
+    res.status(404).send(err);
+  });
+};
+
+exports.removeResource = (req, res) => {
+  const resourceId = req.params.resourceId;
+
+  // we will remove the join tables that have the user_id in them
+  knex('resources_users')
+    .where('resource_id', resourceId)
+    .del()
+    .then((affectedRows) => {
+      console.log('deleted rows were: ', affectedRows);
+    })
+    .catch((err) => {
+      console.log('error in deleting resources_users rows: ', err);
+    });
+
+  new Resource({ id: resourceId })
+    .destroy()
+    .then(() => {
+      res.json({ success: true });
+    })
+    .catch((err) => {
+      res.status(404).json(err);
+    });
+};
+
+exports.getAllSuppliers = (req, res) => {
+  const resourceId = req.params.resourceId;
+
+  knex.from('users')
+    .innerJoin('resources_users', 'users.id', 'resources_users.user_id')
+    .where('resource_id', '=', resourceId)
+    .then((suppliers) => {
+      res.status(200).json(suppliers);
+    })
+    .catch((err) => {
+      res.status(404).send(err);
+    });
+};
+
+exports.getAllResources = (req, res) => {
+  const coveyId = req.params.coveyId;
+
+  knex.from('resources')
+    .where('covey_id', '=', coveyId)
+    .then((resources) => {
+      res.status(200).json(resources);
+    })
+    .catch((err) => {
+      res.status(404).send(err);
+    });
+};
+
+exports.removeSupplier = (req, res) => {
+  const resourceId = req.params.resourceId;
+  const userId = req.params.userId;
+
+  knex('resources_users')
+    .where('user_id', userId)
+    .andWhere('resource_id', resourceId)
+    .del()
+    .then((affectedRows) => {
+      console.log('deleted rows were: ', affectedRows);
+      res.json({ success: true });
+    })
+    .catch((err) => {
+      console.log('error in deleting resources_users rows: ', err);
+      res.status(404).json(err);
+    });
+};
+
+exports.addSupplier = (req, res) => {
+  const resourceId = req.params.resourceId;
+  const userId = req.params.userId;
+
+  knex('resources_users')
+      .returning('resource_id')
+      .insert({ user_id: userId, resource_id: resourceId })
+  .then((resourceIs) => {
+    res.status(201).send({ id: resourceIs[0], success: true });
+  })
+  .catch((err) => {
+    res.status(404).send(err);
+  });
+};
+
+exports.getAllUsers = (req, res) => {
+  const coveyId = req.params.coveyId;
+
+  knex.from('users')
+    .innerJoin('coveys_users', 'users.id', 'coveys_users.user_id')
+    .where('covey_id', '=', coveyId)
+    .then((users) => {
+      res.status(200).json(users);
     })
     .catch((err) => {
       res.status(404).send(err);

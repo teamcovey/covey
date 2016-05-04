@@ -11,7 +11,7 @@ const Resources = require('../collections/resources.js');
 // const API_KEYS = require('../api_keys.js');
 
 exports.getUsage = (req, res) => {
-  res.status(200).send('Welcome to Covey');
+  res.status(200).json('Welcome to Covey');
 };
 
 exports.login = (req, res) => {
@@ -47,10 +47,10 @@ exports.addCovey = (req, res) => {
       .insert({ user_id: userId, covey_id: covey.id, isOwner: true })
   )
   .then((coveyId) => {
-    res.status(201).send({ id: coveyId[0], success: true });
+    res.status(201).json({ id: coveyId[0], success: true });
   })
   .catch((err) => {
-    res.status(404).send(err);
+    res.status(404).json(err);
   });
 };
 
@@ -62,15 +62,13 @@ exports.getUser = (req, res) => {
       .fetch()
       .then((foundUser) => {
         if (foundUser) {
-          res.status(200).send({
-            user: foundUser,
-          });
+          res.status(200).json({ user: foundUser });
         } else {
-          res.status(404).send('Could not find user in database');
+          res.status(404).json('Could not find user in database');
         }
       })
       .catch((err) => {
-        res.status(404).send(err);
+        res.status(404).json(err);
       });
   } else {
     res.status(404).json({ errorMessage: 'no userId' });
@@ -117,7 +115,7 @@ exports.signup = (req, res) => {
       .fetch()
       .then((found) => {
         if (found) {
-          res.status(409).send({
+          res.status(409).json({
             errorMessage: 'Sorry, that facebook acount is already in the database!',
           });
         } else {
@@ -133,10 +131,10 @@ exports.signup = (req, res) => {
             refreshToken,
           })
           .then((user) => {
-            res.status(201).send({ id: user.attributes.id, success: true });
+            res.status(201).json({ id: user.attributes.id, success: true });
           })
           .catch((err) => {
-            res.status(404).send(err);
+            res.status(404).json(err);
           });
         }
       });
@@ -155,7 +153,7 @@ exports.getAllCoveys = (req, res) => {
       res.status(200).json(coveys);
     })
     .catch((err) => {
-      res.status(404).send(err);
+      res.status(404).json(err);
     });
 };
 
@@ -179,10 +177,10 @@ exports.addRide = (req, res) => {
       .insert({ user_id: userId, car_id: car.attributes.id, isDriver: true })
   )
   .then((carId) => {
-    res.status(201).send({ id: carId[0], success: true });
+    res.status(201).json({ id: carId[0], success: true });
   })
   .catch((err) => {
-    res.status(404).send(err);
+    res.status(404).json(err);
   });
 };
 
@@ -220,7 +218,7 @@ exports.getAllRiders = (req, res) => {
       res.status(200).json(riders);
     })
     .catch((err) => {
-      res.status(404).send(err);
+      res.status(404).json(err);
     });
 };
 
@@ -233,7 +231,7 @@ exports.getAllRides = (req, res) => {
       res.status(200).json(cars);
     })
     .catch((err) => {
-      res.status(404).send(err);
+      res.status(404).json(err);
     });
 };
 
@@ -263,10 +261,10 @@ exports.addRider = (req, res) => {
       .returning('car_id')
       .insert({ user_id: userId, car_id: carId })
   .then((carIs) => {
-    res.status(201).send({ id: carIs[0], success: true });
+    res.status(201).json({ id: carIs[0], success: true });
   })
   .catch((err) => {
-    res.status(404).send(err);
+    res.status(404).json(err);
   });
 };
 
@@ -288,10 +286,10 @@ exports.addResource = (req, res) => {
   //     .insert({ user_id: userId, resource_id: resource.attributes.id })
   // )
   .then((resource) => {
-    res.status(201).send({ resource, success: true });
+    res.status(201).json({ resource, success: true });
   })
   .catch((err) => {
-    res.status(404).send(err);
+    res.status(404).json(err);
   });
 };
 
@@ -329,7 +327,7 @@ exports.getAllSuppliers = (req, res) => {
       res.status(200).json(suppliers);
     })
     .catch((err) => {
-      res.status(404).send(err);
+      res.status(404).json(err);
     });
 };
 
@@ -342,7 +340,7 @@ exports.getAllResources = (req, res) => {
       res.status(200).json(resources);
     })
     .catch((err) => {
-      res.status(404).send(err);
+      res.status(404).json(err);
     });
 };
 
@@ -372,10 +370,10 @@ exports.addSupplier = (req, res) => {
       .returning('resource_id')
       .insert({ user_id: userId, resource_id: resourceId })
   .then((resourceIs) => {
-    res.status(201).send({ id: resourceIs[0], success: true });
+    res.status(201).json({ id: resourceIs[0], success: true });
   })
   .catch((err) => {
-    res.status(404).send(err);
+    res.status(404).json(err);
   });
 };
 
@@ -389,7 +387,7 @@ exports.getAllUsers = (req, res) => {
       res.status(200).json(users);
     })
     .catch((err) => {
-      res.status(404).send(err);
+      res.status(404).json(err);
     });
 };
 
@@ -415,12 +413,10 @@ exports.removeCovey = (req, res) => {
     .catch((err) => {
       res.status(404).json(err);
     });
-
-  // res.status(200).send('removed a Covey');
 };
 
 exports.updateCovey = (req, res) => {
-  res.status(200).send('updated a Covey');
+  res.status(200).json('updat Covey not implemented yet');
 };
 
 exports.addAttendee = (req, res) => {
@@ -431,10 +427,10 @@ exports.addAttendee = (req, res) => {
       .returning('covey_id')
       .insert({ user_id: userId, covey_id: coveyId })
   .then((coveyIs) => {
-    res.status(201).send({ id: coveyIs[0], success: true });
+    res.status(201).json({ id: coveyIs[0], success: true });
   })
   .catch((err) => {
-    res.status(404).send(err);
+    res.status(404).json(err);
   });
 };
 
@@ -462,12 +458,14 @@ exports.getCovey = (req, res) => {
   Covey.where({ id: coveyId })
     .fetch()
     .then((covey) => {
-      console.log('testing covey response ', covey);
-      res.status(200).send(`sending a single Covey: ${coveyId}`);
+      if (covey) {
+        res.status(200).json({ covey });
+      } else {
+        res.status(404).json('Could not find covey in database');
+      }
     })
     .catch((err) => {
       console.error('Could not find event in database: ', err);
-      res.status(404).send(err);
+      res.status(404).json(err);
     });
 };
-

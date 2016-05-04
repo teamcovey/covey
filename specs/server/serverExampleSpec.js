@@ -79,6 +79,13 @@ describe('Testing authorized endpoint HTTP response types', () => {
       });
   });
 
+  it('response to POST /api/coveys', (done) => {
+    request(server)
+      .post('/api/coveys')
+      .expect(201)
+      .end(done);
+  });
+
   it('response to GET /api/coveys/1', (done) => {
     request(server)
       .get('/api/coveys/1')
@@ -86,12 +93,6 @@ describe('Testing authorized endpoint HTTP response types', () => {
       .end(done);
   });
 
-  it('response to POST /api/coveys', (done) => {
-    request(server)
-      .post('/api/coveys')
-      .expect(201)
-      .end(done);
-  });
 
   it('response to DELETE /api/coveys/:id', (done) => {
     request(server)

@@ -58,7 +58,8 @@ describe('Testing unauthorized API attempts', () => {
 
 
 describe('Testing authorized endpoint HTTP response types', () => {
-  const passportStub = require('passport-stub-js');
+  // const passportStub = require('passport-stub-js');
+  const passportStub = require('passport-stub-es6');
   let server;
   beforeEach(() => {
     /* eslint-disable */

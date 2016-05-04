@@ -7,13 +7,6 @@ createCovey.controller('createCoveyController', function ($scope, $rootScope, $l
   // Visiblity of error message. Will show up if the event did not submit properly
   $scope.errorVisible = false;
 
-  // New event data
-  $scope.eventName = '';
-  $scope.eventLocation = '';
-  $scope.eventStart = '';
-  $scope.eventEnd = '';
-  $scope.eventDescription = '';
-
   $scope.toggleModalVisibility = () => {
     $scope.visible = !$scope.visible;
   };
@@ -21,7 +14,21 @@ createCovey.controller('createCoveyController', function ($scope, $rootScope, $l
   $scope.toggleErrorVisibility = () => {
     $scope.errorVisible = !$scope.errorVisible;
   };
-
+  // Resets the form fields to empty
+  $scope.resetFormFields = () => {
+    $scope.eventName = '';
+    $scope.eventLocation = '';
+    $scope.eventAddress = '';
+    $scope.eventCity = '';
+    $scope.eventState = '';
+    $scope.eventStartDate = '';
+    $scope.eventStarTime = '';
+    $scope.eventEndDate = '';
+    $scope.eventEndTime = '';
+    $scope.eventDescription = '';
+  };
+  // Set form fields to empty, by default
+  $scope.resetFormFields();
   /*
    * Submits new covey to the server. If successful (201 response),
    * it will close the modal and angular will redirect the bew covey
@@ -30,9 +37,15 @@ createCovey.controller('createCoveyController', function ($scope, $rootScope, $l
     const coveyData = {
       name: $scope.eventName,
       location: $scope.eventLocation,
-      start: $scope.eventStart,
-      end: $scope.eventEnd,
-      description: $scope.eventDescription,
+      address: $scope.eventAddress,
+      city: $scope.eventCity,
+      state: $scope.eventState,
+      startDate: $scope.eventStartDate,
+      startTime: $scope.eventStartTime,
+      endDate: $scope.eventEndDate,
+      endTime: $scope.eventEndTime,
+      details: $scope.eventDescription,
+      blurb: $scope.eventDescription.slice(0, 100),
     };
     coveysFactory.postCovey(coveyData)
       .then((response) => {
@@ -40,6 +53,7 @@ createCovey.controller('createCoveyController', function ($scope, $rootScope, $l
           $scope.toggleErrorVisibility();
         } else {
           $scope.toggleModalVisibility();
+          $scope.resetFormFields();
           // TODO: Will need to update based on server implementaiton
           const newCoveyId = response.id;
           // Redirects the user to the new covey page

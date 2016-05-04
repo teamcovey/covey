@@ -35,9 +35,9 @@ app.put('/api/coveys/:id', auth, route.updateCovey);
 
 app.get('/api/coveys/:id', auth, route.getCovey);
 
-app.post('/api/signup', route.signup);
+app.post('/api/signup', auth, route.signup);
 
-app.delete('/api/removeuser', route.removeUser);
+app.delete('/api/removeuser', auth, route.removeUser);
 
 // Routes: authentication
 app.get('/api/auth', route.login);

@@ -1,6 +1,6 @@
 const passport = require('passport');
 const Strategy = require('passport-facebook').Strategy;
-let keys;
+let keys = {};
 if (process.env.COVEYENV === 'PROD') {
   keys = require('./keys.js');
 }

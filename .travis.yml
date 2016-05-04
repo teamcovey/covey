@@ -8,4 +8,5 @@ before_install:
 before_script:
   - npm install -g bower
   - bower install
+  - export COVEYENV=DEV
   # - node server/server.js &

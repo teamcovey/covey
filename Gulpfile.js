@@ -22,6 +22,9 @@ gulp.task('mocha', function(done) {
   exec('mocha specs/server --compilers js:babel-register', function(err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
+    if(err) {
+      process.exit(1);
+    }
   });
 });
 

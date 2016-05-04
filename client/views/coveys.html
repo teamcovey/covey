@@ -1,15 +1,22 @@
 <div class="container">
   <!-- Hamburger menu -->
-  <div class="row" ng-controller="hamburgerController">
-        <div class="col-md-1 col-md-offset-11" ng-click="toggleMenu()">
-          <img class="hamburger-button" src="../styles/img/hamburger-button.png">
+  <div class="row covey-nav" ng-controller="hamburgerController">
+    <div class="col-xs-offset-10 col-xs-2">
+      <img class="icon" src="styles/assets/quailMini.png">
+      <button type="button" class="btn btn-default btn-md hamburger" ng-click="toggleMenu()">
+        <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
+      </button>
+    </div>
+    <div class="col-md-12 hamburger-menu" ng-show="showMenu" ng-click="toggleMenu()">
+        <div class="row text-center">
+          <div class="col-md-12 hamburger-menu-item">
+            <a href="/#/coveys" class="hamburger-menu-item-text">ABOUT US</a>
+          </div>
+          <div class="col-md-12 hamburger-menu-item">
+            <a href="/#/coveys" class="hamburger-menu-item-text">LOGOUT</a>
+          </div>
         </div>
-        <div class="col-md-12" ng-show="showMenu" ng-click="toggleMenu()">
-            <ul class="hamburger-menu">
-              <a href="#"><li class="hamburger-menu-item">ABOUT US</li></a>
-              <a href="#"><li class="hamburger-menu-item hamburger-menu-item-last">LOGOUT</li></a>
-            </ul>
-        </div>
+    </div>
   </div>
   <!-- Covey creation modal -->
   <div class="row" ng-controller="createCoveyController" ng-show="visible">
@@ -86,7 +93,7 @@
             </div>
             <div class="form-group">
               <div class="col-sm-2 col-sm-offset-10">
-                <button type="submit" class="btn btn-primary" ng-click="submitCovey()">Create</button>
+                <button type="submit" class="btn btn-info" ng-click="submitCovey()">Create</button>
               </div>
             </div>
           </form>

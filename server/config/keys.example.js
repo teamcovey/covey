@@ -1,2 +1,2 @@
-exports.FB_CLIENT_ID = '';
-exports.FB_CLIENT_SECRET = '';
+exports.FB_CLIENT_ID = '123456789';
+exports.FB_CLIENT_SECRET = '123456789';

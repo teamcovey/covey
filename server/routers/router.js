@@ -23,13 +23,13 @@ app.use(passport.session());
 // Routes: app
 app.get('/', route.getUsage);
 
-app.post('/api/signup', route.signup);
+app.post('/api/signup', auth, route.signup);
 
-app.get('/api/auth/:userId', route.getUser);
+app.get('/api/user/:userId', auth, route.getUser);
 
-app.delete('/api/users/:userId', route.removeUser);
+app.delete('/api/users/:userId', auth, route.removeUser);
 
-app.get('/api/users/:coveyId', route.getAllUsers);
+app.get('/api/users/:coveyId', auth, route.getAllUsers);
 
 // Routes: authentication
 app.get('/api/auth', route.login);
@@ -50,42 +50,42 @@ app.get('/api/logout',
   }
 );
 
-app.get('/api/coveys/:userId', route.getAllCoveys);
+app.get('/api/coveys/:userId', auth, route.getAllCoveys);
 
-app.post('/api/coveys', route.addCovey);
+app.post('/api/coveys', auth, route.addCovey);
 
-app.delete('/api/coveys/:coveyId', route.removeCovey);
+app.delete('/api/coveys/:coveyId', auth, route.removeCovey);
 
-app.put('/api/coveys/:coveyId', route.updateCovey);
+app.put('/api/coveys/:coveyId', auth, route.updateCovey);
 
-app.get('/api/coveys/:coveyid', route.getCovey);
+app.get('/api/coveys/:coveyid', auth, route.getCovey);
 
-app.post('/api/rides', route.addRide);
+app.post('/api/rides', auth, route.addRide);
 
-app.delete('/api/rides/:carId', route.removeRide);
+app.delete('/api/rides/:carId', auth, route.removeRide);
 
-app.get('/api/rides/:coveyId', route.getAllRides);
+app.get('/api/rides/:coveyId', auth, route.getAllRides);
 
-app.get('/api/riders/:carId', route.getAllRiders);
+app.get('/api/riders/:carId', auth, route.getAllRiders);
 
-app.delete('/api/riders/:carId/:userId', route.removeRider);
+app.delete('/api/riders/:carId/:userId', auth, route.removeRider);
 
-app.post('/api/riders/:carId/:userId', route.addRider);
+app.post('/api/riders/:carId/:userId', auth, route.addRider);
 
-app.post('/api/resources', route.addResource);
+app.post('/api/resources', auth, route.addResource);
 
-app.delete('/api/resources/:resourceId', route.removeResource);
+app.delete('/api/resources/:resourceId', auth, route.removeResource);
 
-app.get('/api/resources/:coveyId', route.getAllResources);
+app.get('/api/resources/:coveyId', auth, route.getAllResources);
 
-app.get('/api/suppliers/:resourceId', route.getAllSuppliers);
+app.get('/api/suppliers/:resourceId', auth, route.getAllSuppliers);
 
-app.delete('/api/suppliers/:carId/:userId', route.removeSupplier);
+app.delete('/api/suppliers/:carId/:userId', auth, route.removeSupplier);
 
-app.post('/api/suppliers/:carId/:userId', route.addSupplier);
+app.post('/api/suppliers/:carId/:userId', auth, route.addSupplier);
 
-app.post('/api/coveys/:coveyId/:userId', route.addAttendee);
+app.post('/api/coveys/:coveyId/:userId', auth, route.addAttendee);
 
-app.delete('/api/coveys/:coveyId/:userId', route.removeAttendee);
+app.delete('/api/coveys/:coveyId/:userId', auth, route.removeAttendee);
 
 module.exports = app;

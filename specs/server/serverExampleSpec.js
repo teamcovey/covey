@@ -29,7 +29,7 @@ describe('Testing unauthorized API attempts', () => {
 
   it('should respond with 302 (redirect) if authentication fails', (done) => {
     request(server)
-      .get('/api/user')
+      .get('/api/user/1')
       .end((err, res) => {
         should.not.exist(err);
         res.status.should.be.equal(302);
@@ -39,7 +39,7 @@ describe('Testing unauthorized API attempts', () => {
 
   it('should redirect to "/api/auth" if authentication fails', (done) => {
     request(server)
-      .get('/api/user')
+      .get('/api/user/1')
       .expect(302)
       .end((err, res) => {
         should.not.exist(err);

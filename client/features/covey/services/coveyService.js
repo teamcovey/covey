@@ -1,19 +1,16 @@
 angular.module('covey.covey')
-.service('coveyService', function ($http) {
+.service('coveyService', function ($http, $routeParams) {
   this.getUser = () => 'Skye Free';
 
   this.getCovey = () => {
-    return {
-      id: 1,
-      eventName: 'Camping With Friends',
-      time: '6PM',
-      location: 'Yosemite, CA',
-      attendees: ['Freddie Ryder', 'Rahim Dharssi', 'Toben Green', 'Skye Free'],
-    };
+    return $http.get(`/api/coveys/${$routeParams.coveyId}`)
+    .then((response) => response.data[0], (error) => {
+      console.error(error);
+    });
   };
 
   this.updateCovey = (covey) => {
-    $http.put('', covey)
+    return $http.put(`/api/coveys/${$routeParams.coveyId}`, covey)
     .then((response) => response, (error) => {
       console.error(error);
     });

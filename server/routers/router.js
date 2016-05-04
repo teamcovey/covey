@@ -122,7 +122,7 @@ app.delete('/api/coveys/:coveyId', route.removeCovey);
 
 app.put('/api/coveys/:coveyId', route.updateCovey);
 
-app.get('/api/coveys/:coveyid', route.getCovey);
+app.get('/api/covey/:coveyId', route.getCovey);
 
 app.post('/api/coveys/:coveyId/:userId', route.addAttendee);
 

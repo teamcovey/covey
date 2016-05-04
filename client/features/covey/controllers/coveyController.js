@@ -3,9 +3,19 @@ angular.module('covey.covey', [])
   // TODO: get user object from shared main service
   $scope.user = coveyService.getUser();
 
-  // on /covey load, use factory GET request for covey table details
-  $scope.details = coveyService.getCovey();
+
+  coveyService.getCovey().then((covey) => {
+    $scope.details = covey;
+  });
+
+  $scope.toggleEdit = () => {
+    $scope.editDetails = !$scope.editDetails;
+  };
+  
   $scope.updateCovey = () => {
-    coveyService.updateCovey($scope.details);
+    // updateCovey endpoint api service not built yet:
+    // coveyService.updateCovey($scope.details).then((updatedCovey) => {
+    //   $scope.details = updatedCovey;
+    // });
   };
 });

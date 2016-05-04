@@ -1,15 +1,19 @@
 angular.module('covey.attendees', [])
-.controller('attendeesController', function ($scope, attendeesHelpers, attendeesService) {
+.controller('attendeesController', function ($scope, attendeesHelpers, attendeesHttp) {
   $scope.newAttendee = '';
   const coveyId = 1;
 
+  attendeesHttp.getAllAttendees().then((attendees) => {
+    $scope.attendees = attendees;
+  });
+
   $scope.addAttendee = (newAttendee) => {
-    attendeesService.addAttendee(newAttendee, coveyId);
+    attendeesHttp.addAttendee(newAttendee, coveyId);
     $scope.newAttendee = '';
   };
 
   $scope.removeAttendee = (attendee) => {
-    attendeesService.removeAttendee(attendee, coveyId);
+    attendeesHttp.removeAttendee(attendee, coveyId);
     attendeesHelpers.removePassenger(attendee, coveyId);
     attendeesHelpers.removeSupplier(attendee, coveyId);
   };

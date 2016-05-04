@@ -5,8 +5,8 @@
   </div>
   <div class="panel-body details-panel">
     <div ng-hide="editAttendees">
-      <div ng-repeat="friend in details.attendees" style="background-color:grey;display:inline-block;padding:1px;margin:3px;width:40px;height:40px;line-height:40px;font-size:16px;text-align:center;">
-        {{friend.charAt(0) + friend.split(' ')[1].charAt(0)}}
+      <div ng-repeat="friend in attendees" style="background-color:grey;display:inline-block;padding:1px;margin:3px;width:40px;height:40px;line-height:40px;font-size:16px;text-align:center;">
+        {{friend.firstName}}
       </div>
     </div>
     <div ng-show="editAttendees">

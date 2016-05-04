@@ -3,7 +3,14 @@ angular.module('covey.attendees')
   this.removePassenger = (attendee, coveyId) => {};
   this.removeSupplier = (attendee, coveyId) => {};
 })
-.service('attendeesHttp', function ($http) {
+.service('attendeesHttp', function ($http, $routeParams) {
+  this.getAllAttendees = () => {
+    return $http.get(`/api/users/${$routeParams.coveyId}`)
+    .then((users) => users.data, (error) => {
+      console.error(error);
+    });
+  };
+
   this.addAttendee = (attendee, coveyId) => {
     $http.post(`/api/coveys/${coveyId}`, attendee)
     .then((response) => response, (error) => {

@@ -1,10 +1,10 @@
 {
-    "extends": "airbnb",
-    "plugins": [
+  "extends": "airbnb",
+  "plugins": [
         "react"
-    ],
-    "env": {
-        "mocha": true,
-        "amd": true
-    }
+  ],
+  "env": {
+  	"mocha": true,
+  	"amd": true
+  }
 }

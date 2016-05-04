@@ -1,5 +1,6 @@
 // Example Server test:
 const request = require('supertest');
+const should = require('should');
 
 describe('loading express', () => {
   let server;
@@ -17,19 +18,65 @@ describe('loading express', () => {
   });
 });
 
-describe('Testing endpoint HTTP response types', () => {
+describe('Testing unauthorized API attempts', () => {
   let server;
+
   beforeEach(() => {
     /* eslint-disable */
     server = require('../../server/server.js');
     /* eslint-enable */
   });
 
-  it('response to /api/auth', (done) => {
+  it('should respond with 302 (redirect) if authentication fails', (done) => {
+    request(server)
+      .get('/api/user')
+      .end((err, res) => {
+        should.not.exist(err);
+        res.status.should.be.equal(302);
+        done();
+      });
+  });
+
+  it('should redirect to "/api/auth" if authentication fails', (done) => {
+    request(server)
+      .get('/api/user')
+      .expect(302)
+      .end((err, res) => {
+        should.not.exist(err);
+        res.header.location.should.be.equal('/api/auth');
+        done();
+      });
+  });
+
+  it('should respond with 200 for /api/auth', (done) => {
     request(server)
       .get('/api/auth')
-      .expect(404)
+      .expect(200)
       .end(done);
+  });
+});
+
+
+describe('Testing authorized endpoint HTTP response types', () => {
+  // const passportStub = require('passport-stub-js');
+  const passportStub = require('passport-stub-es6');
+  let server;
+  beforeEach(() => {
+    /* eslint-disable */
+    server = require('../../server/server.js');
+    /* eslint-enable */
+    passportStub.install(server);
+    passportStub.login({ username: 'john.doe' });
+  });
+
+  it('should repond with 404 when when logged in --> NOTE: this needs to change to 200 when db hooked up', (done) => {
+    request(server)
+      .get('/api/user')
+      .end((err, res) => {
+        should.not.exist(err);
+        res.status.should.be.equal(404); // TODO: change to 200 when db hooked up
+        done();
+      });
   });
 
   it('response to GET /api/coveys', (done) => {

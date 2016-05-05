@@ -29,6 +29,33 @@ exports.addRide = (req, res) => {
   });
 };
 
+exports.updateRide = (req, res) => {
+  const rideId = req.params.rideId;
+
+  const name = req.body.name;
+  const seats = req.body.seats;
+  const location = req.body.location;
+  const departureTime = req.body.departureTime;
+  const coveyId = req.body.coveyId;
+
+  Car.where({ id: rideId })
+    .fetch()
+    .then((ride) => {
+      ride.set('name', name);
+      ride.set('seats', seats);
+      ride.set('location', location);
+      ride.set('departureTime', departureTime);
+      ride.set('coveyId', coveyId);
+      ride.save()
+        .then((updatedRide) => {
+          res.status(201).send({ updatedRide });
+        });
+    })
+  .catch((err) => {
+    res.status(404).json(err);
+  });
+};
+
 exports.removeRide = (req, res) => {
   const carId = req.params.carId;
 
@@ -71,6 +98,8 @@ exports.getAllRides = (req, res) => {
   const coveyId = req.params.coveyId;
 
   knex.from('cars')
+    .innerJoin('cars_users', 'cars.id', 'cars_users.car_id')
+    .innerJoin('users', 'users.id', 'cars_users.user_id')
     .where('covey_id', '=', coveyId)
     .then((cars) => {
       res.status(200).json(cars);

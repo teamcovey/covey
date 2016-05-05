@@ -80,6 +80,8 @@ app.delete('/api/coveys/:coveyId/:userId', auth, routeCoveys.removeAttendee);
 
 app.post('/api/rides', auth, routeRides.addRide);
 
+app.put('/api/rides/:carId', auth, routeRides.updateRide);
+
 app.delete('/api/rides/:carId', auth, routeRides.removeRide);
 
 app.get('/api/rides/:coveyId', auth, routeRides.getAllRides);
@@ -91,6 +93,8 @@ app.delete('/api/riders/:carId/:userId', auth, routeRides.removeRider);
 app.post('/api/riders/:carId/:userId', auth, routeRides.addRider);
 
 app.post('/api/resources', auth, routeResources.addResource);
+
+app.put('/api/resources/:resourceId', auth, routeResources.updateResource);
 
 app.delete('/api/resources/:resourceId', auth, routeResources.removeResource);
 

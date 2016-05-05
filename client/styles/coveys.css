@@ -3,13 +3,14 @@
   margin-right: 10px;
 }
 .covey-tile {
+  background-color: #FCFCFC;
   margin-top: 10px;
   padding-left: 15px;
   padding-right: 15px;
-  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 3px 3px 5px 1px rgba(0, 0, 0, 0.1);
 }
 .covey-tile:hover {
-  background: #F7FDFF;
+  background: #e6f0ff;
 }
 .add-coveys-button {
   width: 25%;

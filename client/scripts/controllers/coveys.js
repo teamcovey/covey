@@ -29,9 +29,9 @@ const testData = [
   },
 ];
 
-const coveys = angular.module('coveys', ['covey.services']);
+angular.module('coveys', ['covey.services'])
 
-coveys.controller('coveysController', function ($scope, $location, $rootScope, coveysFactory) {
+.controller('coveysController', function ($scope, $location, $rootScope, coveysFactory) {
   /*
    * hasCoveys can have a value of 'true', 'false', or 'error'
    * the view will automatically change based on the value.

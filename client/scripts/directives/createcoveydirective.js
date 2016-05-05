@@ -1,6 +1,6 @@
 angular.module('createCovey')
 
-.directive('createCoveyDirective', function () {
+.directive('createCoveyDirective', () => {
   return {
     templateUrl: '../../views/createcovey.html',
   };

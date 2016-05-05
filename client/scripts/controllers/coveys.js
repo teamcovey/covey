@@ -72,15 +72,15 @@ angular.module('coveys', ['covey.services'])
       .then((response) => {
         const status = response.status;
         const data = response.data;
-        if (data.coveys === undefined || status === undefined) {
+        if (status !== 200) {
           // When hasCoveys is equal to 'error' a different view will be displayed on the page
           $scope.hasCoveys = 'error';
         } else {
-          if (data.coveys.length === 0) {
+          if (data.length === 0) {
             // When hasCoveys is equal to 'false' a different view will be displayed on the page
             $scope.hasCoveys = 'false';
           } else {
-            $scope.coveys = data.coveys;
+            $scope.coveys = data;
             $scope.sortCoveysByOwnershipStatus($scope.coveys);
           }
         }

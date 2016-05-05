@@ -59,7 +59,7 @@ angular.module('createCovey', ['covey.services'])
       startTime: combinedStartDateTime,
       endTime: combinedEndDateTime,
       details: $scope.details,
-      blurb: $scope.details.slice(0, 100),
+      blurb: $scope.details.slice(0, 97).concat('...'),
     };
     coveysFactory.postCovey(coveyData)
       .then((response) => {

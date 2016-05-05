@@ -20,7 +20,6 @@ angular.module('covey.rides', [])
           }
         });
         $scope.ridesDetails.push({ ride, driver, passengers: riders });
-        console.log($scope.ridesDetails);
       });
     });
   });
@@ -32,14 +31,15 @@ angular.module('covey.rides', [])
   };
 
   $scope.addNewRide = () => {
-    $scope.rides.push({
-      id: $scope.rides.length + 1,
-      covey_id: 1,
-      driverName: 'driver',
-      timeToLeave: 'when',
+    console.log('CLICKED! ', $scope.ridesDetails);
+    $scope.ridesDetails.push({
+      ride: {
+        name: 'add ride',
+        departureTime: 'when to leave',
+      },
+      driver: {},
       passengers: [],
     });
-    // ridesHttp.post({})
   };
 
   $scope.checkPassenger = (driver) => (

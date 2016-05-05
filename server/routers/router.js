@@ -1,4 +1,5 @@
 const app = require('../config/server-config.js');
+const express = require('express');
 
 /*
 We are using both knex and bookshelf in the router files.  We were unable to get
@@ -29,6 +30,7 @@ app.use(session({ secret: 'keyboard cat', resave: true, saveUninitialized: true 
 app.use(morgan('dev'));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(express.static('client'));
 
 // Routes: app
 app.get('/', route.getUsage);

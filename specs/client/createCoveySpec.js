@@ -33,9 +33,9 @@ describe('Create Covey', () => {
   it('Should be able to reset form fields', () => {
     const $scope = {};
     const controller = $controller('createCoveyController', { $scope: $scope });
-    $scope.eventName = 'test';
-    expect($scope.eventName).to.equal('test');
+    $scope.name = 'test';
+    expect($scope.name).to.equal('test');
     $scope.resetFormFields();
-    expect($scope.eventName).to.equal('');
+    expect($scope.name).to.equal('');
   });
 });

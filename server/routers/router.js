@@ -1,5 +1,15 @@
 const app = require('../config/server-config.js');
+
+/*
+We are using both knex and bookshelf in the router files.  We were unable to get
+bookshelf to create the join tables for us so decided to write the sql by hand.
+*/
+
 const route = require('./router-helpers');
+const routeUsers = require('./router-users');
+const routeCoveys = require('./router-coveys');
+const routeRides = require('./router-rides');
+const routeResources = require('./router-resources');
 
 // can set up different routes for each path
 const bodyParser = require('body-parser');
@@ -25,11 +35,11 @@ app.get('/', route.getUsage);
 
 app.post('/api/signup', auth, route.signup);
 
-app.get('/api/user/:userId', auth, route.getUser);
+app.get('/api/user/:userId', auth, routeUsers.getUser);
 
-app.delete('/api/user/:userId', auth, route.removeUser);
+app.delete('/api/user/:userId', auth, routeUsers.removeUser);
 
-app.get('/api/users/:coveyId', auth, route.getAllUsers);
+app.get('/api/users/:coveyId', auth, routeUsers.getAllUsers);
 
 // Routes: authentication
 app.get('/api/auth', route.login);
@@ -50,42 +60,42 @@ app.get('/api/logout',
   }
 );
 
-app.get('/api/coveys/:userId', auth, route.getAllCoveys);
+app.get('/api/coveys/:userId', auth, routeCoveys.getAllCoveys);
 
-app.post('/api/coveys', auth, route.addCovey);
+app.post('/api/coveys', auth, routeCoveys.addCovey);
 
-app.delete('/api/coveys/:coveyId', auth, route.removeCovey);
+app.delete('/api/coveys/:coveyId', auth, routeCoveys.removeCovey);
 
-app.put('/api/coveys/:coveyId', auth, route.updateCovey);
+app.put('/api/coveys/:coveyId', auth, routeCoveys.updateCovey);
 
-app.get('/api/coveys/:coveyid', auth, route.getCovey);
+app.get('/api/covey/:coveyid', auth, routeCoveys.getCovey);
 
-app.post('/api/coveys/:coveyId/:userId', auth, route.addAttendee);
+app.post('/api/coveys/:coveyId/:userId', auth, routeCoveys.addAttendee);
 
-app.delete('/api/coveys/:coveyId/:userId', auth, route.removeAttendee);
+app.delete('/api/coveys/:coveyId/:userId', auth, routeCoveys.removeAttendee);
 
-app.post('/api/rides', auth, route.addRide);
+app.post('/api/rides', auth, routeRides.addRide);
 
-app.delete('/api/rides/:carId', auth, route.removeRide);
+app.delete('/api/rides/:carId', auth, routeRides.removeRide);
 
-app.get('/api/rides/:coveyId', auth, route.getAllRides);
+app.get('/api/rides/:coveyId', auth, routeRides.getAllRides);
 
-app.get('/api/riders/:carId', auth, route.getAllRiders);
+app.get('/api/riders/:carId', auth, routeRides.getAllRiders);
 
-app.delete('/api/riders/:carId/:userId', auth, route.removeRider);
+app.delete('/api/riders/:carId/:userId', auth, routeRides.removeRider);
 
-app.post('/api/riders/:carId/:userId', auth, route.addRider);
+app.post('/api/riders/:carId/:userId', auth, routeRides.addRider);
 
-app.post('/api/resources', auth, route.addResource);
+app.post('/api/resources', auth, routeResources.addResource);
 
-app.delete('/api/resources/:resourceId', auth, route.removeResource);
+app.delete('/api/resources/:resourceId', auth, routeResources.removeResource);
 
-app.get('/api/resources/:coveyId', auth, route.getAllResources);
+app.get('/api/resources/:coveyId', auth, routeResources.getAllResources);
 
-app.get('/api/suppliers/:resourceId', auth, route.getAllSuppliers);
+app.get('/api/suppliers/:resourceId', auth, routeResources.getAllSuppliers);
 
-app.delete('/api/suppliers/:resourceId/:userId', auth, route.removeSupplier);
+app.delete('/api/suppliers/:resourceId/:userId', auth, routeResources.removeSupplier);
 
-app.post('/api/suppliers/:resourceId/:userId', auth, route.addSupplier);
+app.post('/api/suppliers/:resourceId/:userId', auth, routeResources.addSupplier);
 
 module.exports = app;

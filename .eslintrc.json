@@ -4,7 +4,7 @@
         "react"
   ],
   "env": {
-  	"mocha": true,
-  	"amd": true
+    "mocha": true,
+    "amd": true
   }
 }

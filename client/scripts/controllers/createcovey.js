@@ -59,13 +59,13 @@ angular.module('createCovey', ['covey.services'])
       startTime: combinedStartDateTime,
       endTime: combinedEndDateTime,
       details: $scope.details,
-      blurb: $scope.details.slice(0, 100),
+      blurb: $scope.details.slice(0, 97).concat('...'),
     };
     coveysFactory.postCovey(coveyData)
       .then((response) => {
         if (response.status !== 201) {
           // Shows error if post was not successful
-          $scope.toggleErrorVisibility();
+          if (!$scope.errorVisible) $scope.toggleErrorVisibility();
         } else {
           $scope.toggleModalVisibility();
           $scope.resetFormFields();

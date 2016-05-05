@@ -23,11 +23,19 @@ describe('Create Covey', () => {
     $rootScope.$broadcast('toggleCreateCoveyModal');
     expect($scope.visible).to.equal(true);
   });
-  it('Should be able to toggle vsisiblity of error modal', () => {
+  it('Should be able to toggle visiblity of error modal', () => {
     const $scope = {};
     const controller = $controller('createCoveyController', { $scope: $scope });
     expect($scope.errorVisible).to.equal(false);
     $scope.toggleErrorVisibility();
     expect($scope.errorVisible).to.equal(true);
+  });
+  it('Should be able to reset form fields', () => {
+    const $scope = {};
+    const controller = $controller('createCoveyController', { $scope: $scope });
+    $scope.name = 'test';
+    expect($scope.name).to.equal('test');
+    $scope.resetFormFields();
+    expect($scope.name).to.equal('');
   });
 });

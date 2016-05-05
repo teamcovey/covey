@@ -2,42 +2,46 @@
 const testData = [
   {
     name: 'Brochella 2016',
-    description: 'Eat, sleep, rave, repeat',
-    date: 'April 15th, 2016',
-    admin: true,
-    attending: true,
-    image: '../styles/img/200x200.png',
-    id: '12345',
+    blurb: 'Eat, sleep, rave, repeat',
+    startTime: 'April 15th, 2016',
+    endTime: 'April 17th, 2016',
+    isOwner: true,
+    photoUrl: '../styles/img/200x200.png',
+    covey_id: '123',
   },
   {
     name: 'Burning man',
-    description: 'Hang out with Toben in the desert',
-    date: 'August 28th, 2016',
-    admin: false,
-    attending: true,
-    image: '../styles/img/200x200.png',
-    id: '12345',
+    blurb: 'Hang out with Toben in the desert',
+    startTime: 'August 28th, 2016',
+    endTime: 'August 30th, 2016',
+    isOwner: false,
+    photoUrl: '../styles/img/200x200.png',
+    covey_id: '12345',
   },
   {
     name: 'Camping at Redwood National and State Park',
-    description: 'Drink beer with the bears',
-    date: 'July 4th, 2016',
-    admin: true,
-    attending: true,
-    image: '../styles/img/200x200.png',
-    id: '12345',
+    blurb: 'Drink beer with the bears',
+    startTime: 'July 4th, 2016',
+    endTime: 'July 7th, 2016',
+    isOwner: true,
+    photoUrl: '../styles/img/200x200.png',
+    covey_id: '12345',
   },
 ];
 
-const coveys = angular.module('coveys', ['covey.services']);
+angular.module('coveys', ['covey.services'])
 
-coveys.controller('coveysController', function ($scope, $location, $rootScope, coveysFactory) {
+.controller('coveysController', function ($scope, $location, $rootScope, coveysFactory) {
+  /*
+   * hasCoveys can have a value of 'true', 'false', or 'error'
+   * the view will automatically change based on the value.
+   */
   $scope.hasCoveys = 'true';
   // Setting to testData for now, will update once server isrunning
   $scope.coveys = testData;
-  // Routes user to the specified covey (based on id)
-  $scope.goToCovey = (id) => {
-    $location.path('/coveys/'.concat(id));
+  // Routes user to the specified covey (based on coveyId)
+  $scope.goToCovey = (coveyId) => {
+    $location.path(`/coveys/${coveyId}`);
   };
   /*
    *  Triggered whenever the 'create' button is clicked.
@@ -46,16 +50,12 @@ coveys.controller('coveysController', function ($scope, $location, $rootScope, c
   $scope.toggleCreateCoveyModal = () => {
     $rootScope.$broadcast('toggleCreateCoveyModal');
   };
-  // Sorts coveys based on whether the user is planning/attending/not attending
-  $scope.sortCoveysByAttendingStatus = (arrayOfCoveys) => {
+  // Sorts coveys based on whether the user is planning
+  $scope.sortCoveysByOwnershipStatus = (arrayOfCoveys) => {
     const coveysArray = arrayOfCoveys;
     for (let i = 0; i < coveysArray.length; i++) {
       for (let j = 0; j < coveysArray.length - 1; j++) {
-        if (!coveysArray[j].admin && coveysArray[j + 1].admin) {
-          const temp = coveysArray[j];
-          coveysArray[j] = coveysArray[j + 1];
-          coveysArray[j + 1] = temp;
-        } else if (!coveysArray[j].attending && coveysArray[j + 1].attending) {
+        if (!coveysArray[j].isOwner && coveysArray[j + 1].isOwner) {
           const temp = coveysArray[j];
           coveysArray[j] = coveysArray[j + 1];
           coveysArray[j + 1] = temp;
@@ -65,16 +65,13 @@ coveys.controller('coveysController', function ($scope, $location, $rootScope, c
   };
   /*
    * Gets all coveys from the server (for the current user)
-   * TODO: Refactor based on actual server implementation
    */
   $scope.getCoveys = () => {
-    let status;
-    let data;
     coveysFactory
       .getCoveys()
       .then((response) => {
-        status = response.status;
-        data = response.data;
+        const status = response.status;
+        const data = response.data;
         if (data.coveys === undefined || status === undefined) {
           // When hasCoveys is equal to 'error' a different view will be displayed on the page
           $scope.hasCoveys = 'error';
@@ -84,11 +81,14 @@ coveys.controller('coveysController', function ($scope, $location, $rootScope, c
             $scope.hasCoveys = 'false';
           } else {
             $scope.coveys = data.coveys;
-            $scope.sortCoveysByAttendingStatus($scope.coveys);
+            $scope.sortCoveysByOwnershipStatus($scope.coveys);
           }
         }
       });
   };
-  // Automatically gets all coveys on page load
+  /*
+   * Automatically gets all coveys on page load.
+   * TODO: uncomment the below line once server is running.
+   */
   // $scope.getCoveys();
 });

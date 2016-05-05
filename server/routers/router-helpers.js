@@ -277,6 +277,8 @@ exports.addResource = (req, res) => {
   const type = req.body.type;
   const coveyId = req.body.coveyId;
 
+  console.log('ADDING RESOURCE!!', name, quantity, type, coveyId);
+
   Resources.create({
     name,
     quantity,

@@ -35,7 +35,6 @@ angular.module('covey.rides')
 
   this.addRide = (newRide) => {
     newRide.coveyId = $routeParams.coveyId;
-    console.log('READY TO POST NEW RIDE: ', newRide);
     return $http.post('/api/rides', newRide)
       .then((response) => response, (error) => {
         console.error(error);

@@ -4,7 +4,12 @@ angular.module('covey.rides', [])
   const userId = 1;
   $scope.ridesDetails = [];
   $scope.attendees = $rootScope.attendees;
+
   // TODO: change getAllRides endpoint to attatch passengers array to each rides object
+  /* Gets all supplies information for current covey,
+  *  gets all suppliers for each supply,
+  *  creates suppliesDetails array with all supplies and supplies info,
+  *  and sets user's supplies responsibilities as well. */
   ridesHttp.getAllRides().then((rides) => {
     $scope.rides = rides;
     rides.forEach((ride) => {
@@ -49,7 +54,6 @@ angular.module('covey.rides', [])
   $scope.submitRide = (ride) => {
     // const isPassenger = $scope.checkPassenger(ride.driverName);
     // if (isPassenger !== null) $scope.removePassenger(ride.driverName, { id: isPassenger });
-    console.log('SUBMIT RIDE: ', ride);
 
     // PUT vs POST (PUT REQUIRES ID)
     // TODO: add seats & location input boxes

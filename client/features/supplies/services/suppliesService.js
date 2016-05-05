@@ -1,47 +1,55 @@
 angular.module('covey.supplies')
-.service('suppliesHelpers', function () {
-  /* Helper method to display the supplies that
-     the current user is responsible for: */
-  this.getUsersSupplies = (supplies, user) => {
-    let responsibilities = '';
-    for (let i = 0; i < supplies.length; i++) {
-      if (supplies[i].suppliers.indexOf(user) > -1) {
-        responsibilities += `${supplies[i].supplyName}, `;
-      }
+.service('suppliesHelpers', function ($routeParams) {
+  /* Creates skeleton supply for easy user input and POSTing */
+  this.newSupplyInput = () => (
+    {
+      name: 'add supply',
+      quantity: 10,
+      type: 'category',
+      coveyId: $routeParams.coveyId,
     }
-    return responsibilities.slice(0, -2);
-  };
+  );
 })
-.service('suppliesHttp', function ($http) {
-  this.getAllSupplies = (coveyId, attendees) => {
-    // return $http.get(`/resources/${coveyId}`)
-    // .then((supplies) => supplies, (error) => {
-    //   console.error(error);
-    // });
+.service('suppliesHttp', function ($http, $routeParams) {
+  this.getAllSupplies = () => {
+    return $http.get(`/api/resources/${$routeParams.coveyId}`)
+    .then((supplies) => supplies.data, (error) => {
+      console.error(error);
+    });
+  };
 
-    return [
-      {
-        id: 1, covey_id: coveyId, supplyName: 'Beer', suppliers: [attendees[2], attendees[0]],
-      },
-      {
-        id: 2, covey_id: coveyId, supplyName: 'Chips', suppliers: [attendees[2]],
-      },
-    ];
+  this.getAllSuppliers = (supplyId) => {
+    return $http.get(`/api/suppliers/${supplyId}`)
+    .then((suppliers) => suppliers.data, (error) => {
+      console.error(error);
+    });
   };
 
   this.addSupply = (supply) => {
-    $http.post('/resources', supply)
+    return $http.post('/api/resources', supply)
     .then((newSupply) => newSupply, (error) => {
       console.error(error);
     });
   };
 
+  // TODO: create endpoint for updating a supply
+  this.updateSupply = (supply) => {
+    return $http.put(`/api/resources/${supply.id}`, supply)
+    .then((updatedSupply) => updatedSupply, (error) => {
+      console.error(error);
+    });
+  };
+
   this.removeSupply = (supplyId) => {
-    $http.delete(`/resources/${supplyId}`)
+    console.log('REMOVE DIS: ', supplyId);
+    $http.delete(`/api/resources/${supplyId}`)
     .then((response) => response, (error) => {
       console.error(error);
     });
   };
+
+
+  
 
   this.addSupplier = (supplyId, supplier) => {
     $http.post(`/resources/${supplyId}`, supplier)

@@ -4,10 +4,8 @@
 angular.module('covey.rides')
 .filter('alreadyPassenger', function () {
   return (attendees, rides) => {
-    console.log('ALL :', attendees);
     let allPassengers = [];
     rides.forEach((ride) => {
-      console.log('EACH RIDE: ', ride);
       allPassengers = allPassengers.concat(ride.passengers);
     });
     return attendees.filter((attendee) => {

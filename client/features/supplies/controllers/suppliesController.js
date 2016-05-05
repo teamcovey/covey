@@ -1,44 +1,67 @@
 angular.module('covey.supplies', [])
-.controller('suppliesController', function ($scope, suppliesHelpers, suppliesHttp) {
-  const coveyId = 1;
+.controller('suppliesController', function ($scope, $rootScope, suppliesHelpers, suppliesHttp) {
+  // TODO: logged in userId will be set by some shared Auth service
+  const userId = 2;
 
   $scope.expandSupply = false;
+  $scope.supplyDetails = [];
+  $scope.usersSupplies = '';
+  $scope.attendees = $rootScope.attendees;
 
-  $scope.supplies = suppliesHttp.getAllSupplies(coveyId, $scope.details.attendees);
-
-  $scope.getUsersResponsibilities = () => (
-    suppliesHelpers.getUsersSupplies($scope.supplies.supplies, $scope.user)
-  );
-
-  $scope.addNewSupply = () => {
-    $scope.supplies.push({
-      id: $scope.supplies.supplies.length + 1,
-      covey_id: 1,
-      supplyName: 'supply',
-      suppliers: [],
+  /* Gets all supplies information for current covey,
+  *  gets all suppliers for each supply,
+  *  creates suppliesDetails array with all supplies and supplies info,
+  *  and sets user's supplies responsibilities as well. */
+  suppliesHttp.getAllSupplies()
+    .then((supplies) => {
+      $scope.supplies = supplies;
+      supplies.forEach((supply) => {
+        suppliesHttp.getAllSuppliers(supply.id).then((suppliers) => {
+          suppliers.forEach((supplier) => {
+            if (supplier.user_id === userId) {
+              $scope.usersSupplies += supply.name;
+            }
+          });
+          $scope.supplyDetails.push({ supply, suppliers });
+        });
+      });
     });
-  };
 
+  /* Modal to toggle edit mode visibility */
   $scope.expandSupplies = () => {
     $scope.expandSupply = !$scope.expandSupply;
   };
 
-  $scope.submitSupply = (supply) => {
-    suppliesHttp.addSupply({
-      covey_id: coveyId,
-      supplyName: supply.supplyName,
-      suppliers: supply.suppliers,
+  /* Inserts placeholder for new supply for editing purposes */
+  $scope.addNewSupply = () => {
+    const supplyInput = suppliesHelpers.newSupplyInput();
+    $scope.supplyDetails.push({
+      supply: supplyInput,
+      suppliers: [],
     });
+  };
+
+  /* Creates or updates a supply when users selects 'Update' in edit view */
+  $scope.submitSupply = (supply) => {
+    console.log('SUPPLY TO ADD: ', supply);
+    if (supply.id) {
+      console.log('UPDATED SUPPLY: ', supply);
+      // suppliesHttp.updateSupply(supply).then((response) => {
+      //   console.log('supply updated: ', response);
+      // });
+    } else {
+      suppliesHttp.addSupply(supply).then((response) => {
+        console.log('supply created: ', response);
+      });
+    }
   };
 
   $scope.deleteSupply = (supply) => {
     suppliesHttp.removeSupply(supply.id);
-    // $scope.supplies.supplies.splice(supply.id - 1, 1);
-    // // make PUT or DEL request to update supply
-    // $scope.supplies.supplies.forEach((currentSupply, index) => {
-    //   currentSupply.id = index + 1;
-    // });
   };
+
+
+  
 
   $scope.addSupplier = (supplier, supply) => {
     suppliesHttp.addSupplier(supply.id, supplier);
@@ -56,8 +79,14 @@ angular.module('covey.supplies', [])
 })
 .filter('alreadySupplier', function () {
   return (attendees, suppliers) => {
-    return attendees.filter((supplier) => (
-      suppliers.indexOf(supplier) === -1
-    ));
+    return attendees.filter((attendee) => {
+      let result = true;
+      suppliers.forEach((currentSupplier) => {
+        if (currentSupplier.user_id === attendee.user_id) {
+          result = false;
+        }
+      });
+      return result;
+    });
   };
 });

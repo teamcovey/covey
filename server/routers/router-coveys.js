@@ -122,11 +122,32 @@ exports.addAttendee = (req, res) => {
 exports.removeAttendee = (req, res) => {
   const coveyId = req.params.coveyId;
   const userId = req.params.userId;
-
+  var carArray;
   // we will remove the join tables that have the user_id in them
   // not implemented yet.
-  // knex('X_users')
+  knex
+    .select('id')
+    .from('cars')
+    .where('covey_id', coveyId)
+    .then((cars) => {
+      carArray = [];
+      cars.forEach((car) => carArray.push(car.id));
+
+      knex('cars_users')
+        .whereIn('car_id', carArray)
+        .andWhere('user_id', userId)
+        .del()
+        .then((affectedRows) => {
+          console.log('cars_users match deleted ', affectedRows);
+        })
+        .catch((err) => {
+          console.log('error in removing attendee from cars: ', err);
+        });
+    });
+
+  // knex('cars_users')
   //   .where('covey_id', coveyId)
+  //   .andWhere('user_id')
   //   .del()
   //   .then((affectedRows) => {
   //     console.log('deleted rows were: ', affectedRows);

@@ -4,7 +4,6 @@ angular.module('covey.rides', [])
   const userId = 1;
   $scope.ridesDetails = [];
   $scope.attendees = $rootScope.attendees;
-
   // TODO: change getAllRides endpoint to attatch passengers array to each rides object
   ridesHttp.getAllRides().then((rides) => {
     $scope.rides = rides;
@@ -31,7 +30,6 @@ angular.module('covey.rides', [])
   };
 
   $scope.addNewRide = () => {
-    console.log('CLICKED! ', $scope.ridesDetails);
     $scope.ridesDetails.push({
       ride: {
         name: 'add ride',
@@ -46,32 +44,44 @@ angular.module('covey.rides', [])
     ridesHelpers.checkPassenger(driver, $scope.rides)
   );
 
+  // BUG FIX: for some reason, when submitting a new ride with frodo's id
+  // it added frodo as a passenger to the other car
   $scope.submitRide = (ride) => {
-    const isPassenger = $scope.checkPassenger(ride.driverName);
-    if (isPassenger !== null) $scope.removePassenger(ride.driverName, { id: isPassenger });
+    // const isPassenger = $scope.checkPassenger(ride.driverName);
+    // if (isPassenger !== null) $scope.removePassenger(ride.driverName, { id: isPassenger });
+    console.log('SUBMIT RIDE: ', ride);
 
-    $scope.rides[ride.id - 1] = {
-      id: ride.id,
-      covey_id: 1,
-      driverName: ride.driverName,
-      timeToLeave: ride.timeToLeave,
-      passengers: ride.passengers,
+    // PUT vs POST (PUT REQUIRES ID)
+    // TODO: add seats & location input boxes
+    const rideToAdd = {
+      userId: 2,
+      departureTime: ride.departureTime,
+      location: 'Bree',
+      name: ride.name,
+      seats: 4,
     };
 
-    // ridesHttp.put({})
+    if (ride.id) {
+      rideToAdd.id = ride.id;
+      ridesHttp.put(rideToAdd);
+    } else {
+      ridesHttp.addRide(rideToAdd);
+    }
   };
 
+  // TODO: once passenger is add, immediately update the view or rides.ridesDetails
+  $scope.addPassenger = (passenger, ride) => {
+    ridesHttp.addPassenger(ride.id, passenger.user_id);
+  };
+
+
+  // FOLLOWING TO BE REPLACED: ///////////////////////////////////
   $scope.deleteRide = (ride) => {
     $scope.rides.splice(ride.id - 1, 1);
     // make PUT or DEL request to update supply
     $scope.rides.forEach((currentRide, index) => {
       currentRide.id = index + 1;
     });
-  };
-
-  $scope.addPassenger = (passenger, ride) => {
-    $scope.rides[ride.id - 1].passengers.push(passenger);
-    // ridesHttp.addPassenger({})
   };
 
   $scope.removePassenger = (passenger, ride) => {

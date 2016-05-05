@@ -33,6 +33,15 @@ angular.module('covey.rides')
     });
   };
 
+  this.addRide = (newRide) => {
+    newRide.coveyId = $routeParams.coveyId;
+    console.log('READY TO POST NEW RIDE: ', newRide);
+    return $http.post('/api/rides', newRide)
+      .then((response) => response, (error) => {
+        console.error(error);
+      });
+  };
+
   this.getAllRiders = (rideId) => {
     return $http.get(`/api/riders/${rideId}`)
     .then((riders) => riders.data, (error) => {
@@ -40,16 +49,14 @@ angular.module('covey.rides')
     });
   };
 
-  this.post = (newRide) => {};
-  this.put = (updatedRide) => {};
-  this.delete = (ride) => {};
-
   this.addPassenger = (rideId, userId) => {
-    // $http.post({
-    //   url: `/api/riders/${rideId}/${userId}`,
-    //   data: {
-    //     rider: userId,
-    //   },
-    // });
+    return $http.post(
+      `/api/riders/${rideId}/${userId}`,
+      {
+        rider: userId,
+      }
+    ).then((response) => response, (error) => {
+      console.error(error);
+    });
   };
 });

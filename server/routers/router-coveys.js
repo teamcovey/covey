@@ -122,9 +122,8 @@ exports.addAttendee = (req, res) => {
 exports.removeAttendee = (req, res) => {
   const coveyId = req.params.coveyId;
   const userId = req.params.userId;
-  var carArray;
-  // we will remove the join tables that have the user_id in them
-  // not implemented yet.
+  var carArray, resourceArray;
+
   knex
     .select('id')
     .from('cars')
@@ -145,16 +144,25 @@ exports.removeAttendee = (req, res) => {
         });
     });
 
-  // knex('cars_users')
-  //   .where('covey_id', coveyId)
-  //   .andWhere('user_id')
-  //   .del()
-  //   .then((affectedRows) => {
-  //     console.log('deleted rows were: ', affectedRows);
-  //   })
-  //   .catch((err) => {
-  //     console.log('error in deleting coveys_users rows: ', err);
-  //   });
+  knex
+    .select('id')
+    .from('resources')
+    .where('covey_id', coveyId)
+    .then((resources) => {
+      resourceArray = [];
+      resources.forEach((resource) => resourceArray.push(resource.id));
+
+      knex('resources_users')
+        .whereIn('resource_id', resourceArray)
+        .andWhere('user_id', userId)
+        .del()
+        .then((affectedRows) => {
+          console.log('resources_users match deleted ', affectedRows);
+        })
+        .catch((err) => {
+          console.log('error in removing attendee from resources: ', err);
+        });
+    });
 
   knex('coveys_users')
     .where('user_id', userId)

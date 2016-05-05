@@ -36,7 +36,7 @@ app.use(express.static('client'));
 // Routes: app
 app.get('/', route.getUsage);
 
-app.post('/api/signup', auth, route.signup);
+// app.post('/api/signup', auth, route.signup);
 
 app.get('/api/user/:userId', auth, routeUsers.getUser);
 
@@ -73,7 +73,7 @@ app.get('/api/logout',
 
 app.get('/api/coveys/:userId', auth, routeCoveys.getAllCoveys);
 
-app.post('/api/coveys', auth, routeCoveys.addCovey);
+app.post('/api/coveys', routeCoveys.addCovey);
 
 app.delete('/api/coveys/:coveyId', auth, routeCoveys.removeCovey);
 

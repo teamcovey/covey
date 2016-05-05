@@ -29,6 +29,6 @@ angular.module('covey', [
       redirectTo: '/',
     });
 })
-.run(($rootScope) => {
-  $rootScope.loggedIn = Auth.isLoggedIn();
+.run(($rootScope, Auth) => {
+  // $rootScope.loggedIn = Auth.isLoggedIn();
 });

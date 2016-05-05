@@ -1,7 +1,8 @@
 const passport = require('passport');
 const Strategy = require('passport-facebook').Strategy;
-const keys = require('./keys.example.js');
+const keys = require('./keys.js');
 const User = require('../models/user.js');
+const Users = require('../collections/users.js');
 
 passport.use(new Strategy(
   {
@@ -12,49 +13,67 @@ passport.use(new Strategy(
     callbackURL: 'http://localhost:3000/api/auth/facebook/return',
     profileFields: ['id', 'displayName', 'name', 'gender', 'emails', 'picture.type(large)'],
   },
-  // TODO: Once db available, hook-up accessToken <-> user here
   // (accessToken, refreshToken, profile, cb) => cb(null, profile)
+
+  // TODO: handle refreshToken
   (accessToken, refreshToken, profile, done) => {
-    User.fetchOne({ facebookId: profile.id }, (err, user) => {
-      if (err) {
-        console.log(err);
-      }
-      if (!err && user !== null) {
-        done(null, user);
-      } else {
-        user = new User({
-          facebookId: profile.id,
-          firstName: profile.firstName,
-          lastName: profile.lastName,
-          email: profile.email,
-          gender: profile.gender,
-          photoUrl: profile.photoUrl,
-          phoneNumber: profile.phoneNumber,
-          accessToken: accessToken,
-          refreshToken: refreshToken,
-        });
-        user.save((err) => {
-          if (err) {
-            console.log(err);
+    const facebookId = profile.id;
+    const firstName = profile.name.givenName;
+    const lastName = profile.name.familyName;
+    const email = profile.emails[0].value;
+    const gender = profile.gender;
+    const photoUrl = profile.photos[0].value;
+    // const phoneNumber = profile.phoneNumber
+    // This needs to be aquired by the covey user info page. Modal after sign-up?
+    if (profile.id) {
+      new User({ facebookId })
+        .fetch()
+        .then((found) => {
+          if (found) {
+            // send ajax repsonse?
+            console.log('This facebook acount is already in the database!');
+            done(null, found);
           } else {
-            console.log('saving user ...');
-            done(null, user);
+            Users.create({
+              facebookId,
+              firstName,
+              lastName,
+              email,
+              gender,
+              photoUrl,
+              accessToken,
+              refreshToken,
+            })
+            .then((user) => {
+              console.log('Saving user...');
+              done(null, user);
+            })
+            .catch((err) => {
+              console.log('Error creating new user', err);
+            });
           }
         });
-      }
-    });
+    } else {
+      console.log('Error: no facebookId');
+    }
   }
 ));
 
 // Serialize users into and deserialize users out of the session.
-// TODO: change this to: supply the user ID when serializing,
-// and querying the user record by ID from the database when deserializing.
-passport.serializeUser((user, cb) => {
-  cb(null, user);
+passport.serializeUser((user, done) => {
+  console.log('In serialzeUser');
+  done(null, user.id);
 });
 
-passport.deserializeUser((obj, cb) => {
-  cb(null, obj);
+passport.deserializeUser((id, done) => {
+  // done(null, id);
+  console.log('In deserializeUser / id: ', id);
+  User.where({ id })
+  .fetch()
+  .then((user) => {
+    done(null, user);
+  })
+  .catch((err) => console.log('Error: ', err));
 });
 
 module.exports = passport;

@@ -11,11 +11,10 @@ angular.module('covey.covey', [])
   $scope.toggleEdit = () => {
     $scope.editDetails = !$scope.editDetails;
   };
-  
+
   $scope.updateCovey = () => {
-    // updateCovey endpoint api service not built yet:
-    // coveyService.updateCovey($scope.details).then((updatedCovey) => {
-    //   $scope.details = updatedCovey;
-    // });
+    coveyService.updateCovey($scope.details).then((updatedCovey) => {
+      console.log(updatedCovey);
+    });
   };
 });

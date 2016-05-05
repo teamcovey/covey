@@ -1,18 +1,19 @@
 angular.module('covey.rides')
 .service('ridesHelpers', function () {
-  this.getUsersCar = (rides, user) => {
-    let ridingWith = '';
-    for (let i = 0; i < rides.length; i++) {
-      if (rides[i].passengers.indexOf(user) > -1) {
-        ridingWith = `You're riding in ${rides[i].driverName}'s car.`;
-        break;
-      } else if (rides[i].driverName === user) {
-        ridingWith = 'You\'re driving!';
-        break;
-      }
-    }
-    return ridingWith;
-  };
+  // this.getUsersRide = (ride) => {
+  //   let ridingWith = 'No rides organized yet.';
+  //   // for (let i = 0; i < rides.length; i++) {
+  //   //   console.log('RIDE OBJECT: ', rides[i]);
+  //   //   if (rides[i].passengers.indexOf(user) > -1) {
+  //   //     ridingWith = `You're riding in ${rides[i].driverName}'s car.`;
+  //   //     break;
+  //   //   } else if (rides[i].driverName === user) {
+  //   //     ridingWith = 'You\'re driving!';
+  //   //     break;
+  //   //   }
+  //   // }
+  //   return ridingWith;
+  // };
 
   this.checkPassenger = (driver, rides) => {
     let isPassenger = null;
@@ -24,19 +25,19 @@ angular.module('covey.rides')
     return isPassenger;
   };
 })
-.service('ridesHttp', function ($http) {
-  this.getAllRides = (attendees) => {
-    // $http.get(/api/rides/:coveyId)
-    return [
-      {
-        id: 1, covey_id: 1, driverName: attendees[1], timeToLeave: '3PM',
-        passengers: [attendees[0], attendees[3]],
-      },
-      {
-        id: 2, covey_id: 1, driverName: 'Freddie', timeToLeave: '3PM',
-        passengers: [attendees[2]],
-      },
-    ];
+.service('ridesHttp', function ($http, $routeParams) {
+  this.getAllRides = () => {
+    return $http.get(`/api/rides/${$routeParams.coveyId}`)
+    .then((rides) => rides.data, (error) => {
+      console.error(error);
+    });
+  };
+
+  this.getAllRiders = (rideId) => {
+    return $http.get(`/api/riders/${rideId}`)
+    .then((riders) => riders.data, (error) => {
+      console.error(error);
+    });
   };
 
   this.post = (newRide) => {};

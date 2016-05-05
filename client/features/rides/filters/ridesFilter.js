@@ -6,7 +6,7 @@ angular.module('covey.rides')
   return (attendees, rides) => {
     let allPassengers = [];
     rides.forEach((ride) => {
-      allPassengers = allPassengers.concat(ride.passengers).concat(ride.driverName);
+      allPassengers = allPassengers.concat(ride.passengers).concat(ride.name);
     });
     return attendees.filter((passenger) => (
       allPassengers.indexOf(passenger) === -1

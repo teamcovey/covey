@@ -1,17 +1,34 @@
 angular.module('covey.rides', [])
-.controller('ridesController', function ($scope, ridesHelpers, ridesHttp) {
-  // TODO: use factory function to GET rides details for covey_id (can access via $scope.details)
-  $scope.rides = ridesHttp.getAllRides($scope.details.attendees);
+.controller('ridesController', function ($rootScope, $scope, ridesHelpers, ridesHttp) {
+  // TODO: shared service for passing around user id... or put it on $rootScope
+  const userId = 1;
+  $scope.ridesDetails = [];
+  $scope.attendees = $rootScope.attendees;
+
+  // TODO: change getAllRides endpoint to attatch passengers array to each rides object
+  ridesHttp.getAllRides().then((rides) => {
+    $scope.rides = rides;
+    rides.forEach((ride) => {
+      ridesHttp.getAllRiders(ride.id).then((riders) => {
+        let driver;
+        riders.forEach((rider) => {
+          if (rider.isDriver) {
+            driver = rider;
+          }
+          if (rider.id === userId) {
+            $scope.usersRide = `Your riding with: ${ride.name}`;
+          }
+        });
+        $scope.ridesDetails.push({ ride, driver, passengers: riders });
+      });
+    });
+  });
 
   $scope.expandRide = false;
 
   $scope.expandRides = () => {
     $scope.expandRide = !$scope.expandRide;
   };
-
-  $scope.getUsersCar = () => (
-    ridesHelpers.getUsersCar($scope.rides, 'Skye Free')
-  );
 
   $scope.addNewRide = () => {
     $scope.rides.push({

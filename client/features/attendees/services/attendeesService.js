@@ -11,17 +11,17 @@ angular.module('covey.attendees')
     });
   };
 
-  this.addAttendee = (attendee, coveyId) => {
-    $http.post(`/api/coveys/${coveyId}`, attendee)
+  this.addAttendee = (attendeeId) => {
+    return $http.post(`/api/coveys/${$routeParams.coveyId}/${attendeeId}`, {})
     .then((response) => response, (error) => {
       console.error(error);
     });
   };
 
-  this.removeAttendee = (attendee, coveyId) => {
-    $http.delete(`/api/coveys/${coveyId}/${attendee.id}`)
-    .then((response) => response, (error) => {
-      console.error(error);
-    });
-  };
+  // this.removeAttendee = (attendee, coveyId) => {
+  //   $http.delete(`/api/coveys/${coveyId}/${attendee.id}`)
+  //   .then((response) => response, (error) => {
+  //     console.error(error);
+  //   });
+  // };
 });

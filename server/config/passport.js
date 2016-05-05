@@ -1,6 +1,7 @@
 const passport = require('passport');
 const Strategy = require('passport-facebook').Strategy;
 const keys = require('./keys.example.js');
+const User = require('../models/user.js');
 
 passport.use(new Strategy(
   {
@@ -12,7 +13,37 @@ passport.use(new Strategy(
     profileFields: ['id', 'displayName', 'name', 'gender', 'emails', 'picture.type(large)'],
   },
   // TODO: Once db available, hook-up accessToken <-> user here
-  (accessToken, refreshToken, profile, cb) => cb(null, profile)
+  // (accessToken, refreshToken, profile, cb) => cb(null, profile)
+  (accessToken, refreshToken, profile, done) => {
+    User.fetchOne({ facebookId: profile.id }, (err, user) => {
+      if (err) {
+        console.log(err);
+      }
+      if (!err && user !== null) {
+        done(null, user);
+      } else {
+        user = new User({
+          facebookId: profile.id,
+          firstName: profile.firstName,
+          lastName: profile.lastName,
+          email: profile.email,
+          gender: profile.gender,
+          photoUrl: profile.photoUrl,
+          phoneNumber: profile.phoneNumber,
+          accessToken: accessToken,
+          refreshToken: refreshToken,
+        });
+        user.save((err) => {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log('saving user ...');
+            done(null, user);
+          }
+        });
+      }
+    });
+  }
 ));
 
 // Serialize users into and deserialize users out of the session.

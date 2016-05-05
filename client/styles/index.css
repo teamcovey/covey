@@ -9,6 +9,7 @@
 
 .custom-navbar {
   margin-top: 3%;
+  height: 30px;
 }
 
 .promo-container {
@@ -41,18 +42,45 @@ h3 {
   padding: 5px 5px 25px 5px;
 }
 
-p.nav-text {
+a.nav-text {
+  background: none;
+  color: white;
   font-size: 1.1em;
-  padding-bottom: 10px;
 }
 
-p.nav-text:hover {
+a.nav-text:hover {
+  height: 25px;
+  text-decoration: none;
   display: inline-block;
-  border-bottom: 1px solid #fff;
-  padding-bottom: 3px;
+  border-bottom: 1px solid;
+}
+
+.nav-text-btn {
+  background: none;
+  color: white;
+  font-family: Calibri;
+  color: #fff;
+  font-size: 1.2em;
+  border: none;
+  padding: 0 0 4px;
+}
+
+.nav-text-btn:hover {
+  border-bottom: 1px solid;
+  padding: 0 0 3px;
 }
 
 .sign-up-btn {
   border-radius: 30px;
   width: 25%;
+}
+
+.judgecovey {
+  position: absolute;
+  top: -17px;
+  left: 438px;
+  height: 100px;
+  width: auto;
+  -webkit-transform: rotate(25deg); /* Chrome, Safari, Opera */
+  transform: rotate(25deg);
 }

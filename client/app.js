@@ -9,6 +9,7 @@ angular.module('covey', [
   'coveys',
   'hamburger',
   'ngRoute',
+  'covey.services.auth',
 ])
 .config(($routeProvider) => {
   $routeProvider
@@ -28,5 +29,6 @@ angular.module('covey', [
       redirectTo: '/',
     });
 })
-.run(() => {
+.run(($rootScope) => {
+  $rootScope.loggedIn = Auth.isLoggedIn();
 });

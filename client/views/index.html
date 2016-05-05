@@ -1,7 +1,9 @@
 <div class="container index">
+  <form>
   <div class="row custom-navbar">
-    <div class="col-sm-offset-10 col-sm-1"><p class="nav-text">ABOUT</p></div>
-    <div class="col-sm-1"><p class="nav-text">LOGIN</p></div>
+    <div class="col-sm-offset-10 col-sm-1"><a href="/about.html" class="nav-text">ABOUT</a></div>
+    <div class="col-sm-1"><a href="/api/auth/facebook" class="nav-text" ng-hide="!loggedIn">LOGIN</a></div>
+    <div class="col-sm-1"><a href="/api/logout" class="nav-text" ng-hide="loggedIn">LOGOUT</a></div>
   </div>
   <div class="row promo-container">
     <div class="col-sm-6 hidden-xs">
@@ -10,7 +12,8 @@
     <div class="col-sm-6 message-container">
       <h1>Join a covey.</h1>
       <h3>Simplify group collaboration.</h3>
-      <button type="button" class="btn btn-lg sign-up-btn">SIGN UP</button>
+      <button formaction="/api/auth/facebook" type="submit" class="btn btn-lg sign-up-btn" >SIGN UP</button>
     </div>
   </div>
+  </form>
 </div>

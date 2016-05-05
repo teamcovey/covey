@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html ng-app="covey">
+<head>
+  <meta charset="utf-8" />
+  <title>Covey: simple group collaboration</title>
+  <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="styles/index.css">
+  <link rel="stylesheet" type="text/css" href="styles/covey.css">
+  <link rel="stylesheet" type="text/css" href="styles/coveys.css">
+</head>
+<body>
+
+  <div ng-view></div>
+  <div class="container index">
+  <form>
+  <div class="row custom-navbar">
+    <div class="col-sm-offset-10 col-sm-1"><a href="/" class="nav-text">HOME</a></div>
+    <div class="col-sm-1"><a href="/api/auth/facebook" class="nav-text">LOGIN</a></div>
+  </div>
+  <div class="row promo-container">
+    <div class="col-sm-6 hidden-xs">
+      <img class="logo" src="styles/assets/quail.png">
+      <img class="judgecovey" src="http://www.pd4pic.com/images/outline-silhouette-cartoon-gun-mini-machine-guns.png">
+    </div>
+    <div class="col-sm-6 message-container">
+      <h1>Judge Covey</h1>
+      <h3>The law giver.</h3>
+    </div>
+  </div>
+  </form>
+</div>
+
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+  <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/js/bootstrap.min.js">
+</body>
+</html>

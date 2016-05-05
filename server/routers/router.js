@@ -11,6 +11,7 @@ const routeUsers = require('./router-users');
 const routeCoveys = require('./router-coveys');
 const routeRides = require('./router-rides');
 const routeResources = require('./router-resources');
+const express = require('express');
 
 // can set up different routes for each path
 const bodyParser = require('body-parser');
@@ -18,7 +19,7 @@ const morgan = require('morgan');
 
 // Authentication
 const passport = require('../config/passport.js');
-const auth = require('connect-ensure-login').ensureLoggedIn('/api/auth');
+const auth = require('connect-ensure-login').ensureLoggedIn('/');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 
@@ -52,14 +53,14 @@ app.post('/api/friends/:userId/:friendId', auth, routeUsers.addFriend);
 app.delete('/api/friends/:userId/:friendId', auth, routeUsers.removeFriend);
 
 // Routes: authentication
-app.get('/api/auth', route.login);
+// app.get('/api/auth', route.login);
 
 app.get('/api/auth/facebook',
   passport.authenticate('facebook', { scope: ['email'] })
 );
 
 app.get('/api/auth/facebook/return',
-  passport.authenticate('facebook', { failureRedirect: '/api/auth' }),
+  passport.authenticate('facebook', { failureRedirect: '/' }),
   (req, res) => res.redirect('/')
 );
 

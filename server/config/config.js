@@ -40,8 +40,8 @@ db.knex.schema.hasTable('coveys').then((exists) => {
     db.knex.schema.createTable('coveys', (covey) => {
       covey.increments('id').primary();
       covey.string('name', 100);
-      covey.string('startTime', 20);
-      covey.string('endTime', 20);
+      covey.string('startTime', 100);
+      covey.string('endTime', 100);
       covey.string('location', 100);
       covey.string('address', 100);
       covey.string('city', 100);

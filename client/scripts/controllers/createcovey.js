@@ -31,7 +31,8 @@ createCovey.controller('createCoveyController', function ($scope, $rootScope, $l
   $scope.resetFormFields();
   /*
    * Submits new covey to the server. If successful (201 response),
-   * it will close the modal and angular will redirect the bew covey
+   * it will close the modal and angular will redirect the new covey.
+   * If there's an error, it will display the error modal.
   */
   $scope.submitCovey = () => {
     // Combines date/times into a single value
@@ -63,6 +64,7 @@ createCovey.controller('createCoveyController', function ($scope, $rootScope, $l
     coveysFactory.postCovey(coveyData)
       .then((response) => {
         if (response.status !== 201) {
+          // Shows error if post was not successful
           $scope.toggleErrorVisibility();
         } else {
           $scope.toggleModalVisibility();

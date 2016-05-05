@@ -32,6 +32,10 @@ const testData = [
 const coveys = angular.module('coveys', ['covey.services']);
 
 coveys.controller('coveysController', function ($scope, $location, $rootScope, coveysFactory) {
+  /*
+   * hasCoveys can have a value of 'true', 'false', or 'error'
+   * the view will automatically change based on the value.
+   */
   $scope.hasCoveys = 'true';
   // Setting to testData for now, will update once server isrunning
   $scope.coveys = testData;
@@ -46,7 +50,7 @@ coveys.controller('coveysController', function ($scope, $location, $rootScope, c
   $scope.toggleCreateCoveyModal = () => {
     $rootScope.$broadcast('toggleCreateCoveyModal');
   };
-  // Sorts coveys based on whether the user is planning/attending/not attending
+  // Sorts coveys based on whether the user is planning
   $scope.sortCoveysByOwnershipStatus = (arrayOfCoveys) => {
     const coveysArray = arrayOfCoveys;
     for (let i = 0; i < coveysArray.length; i++) {
@@ -61,7 +65,6 @@ coveys.controller('coveysController', function ($scope, $location, $rootScope, c
   };
   /*
    * Gets all coveys from the server (for the current user)
-   * TODO: Refactor based on actual server implementation
    */
   $scope.getCoveys = () => {
     coveysFactory
@@ -83,6 +86,9 @@ coveys.controller('coveysController', function ($scope, $location, $rootScope, c
         }
       });
   };
-  // Automatically gets all coveys on page load
+  /*
+   * Automatically gets all coveys on page load.
+   * TODO: uncomment the below line once server is running.
+   */
   // $scope.getCoveys();
 });

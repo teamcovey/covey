@@ -6,10 +6,16 @@ angular.module('covey.rides')
   return (attendees, rides) => {
     let allPassengers = [];
     rides.forEach((ride) => {
-      allPassengers = allPassengers.concat(ride.passengers).concat(ride.name);
+      allPassengers = allPassengers.concat(ride.passengers);
     });
-    return attendees.filter((passenger) => (
-      allPassengers.indexOf(passenger) === -1
-    ));
+    return attendees.filter((attendee) => {
+      let result = true;
+      allPassengers.forEach((currentPassenger) => {
+        if (currentPassenger.user_id === attendee.user_id) {
+          result = false;
+        }
+      });
+      return result;
+    });
   };
 });

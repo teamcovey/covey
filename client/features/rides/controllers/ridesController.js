@@ -20,6 +20,7 @@ angular.module('covey.rides', [])
           }
         });
         $scope.ridesDetails.push({ ride, driver, passengers: riders });
+        console.log($scope.ridesDetails);
       });
     });
   });

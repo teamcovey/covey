@@ -39,6 +39,8 @@ app.get('/api/user/:userId', auth, routeUsers.getUser);
 
 app.delete('/api/user/:userId', auth, routeUsers.removeUser);
 
+app.put('/api/user/:userId', auth, routeUsers.updateUser);
+
 app.get('/api/users/:coveyId', auth, routeUsers.getAllUsers);
 
 // Routes: authentication

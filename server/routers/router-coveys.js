@@ -57,18 +57,6 @@ exports.getAllCoveys = (req, res) => {
 exports.removeCovey = (req, res) => {
   const coveyId = req.params.coveyId;
 
-  // we will remove the join tables that have the covey_id in them
-  // it appears that this is done automatically
-  // knex('coveys_users')
-  //   .where('covey_id', coveyId)
-  //   .del()
-  //   .then((affectedRows) => {
-  //     console.log('deleted rows were: ', affectedRows);
-  //   })
-  //   .catch((err) => {
-  //     console.log('error in deleting coveys_users rows: ', err);
-  //   });
-
   new Covey({ id: coveyId })
     .destroy()
     .then(() => {
@@ -134,6 +122,18 @@ exports.addAttendee = (req, res) => {
 exports.removeAttendee = (req, res) => {
   const coveyId = req.params.coveyId;
   const userId = req.params.userId;
+
+  // we will remove the join tables that have the user_id in them
+  // not implemented yet.
+  // knex('X_users')
+  //   .where('covey_id', coveyId)
+  //   .del()
+  //   .then((affectedRows) => {
+  //     console.log('deleted rows were: ', affectedRows);
+  //   })
+  //   .catch((err) => {
+  //     console.log('error in deleting coveys_users rows: ', err);
+  //   });
 
   knex('coveys_users')
     .where('user_id', userId)

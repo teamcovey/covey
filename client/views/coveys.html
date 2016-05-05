@@ -135,7 +135,7 @@
       <div class="cold-md-12 text-center">
         <div class="row">
           <div class="col-md-12">
-            <h3>My Coveys</h3>
+            <h1>My Coveys</h1>
           </div>
         </div>
         <div class="row">
@@ -155,16 +155,46 @@
     </div>
     <!-- Error view -->
     <div class="row" ng-switch-when="error">
-      <div class="cold-md-12">
-        <h1 class="text-center">There was an error retrieving your coveys =(</h1>
+      <div class="col-md-12 text-center">
+        <div class="row">
+          <div class="col-md-12">
+            <h1>My Coveys</h1>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2 col-md-offset-10">
+            <button class="btn btn-primary" ng-click="toggleCreateCoveyModal()"><b>+ Create</b></button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="cold-md-12 text-center">
+            <h3>There was an error retrieving your coveys!</h3>
+            <h4>If the problem persists, please contact support@covey.com</h4>
+          </div>
+        </div>
       </div>
     </div>
     <!-- 'No coveys' view -->
     <div class="row" ng-switch-default>
-      <div class="cold-md-12">
-        <h1 class="text-center">You have no coveys...</h1>
-        <h4 class="text-center">Click here to create a covey!</h4>
+      <div class="cold-md-12 text-center">
+        <div class="row">
+          <div class="col-md-12">
+            <h1>My Coveys</h1>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2 col-md-offset-10">
+            <button class="btn btn-primary" ng-click="toggleCreateCoveyModal()"><b>+ Create</b></button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <h3>You have no coveys</h3>
+            <h4>Click the 'create' button to make a new one!</h4>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
+<br>

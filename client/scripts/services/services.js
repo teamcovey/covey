@@ -7,18 +7,13 @@ coveyServices.factory('coveysFactory', function ($http) {
     getCoveys: () => {
       const requestUrl = '/api/coveys';
       return $http.get(requestUrl)
-      .then((response) => response, (response) => response);
+        .then((response) => response, (response) => response);
     },
     // Creates a new covey for this user
     postCovey: (coveyData) => {
       const requestUrl = '/api/coveys';
-      const requestData = {
-        covey: coveyData,
-      };
-      return $http.post(requestUrl, {
-        data: requestData,
-      })
-      .then((response) => response, (response) => response);
+      return $http.post(requestUrl, coveyData)
+        .then((response) => response, (response) => response);
     },
     // Gets a single covey for this user
     getCovey: (coveyId) => {

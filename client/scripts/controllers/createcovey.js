@@ -67,8 +67,7 @@ createCovey.controller('createCoveyController', function ($scope, $rootScope, $l
         } else {
           $scope.toggleModalVisibility();
           $scope.resetFormFields();
-          // TODO: Will need to update based on server implementaiton
-          const newCoveyId = response.id;
+          const newCoveyId = response.data.id;
           // Redirects the user to the new covey page
           $location.path('/coveys/'.concat(newCoveyId));
         }

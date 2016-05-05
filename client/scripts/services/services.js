@@ -17,13 +17,13 @@ coveyServices.factory('coveysFactory', function ($http) {
     },
     // Gets a single covey for this user
     getCovey: (coveyId) => {
-      const requestUrl = '/api/coveys/'.concat(coveyId);
+      const requestUrl = `/api/coveys/${coveyId}`;
       return $http.get(requestUrl)
         .then((response) => response, (response) => response);
     },
     // Updates a covey based on user changes
     putCovey: (coveyData, coveyId) => {
-      const requestUrl = '/api/coveys/'.concat(coveyId);
+      const requestUrl = `/api/coveys/${coveyId}`;
       const requestData = {
         covey: coveyData,
       };
@@ -34,7 +34,7 @@ coveyServices.factory('coveysFactory', function ($http) {
     },
     // Deletes a covey, based on user request
     deleteCovey: (coveyId) => {
-      const requestUrl = '/api/coveys/'.concat(coveyId);
+      const requestUrl = `/api/coveys/${coveyId}`;
       return $http.delete(requestUrl)
         .then((response) => response, (response) => response);
     },

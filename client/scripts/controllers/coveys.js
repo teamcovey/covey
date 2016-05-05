@@ -41,7 +41,7 @@ angular.module('coveys', ['covey.services'])
   $scope.coveys = testData;
   // Routes user to the specified covey (based on coveyId)
   $scope.goToCovey = (coveyId) => {
-    $location.path('/coveys/'.concat(coveyId));
+    $location.path(`/coveys/${coveyId}`);
   };
   /*
    *  Triggered whenever the 'create' button is clicked.

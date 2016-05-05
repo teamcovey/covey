@@ -71,7 +71,7 @@ angular.module('createCovey', ['covey.services'])
           $scope.resetFormFields();
           const newCoveyId = response.data.id;
           // Redirects the user to the new covey page
-          $location.path('/coveys/'.concat(newCoveyId));
+          $location.path(`/coveys/${newCoveyId}`);
         }
       });
   };

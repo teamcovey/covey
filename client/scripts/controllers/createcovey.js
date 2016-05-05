@@ -1,6 +1,6 @@
-const createCovey = angular.module('createCovey', ['covey.services']);
+angular.module('createCovey', ['covey.services'])
 
-createCovey.controller('createCoveyController', function ($scope, $rootScope, $location, coveysFactory) {
+.controller('createCoveyController', function ($scope, $rootScope, $location, coveysFactory) {
   // Visibility of modal
   $scope.visible = false;
 

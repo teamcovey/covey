@@ -22,6 +22,31 @@ exports.addResource = (req, res) => {
   });
 };
 
+exports.updateResource = (req, res) => {
+  const resourceId = req.params.resourceId;
+
+  const name = req.body.name;
+  const quantity = req.body.quantity;
+  const type = req.body.type;
+  const coveyId = req.body.coveyId;
+
+  Resource.where({ id: resourceId })
+    .fetch()
+    .then((resource) => {
+      resource.set('name', name);
+      resource.set('quantity', quantity);
+      resource.set('type', type);
+      resource.set('coveyId', coveyId);
+      resource.save()
+        .then((updatedResouce) => {
+          res.status(201).send({ updatedResouce });
+        });
+    })
+  .catch((err) => {
+    res.status(404).json(err);
+  });
+};
+
 exports.removeResource = (req, res) => {
   const resourceId = req.params.resourceId;
 
@@ -64,6 +89,8 @@ exports.getAllResources = (req, res) => {
   const coveyId = req.params.coveyId;
 
   knex.from('resources')
+    .innerJoin('resources_users', 'resources.id', 'resources_users.resource_id')
+    .innerJoin('users', 'users.id', 'resources_users.user_id')
     .where('covey_id', '=', coveyId)
     .then((resources) => {
       res.status(200).json(resources);

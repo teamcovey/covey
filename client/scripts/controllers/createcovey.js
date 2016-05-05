@@ -16,16 +16,16 @@ createCovey.controller('createCoveyController', function ($scope, $rootScope, $l
   };
   // Resets the form fields to empty
   $scope.resetFormFields = () => {
-    $scope.eventName = '';
-    $scope.eventLocation = '';
-    $scope.eventAddress = '';
-    $scope.eventCity = '';
-    $scope.eventState = '';
-    $scope.eventStartDate = '';
-    $scope.eventStarTime = '';
-    $scope.eventEndDate = '';
-    $scope.eventEndTime = '';
-    $scope.eventDescription = '';
+    $scope.name = '';
+    $scope.location = '';
+    $scope.address = '';
+    $scope.city = '';
+    $scope.state = '';
+    $scope.startDate = '';
+    $scope.starTime = '';
+    $scope.endDate = '';
+    $scope.endTime = '';
+    $scope.details = '';
   };
   // Set form fields to empty, by default
   $scope.resetFormFields();
@@ -34,18 +34,31 @@ createCovey.controller('createCoveyController', function ($scope, $rootScope, $l
    * it will close the modal and angular will redirect the bew covey
   */
   $scope.submitCovey = () => {
+    // Combines date/times into a single value
+    const combinedStartDateTime = new Date(
+      $scope.startDate.getFullYear(),
+      $scope.startDate.getMonth(),
+      $scope.startDate.getDate(),
+      $scope.startTime.getHours(),
+      $scope.startTime.getMinutes()
+      );
+    const combinedEndDateTime = new Date(
+      $scope.endDate.getFullYear(),
+      $scope.endDate.getMonth(),
+      $scope.endDate.getDate(),
+      $scope.endTime.getHours(),
+      $scope.endTime.getMinutes()
+      );
     const coveyData = {
-      name: $scope.eventName,
-      location: $scope.eventLocation,
-      address: $scope.eventAddress,
-      city: $scope.eventCity,
-      state: $scope.eventState,
-      startDate: $scope.eventStartDate,
-      startTime: $scope.eventStartTime,
-      endDate: $scope.eventEndDate,
-      endTime: $scope.eventEndTime,
-      details: $scope.eventDescription,
-      blurb: $scope.eventDescription.slice(0, 100),
+      name: $scope.name,
+      location: $scope.location,
+      address: $scope.address,
+      city: $scope.city,
+      state: $scope.state,
+      startTime: combinedStartDateTime,
+      endTime: combinedEndDateTime,
+      details: $scope.details,
+      blurb: $scope.details.slice(0, 100),
     };
     coveysFactory.postCovey(coveyData)
       .then((response) => {

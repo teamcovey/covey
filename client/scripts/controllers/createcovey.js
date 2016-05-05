@@ -65,7 +65,7 @@ angular.module('createCovey', ['covey.services'])
       .then((response) => {
         if (response.status !== 201) {
           // Shows error if post was not successful
-          if ($scope.errorVisible) $scope.toggleErrorVisibility();
+          if (!$scope.errorVisible) $scope.toggleErrorVisibility();
         } else {
           $scope.toggleModalVisibility();
           $scope.resetFormFields();

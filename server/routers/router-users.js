@@ -98,8 +98,16 @@ exports.addFriend = (req, res) => {
   knex('friends')
       .returning('friend_id')
       .insert({ user_id: userId, friend_id: friendId })
-  .then((friendIs) => {
-    res.status(201).json({ id: friendIs[0], success: true });
+  .then(() => {
+    knex('friends')
+      .returning('friend_id')
+      .insert({ user_id: userId, friend_id: friendId })
+      .then((friendIs) => {
+        res.status(201).json({ id: friendIs[0], success: true });
+      })
+      .catch((err) => {
+        res.status(404).json(err);
+      });
   })
   .catch((err) => {
     res.status(404).json(err);
@@ -114,9 +122,19 @@ exports.removeFriend = (req, res) => {
     .where('user_id', userId)
     .andWhere('friend_id', friendId)
     .del()
-    .then((affectedRows) => {
-      console.log('deleted rows were: ', affectedRows);
-      res.json({ success: true });
+    .then(() => {
+      knex('friends')
+        .where('user_id', userId)
+        .andWhere('friend_id', friendId)
+        .del()
+        .then((affectedRows) => {
+          console.log('deleted rows were: ', affectedRows);
+          res.json({ success: true });
+        })
+        .catch((err) => {
+          console.log('error in deleting friends rows: ', err);
+          res.status(404).json(err);
+        });
     })
     .catch((err) => {
       console.log('error in deleting friends rows: ', err);

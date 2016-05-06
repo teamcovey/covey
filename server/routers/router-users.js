@@ -101,7 +101,7 @@ exports.addFriend = (req, res) => {
   .then(() => {
     knex('friends')
       .returning('friend_id')
-      .insert({ user_id: userId, friend_id: friendId })
+      .insert({ user_id: friendId, friend_id: userId })
       .then((friendIs) => {
         res.status(201).json({ id: friendIs[0], success: true });
       })
@@ -124,8 +124,8 @@ exports.removeFriend = (req, res) => {
     .del()
     .then(() => {
       knex('friends')
-        .where('user_id', userId)
-        .andWhere('friend_id', friendId)
+        .where('friend_id', userId)
+        .andWhere('user_id', friendId)
         .del()
         .then((affectedRows) => {
           console.log('deleted rows were: ', affectedRows);

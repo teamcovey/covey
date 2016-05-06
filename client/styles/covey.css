@@ -39,6 +39,22 @@ span.glyphicon-menu-hamburger {
   text-align: center;
 }
 
+.attendees-list {
+  background-color: grey; 
+  display: inline-block;
+  padding: 1px;
+  margin: 3px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  font-size: 16px;
+  text-align: center;
+}
+
+.attendees-removal-list {
+  background-color: red;
+}
+
 .panel-body {
   color: #000;
 }

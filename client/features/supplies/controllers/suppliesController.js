@@ -8,34 +8,22 @@ angular.module('covey.supplies', [])
   $scope.usersSupplies = '';
   $scope.attendees = $rootScope.attendees;
 
-  /* Gets all supplies information for current covey,
-  *  gets all suppliers for each supply,
-  *  creates supplyDetails array with all supplies and supplies info,
-  *  and sets user's supplies responsibilities as well. */
+  /* Get all supplies (& supppliers) info for current covey,
+  *  and display logged-in user's assigned supplies as well. */
   const init = () => {
     suppliesHttp.getAllSupplies()
       .then((supplies) => {
-        $scope.supplies = supplies;
-        let usersCurrentSupply = '';
-        supplies.forEach((supply) => {
-          suppliesHttp.getAllSuppliers(supply.id).then((suppliers) => {
-            // Sets user's current ride in the view:
-            usersCurrentSupply += `${suppliesHelpers.findUsersSupplies(suppliers, supply, userId)}, `;
-            suppliers.forEach((supplier) => {
-              if (supplier.user_id === userId) {
-                $scope.usersSupplies += `${supply.name}, `;
-              }
-            });
-            // Sets up cached supplyDetails object:
-            $scope.supplyDetails.push({ supply, suppliers });
-          });
-        });
-        // Sets user's current ride in the view:
-        $scope.usersSupplies = usersCurrentSupply;
+        $scope.supplyDetails = supplies;
+        $scope.usersSupplies = suppliesHelpers.getUsersSupplies(supplies, 5); // CHANGE TO userId when data is live
       });
   };
 
   init();
+
+  /* Turn logged-in user's assigned supplies into a string for displaying */
+  $scope.reduceUsersSupplies = () => {
+    return suppliesHelpers.suppliesToString($scope.usersSupplies);
+  };
 
   /* Toggle edit mode visibility */
   $scope.expandSupplies = () => {
@@ -44,11 +32,7 @@ angular.module('covey.supplies', [])
 
   /* Inserts placeholder for new supply for editing purposes */
   $scope.addNewSupply = () => {
-    const supplyInput = suppliesHelpers.newSupplyInput();
-    $scope.supplyDetails.push({
-      supply: supplyInput,
-      suppliers: [],
-    });
+    $scope.supplyDetails.push(suppliesHelpers.newSupplyInput());
   };
 
   /* Creates or updates a supply when users selects 'Update' in edit view */
@@ -67,7 +51,7 @@ angular.module('covey.supplies', [])
       });
     } else {
       suppliesHttp.addSupply(supply).then((response) => {
-        $scope.supplyDetails[supplyIndex].supply.id = response.resource.id;
+        $scope.supplyDetails[supplyIndex].id = response.resource.id;
       });
     }
   };

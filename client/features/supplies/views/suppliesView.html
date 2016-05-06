@@ -7,13 +7,13 @@
   <div class="panel-body">
 
     <!-- BASIC PANEL VIEW -->
-    <div ng-hide="expandSupply">You're bringing: {{usersSupplies.slice(0, -2)}}</div>
+    <div ng-hide="expandSupply">You're bringing: {{reduceUsersSupplies().name.slice(2)}}</div>
 
     <!-- PANEL VIEW IN EDIT MODE -->
     <ul ng-show="expandSupply" class="list-unstyled">
       <li ng-repeat="supply in supplyDetails track by $index">
         <div ng-hide="editMode" class="panel panel-static">
-          {{supply.supply.name}}
+          {{supply.name}}
           <!-- DISPLAY SUPPLIERS -->
           <div ng-repeat="supplier in supply.suppliers" class="panel-users">
               {{supplier.firstName}}
@@ -23,23 +23,23 @@
 
         <!-- INDIVIDUAL SUPPLY EDIT VIEW -->
         <div ng-show="editMode" class="panel panel-edit">
-          <form ng-submit="editMode = !editMode; submitSupply(supply.supply, $index)">
-            <input type="text" name="supplyName" class="panel-input" ng-model="supply.supply.name"></input>
+          <form ng-submit="editMode = !editMode; submitSupply(supply, $index)">
+            <input type="text" name="supplyName" class="panel-input" ng-model="supply.name"></input>
             <!-- DISPLAY SUPPLIERS -->
             <div>
-              <div ng-click="removeSupplier(supplier, supply.supply)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="supplier in supply.suppliers" class="panel-current-users">
+              <div ng-click="removeSupplier(supplier, supply)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="supplier in supply.suppliers" class="panel-current-users">
                 {{mouseOverTrue ? 'X' : supplier.firstName}}
               </div>
             </div>
             <!-- DISPLAY POTENTIAL SUPPLIERS -->
             <div>
-              <div ng-click="addSupplier(attendee, supply.supply)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="attendee in attendees | alreadySupplier: supply.suppliers" class="panel-potential-users">
+              <div ng-click="addSupplier(attendee, supply)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="attendee in attendees | alreadySupplier: supply.suppliers" class="panel-potential-users">
                 {{mouseOverTrue ? '+' : attendee.firstName}}
               </div>
             </div>
             <input type="submit" id="submit" value="Update" />
           </form>
-          <button ng-click="removeSupply(supply.supply, $index); editMode = !editMode">Delete</button>
+          <button ng-click="removeSupply(supply, $index); editMode = !editMode">Delete</button>
         </div>
       </li>
     </ul>

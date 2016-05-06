@@ -1,6 +1,6 @@
-// Example Server test:
 const request = require('supertest');
 const should = require('should');
+const passportStub = require('passport-stub-es6');
 
 describe('loading express', () => {
   let server;
@@ -37,29 +37,20 @@ describe('Testing unauthorized API attempts', () => {
       });
   });
 
-  it('should redirect to "/api/auth" if authentication fails', (done) => {
+  it('should redirect to "/" if authentication fails', (done) => {
     request(server)
       .get('/api/user/1')
       .expect(302)
       .end((err, res) => {
         should.not.exist(err);
-        res.header.location.should.be.equal('/api/auth');
+        res.header.location.should.be.equal('/');
         done();
       });
-  });
-
-  it('should respond with 200 for /api/auth', (done) => {
-    request(server)
-      .get('/api/auth')
-      .expect(200)
-      .end(done);
   });
 });
 
 
 describe('Testing authorized endpoint HTTP response types', () => {
-  // const passportStub = require('passport-stub-js');
-  const passportStub = require('passport-stub-es6');
   let server;
   let coveyId;
 
@@ -69,16 +60,6 @@ describe('Testing authorized endpoint HTTP response types', () => {
     /* eslint-enable */
     passportStub.install(server);
     passportStub.login({ username: 'john.doe' });
-  });
-
-  it('should repond with 404 when when logged in --> NOTE: this needs to change to 200 when db hooked up', (done) => {
-    request(server)
-      .get('/api/user')
-      .end((err, res) => {
-        should.not.exist(err);
-        res.status.should.be.equal(404); // TODO: change to 200 when db hooked up
-        done();
-      });
   });
 
   it('response to POST /api/coveys', (done) => {
@@ -126,7 +107,6 @@ describe('Testing authorized endpoint HTTP response types', () => {
 });
 
 describe('Testing user api enpoints', () => {
-  // const server = require('../../server/server.js');
   let server;
   let userId;
   const newUser = JSON.stringify({ email: 'fools@me.com',
@@ -141,6 +121,14 @@ describe('Testing user api enpoints', () => {
     /* eslint-disable */
     server = require('../../server/server.js');
     /* eslint-enable */
+    passportStub.install(server);
+    passportStub.login({ email: 'fools@me.com',
+      facebookId: 'xxXtestingIdXxx',
+      firstName: 'Spider',
+      lastName: 'Monkey',
+      gender: 'male',
+      photoUrl: 'http://something.com/nope.jpg',
+    });
   });
 
   it('response to POST /api/signup with no data should 404', (done) => {
@@ -167,8 +155,8 @@ describe('Testing user api enpoints', () => {
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(201)
       .end((err, res) => {
-    // Calling the end function will send the request
-    // errs are generated from the expect statements and passed to end as the first argument
+        // Calling the end function will send the request
+        // errs are generated from the expect statements and passed to end as the first argument
         if (err) {
           done(err);
         } else if (res) {
@@ -183,7 +171,7 @@ describe('Testing user api enpoints', () => {
       .get(`/api/user/${userId}`)
       .end((err, res) => {
         should.not.exist(err);
-        res.status.should.be.equal(200); // TODO: change to 200 when db hooked up
+        res.status.should.be.equal(200);
         done();
       });
   });
@@ -203,3 +191,4 @@ describe('Testing user api enpoints', () => {
       });
   });
 });
+

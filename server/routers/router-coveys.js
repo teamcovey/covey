@@ -39,6 +39,7 @@ exports.addCovey = (req, res) => {
     res.status(201).json({ id: coveyId[0], success: true });
   })
   .catch((err) => {
+    console.log('addCovey: / err: ', err);
     res.status(404).json(err);
   });
 };

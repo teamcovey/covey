@@ -33,6 +33,7 @@ app.use(passport.session());
 app.use(express.static('client'));
 
 // Routes: Users
+app.post('/api/signup', auth, route.signup); // This route is used for db + auth testing
 
 app.get('/api/user/:userId', auth, routeUsers.getUser);
 

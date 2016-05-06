@@ -7,7 +7,6 @@ angular.module('covey', [
   'covey.services',
   'ngCookies',
   'auth.controller',
-  'auth.services',
   'createCovey',
   'coveys',
   'hamburger',
@@ -31,7 +30,5 @@ angular.module('covey', [
       redirectTo: '/',
     });
 })
-.run(($rootScope, Auth) => {
-  // $rootScope.loggedIn = Auth.isLoggedIn();
-  // $rootScope.loggedIn = Auth.isLoggedIn();
+.run(() => {
 });

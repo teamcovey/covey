@@ -4,26 +4,26 @@ const coveyServices = angular.module('covey.services', []);
 coveyServices.factory('coveysFactory', function ($http) {
   return ({
     // Gets the full set of coveys for this user
-    getCoveys: (endpoint) => {
-      const requestUrl = endpoint || '/api/coveys';
+    getCoveys: () => {
+      const requestUrl = '/api/coveys';
       return $http.get(requestUrl)
         .then((response) => response, (error) => error);
     },
     // Creates a new covey for this user
-    postCovey: (coveyData, endpoint) => {
-      const requestUrl = endpoint || '/api/coveys';
+    postCovey: (coveyData) => {
+      const requestUrl = '/api/coveys';
       return $http.post(requestUrl, coveyData)
         .then((response) => response, (error) => error);
     },
     // Gets a single covey for this user
-    getCovey: (coveyId, endpoint) => {
-      const requestUrl = endpoint || `/api/coveys/${coveyId}`;
+    getCovey: (coveyId) => {
+      const requestUrl = `/api/coveys/${coveyId}`;
       return $http.get(requestUrl)
         .then((response) => response, (error) => error);
     },
     // Updates a covey based on user changes
-    putCovey: (coveyData, coveyId, endpoint) => {
-      const requestUrl = endpoint || `/api/coveys/${coveyId}`;
+    putCovey: (coveyData, coveyId) => {
+      const requestUrl = `/api/coveys/${coveyId}`;
       const requestData = {
         covey: coveyData,
       };
@@ -33,8 +33,8 @@ coveyServices.factory('coveysFactory', function ($http) {
         .then((response) => response, (error) => error);
     },
     // Deletes a covey, based on user request
-    deleteCovey: (coveyId, endpoint) => {
-      const requestUrl = endpoint || `/api/coveys/${coveyId}`;
+    deleteCovey: (coveyId) => {
+      const requestUrl = `/api/coveys/${coveyId}`;
       return $http.delete(requestUrl)
         .then((response) => response, (error) => error);
     },

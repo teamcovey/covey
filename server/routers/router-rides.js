@@ -116,7 +116,7 @@ exports.getAllRides = (req, res) => {
     // .innerJoin('users', 'users.id', 'cars_users.user_id')
     .where('covey_id', '=', coveyId)
     .then((cars) => {
-      const files = [];
+      const requests = [];
       const output = [];
 /* eslint-disable */
       for (var i = 0; i < cars.length; i++) {
@@ -128,13 +128,12 @@ exports.getAllRides = (req, res) => {
             resolve();
           });
         });
-        files.push(carPromise);
+        requests.push(carPromise);
       }
-      Promise.all(files).then(() => {
+      Promise.all(requests).then(() => {
         console.log('all the riders were joined to car');
         res.status(200).json(output);
       });
-      // res.status(200).json(cars);
     })
     .catch((err) => {
       res.status(404).json(err);

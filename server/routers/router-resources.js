@@ -103,11 +103,9 @@ exports.getAllResources = (req, res) => {
   const coveyId = req.params.coveyId;
 
   knex.from('resources')
-    // .innerJoin('resources_users', 'resources.id', 'resources_users.resource_id')
-    // .innerJoin('users', 'users.id', 'resources_users.user_id')
     .where('covey_id', '=', coveyId)
     .then((resources) => {
-      const files = [];
+      const requests = [];
       const output = [];
 /* eslint-disable */
       for (var i = 0; i < resources.length; i++) {
@@ -119,29 +117,17 @@ exports.getAllResources = (req, res) => {
             resolve();
           });
         });
-        files.push(resourcePromise);
+        requests.push(resourcePromise);
       }
-      Promise.all(files).then(() => {
+      Promise.all(requests).then(() => {
         console.log('all the suppliers were joined');
         res.status(200).json(output);
       });
-
-      // res.status(200).json(resources);
     })
     .catch((err) => {
       console.log('*****Error in getAllResources: ', err);
       res.status(404).json(err);
     });
-  // knex.from('resources')
-  //   .innerJoin('resources_users', 'resources.id', 'resources_users.resource_id')
-  //   .innerJoin('users', 'users.id', 'resources_users.user_id')
-  //   .where('covey_id', '=', coveyId)
-  //   .then((resources) => {
-  //     res.status(200).json(resources);
-  //   })
-  //   .catch((err) => {
-  //     res.status(404).json(err);
-  //   });
 };
 
 exports.removeSupplier = (req, res) => {

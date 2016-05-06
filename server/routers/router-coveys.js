@@ -4,8 +4,6 @@ const User = require('../models/user.js');
 const knex = require('../config/config.js').knex;
 
 exports.addCovey = (req, res) => {
-  console.log('In addCovey');
-
   const userId = req.body.userId;
   const name = req.body.name;
   const startTime = req.body.startTime;
@@ -39,7 +37,6 @@ exports.addCovey = (req, res) => {
     res.status(201).json({ id: coveyId[0], success: true });
   })
   .catch((err) => {
-    console.log('addCovey: / err: ', err);
     res.status(404).json(err);
   });
 };
@@ -54,7 +51,6 @@ exports.getAllCoveys = (req, res) => {
       res.status(200).json(coveys);
     })
     .catch((err) => {
-      console.log('In getAllCoveys');
       res.status(404).json(err);
     });
 };

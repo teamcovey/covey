@@ -91,3 +91,49 @@ exports.updateUser = (req, res) => {
   });
 };
 
+exports.addFriend = (req, res) => {
+  const friendId = req.params.friendId;
+  const userId = req.params.userId;
+
+  knex('friends')
+      .returning('friend_id')
+      .insert({ user_id: userId, friend_id: friendId })
+  .then((friendIs) => {
+    res.status(201).json({ id: friendIs[0], success: true });
+  })
+  .catch((err) => {
+    res.status(404).json(err);
+  });
+};
+
+exports.removeFriend = (req, res) => {
+  const friendId = req.params.friendId;
+  const userId = req.params.userId;
+
+  knex('friends')
+    .where('user_id', userId)
+    .andWhere('friend_id', friendId)
+    .del()
+    .then((affectedRows) => {
+      console.log('deleted rows were: ', affectedRows);
+      res.json({ success: true });
+    })
+    .catch((err) => {
+      console.log('error in deleting friends rows: ', err);
+      res.status(404).json(err);
+    });
+};
+
+exports.getFriends = (req, res) => {
+  const userId = req.params.userId;
+
+  knex.from('users')
+    .innerJoin('friends', 'users.id', 'friends.user_id')
+    .where('user_id', '=', userId)
+    .then((users) => {
+      res.status(200).json(users);
+    })
+    .catch((err) => {
+      res.status(404).json(err);
+    });
+};

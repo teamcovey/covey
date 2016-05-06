@@ -156,5 +156,25 @@ db.knex.schema.hasTable('coveys_users').then((exists) => {
   }
 });
 
+db.knex.schema.hasTable('friends').then((exists) => {
+  if (!exists) {
+    db.knex.schema.createTable('friends', (resource) => {
+      resource.increments('id').primary();
+      resource.integer('user_id')
+        .unsigned()
+        .references('id')
+        .inTable('users')
+        .onDelete('CASCADE');
+      resource.integer('friend_id')
+        .unsigned()
+        .references('id')
+        .inTable('users')
+        .onDelete('CASCADE');
+    }).then((table) => {
+      console.log('Created Friends Table', table);
+    });
+  }
+});
+
 module.exports.db = db;
 module.exports.knex = knex;

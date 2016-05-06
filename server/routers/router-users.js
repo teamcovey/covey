@@ -83,7 +83,7 @@ exports.updateUser = (req, res) => {
       user.set('phoneNumber', phoneNumber);
       user.save()
         .then((updatedUser) => {
-          res.status(201).send({ updatedUser });
+          res.status(201).json({ updatedUser });
         });
     })
   .catch((err) => {

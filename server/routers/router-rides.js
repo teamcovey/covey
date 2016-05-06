@@ -48,7 +48,7 @@ exports.updateRide = (req, res) => {
       ride.set('coveyId', coveyId);
       ride.save()
         .then((updatedRide) => {
-          res.status(201).send({ updatedRide });
+          res.status(201).json({ updatedRide });
         });
     })
   .catch((err) => {
@@ -94,15 +94,47 @@ exports.getAllRiders = (req, res) => {
     });
 };
 
+const getRiders = car =>
+  knex.from('users')
+    .innerJoin('cars_users', 'users.id', 'cars_users.user_id')
+    .where('car_id', '=', car.id)
+    .then((riders) => {
+      car.riders = riders;
+      return car;
+    })
+    .catch((err) => {
+      console.log('error in getRiders.  will return empty array.  error is: ', err);
+      car.riders = [];
+      return car;
+    });
+
 exports.getAllRides = (req, res) => {
   const coveyId = req.params.coveyId;
 
   knex.from('cars')
-    .innerJoin('cars_users', 'cars.id', 'cars_users.car_id')
-    .innerJoin('users', 'users.id', 'cars_users.user_id')
+    // .innerJoin('cars_users', 'cars.id', 'cars_users.car_id')
+    // .innerJoin('users', 'users.id', 'cars_users.user_id')
     .where('covey_id', '=', coveyId)
     .then((cars) => {
-      res.status(200).json(cars);
+      const files = [];
+      const output = [];
+/* eslint-disable */
+      for (var i = 0; i < cars.length; i++) {
+        const carPromise = new Promise((resolve) => {
+/* eslint-enable */
+          getRiders(cars[i])
+          .then((car) => {
+            output.push(car);
+            resolve();
+          });
+        });
+        files.push(carPromise);
+      }
+      Promise.all(files).then(() => {
+        console.log('all the riders were joined to car');
+        res.status(200).json(output);
+      });
+      // res.status(200).json(cars);
     })
     .catch((err) => {
       res.status(404).json(err);

@@ -7,7 +7,7 @@
   <div class="panel-body">
 
     <!-- BASIC PANEL VIEW -->
-    <div ng-hide="expandSupply">You're bringing: {{usersSupplies}}</div>
+    <div ng-hide="expandSupply">You're bringing: {{usersSupplies.slice(0, -2)}}</div>
 
     <!-- PANEL VIEW IN EDIT MODE -->
     <ul ng-show="expandSupply" class="list-unstyled">
@@ -39,7 +39,7 @@
             </div>
             <input type="submit" id="submit" value="Update" />
           </form>
-          <button ng-click="deleteSupply(supply.supply); editMode = !editMode">Delete</button>
+          <button ng-click="removeSupply(supply.supply); editMode = !editMode">Delete</button>
         </div>
       </li>
     </ul>

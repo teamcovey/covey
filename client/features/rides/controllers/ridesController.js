@@ -2,98 +2,105 @@ angular.module('covey.rides', [])
 .controller('ridesController', function ($rootScope, $scope, ridesHelpers, ridesHttp) {
   // TODO: shared service for passing around user id... or put it on $rootScope
   const userId = 1;
+
+  $scope.expandRide = false;
   $scope.ridesDetails = [];
   $scope.attendees = $rootScope.attendees;
 
-  // TODO: change getAllRides endpoint to attatch passengers array to each rides object
-  /* Gets all supplies information for current covey,
-  *  gets all suppliers for each supply,
-  *  creates suppliesDetails array with all supplies and supplies info,
-  *  and sets user's supplies responsibilities as well. */
-  ridesHttp.getAllRides().then((rides) => {
-    $scope.rides = rides;
-    rides.forEach((ride) => {
-      ridesHttp.getAllRiders(ride.id).then((riders) => {
-        let driver;
-        riders.forEach((rider) => {
-          if (rider.isDriver) {
-            driver = rider;
-          }
-          if (rider.id === userId) {
-            $scope.usersRide = `Your riding with: ${ride.name}`;
-          }
+  /* Gets all rides information for current covey,
+  *  gets all riders for each ride,
+  *  creates ridesDetails array with all rides and riders info,
+  *  and sets user's current ride for display. */
+  const init = () => {
+    ridesHttp.getAllRides().then((rides) => {
+      $scope.rides = rides;
+      rides.forEach((ride) => {
+        ridesHttp.getAllRiders(ride.id).then((riders) => {
+          const result = ridesHelpers.findUsersRide(riders, ride, userId);
+          // Sets user's current ride in the view:
+          $scope.usersRide = result.usersRide;
+          // Sets up cached ridesDetails object:
+          $scope.ridesDetails.push({ ride, driver: result.driver, passengers: riders });
         });
-        $scope.ridesDetails.push({ ride, driver, passengers: riders });
       });
     });
-  });
+  };
 
-  $scope.expandRide = false;
+  init();
 
+  /* Toggle edit mode visibility */
   $scope.expandRides = () => {
     $scope.expandRide = !$scope.expandRide;
   };
 
+  /* Inserts placeholder for new supply for editing purposes */
   $scope.addNewRide = () => {
+    const rideInput = ridesHelpers.newRideInput(userId);
     $scope.ridesDetails.push({
-      ride: {
-        name: 'add ride',
-        departureTime: 'when to leave',
-      },
+      ride: rideInput,
       driver: {},
       passengers: [],
     });
   };
 
-  $scope.checkPassenger = (driver) => (
-    ridesHelpers.checkPassenger(driver, $scope.rides)
-  );
-
-  // BUG FIX: for some reason, when submitting a new ride with frodo's id
-  // it added frodo as a passenger to the other car
-  $scope.submitRide = (ride) => {
-    // const isPassenger = $scope.checkPassenger(ride.driverName);
-    // if (isPassenger !== null) $scope.removePassenger(ride.driverName, { id: isPassenger });
-
-    // PUT vs POST (PUT REQUIRES ID)
-    // TODO: add seats & location input boxes
-    const rideToAdd = {
-      userId: 2,
-      departureTime: ride.departureTime,
-      location: 'Bree',
-      name: ride.name,
-      seats: 4,
-    };
-
+  // TODO: add seats & location input boxes
+  $scope.submitRide = (ride, rideIndex) => {
+    /* uncomment once updateRide endpoint is created: */
     if (ride.id) {
-      rideToAdd.id = ride.id;
-      ridesHttp.put(rideToAdd);
+      // ridesHttp.updateRide(ride).then((response) => {
+      //   console.log('ride updated: ', response);
+      // });
     } else {
-      ridesHttp.addRide(rideToAdd);
+      ridesHttp.addRide(ride).then((response) => {
+        $scope.ridesDetails[rideIndex].ride.id = response.id;
+      });
+    }
+    /* Sets user's current ride in the view: */
+    $scope.usersRide = ridesHelpers.findUsersRide($scope.ridesDetails[rideIndex].passengers, $scope.ridesDetails[rideIndex].ride, userId).usersRide;
+  };
+
+  $scope.removeRide = (ride, rideIndex) => {
+    if (!ride.id) {
+      /* removes the empty placeholder ride */
+      $scope.ridesDetails.pop();
+    } else {
+      ridesHttp.removeRide(ride.id).then(() => {
+        $scope.ridesDetails.splice(rideIndex, 1);
+        /* Sets user's current ride in the view: */
+        $scope.usersRide = ridesHelpers.findUsersRide($scope.ridesDetails[rideIndex].passengers, $scope.ridesDetails[rideIndex].ride, userId).usersRide;
+      });
     }
   };
 
-  // TODO: once passenger is add, immediately update the view or rides.ridesDetails
+  // FIX BUG: add pasenger, hard coded user id ?
   $scope.addPassenger = (passenger, ride) => {
-    ridesHttp.addPassenger(ride.id, passenger.user_id);
-  };
-
-
-  // FOLLOWING TO BE REPLACED: ///////////////////////////////////
-  $scope.deleteRide = (ride) => {
-    $scope.rides.splice(ride.id - 1, 1);
-    // make PUT or DEL request to update supply
-    $scope.rides.forEach((currentRide, index) => {
-      currentRide.id = index + 1;
-    });
+    ridesHttp.addPassenger(ride.id, passenger.user_id)
+      .then((newPassenger) => {
+        /* Refresh ridesDetails with added passenger on success from db: */
+        for (let i = 0; i < $scope.ridesDetails.length; i++) {
+          if ($scope.ridesDetails[i].ride.id === ride.id) {
+            $scope.ridesDetails[i].passengers.push(passenger);
+            /* Sets user's current ride in the view: */
+            $scope.usersRide = ridesHelpers.findUsersRide($scope.ridesDetails[i].passengers, $scope.ridesDetails[i].ride, userId).usersRide;
+          }
+        }
+        console.log('Added new passenger: ', newPassenger);
+      }, (error) => {
+        console.error(error);
+      });
   };
 
   $scope.removePassenger = (passenger, ride) => {
-    $scope.rides[ride.id - 1].passengers.forEach((currentPassenger, index) => {
-      if (currentPassenger === passenger) {
-        $scope.rides[ride.id - 1].passengers.splice(index, 1);
-      }
-    });
-    // ridesHttp.deletePassenger({})
+    ridesHttp.removePassenger(ride.id, passenger.user_id)
+      .then(() => {
+        /* Refresh all rides details */
+        for (let i = 0; i < $scope.ridesDetails.length; i++) {
+          if ($scope.ridesDetails[i].ride.id === ride.id) {
+            $scope.ridesDetails[i].passengers.splice($scope.ridesDetails[i].passengers.indexOf(passenger), 1);
+            /* Sets user's current ride in the view: */
+            $scope.usersRide = ridesHelpers.findUsersRide($scope.ridesDetails[i].passengers, $scope.ridesDetails[i].ride, userId).usersRide;
+          }
+        }
+      });
   };
 });

@@ -1,29 +1,33 @@
 angular.module('covey.rides')
-.service('ridesHelpers', function () {
-  // this.getUsersRide = (ride) => {
-  //   let ridingWith = 'No rides organized yet.';
-  //   // for (let i = 0; i < rides.length; i++) {
-  //   //   console.log('RIDE OBJECT: ', rides[i]);
-  //   //   if (rides[i].passengers.indexOf(user) > -1) {
-  //   //     ridingWith = `You're riding in ${rides[i].driverName}'s car.`;
-  //   //     break;
-  //   //   } else if (rides[i].driverName === user) {
-  //   //     ridingWith = 'You\'re driving!';
-  //   //     break;
-  //   //   }
-  //   // }
-  //   return ridingWith;
-  // };
-
-  this.checkPassenger = (driver, rides) => {
-    let isPassenger = null;
-    rides.forEach((ride) => {
-      if (ride.passengers.indexOf(driver) > -1) {
-        isPassenger = ride.id;
+.service('ridesHelpers', function ($routeParams) {
+  this.findUsersRide = (riders, ride, userId) => {
+    const result = {
+      driver: {},
+      usersRide: 'You\'re not in a ride yet.',
+    };
+    riders.forEach((rider) => {
+      if (rider.isDriver) {
+        result.driver = rider;
+      }
+      if (rider.user_id === userId) {
+        if (rider.isDriver) {
+          result.usersRide = 'You\'re driving!';
+        } else {
+          result.usersRide = `You're riding with: ${ride.name}`;
+        }
       }
     });
-    return isPassenger;
+    return result;
   };
+
+  this.newRideInput = (userId) => ({
+    name: 'add ride name',
+    seats: 4,
+    location: 'The Shire',
+    departureTime: 'time',
+    coveyId: $routeParams.coveyId,
+    userId,
+  });
 })
 .service('ridesHttp', function ($http, $routeParams) {
   this.getAllRides = () => {
@@ -33,14 +37,6 @@ angular.module('covey.rides')
     });
   };
 
-  this.addRide = (newRide) => {
-    newRide.coveyId = $routeParams.coveyId;
-    return $http.post('/api/rides', newRide)
-      .then((response) => response, (error) => {
-        console.error(error);
-      });
-  };
-
   this.getAllRiders = (rideId) => {
     return $http.get(`/api/riders/${rideId}`)
     .then((riders) => riders.data, (error) => {
@@ -48,14 +44,37 @@ angular.module('covey.rides')
     });
   };
 
+  this.addRide = (newRide) => {
+    newRide.coveyId = $routeParams.coveyId;
+    return $http.post('/api/rides', newRide)
+      .then((response) => response.data, (error) => {
+        console.error(error);
+      });
+  };
+
+  this.updateRide = (updateRide) => {
+    // TODO: updateRide (needs endpoint)
+  };
+
+  this.removeRide = (rideId) => {
+    return $http.delete(`/api/rides/${rideId}`)
+      .then((response) => response, (error) => {
+        console.error(error);
+      });
+  };
+
+
   this.addPassenger = (rideId, userId) => {
-    return $http.post(
-      `/api/riders/${rideId}/${userId}`,
-      {
-        rider: userId,
-      }
-    ).then((response) => response, (error) => {
-      console.error(error);
-    });
+    return $http.post(`/api/riders/${rideId}/${userId}`, {})
+      .then((response) => response, (error) => {
+        console.error(error);
+      });
+  };
+
+  this.removePassenger = (rideId, userId) => {
+    return $http.delete(`/api/riders/${rideId}/${userId}`)
+      .then((response) => response, (error) => {
+        console.error(error);
+      });
   };
 });

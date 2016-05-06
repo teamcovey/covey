@@ -13,7 +13,7 @@
     <ul ng-show="expandRide" class="list-unstyled">
       <li ng-repeat="ride in ridesDetails track by $index">
           <div ng-hide="editMode" class="panel panel-static">
-            {{ride.ride.name}} - {{ride.ride.departureTime}}  
+            {{ride.ride.name}} - {{ride.ride.departureTime}}
             <!-- DISPLAY PASSENGERS -->
             <div ng-repeat="rider in ride.passengers" class="panel-users">
                 {{rider.firstName}}
@@ -23,7 +23,7 @@
 
           <!-- INDIVIDUAL RIDE EDIT VIEW -->
           <div ng-show="editMode" class="panel panel-edit">
-            <form ng-submit="editMode = !editMode; submitRide(ride.ride)">
+            <form ng-submit="editMode = !editMode; submitRide(ride.ride, $index)">
               <input type="text" name="driverName" class="panel-input" ng-model="ride.ride.name"></input>
               <input type="text" name="timeToLeave" class="panel-input" ng-model="ride.ride.departureTime"></input>
               <!-- DISPLAY PASSENGERS -->
@@ -40,7 +40,7 @@
               </div>
               <input type="submit" id="submit" value="Update" />
             </form>
-            <button ng-click="deleteRide(ride); editMode = !editMode;">Delete</button>
+            <button ng-click="removeRide(ride.ride, $index); editMode = !editMode;">Delete</button>
           </div>
       </li>
     </ul>

@@ -18,10 +18,10 @@ angular.module('covey.attendees')
     });
   };
 
-  // this.removeAttendee = (attendee, coveyId) => {
-  //   $http.delete(`/api/coveys/${coveyId}/${attendee.id}`)
-  //   .then((response) => response, (error) => {
-  //     console.error(error);
-  //   });
-  // };
+  this.removeAttendee = (attendeeId) => {
+    return $http.delete(`/api/coveys/${$routeParams.coveyId}/${attendeeId}`)
+    .then((response) => response, (error) => {
+      console.error(error);
+    });
+  };
 });

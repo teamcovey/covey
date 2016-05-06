@@ -41,25 +41,21 @@ angular.module('covey.supplies')
   };
 
   this.removeSupply = (supplyId) => {
-    console.log('REMOVE DIS: ', supplyId);
-    $http.delete(`/api/resources/${supplyId}`)
+    return $http.delete(`/api/resources/${supplyId}`)
     .then((response) => response, (error) => {
       console.error(error);
     });
   };
 
-
-  
-
-  this.addSupplier = (supplyId, supplier) => {
-    $http.post(`/resources/${supplyId}`, supplier)
+  this.addSupplier = (supplyId, supplierId) => {
+    return $http.post(`/api/suppliers/${supplyId}/${supplierId}`, {})
     .then((supply) => supply, (error) => {
       console.error(error);
     });
   };
 
-  this.removeSupplier = (supplyId, supplier) => {
-    $http.delete(`/resources/${supplyId}/${supplier.id}`)
+  this.removeSupplier = (supplyId, supplierId) => {
+    return $http.delete(`/api/suppliers/${supplyId}/${supplierId}`)
     .then((response) => response, (error) => {
       console.error(error);
     });

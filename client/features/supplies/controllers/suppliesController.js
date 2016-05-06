@@ -8,26 +8,30 @@ angular.module('covey.supplies', [])
   $scope.usersSupplies = '';
   $scope.attendees = $rootScope.attendees;
 
-  /* Gets all supplies information for current covey,
-  *  gets all suppliers for each supply,
-  *  creates suppliesDetails array with all supplies and supplies info,
-  *  and sets user's supplies responsibilities as well. */
-  suppliesHttp.getAllSupplies()
-    .then((supplies) => {
-      $scope.supplies = supplies;
-      supplies.forEach((supply) => {
-        suppliesHttp.getAllSuppliers(supply.id).then((suppliers) => {
-          suppliers.forEach((supplier) => {
-            if (supplier.user_id === userId) {
-              $scope.usersSupplies += supply.name;
-            }
+  const init = () => {
+    /* Gets all supplies information for current covey,
+    *  gets all suppliers for each supply,
+    *  creates suppliesDetails array with all supplies and supplies info,
+    *  and sets user's supplies responsibilities as well. */
+    suppliesHttp.getAllSupplies()
+      .then((supplies) => {
+        $scope.supplies = supplies;
+        supplies.forEach((supply) => {
+          suppliesHttp.getAllSuppliers(supply.id).then((suppliers) => {
+            suppliers.forEach((supplier) => {
+              if (supplier.user_id === userId) {
+                $scope.usersSupplies += `${supply.name}, `;
+              }
+            });
+            $scope.supplyDetails.push({ supply, suppliers });
           });
-          $scope.supplyDetails.push({ supply, suppliers });
         });
       });
-    });
+  };
 
-  /* Modal to toggle edit mode visibility */
+  init();
+
+  /* Toggle edit mode visibility */
   $scope.expandSupplies = () => {
     $scope.expandSupply = !$scope.expandSupply;
   };
@@ -43,9 +47,7 @@ angular.module('covey.supplies', [])
 
   /* Creates or updates a supply when users selects 'Update' in edit view */
   $scope.submitSupply = (supply) => {
-    console.log('SUPPLY TO ADD: ', supply);
     if (supply.id) {
-      console.log('UPDATED SUPPLY: ', supply);
       // suppliesHttp.updateSupply(supply).then((response) => {
       //   console.log('supply updated: ', response);
       // });
@@ -56,25 +58,31 @@ angular.module('covey.supplies', [])
     }
   };
 
-  $scope.deleteSupply = (supply) => {
-    suppliesHttp.removeSupply(supply.id);
+  $scope.removeSupply = (supply) => {
+    suppliesHttp.removeSupply(supply.id).then(() => {
+      $scope.supplyDetails = [];
+      init();
+    });
   };
 
-
-  
-
   $scope.addSupplier = (supplier, supply) => {
-    suppliesHttp.addSupplier(supply.id, supplier);
-    // $scope.supplies.supplies[supply.id - 1].suppliers.push(supplier);
+    suppliesHttp.addSupplier(supply.id, supplier.user_id)
+    .then((newSupplier) => {
+      $scope.supplyDetails = [];
+      init();
+    }, (error) => {
+      console.error(error);
+    });
   };
 
   $scope.removeSupplier = (supplier, supply) => {
-    suppliesHttp.removeSupplier(supply.id, supplier);
-    // $scope.supplies.supplies[supply.id - 1].suppliers.forEach((currentSupplier, index) => {
-    //   if (currentSupplier === supplier) {
-    //     $scope.supplies.supplies[supply.id - 1].suppliers.splice(index, 1);
-    //   }
-    // });
+    suppliesHttp.removeSupplier(supply.id, supplier.user_id)
+    .then((removedSupplier) => {
+      $scope.supplyDetails = [];
+      init();
+    }, (error) => {
+      console.error(error);
+    });
   };
 })
 .filter('alreadySupplier', function () {

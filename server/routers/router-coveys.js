@@ -1,5 +1,6 @@
 const Covey = require('../models/covey.js');
 const Coveys = require('../collections/coveys.js');
+const User = require('../models/user.js');
 const knex = require('../config/config.js').knex;
 
 exports.addCovey = (req, res) => {
@@ -112,7 +113,19 @@ exports.addAttendee = (req, res) => {
       .returning('covey_id')
       .insert({ user_id: userId, covey_id: coveyId })
   .then((coveyIs) => {
-    res.status(201).json({ id: coveyIs[0], success: true });
+    // please return the user object that was added.
+    new User({ id: userId })
+      .fetch()
+      .then((foundUser) => {
+        if (foundUser) {
+          res.status(201).json({ id: coveyIs[0], user: foundUser });
+        } else {
+          res.status(404).json('Could not find user in database');
+        }
+      })
+      .catch((err) => {
+        res.status(404).json(err);
+      });
   })
   .catch((err) => {
     res.status(404).json(err);

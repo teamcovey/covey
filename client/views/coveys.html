@@ -1,23 +1,6 @@
 <div class="container">
   <!-- Hamburger menu -->
-  <div class="row covey-nav" ng-controller="hamburgerController">
-    <div class="col-xs-offset-10 col-xs-2">
-      <img class="icon" src="styles/assets/quailMini.png">
-      <button type="button" class="btn btn-default btn-md hamburger" ng-click="toggleMenu()">
-        <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
-      </button>
-    </div>
-    <div class="col-md-12 hamburger-menu" ng-show="showMenu" ng-click="toggleMenu()">
-        <div class="row text-center">
-          <div class="col-md-12 hamburger-menu-item">
-            <a href="/#/coveys" class="hamburger-menu-item-text">ABOUT US</a>
-          </div>
-          <div class="col-md-12 hamburger-menu-item">
-            <a href="/#/coveys" class="hamburger-menu-item-text">LOGOUT</a>
-          </div>
-        </div>
-    </div>
-  </div>
+  <div hamburger-directive></div>
   <!-- Covey creation modal -->
   <div create-covey-directive></div>
   <!-- My coveys view. Shows all of the user's coveys -->

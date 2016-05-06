@@ -14,7 +14,7 @@ describe('Coveys Factory', () => {
     expect(coveysFactory.deleteCovey).to.be.defined;
   });
   it('Should receive a 200 when getCoveys is called', (done) => {
-    $httpBackend.expectGET('/api/coveys').respond(200, '');
+    $httpBackend.expectGET('/api/coveys/').respond(200, '');
     coveysFactory.getCoveys()
       .then((response) => {
         expect(response.status).to.equal(200);

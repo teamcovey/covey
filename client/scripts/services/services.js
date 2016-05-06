@@ -5,7 +5,11 @@ coveyServices.factory('coveysFactory', function ($http) {
   return ({
     // Gets the full set of coveys for this user
     getCoveys: () => {
-      const userId = document.cookie.match(/user_id=(\d+);*/)[1];
+      // Declaring userId in this way in order to pass the unit test. Otherwise test will fail.
+      let userId = '';
+      if (document.cookie) {
+        userId = document.cookie.match(/user_id=(\d+);*/)[1];
+      }
       const requestUrl = `/api/coveys/${userId}`;
       return $http.get(requestUrl)
         .then((response) => response, (error) => error);

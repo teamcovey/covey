@@ -32,6 +32,6 @@ angular.module('covey', [
     });
 })
 .run(($rootScope, Auth) => {
-  //$rootScope.loggedIn = Auth.isLoggedIn();
-  //$rootScope.loggedIn = Auth.isLoggedIn();
+  // $rootScope.loggedIn = Auth.isLoggedIn();
+  // $rootScope.loggedIn = Auth.isLoggedIn();
 });

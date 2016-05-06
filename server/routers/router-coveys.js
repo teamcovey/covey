@@ -97,7 +97,7 @@ exports.updateCovey = (req, res) => {
       covey.set('blurb', blurb);
       covey.save()
         .then((updatedCovey) => {
-          res.status(201).send({ updatedCovey });
+          res.status(201).json({ updatedCovey });
         });
     })
   .catch((err) => {

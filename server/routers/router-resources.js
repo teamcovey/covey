@@ -39,7 +39,7 @@ exports.updateResource = (req, res) => {
       resource.set('coveyId', coveyId);
       resource.save()
         .then((updatedResouce) => {
-          res.status(201).send({ updatedResouce });
+          res.status(201).json({ updatedResouce });
         });
     })
   .catch((err) => {
@@ -85,17 +85,47 @@ exports.getAllSuppliers = (req, res) => {
     });
 };
 
+const getSuppliers = resource =>
+  knex.from('users')
+    .innerJoin('resources_users', 'users.id', 'resources_users.user_id')
+    .where('resource_id', '=', resource.id)
+    .then((suppliers) => {
+      resource.suppliers = suppliers;
+      return resource;
+    })
+    .catch((err) => {
+      console.log('error in getSuppliers.  will return empty array.  error is: ', err);
+      resource.suppliers = [];
+      return resource;
+    });
+
 exports.getAllResources = (req, res) => {
   const coveyId = req.params.coveyId;
 
   knex.from('resources')
-    .innerJoin('resources_users', 'resources.id', 'resources_users.resource_id')
-    .innerJoin('users', 'users.id', 'resources_users.user_id')
     .where('covey_id', '=', coveyId)
     .then((resources) => {
-      res.status(200).json(resources);
+      const requests = [];
+      const output = [];
+/* eslint-disable */
+      for (var i = 0; i < resources.length; i++) {
+        const resourcePromise = new Promise((resolve) => {
+/* eslint-enable */
+          getSuppliers(resources[i])
+          .then((resource) => {
+            output.push(resource);
+            resolve();
+          });
+        });
+        requests.push(resourcePromise);
+      }
+      Promise.all(requests).then(() => {
+        console.log('all the suppliers were joined');
+        res.status(200).json(output);
+      });
     })
     .catch((err) => {
+      console.log('*****Error in getAllResources: ', err);
       res.status(404).json(err);
     });
 };

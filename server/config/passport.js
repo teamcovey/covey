@@ -11,8 +11,6 @@ passport.use(new Strategy(
     callbackURL: 'http://localhost:3000/api/auth/facebook/return',
     profileFields: ['id', 'displayName', 'name', 'gender', 'emails', 'picture.type(large)'],
   },
-
-  // TODO: handle refreshToken
   (accessToken, refreshToken, profile, done) => {
     const facebookId = profile.id;
     const firstName = profile.name.givenName;
@@ -37,7 +35,7 @@ passport.use(new Strategy(
               gender,
               photoUrl,
               accessToken,
-              refreshToken,
+              refreshToken,   // TODO: handle refreshToken
             })
             .then((user) => {
               console.log('Saving user...');

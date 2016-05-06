@@ -5,17 +5,19 @@ angular.module('covey', [
   'covey.rides',
   'covey.covey',
   'covey.services',
+  'ngCookies',
+  'auth.controller',
+  'auth.services',
   'createCovey',
   'coveys',
   'hamburger',
   'ngRoute',
-  'covey.services.auth',
 ])
 .config(($routeProvider) => {
   $routeProvider
     .when('/', {
       templateUrl: 'views/index.html',
-      controller: 'loginController',
+      controller: 'authController',
     })
     .when('/coveys', {
       templateUrl: 'views/coveys.html',
@@ -30,5 +32,6 @@ angular.module('covey', [
     });
 })
 .run(($rootScope, Auth) => {
-  // $rootScope.loggedIn = Auth.isLoggedIn();
+  //$rootScope.loggedIn = Auth.isLoggedIn();
+  //$rootScope.loggedIn = Auth.isLoggedIn();
 });

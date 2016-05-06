@@ -35,6 +35,8 @@ angular.module('createCovey', ['covey.services'])
    * If there's an error, it will display the error modal.
   */
   $scope.submitCovey = () => {
+    // Gets the user id from the cookie
+    const id = document.cookie.match(/user_id=(\d+);*/)[1];
     // Combines date/times into a single value
     const combinedStartDateTime = new Date(
       $scope.startDate.getFullYear(),
@@ -51,6 +53,7 @@ angular.module('createCovey', ['covey.services'])
       $scope.endTime.getMinutes()
       );
     const coveyData = {
+      userId: id,
       name: $scope.name,
       location: $scope.location,
       address: $scope.address,

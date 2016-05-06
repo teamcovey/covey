@@ -5,7 +5,8 @@ coveyServices.factory('coveysFactory', function ($http) {
   return ({
     // Gets the full set of coveys for this user
     getCoveys: () => {
-      const requestUrl = '/api/coveys';
+      const userId = document.cookie.match(/user_id=(\d+);*/)[1];
+      const requestUrl = `/api/coveys/${userId}`;
       return $http.get(requestUrl)
         .then((response) => response, (error) => error);
     },

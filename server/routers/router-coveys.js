@@ -113,7 +113,6 @@ exports.addAttendee = (req, res) => {
       .returning('covey_id')
       .insert({ user_id: userId, covey_id: coveyId })
   .then((coveyIs) => {
-    // please return the user object that was added.
     new User({ id: userId })
       .fetch()
       .then((foundUser) => {

@@ -10,5 +10,5 @@ before_script:
   - bower install
   - export COVEYENV=DEV
   - node server/server.js &
-  - sleep 15
+  - sleep 7
   - kill %1

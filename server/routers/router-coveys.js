@@ -1,5 +1,6 @@
 const Covey = require('../models/covey.js');
 const Coveys = require('../collections/coveys.js');
+const User = require('../models/user.js');
 const knex = require('../config/config.js').knex;
 
 exports.addCovey = (req, res) => {
@@ -112,7 +113,18 @@ exports.addAttendee = (req, res) => {
       .returning('covey_id')
       .insert({ user_id: userId, covey_id: coveyId })
   .then((coveyIs) => {
-    res.status(201).json({ id: coveyIs[0], success: true });
+    new User({ id: userId })
+      .fetch()
+      .then((foundUser) => {
+        if (foundUser) {
+          res.status(201).json({ id: coveyIs[0], user: foundUser });
+        } else {
+          res.status(404).json('Could not find user in database');
+        }
+      })
+      .catch((err) => {
+        res.status(404).json(err);
+      });
   })
   .catch((err) => {
     res.status(404).json(err);
@@ -122,9 +134,8 @@ exports.addAttendee = (req, res) => {
 exports.removeAttendee = (req, res) => {
   const coveyId = req.params.coveyId;
   const userId = req.params.userId;
-  var carArray;
-  // we will remove the join tables that have the user_id in them
-  // not implemented yet.
+  var carArray, resourceArray;
+
   knex
     .select('id')
     .from('cars')
@@ -145,16 +156,25 @@ exports.removeAttendee = (req, res) => {
         });
     });
 
-  // knex('cars_users')
-  //   .where('covey_id', coveyId)
-  //   .andWhere('user_id')
-  //   .del()
-  //   .then((affectedRows) => {
-  //     console.log('deleted rows were: ', affectedRows);
-  //   })
-  //   .catch((err) => {
-  //     console.log('error in deleting coveys_users rows: ', err);
-  //   });
+  knex
+    .select('id')
+    .from('resources')
+    .where('covey_id', coveyId)
+    .then((resources) => {
+      resourceArray = [];
+      resources.forEach((resource) => resourceArray.push(resource.id));
+
+      knex('resources_users')
+        .whereIn('resource_id', resourceArray)
+        .andWhere('user_id', userId)
+        .del()
+        .then((affectedRows) => {
+          console.log('resources_users match deleted ', affectedRows);
+        })
+        .catch((err) => {
+          console.log('error in removing attendee from resources: ', err);
+        });
+    });
 
   knex('coveys_users')
     .where('user_id', userId)

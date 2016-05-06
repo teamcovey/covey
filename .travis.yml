@@ -9,4 +9,6 @@ before_script:
   - npm install -g bower
   - bower install
   - export COVEYENV=DEV
-  # - node server/server.js &
+  - node server/server.js &
+  - sleep 7
+  - kill %1

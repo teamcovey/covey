@@ -11,7 +11,6 @@ const routeUsers = require('./router-users');
 const routeCoveys = require('./router-coveys');
 const routeRides = require('./router-rides');
 const routeResources = require('./router-resources');
-const express = require('express');
 
 // can set up different routes for each path
 const bodyParser = require('body-parser');
@@ -33,10 +32,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static('client'));
 
-// Routes: app
-app.get('/', route.getUsage);
-
-// app.post('/api/signup', auth, route.signup);
+// Routes: Users
 
 app.get('/api/user/:userId', auth, routeUsers.getUser);
 
@@ -52,9 +48,7 @@ app.post('/api/friends/:userId/:friendId', auth, routeUsers.addFriend);
 
 app.delete('/api/friends/:userId/:friendId', auth, routeUsers.removeFriend);
 
-// Routes: authentication
-// app.get('/api/auth', route.login);
-
+// Routes: authentication & sign-up
 app.get('/api/auth/facebook',
   passport.authenticate('facebook', { scope: ['email'] })
 );
@@ -73,7 +67,7 @@ app.get('/api/logout',
 
 app.get('/api/coveys/:userId', auth, routeCoveys.getAllCoveys);
 
-app.post('/api/coveys', routeCoveys.addCovey);
+app.post('/api/coveys', auth, routeCoveys.addCovey);
 
 app.delete('/api/coveys/:coveyId', auth, routeCoveys.removeCovey);
 

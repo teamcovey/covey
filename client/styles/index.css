@@ -75,10 +75,15 @@ a.nav-text:hover {
   width: 25%;
 }
 
+.image-box {
+  height: auto;
+  width: 600px;
+}
+
 .judgecovey {
   position: absolute;
   top: -17px;
-  left: 438px;
+  left: 470px;
   height: 100px;
   width: auto;
   -webkit-transform: rotate(25deg); /* Chrome, Safari, Opera */

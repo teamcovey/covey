@@ -45,6 +45,12 @@ app.put('/api/user/:userId', auth, routeUsers.updateUser);
 
 app.get('/api/users/:coveyId', auth, routeUsers.getAllUsers);
 
+app.get('/api/friends/:userId', auth, routeUsers.getFriends);
+
+app.post('/api/friends/:userId/:friendId', auth, routeUsers.addFriend);
+
+app.delete('/api/friends/:userId/:friendId', auth, routeUsers.removeFriend);
+
 // Routes: authentication
 app.get('/api/auth', route.login);
 

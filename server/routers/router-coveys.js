@@ -191,7 +191,7 @@ exports.removeAttendee = (req, res) => {
 };
 
 exports.getCovey = (req, res) => {
-  const coveyId = req.params.id;
+  const coveyId = req.params.coveyid;
 
   Covey.where({ id: coveyId })
     .fetch()

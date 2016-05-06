@@ -38,7 +38,7 @@ angular.module('covey.supplies')
 
   this.addSupply = (supply) => {
     return $http.post('/api/resources', supply)
-    .then((newSupply) => newSupply, (error) => {
+    .then((newSupply) => newSupply.data, (error) => {
       console.error(error);
     });
   };

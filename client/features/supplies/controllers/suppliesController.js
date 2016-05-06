@@ -54,13 +54,20 @@ angular.module('covey.supplies', [])
   /* Creates or updates a supply when users selects 'Update' in edit view */
   $scope.submitSupply = (supply, supplyIndex) => {
     if (supply.id) {
-      // suppliesHttp.updateSupply(supply).then((response) => {
-      //   console.log('supply updated: ', response);
-      // });
+      suppliesHttp.updateSupply(supply).then((response) => {
+        console.log('supply updated: ', response);
+        // TODO: update that name for user display too...
+        // const currentSupplyName = suppliesHelpers.findUsersSupplies($scope.supplyDetails[supplyIndex].suppliers, supply, userId);
+        // if (currentSupplyName !== 'no supplies.') {
+        //   const currentUsersSupplies = $scope.usersSupplies;
+        //   const startIndex = currentUsersSupplies.indexOf(currentSupplyName);
+        //   const endIndex = startIndex + currentSupplyName.length + 2;
+        //   $scope.usersSupplies = currentUsersSupplies.slice(0, startIndex) + currentUsersSupplies.slice(endIndex, currentUsersSupplies.length) + currentSupplyName + ', ';
+        // }
+      });
     } else {
       suppliesHttp.addSupply(supply).then((response) => {
-        console.log('supply created: ', response);
-        $scope.supplyDetails[supplyIndex].supply.id = response.id;
+        $scope.supplyDetails[supplyIndex].supply.id = response.resource.id;
       });
     }
   };
@@ -71,9 +78,15 @@ angular.module('covey.supplies', [])
       $scope.supplyDetails.pop();
     } else {
       suppliesHttp.removeSupply(supply.id).then(() => {
+        /* Remove usersRide if they were a passenger in the removed ride: */
+        const currentSupplyName = suppliesHelpers.findUsersSupplies($scope.supplyDetails[supplyIndex].suppliers, supply, userId);
+        if (currentSupplyName !== 'no supplies.') {
+          const currentUsersSupplies = $scope.usersSupplies;
+          const startIndex = currentUsersSupplies.indexOf(currentSupplyName);
+          const endIndex = startIndex + currentSupplyName.length + 2;
+          $scope.usersSupplies = currentUsersSupplies.slice(0, startIndex) + currentUsersSupplies.slice(endIndex, currentUsersSupplies.length);
+        }
         $scope.supplyDetails.splice(supplyIndex, 1);
-        /* Set user's current supplies in the view: */
-        $scope.usersSupplies += `${suppliesHelpers.findUsersSupplies($scope.supplyDetails[supplyIndex].suppliers, $scope.supplyDetails[supplyIndex].supply, userId)}, `;
       });
     }
   };
@@ -89,7 +102,9 @@ angular.module('covey.supplies', [])
           if ($scope.usersSupplies === 'no supplies, ') {
             $scope.usersSupplies = '';
           }
-          $scope.usersSupplies += `${suppliesHelpers.findUsersSupplies($scope.supplyDetails[i].suppliers, $scope.supplyDetails[i].supply, userId)}, `;
+          if (supplier.user_id === userId) {
+            $scope.usersSupplies += `${suppliesHelpers.findUsersSupplies($scope.supplyDetails[i].suppliers, $scope.supplyDetails[i].supply, userId)}, `;
+          }
         }
       }
     }, (error) => {
@@ -105,11 +120,14 @@ angular.module('covey.supplies', [])
         if ($scope.supplyDetails[i].supply.id === supply.id) {
           $scope.supplyDetails[i].suppliers.splice($scope.supplyDetails[i].suppliers.indexOf(supplier), 1);
           /* Sets user's current supply in the view: */
-          const supplyName = $scope.supplyDetails[i].supply.name;
-          const currentUsersSupplies = $scope.usersSupplies;
-          const startIndex = currentUsersSupplies.indexOf(supplyName);
-          const endIndex = startIndex + supplyName.length + 2;
-          $scope.usersSupplies = currentUsersSupplies.slice(0, startIndex) + currentUsersSupplies.slice(endIndex, currentUsersSupplies.length);
+
+          if (supplier.user_id === userId) {
+            const supplyName = $scope.supplyDetails[i].supply.name;
+            const currentUsersSupplies = $scope.usersSupplies;
+            const startIndex = currentUsersSupplies.indexOf(supplyName);
+            const endIndex = startIndex + supplyName.length + 2;
+            $scope.usersSupplies = currentUsersSupplies.slice(0, startIndex) + currentUsersSupplies.slice(endIndex, currentUsersSupplies.length);
+          }
         }
       }
     }, (error) => {

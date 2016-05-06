@@ -4,8 +4,8 @@ angular.module('covey.covey', [])
   $scope.user = coveyService.getUser();
 
 
-  coveyService.getCovey().then((covey) => {
-    $scope.details = covey;
+  coveyService.getCovey().then((response) => {
+    $scope.details = response.covey;
   });
 
   $scope.toggleEdit = () => {
@@ -14,7 +14,7 @@ angular.module('covey.covey', [])
 
   $scope.updateCovey = () => {
     coveyService.updateCovey($scope.details).then((updatedCovey) => {
-      console.log(updatedCovey);
+      console.log(response.updatedCovey);
     });
   };
 });

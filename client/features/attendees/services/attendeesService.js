@@ -13,7 +13,7 @@ angular.module('covey.attendees')
 
   this.addAttendee = (attendeeId) => {
     return $http.post(`/api/coveys/${$routeParams.coveyId}/${attendeeId}`, {})
-    .then((response) => response, (error) => {
+    .then((response) => response.data, (error) => {
       console.error(error);
     });
   };

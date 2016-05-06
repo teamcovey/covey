@@ -1,6 +1,6 @@
 angular.module('covey.rides')
 .service('ridesHelpers', function ($routeParams) {
-  this.findUsersRide = (riders, ride, userId) => {
+  this.findUsersRide = (riders, ride, userId, removing) => {
     const result = {
       driver: {},
       usersRide: 'You\'re not in a ride yet.',
@@ -10,7 +10,9 @@ angular.module('covey.rides')
         result.driver = rider;
       }
       if (rider.user_id === userId) {
-        if (rider.isDriver) {
+        if (removing) {
+          result.usersRide = 'You\'re not in a ride.'
+        } else if (rider.isDriver) {
           result.usersRide = 'You\'re driving!';
         } else {
           result.usersRide = `You're riding with: ${ride.name}`;
@@ -26,6 +28,7 @@ angular.module('covey.rides')
     seats: 4,
     location: 'The Shire',
     departureTime: 'time',
+    covey_id: $routeParams.coveyId,
     coveyId: $routeParams.coveyId,
     userId,
   });
@@ -46,7 +49,6 @@ angular.module('covey.rides')
   };
 
   this.addRide = (newRide) => {
-    newRide.coveyId = $routeParams.coveyId;
     return $http.post('/api/rides', newRide)
       .then((response) => response.data, (error) => {
         console.error(error);
@@ -54,7 +56,10 @@ angular.module('covey.rides')
   };
 
   this.updateRide = (updateRide) => {
-    // TODO: updateRide (needs endpoint)
+    return $http.put(`/api/rides/${updateRide.id}`, updateRide)
+      .then((response) => response, (error) => {
+        console.error(error);
+      });
   };
 
   this.removeRide = (rideId) => {

@@ -11,4 +11,7 @@ before_script:
   - export COVEYENV=DEV
   - node server/server.js &
   - sleep 7
+script:
+  - gulp karma
   - kill %1
+  - gulp mocha

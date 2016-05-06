@@ -23,7 +23,7 @@
 
         <!-- INDIVIDUAL SUPPLY EDIT VIEW -->
         <div ng-show="editMode" class="panel panel-edit">
-          <form ng-submit="editMode = !editMode; submitSupply(supply.supply)">
+          <form ng-submit="editMode = !editMode; submitSupply(supply.supply, $index)">
             <input type="text" name="supplyName" class="panel-input" ng-model="supply.supply.name"></input>
             <!-- DISPLAY SUPPLIERS -->
             <div>
@@ -39,7 +39,7 @@
             </div>
             <input type="submit" id="submit" value="Update" />
           </form>
-          <button ng-click="removeSupply(supply.supply); editMode = !editMode">Delete</button>
+          <button ng-click="removeSupply(supply.supply, $index); editMode = !editMode">Delete</button>
         </div>
       </li>
     </ul>

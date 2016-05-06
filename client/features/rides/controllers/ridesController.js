@@ -72,7 +72,6 @@ angular.module('covey.rides', [])
     }
   };
 
-  // FIX BUG: add pasenger, hard coded user id ?
   $scope.addPassenger = (passenger, ride) => {
     ridesHttp.addPassenger(ride.id, passenger.user_id)
       .then((newPassenger) => {

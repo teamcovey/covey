@@ -1,5 +1,16 @@
 angular.module('covey.supplies')
 .service('suppliesHelpers', function ($routeParams) {
+  /* Returns supply name if current user is a supplier */
+  this.findUsersSupplies = (suppliers, supply, userId) => {
+    let supplies = 'no supplies.';
+    suppliers.forEach((supplier) => {
+      if (supplier.user_id === userId) {
+        supplies = supply.name;
+      }
+    });
+    return supplies;
+  };
+
   /* Creates skeleton supply for easy user input and POSTing */
   this.newSupplyInput = () => (
     {
@@ -49,7 +60,7 @@ angular.module('covey.supplies')
 
   this.addSupplier = (supplyId, supplierId) => {
     return $http.post(`/api/suppliers/${supplyId}/${supplierId}`, {})
-    .then((supply) => supply, (error) => {
+    .then((supply) => supply.data, (error) => {
       console.error(error);
     });
   };

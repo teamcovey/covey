@@ -20,6 +20,7 @@ angular.module('covey.rides')
     return result;
   };
 
+  /* Creates skeleton ride for easy user input and POSTing */
   this.newRideInput = (userId) => ({
     name: 'add ride name',
     seats: 4,

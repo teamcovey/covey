@@ -7,16 +7,22 @@
     <div ng-hide="editDetails">
       <p><i>{{details.blurb}}</i></p>
       <p><b>Location:</b> {{details.address}}, {{details.city}}, {{details.state}}</p>
-      <p>From {{details.startTime}} to {{details.endTime}}</p>
+      <p><b>Start Date:</b> {{formatDate(details.startTime)}}</p>
+      <p><b>End Date:</b> {{formatDate(details.endTime)}}</p>
+      <img ng-show="showPhoto" ng-src="{{details.photoUrl}}" alt="Smiley face" height="100" width="200">
     </div>
     <div ng-show="editDetails">
       <form ng-submit="editDetails = !editDetails; updateCovey()">
         <input type="text" name="name" class="panel-input" ng-model="details.name"></input>
+        <input type="text" name="endTime" class="panel-input" ng-model="details.details"></input>
+        <input type="text" name="endTime" class="panel-input" ng-model="details.blurb"></input>
+        <input type="text" name="location" class="panel-input" ng-model="details.location"></input>
         <input type="text" name="address" class="panel-input" ng-model="details.address"></input>
         <input type="text" name="city" class="panel-input" ng-model="details.city"></input>
         <input type="text" name="state" class="panel-input" ng-model="details.state"></input>
         <input type="text" name="startTime" class="panel-input" ng-model="details.startTime"></input>
         <input type="text" name="endTime" class="panel-input" ng-model="details.endTime"></input>
+        <input type="text" name="endTime" class="panel-input" ng-model="details.photoUrl"></input>
         <input type="submit" id="submit" value="Update" />
       </form>
     </div>

@@ -11,7 +11,7 @@ angular.module('covey.covey')
 
   this.updateCovey = (covey) => {
     return $http.put(`/api/coveys/${$routeParams.coveyId}`, covey)
-    .then((response) => response.data, (error) => {
+    .then((response) => response, (error) => {
       console.error(error);
     });
   };

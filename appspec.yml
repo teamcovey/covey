@@ -4,7 +4,7 @@ files:
   - source: /
     destination: /var/www/covey
 hooks:
-  BeforeInstall:
-    - location: aws_scripts/before_build.sh
+  AfterInstall:
+    - location: aws_scripts/after_build.sh
       timeout: 300
-      runas: root
+      runas: ec2-user

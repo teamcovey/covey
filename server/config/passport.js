@@ -4,12 +4,12 @@ const User = require('../models/user.js');
 const Users = require('../collections/users.js');
 
 // Set keys file based on environment
-const keys = process.env.covey_env === 'PROD' || process.env.covey_env === 'DEV'
+var keys = process.env.covey_env === 'PROD' || process.env.covey_env === 'DEV'
   ? require('./keys.js')
   : require('./keys.example.js');
 
 // Set host based on environment
-let callback;
+var callback;
 if (process.env.covey_env === 'PROD') {
   callback = 'http://54.201.109.26/api/auth/facebook/return';
 } else if (process.env.covey_env === 'DEV') {

@@ -1,7 +1,7 @@
 const app = require('./routers/router.js');
 
 // Set port based on environment
-const port = process.env.covey_env === 'PROD' ? 80 : 3000;
+var port = process.env.covey_env === 'PROD' ? 80 : 3000;
 
 app.set('port', port);
 

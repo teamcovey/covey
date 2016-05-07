@@ -1,10 +1,14 @@
+// Set databse host based on environment
+const dbHost = process.env.covey_env === 'PROD' || process.env.covey_env === 'DEV'
+  ? 'postgres' : 'localhost';
+
 const knex = require('knex')({
   client: 'pg',
   connection: {
     user: 'postgres',
     database: 'postgres',
     port: 5432,
-    host: 'localhost',
+    host: dbHost,
     password: 'admin',
   },
   debug: false,

@@ -1,14 +1,28 @@
 const passport = require('passport');
 const Strategy = require('passport-facebook').Strategy;
-const keys = require('./keys.example.js');
 const User = require('../models/user.js');
 const Users = require('../collections/users.js');
+
+// Set keys file based on environment
+var keys = process.env.covey_env === 'PROD' || process.env.covey_env === 'DEV'
+  ? require('./keys.js')
+  : require('./keys.example.js');
+
+// Set host based on environment
+var callback;
+if (process.env.covey_env === 'PROD') {
+  callback = 'http://54.201.109.26/api/auth/facebook/return';
+} else if (process.env.covey_env === 'DEV') {
+  callback = 'http://54.201.109.26:3000/api/auth/facebook/return';
+} else {
+  callback = 'http://localhost:3000/api/auth/facebook/return';
+}
 
 passport.use(new Strategy(
   {
     clientID: keys.FB_CLIENT_ID,
     clientSecret: keys.FB_CLIENT_SECRET,
-    callbackURL: 'http://localhost:3000/api/auth/facebook/return',
+    callbackURL: callback,
     profileFields: ['id', 'displayName', 'name', 'gender', 'emails', 'picture.type(large)'],
   },
   (accessToken, refreshToken, profile, done) => {

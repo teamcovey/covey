@@ -2,11 +2,11 @@ angular.module('covey.rides')
 .service('ridesHelpers', function ($routeParams) {
   /* Iterates through all rides and finds the user's assigned ride */
   this.getUsersRide = (rides, userId) => {
-    let usersRide = { name: 'You don\'t have a ride yet'};
+    let usersRide = { name: 'none.'};
 
     rides.forEach((ride) => {
       ride.riders.forEach((rider) => {
-        if (rider.user_id === userId) {
+        if (rider.user_id.toString() === userId.toString()) {
           usersRide = ride;
         }
       });

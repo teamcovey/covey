@@ -6,7 +6,7 @@ angular.module('covey.supplies')
 
     supplies.forEach((supply) => {
       supply.suppliers.forEach((supplier) => {
-        if (supplier.user_id === userId) {
+        if (supplier.user_id.toString() === userId.toString()) {
           usersSupplies.push(supply);
         }
       });

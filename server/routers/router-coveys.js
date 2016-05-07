@@ -28,7 +28,7 @@ exports.addCovey = (req, res) => {
     details,
     blurb,
   })
-  .then((covey) =>
+  .then((covey) => 
     knex('coveys_users')
       .returning('covey_id')
       .insert({ user_id: userId, covey_id: covey.id, isOwner: true })

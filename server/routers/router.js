@@ -56,13 +56,13 @@ app.get('/api/auth/facebook',
 
 app.get('/api/auth/facebook/return',
   passport.authenticate('facebook', { failureRedirect: '/' }),
-  (req, res) => res.redirect('/#/coveys')
+  (req, res) => res.cookie('user_id', req.user).redirect('/#/coveys')
 );
 
 app.get('/api/logout',
   (req, res) => {
     req.logout();
-    req.session.destroy(() => res.redirect('/#/'));
+    req.session.destroy(() => res.cookie('user_id', req.user).redirect('/#/'));
   }
 );
 

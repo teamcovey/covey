@@ -18,7 +18,7 @@ const morgan = require('morgan');
 
 // Authentication
 const passport = require('../config/passport.js');
-const auth = require('connect-ensure-login').ensureLoggedIn('/api/auth');
+const auth = require('connect-ensure-login').ensureLoggedIn('/');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 
@@ -32,10 +32,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static('client'));
 
-// Routes: app
-app.get('/', route.getUsage);
-
-app.post('/api/signup', auth, route.signup);
+// Routes: Users
+app.post('/api/signup', auth, route.signup); // This route is used for db + auth testing
 
 app.get('/api/user/:userId', auth, routeUsers.getUser);
 
@@ -51,22 +49,20 @@ app.post('/api/friends/:userId/:friendId', auth, routeUsers.addFriend);
 
 app.delete('/api/friends/:userId/:friendId', auth, routeUsers.removeFriend);
 
-// Routes: authentication
-app.get('/api/auth', route.login);
-
+// Routes: authentication & sign-up
 app.get('/api/auth/facebook',
   passport.authenticate('facebook', { scope: ['email'] })
 );
 
 app.get('/api/auth/facebook/return',
-  passport.authenticate('facebook', { failureRedirect: '/api/auth' }),
-  (req, res) => res.redirect('/')
+  passport.authenticate('facebook', { failureRedirect: '/' }),
+  (req, res) => res.redirect('/#/coveys')
 );
 
 app.get('/api/logout',
   (req, res) => {
     req.logout();
-    req.session.destroy(() => res.redirect('/'));
+    req.session.destroy(() => res.redirect('/#/'));
   }
 );
 

@@ -25,7 +25,7 @@ db.knex.schema.hasTable('users').then((exists) => {
       user.string('lastName', 25);
       user.string('email', 60);
       user.string('gender', 20);
-      user.string('photoUrl', 100);
+      user.string('photoUrl', 255);
       user.string('phoneNumber', 20);
       user.string('accessToken');
       user.string('refreshToken');

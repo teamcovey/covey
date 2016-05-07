@@ -5,6 +5,8 @@ angular.module('covey', [
   'covey.rides',
   'covey.covey',
   'covey.services',
+  'ngCookies',
+  'auth.controller',
   'createCovey',
   'coveys',
   'hamburger',
@@ -14,7 +16,11 @@ angular.module('covey', [
   $routeProvider
     .when('/', {
       templateUrl: 'views/index.html',
-      controller: 'loginController',
+      controller: 'authController',
+    })
+    .when('/about', {
+      templateUrl: 'views/about.html',
+      controller: 'authController',
     })
     .when('/coveys', {
       templateUrl: 'views/coveys.html',

@@ -1,10 +1,14 @@
 describe('Coveys Factory', () => {
-  let coveysFactory, $httpBackend;
+  let coveysFactory;
+  let $httpBackend;
+  let userIdFactory;
   beforeEach(module('covey.services'));
+  beforeEach(module('userId.services'));
 
-  beforeEach(inject((_coveysFactory_, _$httpBackend_) => {
+  beforeEach(inject((_coveysFactory_, _$httpBackend_, _userIdFactory_) => {
     coveysFactory = _coveysFactory_;
     $httpBackend = _$httpBackend_;
+    userIdFactory = _userIdFactory_;
   }));
   it('Coveys factory functions should exist', () => {
     expect(coveysFactory.getCoveys).to.be.defined;
@@ -31,5 +35,25 @@ describe('Coveys Factory', () => {
         done();
       });
     $httpBackend.flush();
+  });
+});
+
+describe('User Id Factory', () => {
+  let userIdFactory;
+  beforeEach(module('userId.services'));
+
+  beforeEach(inject((_userIdFactory_) => {
+    userIdFactory = _userIdFactory_;
+  }));
+  it('getUserId function should exist', () => {
+    expect(userIdFactory.getUserId).to.be.defined;
+  });
+  it('should return empty string if cookie does not exist', () => {
+    expect(userIdFactory.getUserId()).to.equal('');
+  });
+  it('should return the correct cookie if it exists', () => {
+    expect(userIdFactory.getUserId()).to.equal('');
+    document.cookie = 'user_id=12345';
+    expect(userIdFactory.getUserId()).to.equal('12345');
   });
 });

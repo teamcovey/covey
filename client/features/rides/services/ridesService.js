@@ -15,28 +15,6 @@ angular.module('covey.rides')
     return usersRide;
   };
 
-  this.findUsersRide = (riders, ride, userId, removing) => {
-    const result = {
-      driver: {},
-      usersRide: 'You\'re not in a ride yet.',
-    };
-    riders.forEach((rider) => {
-      if (rider.isDriver) {
-        result.driver = rider;
-      }
-      if (rider.user_id === userId) {
-        if (removing) {
-          result.usersRide = 'You\'re not in a ride.'
-        } else if (rider.isDriver) {
-          result.usersRide = 'You\'re driving!';
-        } else {
-          result.usersRide = `You're riding with: ${ride.name}`;
-        }
-      }
-    });
-    return result;
-  };
-
   /* Creates skeleton ride for easy user input and POSTing */
   this.newRideInput = (userId) => ({
     name: 'add ride',

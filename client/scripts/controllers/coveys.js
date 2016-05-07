@@ -90,5 +90,5 @@ angular.module('coveys', ['covey.services'])
    * Automatically gets all coveys on page load.
    * TODO: uncomment the below line once server is running.
    */
-  // $scope.getCoveys();
+  $scope.getCoveys();
 });

@@ -1,6 +1,6 @@
 angular.module('createCovey', ['covey.services'])
 
-.controller('createCoveyController', function ($scope, $rootScope, $location, coveysFactory) {
+.controller('createCoveyController', function ($scope, $rootScope, $location, coveysFactory, userIdFactory) {
   // Visibility of modal
   $scope.visible = false;
 
@@ -36,7 +36,7 @@ angular.module('createCovey', ['covey.services'])
   */
   $scope.submitCovey = () => {
     // Gets the user id from the cookie
-    const id = document.cookie.match(/user_id=(\d+);*/)[1];
+    const id = userIdFactory.getUserId();
     // Combines date/times into a single value
     const combinedStartDateTime = new Date(
       $scope.startDate.getFullYear(),

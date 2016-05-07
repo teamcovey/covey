@@ -1,13 +1,12 @@
 angular.module('covey.supplies')
 .service('suppliesHelpers', function ($routeParams) {
+  /* Iterates through all supplies and finds the user's assigned supplies */
   this.getUsersSupplies = (supplies, userId) => {
     const usersSupplies = [];
 
-    // iterate over all supplies
     supplies.forEach((supply) => {
-      // find user in list of suppliers
       supply.suppliers.forEach((supplier) => {
-        if (supplier.id === userId) {
+        if (supplier.user_id === userId) {
           usersSupplies.push(supply);
         }
       });
@@ -27,16 +26,27 @@ angular.module('covey.supplies')
     }
   };
 
-  /* Returns supply name if current user is a supplier */
-  this.findUsersSupplies = (suppliers, supply, userId) => {
-    let supplies = 'no supplies.';
-    suppliers.forEach((supplier) => {
-      if (supplier.user_id === userId) {
-        supplies = supply.name;
+  this.isASupplier = (supply, potentialSupplier) => {
+    let result = false;
+    for (let i = 0; i < supply.suppliers.length; i++) {
+      if (supply.suppliers[i].user_id === potentialSupplier.user_id) {
+        result = true;
+        break;
       }
-    });
-    return supplies;
+    }
+    return result;
   };
+
+  // /* Returns supply name if current user is a supplier */
+  // this.findUsersSupplies = (suppliers, supply, userId) => {
+  //   let supplies = 'no supplies.';
+  //   suppliers.forEach((supplier) => {
+  //     if (supplier.user_id === userId) {
+  //       supplies = supply.name;
+  //     }
+  //   });
+  //   return supplies;
+  // };
 
   /* Creates skeleton supply for easy user input and POSTing */
   this.newSupplyInput = () => (
@@ -51,71 +61,8 @@ angular.module('covey.supplies')
 })
 .service('suppliesHttp', function ($http, $routeParams) {
   this.getAllSupplies = () => {
-    const dummySuppliesData = [
-      {
-        id: 1,
-        name: 'The Precious',
-        quantity: 8,
-        type: 'gear',
-        covey_id: 1,
-        suppliers: [
-          {
-            id: 5,
-            facebookId: 'tsgFullTest',
-            firstName: 'Merry',
-            lastName: 'Baggins',
-            email: 'tsg@me.com',
-            gender: 'male',
-            photoUrl: 'http://something.com/nope.jpg',
-            phoneNumber: null,
-            accessToken: null,
-            refreshToken: null,
-            user_id: 5,
-            resource_id: 1,
-          },
-          {
-            id: 7,
-            facebookId: 'tsgFullTest',
-            firstName: 'Gandalf',
-            lastName: 'Wizard',
-            email: 'tsg@me.com',
-            gender: 'male',
-            photoUrl: 'http://something.com/nope.jpg',
-            phoneNumber: null,
-            accessToken: null,
-            refreshToken: null,
-            user_id: 7,
-            resource_id: 1,
-          },
-        ],
-      },
-      {
-        id: 2,
-        name: 'Leven Bread',
-        quantity: 11,
-        type: 'food',
-        covey_id: 1,
-        suppliers: [
-          {
-            id: 5,
-            facebookId: 'tsgFullTest',
-            firstName: 'Merry',
-            lastName: 'Baggins',
-            email: 'tsg@me.com',
-            gender: 'male',
-            photoUrl: 'http://something.com/nope.jpg',
-            phoneNumber: null,
-            accessToken: null,
-            refreshToken: null,
-            user_id: 5,
-            resource_id: 1,
-          },
-        ],
-      },
-    ];
-
     return $http.get(`/api/resources/${$routeParams.coveyId}`)
-    .then((supplies) => dummySuppliesData, (error) => {
+    .then((supplies) => supplies.data, (error) => {
       console.error(error);
     });
   };

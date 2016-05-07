@@ -5,7 +5,7 @@ angular.module('covey.supplies', [])
 
   $scope.expandSupply = false;
   $scope.supplyDetails = [];
-  $scope.usersSupplies = '';
+  $scope.usersSupplies = [];
   $scope.attendees = $rootScope.attendees;
 
   /* Get all supplies (& supppliers) info for current covey,
@@ -14,7 +14,7 @@ angular.module('covey.supplies', [])
     suppliesHttp.getAllSupplies()
       .then((supplies) => {
         $scope.supplyDetails = supplies;
-        $scope.usersSupplies = suppliesHelpers.getUsersSupplies(supplies, 5); // CHANGE TO userId when data is live
+        $scope.usersSupplies = suppliesHelpers.getUsersSupplies(supplies, userId);
       });
   };
 
@@ -38,17 +38,7 @@ angular.module('covey.supplies', [])
   /* Creates or updates a supply when users selects 'Update' in edit view */
   $scope.submitSupply = (supply, supplyIndex) => {
     if (supply.id) {
-      suppliesHttp.updateSupply(supply).then((response) => {
-        console.log('supply updated: ', response);
-        // TODO: update that name for user display too...
-        // const currentSupplyName = suppliesHelpers.findUsersSupplies($scope.supplyDetails[supplyIndex].suppliers, supply, userId);
-        // if (currentSupplyName !== 'no supplies.') {
-        //   const currentUsersSupplies = $scope.usersSupplies;
-        //   const startIndex = currentUsersSupplies.indexOf(currentSupplyName);
-        //   const endIndex = startIndex + currentSupplyName.length + 2;
-        //   $scope.usersSupplies = currentUsersSupplies.slice(0, startIndex) + currentUsersSupplies.slice(endIndex, currentUsersSupplies.length) + currentSupplyName + ', ';
-        // }
-      });
+      suppliesHttp.updateSupply(supply);
     } else {
       suppliesHttp.addSupply(supply).then((response) => {
         $scope.supplyDetails[supplyIndex].id = response.resource.id;
@@ -62,14 +52,7 @@ angular.module('covey.supplies', [])
       $scope.supplyDetails.pop();
     } else {
       suppliesHttp.removeSupply(supply.id).then(() => {
-        /* Remove usersRide if they were a passenger in the removed ride: */
-        const currentSupplyName = suppliesHelpers.findUsersSupplies($scope.supplyDetails[supplyIndex].suppliers, supply, userId);
-        if (currentSupplyName !== 'no supplies.') {
-          const currentUsersSupplies = $scope.usersSupplies;
-          const startIndex = currentUsersSupplies.indexOf(currentSupplyName);
-          const endIndex = startIndex + currentSupplyName.length + 2;
-          $scope.usersSupplies = currentUsersSupplies.slice(0, startIndex) + currentUsersSupplies.slice(endIndex, currentUsersSupplies.length);
-        }
+        /* Reset supplyDetails to not display removed supply */
         $scope.supplyDetails.splice(supplyIndex, 1);
       });
     }
@@ -77,40 +60,35 @@ angular.module('covey.supplies', [])
 
   $scope.addSupplier = (supplier, supply) => {
     suppliesHttp.addSupplier(supply.id, supplier.user_id)
-    .then((newSupplier) => {
-      /* Refresh supplyDetails with added supplier on success from db: */
-      for (let i = 0; i < $scope.supplyDetails.length; i++) {
-        if ($scope.supplyDetails[i].supply.id === supply.id) {
-          $scope.supplyDetails[i].suppliers.push(supplier);
-          /* Sets user's current supply in the view: */
-          if ($scope.usersSupplies === 'no supplies, ') {
-            $scope.usersSupplies = '';
-          }
-          if (supplier.user_id === userId) {
-            $scope.usersSupplies += `${suppliesHelpers.findUsersSupplies($scope.supplyDetails[i].suppliers, $scope.supplyDetails[i].supply, userId)}, `;
+      .then(() => {
+        /* Refresh supplyDetails with added supplier on success from db: */
+        for (let i = 0; i < $scope.supplyDetails.length; i++) {
+          if ($scope.supplyDetails[i].id === supply.id) {
+            $scope.supplyDetails[i].suppliers.push(supplier);
+
+            /* If current user is the added supplier, add supply to user's supply assignments */
+            if (suppliesHelpers.isASupplier(supply, supplier)) {
+              $scope.usersSupplies = suppliesHelpers.getUsersSupplies($scope.supplyDetails, userId);
+            }
           }
         }
-      }
-    }, (error) => {
-      console.error(error);
-    });
+      }, (error) => {
+        console.error(error);
+      });
   };
 
   $scope.removeSupplier = (supplier, supply) => {
     suppliesHttp.removeSupplier(supply.id, supplier.user_id)
-    .then((removedSupplier) => {
+    .then(() => {
       /* Refresh supplyDetails with added supplier on success from db: */
       for (let i = 0; i < $scope.supplyDetails.length; i++) {
-        if ($scope.supplyDetails[i].supply.id === supply.id) {
-          $scope.supplyDetails[i].suppliers.splice($scope.supplyDetails[i].suppliers.indexOf(supplier), 1);
-          /* Sets user's current supply in the view: */
-
-          if (supplier.user_id === userId) {
-            const supplyName = $scope.supplyDetails[i].supply.name;
-            const currentUsersSupplies = $scope.usersSupplies;
-            const startIndex = currentUsersSupplies.indexOf(supplyName);
-            const endIndex = startIndex + supplyName.length + 2;
-            $scope.usersSupplies = currentUsersSupplies.slice(0, startIndex) + currentUsersSupplies.slice(endIndex, currentUsersSupplies.length);
+        if ($scope.supplyDetails[i].id === supply.id) {
+          /* If current user is the removed supplier, remove supply from user's suppy assignments */
+          if (suppliesHelpers.isASupplier(supply, supplier)) {
+            $scope.supplyDetails[i].suppliers.splice($scope.supplyDetails[i].suppliers.indexOf(supplier), 1);
+            $scope.usersSupplies = suppliesHelpers.getUsersSupplies($scope.supplyDetails, userId);
+          } else {
+            $scope.supplyDetails[i].suppliers.splice($scope.supplyDetails[i].suppliers.indexOf(supplier), 1);
           }
         }
       }

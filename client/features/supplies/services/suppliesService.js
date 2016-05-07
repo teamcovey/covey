@@ -15,7 +15,7 @@ angular.module('covey.supplies')
     return usersSupplies;
   };
 
-  /* Convert a single user's list of assigned supplies into a string list of supply names */
+  /* Converts a single user's list of assigned supplies into a string list of supply names */
   this.suppliesToString = (supplies) => {
     if (supplies.length) {
       return supplies.reduce((prev, curr) => {
@@ -26,6 +26,7 @@ angular.module('covey.supplies')
     }
   };
 
+  /* Checks if a user is a current supplier assigned to a supply */
   this.isASupplier = (supply, potentialSupplier) => {
     let result = false;
     for (let i = 0; i < supply.suppliers.length; i++) {
@@ -36,17 +37,6 @@ angular.module('covey.supplies')
     }
     return result;
   };
-
-  // /* Returns supply name if current user is a supplier */
-  // this.findUsersSupplies = (suppliers, supply, userId) => {
-  //   let supplies = 'no supplies.';
-  //   suppliers.forEach((supplier) => {
-  //     if (supplier.user_id === userId) {
-  //       supplies = supply.name;
-  //     }
-  //   });
-  //   return supplies;
-  // };
 
   /* Creates skeleton supply for easy user input and POSTing */
   this.newSupplyInput = () => (
@@ -81,7 +71,6 @@ angular.module('covey.supplies')
     });
   };
 
-  // TODO: create endpoint for updating a supply
   this.updateSupply = (supply) => {
     return $http.put(`/api/resources/${supply.id}`, supply)
     .then((updatedSupply) => updatedSupply, (error) => {

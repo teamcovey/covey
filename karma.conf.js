@@ -14,8 +14,9 @@ module.exports = function (config) {
       'client/bower_components/angular-cookies/angular-cookies.js',
 
       // our app code
-      'client/app.js',
+      'client/scripts/**/*.js',
       'client/features/**/*.js',
+      'client/app.js',
 
       // our client-side spec files - in order
       'specs/client/clientExampleSpec.js',
@@ -27,6 +28,7 @@ module.exports = function (config) {
 
     preprocessors: {
       'client/app.js': ['babel'],
+      'client/scripts/**/*.js': ['babel'],
       'client/features/**/*.js': ['babel'],
       'specs/**/*.js': ['babel'],
     },

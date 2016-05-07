@@ -1,5 +1,20 @@
 angular.module('covey.rides')
 .service('ridesHelpers', function ($routeParams) {
+  /* Iterates through all rides and finds the user's assigned ride */
+  this.getUsersRide = (rides, userId) => {
+    let usersRide = { name: 'You don\'t have a ride yet'};
+
+    rides.forEach((ride) => {
+      ride.riders.forEach((rider) => {
+        if (rider.user_id === userId) {
+          usersRide = ride;
+        }
+      });
+    });
+
+    return usersRide;
+  };
+
   this.findUsersRide = (riders, ride, userId, removing) => {
     const result = {
       driver: {},
@@ -24,13 +39,15 @@ angular.module('covey.rides')
 
   /* Creates skeleton ride for easy user input and POSTing */
   this.newRideInput = (userId) => ({
-    name: 'add ride name',
+    name: 'add ride',
     seats: 4,
     location: 'The Shire',
     departureTime: 'time',
     covey_id: $routeParams.coveyId,
     coveyId: $routeParams.coveyId,
     userId,
+    riders: [],
+    driver: {},
   });
 })
 .service('ridesHttp', function ($http, $routeParams) {

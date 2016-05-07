@@ -20,7 +20,7 @@ db.knex.schema.hasTable('users').then((exists) => {
   if (!exists) {
     db.knex.schema.createTable('users', (user) => {
       user.increments('id').primary();
-      user.string('facebookId').unique();
+      user.string('facebookId', 255).unique();
       user.string('firstName', 25);
       user.string('lastName', 25);
       user.string('email', 60);

@@ -1,12 +1,15 @@
-angular.module('covey.supplies', [])
-.controller('suppliesController', function ($scope, $rootScope, suppliesHelpers, suppliesHttp) {
-  // TODO: logged in userId will be set by some shared Auth service
-  const userId = 1;
-
+angular.module('covey.supplies', ['userId.services', 'covey.attendees'])
+.controller('suppliesController', function ($scope, $rootScope, suppliesHelpers, suppliesHttp, userIdFactory, attendeesHttp) {
+  const userId = userIdFactory.getUserId();
   $scope.expandSupply = false;
   $scope.supplyDetails = [];
   $scope.usersSupplies = [];
-  $scope.attendees = $rootScope.attendees;
+
+  /* Gets all attendees of this event */
+  attendeesHttp.getAllAttendees()
+    .then((response) => {
+      $scope.attendees = response;
+    });
 
   /* Gets all supplies (& supppliers) info for current covey,
   *  and displays logged-in user's assigned supplies as well. */
@@ -14,7 +17,6 @@ angular.module('covey.supplies', [])
     suppliesHttp.getAllSupplies()
       .then((supplies) => {
         $scope.supplyDetails = supplies;
-        console.log('ALL SUPPLIES: ', supplies);
         $scope.usersSupplies = suppliesHelpers.getUsersSupplies(supplies, userId);
       });
   };
@@ -40,6 +42,7 @@ angular.module('covey.supplies', [])
   $scope.submitSupply = (supply, supplyIndex) => {
     if (supply.id) {
       suppliesHttp.updateSupply(supply);
+      $scope.usersSupplies = suppliesHelpers.getUsersSupplies($scope.supplyDetails, userId);
     } else {
       suppliesHttp.addSupply(supply).then((response) => {
         $scope.supplyDetails[supplyIndex].id = response.resource.id;
@@ -55,6 +58,7 @@ angular.module('covey.supplies', [])
       suppliesHttp.removeSupply(supply.id).then(() => {
         /* Reset supplyDetails to not display removed supply */
         $scope.supplyDetails.splice(supplyIndex, 1);
+        $scope.usersSupplies = suppliesHelpers.getUsersSupplies($scope.supplyDetails, userId);
       });
     }
   };

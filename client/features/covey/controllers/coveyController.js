@@ -1,8 +1,5 @@
 angular.module('covey.covey', [])
 .controller('coveyController', function ($scope, coveyService) {
-  // TODO: get user object from shared main service
-  $scope.user = coveyService.getUser();
-
   coveyService.getCovey().then((response) => {
     $scope.details = response.covey;
     // TODO: add validation to check that photoUrl is a real url:

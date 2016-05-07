@@ -1,12 +1,16 @@
-angular.module('covey.rides', [])
-.controller('ridesController', function ($rootScope, $scope, ridesHelpers, ridesHttp) {
-  // TODO: shared service for passing around user id... or put it on $rootScope
-  const userId = 1;
-
+angular.module('covey.rides', ['userId.services', 'covey.attendees'])
+.controller('ridesController', function ($rootScope, $scope, ridesHelpers, ridesHttp, userIdFactory, attendeesHttp) {
+  const userId = userIdFactory.getUserId();
   $scope.expandRide = false;
   $scope.ridesDetails = [];
-  $scope.attendees = $rootScope.attendees;
   $scope.usersRide = 'You don\'t have a ride yet.';
+
+  /* Gets all attendees of this event */
+  // TODO: trigger this call when attendeesCtrl changes
+  attendeesHttp.getAllAttendees()
+    .then((response) => {
+      $scope.attendees = response;
+    });
 
   /* Gets all rides (& riders) info for current covey,
   *  and sets logged-in user's current ride for display. */

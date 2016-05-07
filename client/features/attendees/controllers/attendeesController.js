@@ -6,9 +6,6 @@ angular.module('covey.attendees', [])
   const init = () => {
     attendeesHttp.getAllAttendees().then((attendees) => {
       $scope.attendees = attendees;
-
-      /* Set attendees to rootScope so other controllers have access */
-      $rootScope.attendees = $scope.attendees;
     });
   };
 
@@ -21,7 +18,6 @@ angular.module('covey.attendees', [])
       }
       console.log('Added attendee id: ', response.user.user_id);
       $scope.attendees.push(response.user);
-      $rootScope.attendees = $scope.attendees;
     });
     $scope.newAttendee = '';
   };
@@ -31,7 +27,6 @@ angular.module('covey.attendees', [])
       .then((response) => {
         console.log('Removed Attendee id: ', attendee.user_id);
         $scope.attendees.splice($scope.attendees.indexOf(attendee), 1);
-        $rootScope.attendees = $scope.attendees;
       }, (error) => {
         console.error(error);
       });

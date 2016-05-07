@@ -1,7 +1,5 @@
 angular.module('covey.covey')
 .service('coveyService', function ($http, $routeParams) {
-  this.getUser = () => 'Test User';
-
   this.getCovey = () => {
     return $http.get(`/api/covey/${$routeParams.coveyId}`)
     .then((response) => response.data, (error) => {

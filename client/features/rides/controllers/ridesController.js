@@ -14,9 +14,7 @@ angular.module('covey.rides', [])
     ridesHttp.getAllRides()
       .then((rides) => {
         $scope.ridesDetails = rides;
-          // (1) TODO: fix ridesView to reflex new ridesDetails
         $scope.usersRide = ridesHelpers.getUsersRide(rides, userId);
-          // (2) TODO: write getUsersRide function in service
       });
   };
 
@@ -48,8 +46,6 @@ angular.module('covey.rides', [])
         $scope.ridesDetails[rideIndex].id = response.id;
       });
     }
-    /* TODO: Sets user's current ride in the view: */
-    // $scope.usersRide = ridesHelpers.findUsersRide($scope.ridesDetails[rideIndex].passengers, $scope.ridesDetails[rideIndex].ride, userId).usersRide;
   };
 
   $scope.removeRide = (ride, rideIndex) => {
@@ -58,8 +54,6 @@ angular.module('covey.rides', [])
       $scope.ridesDetails.pop();
     } else {
       ridesHttp.removeRide(ride.id).then(() => {
-        /* TODO Remove usersRide if they were a passenger in the removed ride: */
-        // $scope.usersRide = ridesHelpers.findUsersRide($scope.ridesDetails[rideIndex].passengers, $scope.ridesDetails[rideIndex].ride, userId, true).usersRide;
         $scope.ridesDetails.splice(rideIndex, 1);
       });
     }
@@ -74,8 +68,7 @@ angular.module('covey.rides', [])
             $scope.ridesDetails[i].riders.push(passenger);
             /* Add usersRide if they were a passenger in the added ride: */
             if (passenger.user_id === userId) {
-              // TODO:
-              // $scope.usersRide += ride.name;
+              // TODO: update $scope.usersRide
             }
           }
         }

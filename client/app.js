@@ -18,6 +18,10 @@ angular.module('covey', [
       templateUrl: 'views/index.html',
       controller: 'authController',
     })
+    .when('/about', {
+      templateUrl: 'views/about.html',
+      controller: 'authController',
+    })
     .when('/coveys', {
       templateUrl: 'views/coveys.html',
       controller: 'coveysController',

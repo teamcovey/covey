@@ -29,7 +29,7 @@ const testData = [
   },
 ];
 
-angular.module('coveys', ['covey.services'])
+angular.module('coveys', ['covey.services', 'userId.services'])
 
 .controller('coveysController', function ($scope, $location, $rootScope, coveysFactory) {
   /*

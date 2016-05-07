@@ -1,4 +1,4 @@
-angular.module('createCovey', ['covey.services'])
+angular.module('createCovey', ['covey.services', 'userId.services'])
 
 .controller('createCoveyController', function ($scope, $rootScope, $location, coveysFactory, userIdFactory) {
   // Visibility of modal

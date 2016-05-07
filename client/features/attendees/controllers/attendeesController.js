@@ -1,5 +1,5 @@
 angular.module('covey.attendees', [])
-.controller('attendeesController', function ($rootScope, $scope, attendeesHelpers, attendeesHttp) {
+.controller('attendeesController', function ($rootScope, $scope, attendeesHttp) {
   $scope.newAttendee = '';
 
   /* Render view with all attendees for current covey */

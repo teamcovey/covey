@@ -1,8 +1,4 @@
 angular.module('covey.attendees')
-.service('attendeesHelpers', function () {
-  this.removePassenger = (attendee, coveyId) => {};
-  this.removeSupplier = (attendee, coveyId) => {};
-})
 .service('attendeesHttp', function ($http, $routeParams) {
   this.getAllAttendees = () => {
     return $http.get(`/api/users/${$routeParams.coveyId}`)

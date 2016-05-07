@@ -50,7 +50,7 @@ describe('Testing unauthorized API attempts', () => {
 });
 
 
-describe('Testing authorized endpoint HTTP response types', () => {
+describe('Testing Covey Creation, Editing, Retrieval', () => {
   let server;
   let coveyId;
 

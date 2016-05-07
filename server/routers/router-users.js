@@ -53,6 +53,7 @@ exports.getAllUsers = (req, res) => {
     .innerJoin('coveys_users', 'users.id', 'coveys_users.user_id')
     .where('covey_id', '=', coveyId)
     .then((users) => {
+      console.log(' >>>>>>>These are my users: ', users);
       res.status(200).json(users);
     })
     .catch((err) => {

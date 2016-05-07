@@ -1,7 +1,7 @@
 angular.module('covey.supplies', [])
 .controller('suppliesController', function ($scope, $rootScope, suppliesHelpers, suppliesHttp) {
   // TODO: logged in userId will be set by some shared Auth service
-  const userId = 2;
+  const userId = 1;
 
   $scope.expandSupply = false;
   $scope.supplyDetails = [];
@@ -14,6 +14,7 @@ angular.module('covey.supplies', [])
     suppliesHttp.getAllSupplies()
       .then((supplies) => {
         $scope.supplyDetails = supplies;
+        console.log('ALL SUPPLIES: ', supplies);
         $scope.usersSupplies = suppliesHelpers.getUsersSupplies(supplies, userId);
       });
   };
@@ -99,14 +100,16 @@ angular.module('covey.supplies', [])
 })
 .filter('alreadySupplier', function () {
   return (attendees, suppliers) => {
-    return attendees.filter((attendee) => {
-      let result = true;
-      suppliers.forEach((currentSupplier) => {
-        if (currentSupplier.user_id === attendee.user_id) {
-          result = false;
-        }
+    if (Array.isArray(attendees)) {
+      return attendees.filter((attendee) => {
+        let result = true;
+        suppliers.forEach((currentSupplier) => {
+          if (currentSupplier.user_id === attendee.user_id) {
+            result = false;
+          }
+        });
+        return result;
       });
-      return result;
-    });
+    }
   };
 });

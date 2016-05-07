@@ -2,6 +2,10 @@ const request = require('supertest');
 const should = require('should');
 const passportStub = require('passport-stub-es6');
 
+let userId;
+let coveyId;
+
+
 describe('loading express', () => {
   let server;
   beforeEach(() => {
@@ -29,7 +33,7 @@ describe('Testing unauthorized API attempts', () => {
 
   it('should respond with 302 (redirect) if authentication fails', (done) => {
     request(server)
-      .get('/api/user/1')
+      .get('/api/user/2')
       .end((err, res) => {
         should.not.exist(err);
         res.status.should.be.equal(302);
@@ -39,7 +43,7 @@ describe('Testing unauthorized API attempts', () => {
 
   it('should redirect to "/" if authentication fails', (done) => {
     request(server)
-      .get('/api/user/1')
+      .get('/api/user/2')
       .expect(302)
       .end((err, res) => {
         should.not.exist(err);
@@ -49,66 +53,9 @@ describe('Testing unauthorized API attempts', () => {
   });
 });
 
-
-describe('Testing authorized endpoint HTTP response types', () => {
-  let server;
-  let coveyId;
-
-  beforeEach(() => {
-    /* eslint-disable */
-    server = require('../../server/server.js');
-    /* eslint-enable */
-    passportStub.install(server);
-    passportStub.login({ username: 'john.doe' });
-  });
-
-  it('response to POST /api/coveys', (done) => {
-    request(server)
-      .post('/api/coveys')
-      .expect(201)
-      .end((err, res) => {
-        if (err) {
-          done(err);
-        } else if (res) {
-          coveyId = res.body.id;
-          console.log('created new covey: ', res.body);
-          done();
-        }
-      });
-  });
-
-  it(`response to GET /api/coveys/${coveyId}`, (done) => {
-    request(server)
-      .get(`/api/coveys/${coveyId}`)
-      .expect(200)
-      .end(done);
-  });
-
-  it(`response to PUT /api/coveys/${coveyId}`, (done) => {
-    request(server)
-      .put(`/api/coveys/${coveyId}`)
-      .expect(201)
-      .end(done);
-  });
-
-  it(`response to DELETE /api/coveys/${coveyId}`, (done) => {
-    request(server)
-      .del(`/api/coveys/${coveyId}`)
-      .expect(200)
-      .end(done);
-  });
-
-  it('response to POST /api/signup', (done) => {
-    request(server)
-      .get('/api/signup')
-      .expect(404)
-      .end(done);
-  });
-});
-
 describe('Testing user api enpoints', () => {
   let server;
-  let userId;
+
   const newUser = JSON.stringify({ email: 'fools@me.com',
     facebookId: 'xxXtestingIdXxx',
     firstName: 'Spider',
@@ -142,12 +89,13 @@ describe('Testing user api enpoints', () => {
         if (err) {
           done(err);
         } else if (res) {
+          res.body.should.have.property('errorMessage', 'no facebookId');
           done();
         }
       });
   });
 
-  it('response to POST /api/signup with new user data should be a 201', (done) => {
+  it('response to POST /api/signup with new user: status 201, success, id', (done) => {
     request(server)
       .post('/api/signup')
       .type('json')
@@ -161,6 +109,8 @@ describe('Testing user api enpoints', () => {
           done(err);
         } else if (res) {
           userId = res.body.id;
+          res.body.should.have.property('success', true);
+          res.body.should.have.property('id');
           done();
         }
       });
@@ -172,12 +122,131 @@ describe('Testing user api enpoints', () => {
       .end((err, res) => {
         should.not.exist(err);
         res.status.should.be.equal(200);
+        res.body.user.should.have.property('facebookId', 'xxXtestingIdXxx');
+        res.body.user.should.have.property('accessToken');
+        res.body.user.should.have.property('refreshToken');
         done();
       });
   });
+});
 
-  it(`response to DELETE /api/user/${userId} with userId 
-    should delete the user and respond with 200`, (done) => {
+describe('Testing Covey Creation, Editing, Retrieval', () => {
+  let server;
+
+  const newEvent = JSON.stringify({
+    name: 'Test 1',
+    location: 'My House',
+    address: '96 ParkG Drive',
+    city: 'Whatcha',
+    state: 'CA',
+    photoUrl: 'http://nope.com/bad.jpg',
+    blurb: 'let them eat cake',
+    userId,
+  });
+
+  const updateEvent = JSON.stringify({
+    name: 'Test Updated',
+    location: 'Your House',
+    address: '111 Park Lane',
+    city: 'Whosit',
+    state: 'CA',
+    photoUrl: 'http://yep.com/good.jpg',
+    blurb: 'bring me some ice cream',
+    userId,
+  });
+
+  beforeEach(() => {
+    /* eslint-disable */
+    server = require('../../server/server.js');
+    /* eslint-enable */
+    passportStub.install(server);
+    passportStub.login({ username: 'john.doe' });
+  });
+
+  it('response to POST /api/coveys', (done) => {
+    request(server)
+      .post('/api/coveys')
+      .type('json')
+      .send(newEvent)
+      .expect(201)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          coveyId = res.body.id;
+          res.body.should.have.property('success', true);
+          res.body.should.have.property('id');
+          done();
+        }
+      });
+  });
+
+  it('response to GET /api/covey/*coveyId* for valid coveyId', (done) => {
+    request(server)
+      .get(`/api/covey/${coveyId}`)
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          res.body.covey.should.have.property('location', 'My House');
+          res.body.covey.should.have.property('id');
+          done();
+        }
+      });
+  });
+
+  it(`response to PUT /api/coveys/${coveyId}`, (done) => {
+    request(server)
+      .put(`/api/coveys/${coveyId}`)
+      .type('json')
+      .send(updateEvent)
+      .expect(201)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          res.body.should.have.property('updatedCovey');
+          res.body.updatedCovey.should.have.property('blurb', 'bring me some ice cream');
+          done();
+        }
+      });
+  });
+
+  it(`GET /api/coveys/${coveyId} after PUT. location, city`, (done) => {
+    request(server)
+      .get(`/api/covey/${coveyId}`)
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          res.body.covey.should.have.property('location', 'Your House');
+          res.body.covey.should.have.property('city', 'Whosit');
+          done();
+        }
+      });
+  });
+});
+
+describe('Testing Deletion', () => {
+  let server;
+
+  beforeEach(() => {
+    /* eslint-disable */
+    server = require('../../server/server.js');
+    /* eslint-enable */
+    passportStub.install(server);
+    passportStub.login({ email: 'fools@me.com',
+      facebookId: 'xxXtestingIdXxx',
+      firstName: 'Spider',
+      lastName: 'Monkey',
+      gender: 'male',
+      photoUrl: 'http://something.com/nope.jpg',
+    });
+  });
+
+  it('response to DELETE /api/user/#userId# with userId should delete the user and respond with 200', (done) => {
     request(server)
       .del(`/api/user/${userId}`)
       .type('json')
@@ -186,6 +255,22 @@ describe('Testing user api enpoints', () => {
         if (err) {
           done(err);
         } else if (res) {
+          res.body.should.have.property('success');
+          done();
+        }
+      });
+  });
+
+  it(`response to DELETE /api/coveys/${coveyId}`, (done) => {
+    request(server)
+      .del(`/api/coveys/${coveyId}`)
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          coveyId = res.body.id;
+          res.body.should.have.property('success', true);
           done();
         }
       });

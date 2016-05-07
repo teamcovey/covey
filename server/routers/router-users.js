@@ -29,8 +29,8 @@ exports.removeUser = (req, res) => {
   knex('coveys_users')
     .where('user_id', userId)
     .del()
-    .then((affectedRows) => {
-      console.log('deleted rows were: ', affectedRows);
+    .then(() => {
+      // place holder in case we need more actions
     })
     .catch((err) => {
       console.log('error in deleting coveys_users rows: ', err);
@@ -127,8 +127,7 @@ exports.removeFriend = (req, res) => {
         .where('friend_id', userId)
         .andWhere('user_id', friendId)
         .del()
-        .then((affectedRows) => {
-          console.log('deleted rows were: ', affectedRows);
+        .then(() => {
           res.json({ success: true });
         })
         .catch((err) => {

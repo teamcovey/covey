@@ -134,7 +134,10 @@ exports.addAttendee = (req, res) => {
 exports.removeAttendee = (req, res) => {
   const coveyId = req.params.coveyId;
   const userId = req.params.userId;
-  var carArray, resourceArray;
+  /* eslint-disable */
+  var carArray;
+  var resourceArray;
+  /* eslint-enable */
 
   knex
     .select('id')
@@ -148,8 +151,8 @@ exports.removeAttendee = (req, res) => {
         .whereIn('car_id', carArray)
         .andWhere('user_id', userId)
         .del()
-        .then((affectedRows) => {
-          console.log('cars_users match deleted ', affectedRows);
+        .then(() => {
+          // console.log('cars_users match deleted ', affectedRows);
         })
         .catch((err) => {
           console.log('error in removing attendee from cars: ', err);
@@ -168,8 +171,8 @@ exports.removeAttendee = (req, res) => {
         .whereIn('resource_id', resourceArray)
         .andWhere('user_id', userId)
         .del()
-        .then((affectedRows) => {
-          console.log('resources_users match deleted ', affectedRows);
+        .then(() => {
+          // console.log('resources_users match deleted ', affectedRows);
         })
         .catch((err) => {
           console.log('error in removing attendee from resources: ', err);
@@ -180,8 +183,7 @@ exports.removeAttendee = (req, res) => {
     .where('user_id', userId)
     .andWhere('covey_id', coveyId)
     .del()
-    .then((affectedRows) => {
-      console.log('deleted rows were: ', affectedRows);
+    .then(() => {
       res.json({ success: true });
     })
     .catch((err) => {
@@ -191,7 +193,7 @@ exports.removeAttendee = (req, res) => {
 };
 
 exports.getCovey = (req, res) => {
-  const coveyId = req.params.coveyid;
+  const coveyId = req.params.coveyId;
 
   Covey.where({ id: coveyId })
     .fetch()

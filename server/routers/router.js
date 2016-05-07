@@ -74,7 +74,7 @@ app.delete('/api/coveys/:coveyId', auth, routeCoveys.removeCovey);
 
 app.put('/api/coveys/:coveyId', auth, routeCoveys.updateCovey);
 
-app.get('/api/covey/:coveyid', auth, routeCoveys.getCovey);
+app.get('/api/covey/:coveyId', auth, routeCoveys.getCovey);
 
 app.post('/api/coveys/:coveyId/:userId', auth, routeCoveys.addAttendee);
 

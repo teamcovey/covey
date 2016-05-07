@@ -2,6 +2,10 @@ const request = require('supertest');
 const should = require('should');
 const passportStub = require('passport-stub-es6');
 
+let userId;
+let coveyId;
+
+
 describe('loading express', () => {
   let server;
   beforeEach(() => {
@@ -49,10 +53,85 @@ describe('Testing unauthorized API attempts', () => {
   });
 });
 
+describe('Testing user api enpoints', () => {
+  let server;
+
+  const newUser = JSON.stringify({ email: 'fools@me.com',
+    facebookId: 'xxXtestingIdXxx',
+    firstName: 'Spider',
+    lastName: 'Monkey',
+    gender: 'male',
+    photoUrl: 'http://something.com/nope.jpg',
+  });
+
+  beforeEach(() => {
+    /* eslint-disable */
+    server = require('../../server/server.js');
+    /* eslint-enable */
+    passportStub.install(server);
+    passportStub.login({ email: 'fools@me.com',
+      facebookId: 'xxXtestingIdXxx',
+      firstName: 'Spider',
+      lastName: 'Monkey',
+      gender: 'male',
+      photoUrl: 'http://something.com/nope.jpg',
+    });
+  });
+
+  it('response to POST /api/signup with no data should 404', (done) => {
+    request(server)
+      .post('/api/signup')
+      .type('json')
+      .send({ name: 'foo' })  // without a facebookId field, this will fail
+      .expect('Content-Type', 'application/json; charset=utf-8')
+      .expect(404)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          res.body.should.have.property('errorMessage', 'no facebookId');
+          done();
+        }
+      });
+  });
+
+  it('response to POST /api/signup with new user: status 201, success, id', (done) => {
+    request(server)
+      .post('/api/signup')
+      .type('json')
+      .send(newUser)
+      .expect('Content-Type', 'application/json; charset=utf-8')
+      .expect(201)
+      .end((err, res) => {
+        // Calling the end function will send the request
+        // errs are generated from the expect statements and passed to end as the first argument
+        if (err) {
+          done(err);
+        } else if (res) {
+          userId = res.body.id;
+          res.body.should.have.property('success', true);
+          res.body.should.have.property('id');
+          done();
+        }
+      });
+  });
+
+  it('should repond with 200 when when logged in and user exists', (done) => {
+    request(server)
+      .get(`/api/user/${userId}`)
+      .end((err, res) => {
+        should.not.exist(err);
+        res.status.should.be.equal(200);
+        res.body.user.should.have.property('facebookId', 'xxXtestingIdXxx');
+        res.body.user.should.have.property('accessToken');
+        res.body.user.should.have.property('refreshToken');
+        done();
+      });
+  });
+});
 
 describe('Testing Covey Creation, Editing, Retrieval', () => {
   let server;
-  let coveyId;
 
   const newEvent = JSON.stringify({
     name: 'Test 1',
@@ -62,7 +141,7 @@ describe('Testing Covey Creation, Editing, Retrieval', () => {
     state: 'CA',
     photoUrl: 'http://nope.com/bad.jpg',
     blurb: 'let them eat cake',
-    userId: 2,
+    userId,
   });
 
   const updateEvent = JSON.stringify({
@@ -73,7 +152,7 @@ describe('Testing Covey Creation, Editing, Retrieval', () => {
     state: 'CA',
     photoUrl: 'http://yep.com/good.jpg',
     blurb: 'bring me some ice cream',
-    userId: 2,
+    userId,
   });
 
   beforeEach(() => {
@@ -148,40 +227,10 @@ describe('Testing Covey Creation, Editing, Retrieval', () => {
         }
       });
   });
-
-  it(`response to DELETE /api/coveys/${coveyId}`, (done) => {
-    request(server)
-      .del(`/api/coveys/${coveyId}`)
-      .expect(200)
-      .end((err, res) => {
-        if (err) {
-          done(err);
-        } else if (res) {
-          coveyId = res.body.id;
-          res.body.should.have.property('success', true);
-          done();
-        }
-      });
-  });
-
-  // it('response to POST /api/signup', (done) => {
-  //   request(server)
-  //     .get('/api/signup')
-  //     .expect(404)
-  //     .end(done);
-  // });
 });
 
-describe('Testing user api enpoints', () => {
+describe('Testing Deletion', () => {
   let server;
-  let userId;
-  const newUser = JSON.stringify({ email: 'fools@me.com',
-    facebookId: 'xxXtestingIdXxx',
-    firstName: 'Spider',
-    lastName: 'Monkey',
-    gender: 'male',
-    photoUrl: 'http://something.com/nope.jpg',
-  });
 
   beforeEach(() => {
     /* eslint-disable */
@@ -197,57 +246,6 @@ describe('Testing user api enpoints', () => {
     });
   });
 
-  it('response to POST /api/signup with no data should 404', (done) => {
-    request(server)
-      .post('/api/signup')
-      .type('json')
-      .send({ name: 'foo' })  // without a facebookId field, this will fail
-      .expect('Content-Type', 'application/json; charset=utf-8')
-      .expect(404)
-      .end((err, res) => {
-        if (err) {
-          done(err);
-        } else if (res) {
-          res.body.should.have.property('errorMessage', 'no facebookId');
-          done();
-        }
-      });
-  });
-
-  it('response to POST /api/signup with new user: status 201, success, id', (done) => {
-    request(server)
-      .post('/api/signup')
-      .type('json')
-      .send(newUser)
-      .expect('Content-Type', 'application/json; charset=utf-8')
-      .expect(201)
-      .end((err, res) => {
-        // Calling the end function will send the request
-        // errs are generated from the expect statements and passed to end as the first argument
-        if (err) {
-          done(err);
-        } else if (res) {
-          userId = res.body.id;
-          res.body.should.have.property('success', true);
-          res.body.should.have.property('id');
-          done();
-        }
-      });
-  });
-
-  it('should repond with 200 when when logged in and user exists', (done) => {
-    request(server)
-      .get(`/api/user/${userId}`)
-      .end((err, res) => {
-        should.not.exist(err);
-        res.status.should.be.equal(200);
-        res.body.user.should.have.property('facebookId', 'xxXtestingIdXxx');
-        res.body.user.should.have.property('accessToken');
-        res.body.user.should.have.property('refreshToken');
-        done();
-      });
-  });
-
   it('response to DELETE /api/user/#userId# with userId should delete the user and respond with 200', (done) => {
     request(server)
       .del(`/api/user/${userId}`)
@@ -258,6 +256,21 @@ describe('Testing user api enpoints', () => {
           done(err);
         } else if (res) {
           res.body.should.have.property('success');
+          done();
+        }
+      });
+  });
+
+  it(`response to DELETE /api/coveys/${coveyId}`, (done) => {
+    request(server)
+      .del(`/api/coveys/${coveyId}`)
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          coveyId = res.body.id;
+          res.body.should.have.property('success', true);
           done();
         }
       });

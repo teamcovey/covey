@@ -56,7 +56,7 @@ app.get('/api/auth/facebook',
 
 app.get('/api/auth/facebook/return',
   passport.authenticate('facebook', { failureRedirect: '/' }),
-  (req, res) => res.cookie('user_id', req.user).redirect('/#/coveys')
+  (req, res) => res.cookie('user_id', req.user.id).redirect('/#/coveys')
 );
 
 app.get('/api/logout',

@@ -12,7 +12,7 @@
   <link rel="stylesheet" type="text/css" href="styles/about.css">
 </head>
 <body>
-
+  
   <div ng-view></div>
 
   <script src="bower_components/angular/angular.js"></script>
@@ -20,19 +20,25 @@
   <script src='bower_components/angular-cookies/angular-cookies.js'></script>
   <script src="bower_components/jquery/dist/jquery.min.js"></script>
   <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-  <script src="scripts/controllers/attendees.js"></script>
-  <script src="scripts/controllers/rides.js"></script>
-  <script src="scripts/controllers/supplies.js"></script>
-  <script src="scripts/controllers/covey.js"></script>
+  <script src="bower_components/underscore/underscore-min.js"></script>
   <script src="scripts/services/services.js"></script>
   <script src="scripts/controllers/hamburger.js"></script>
   <script src="scripts/controllers/createcovey.js"></script>
   <script src="scripts/controllers/auth.js"></script>
-  <script src="scripts/services/authServices.js"></script>
   <script src="scripts/controllers/coveys.js"></script>
   <script src="scripts/directives/createcoveydirective.js"></script>
   <script src="scripts/directives/coveysdirective.js"></script>
   <script src="scripts/directives/hamburgerdirective.js"></script>
+  <script src="features/attendees/controllers/attendeesController.js"></script>
+  <script src="features/attendees/services/attendeesService.js"></script>
+  <script src="features/rides/controllers/ridesController.js"></script>
+  <script src="features/rides/services/ridesService.js"></script>
+  <script src="features/rides/filters/ridesFilter.js"></script>
+  <script src="features/supplies/controllers/suppliesController.js"></script>
+  <script src="features/supplies/services/suppliesService.js"></script>
+  <script src="features/covey/controllers/coveyController.js"></script>
+  <script src="features/covey/services/coveyService.js"></script>
+  <script src="features/covey/directives/coveyDirectives.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

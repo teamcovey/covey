@@ -1,7 +1,5 @@
 .covey {
-  position: fixed;
   width: 100%;
-  height: 100%;
   background-color: #fff;
   font-family: Calibri;
   color: #0191C8;
@@ -37,6 +35,22 @@ span.glyphicon-menu-hamburger {
 
 .covey-title {
   text-align: center;
+}
+
+.attendees-list {
+  background-color: grey; 
+  display: inline-block;
+  padding: 1px;
+  margin: 3px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  font-size: 16px;
+  text-align: center;
+}
+
+.attendees-removal-list {
+  background-color: red;
 }
 
 .panel-body {

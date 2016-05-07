@@ -27,7 +27,7 @@ angular.module('covey', [
       controller: 'coveysController',
     })
     .when('/coveys/:coveyId', {
-      templateUrl: 'views/covey.html',
+      templateUrl: 'features/covey/views/coveyView.html',
       controller: 'coveyController',
     })
     .otherwise({

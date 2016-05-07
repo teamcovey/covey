@@ -82,7 +82,7 @@ app.delete('/api/coveys/:coveyId/:userId', auth, routeCoveys.removeAttendee);
 
 app.post('/api/rides', auth, routeRides.addRide);
 
-app.put('/api/rides/:carId', auth, routeRides.updateRide);
+app.put('/api/rides/:rideId', auth, routeRides.updateRide);
 
 app.delete('/api/rides/:carId', auth, routeRides.removeRide);
 

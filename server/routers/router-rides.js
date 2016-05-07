@@ -45,7 +45,7 @@ exports.updateRide = (req, res) => {
       ride.set('seats', seats);
       ride.set('location', location);
       ride.set('departureTime', departureTime);
-      ride.set('coveyId', coveyId);
+      ride.set('covey_id', coveyId);
       ride.save()
         .then((updatedRide) => {
           res.status(201).json({ updatedRide });

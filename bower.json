@@ -21,6 +21,7 @@
     "bootstrap": "^3.3.6",
     "angular-route": "^1.5.5",
     "angular-mocks": "^1.5.5",
-    "angular-cookies": "^1.5.5"
+    "angular-cookies": "^1.5.5",
+    "underscore": "^1.8.3"
   }
 }

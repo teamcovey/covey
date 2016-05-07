@@ -36,7 +36,7 @@ exports.updateResource = (req, res) => {
       resource.set('name', name);
       resource.set('quantity', quantity);
       resource.set('type', type);
-      resource.set('coveyId', coveyId);
+      resource.set('covey_id', coveyId);
       resource.save()
         .then((updatedResouce) => {
           res.status(201).json({ updatedResouce });

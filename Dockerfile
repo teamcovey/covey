@@ -7,6 +7,7 @@ COPY . /app
 RUN npm install
 RUN npm install -g bower
 RUN bower install --allow-root
+RUN export covey_env=DEV
 
 EXPOSE 3000
 CMD ["node", "server/server.js"]

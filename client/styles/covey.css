@@ -10,9 +10,10 @@
   text-align: center;
 }
 
-.icon {
-  width: 25%;
-  height: 25%;
+.covey-icon {
+  display:inline;
+  width: 30px;
+  height: 30px;
   padding-right: 5px;
 }
 

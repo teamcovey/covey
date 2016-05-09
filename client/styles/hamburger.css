@@ -19,3 +19,9 @@
 .hamburger-menu-item-text {
   color: #33334d;
 }
+
+/*  clear bootstrap header colors */
+.navbar-default {
+  background-color: none;
+  border-color: none;
+}

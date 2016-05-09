@@ -131,7 +131,7 @@ exports.removeFriend = (req, res) => {
           res.json({ success: true });
         })
         .catch((err) => {
-          console.log('error in deleting friends rows: ', err);
+          console.log('error in deleting friends matched rows: ', err);
           res.status(404).json(err);
         });
     })
@@ -144,9 +144,11 @@ exports.removeFriend = (req, res) => {
 exports.getFriends = (req, res) => {
   const userId = req.params.userId;
 
-  knex.from('users')
+  knex
+    .select(['users.firstName', 'users.lastName', 'users.email', 'users.photoUrl', 'users.id'])
+    .from('users')
     .innerJoin('friends', 'users.id', 'friends.user_id')
-    .where('user_id', '=', userId)
+    .where('friend_id', '=', userId)
     .then((users) => {
       res.status(200).json(users);
     })

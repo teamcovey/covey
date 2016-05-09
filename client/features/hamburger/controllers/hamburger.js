@@ -6,4 +6,8 @@ hamburger.controller('hamburgerController', function ($scope) {
   $scope.toggleMenu = () => {
     $scope.showMenu = !$scope.showMenu;
   };
+
+  // $scope.goToAbout = () => {
+  //   $location.path(`/coveys/${coveyId}`);
+  // };
 });

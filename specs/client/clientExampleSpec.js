@@ -15,6 +15,6 @@ describe('Routing', () => {
   it('Should have /coveys route, template, and controller', () => {
     expect($route.routes['/coveys']).to.be.defined;
     expect($route.routes['/coveys'].controller).to.equal('coveysController');
-    expect($route.routes['/coveys'].templateUrl).to.equal('views/coveys.html');
+    expect($route.routes['/coveys'].templateUrl).to.equal('features/coveys/views/coveys.html');
   });
 });

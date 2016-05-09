@@ -2,6 +2,6 @@ angular.module('coveys')
 
 .directive('coveysDirective', () => {
   return {
-    templateUrl: '../../views/mycoveys.html',
+    templateUrl: 'features/coveys/views/mycoveys.html',
   };
 });

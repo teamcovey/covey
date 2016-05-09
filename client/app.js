@@ -23,7 +23,7 @@ angular.module('covey', [
       controller: 'authController',
     })
     .when('/coveys', {
-      templateUrl: 'views/coveys.html',
+      templateUrl: 'features/coveys/views/coveys.html',
       controller: 'coveysController',
     })
     .when('/coveys/:coveyId', {

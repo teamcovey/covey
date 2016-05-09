@@ -7,8 +7,10 @@ angular.module('covey', [
   'userId.services',
   'date.services',
   'ngCookies',
+  'index.controller',
   'auth.controller',
   'createCovey',
+  'welcome',
   'coveys',
   'friends',
   'hamburger',
@@ -20,7 +22,7 @@ angular.module('covey', [
   $routeProvider
     .when('/', {
       templateUrl: 'views/index.html',
-      controller: 'authController',
+      controller: 'indexController',
     })
     .when('/about', {
       templateUrl: 'views/about.html',

@@ -33,21 +33,21 @@ app.use(passport.session());
 app.use(express.static('client'));
 
 // Routes: Users
-app.post('/api/signup', auth, route.signup); // This route is used for db + auth testing
+app.post('/api/signup', route.signup); // This route is used for db + auth testing
 
-app.get('/api/user/:userId', auth, routeUsers.getUser);
+app.get('/api/user/:userId', routeUsers.getUser);
 
-app.delete('/api/user/:userId', auth, routeUsers.removeUser);
+app.delete('/api/user/:userId', routeUsers.removeUser);
 
-app.put('/api/user/:userId', auth, routeUsers.updateUser);
+app.put('/api/user/:userId', routeUsers.updateUser);
 
-app.get('/api/users/:coveyId', auth, routeUsers.getAllUsers);
+app.get('/api/users/:coveyId', routeUsers.getAllUsers);
 
-app.get('/api/friends/:userId', auth, routeUsers.getFriends);
+app.get('/api/friends/:userId', routeUsers.getFriends);
 
-app.post('/api/friends/:userId/:friendId', auth, routeUsers.addFriend);
+app.post('/api/friends/:userId/:friendId', routeUsers.addFriend);
 
-app.delete('/api/friends/:userId/:friendId', auth, routeUsers.removeFriend);
+app.delete('/api/friends/:userId/:friendId', routeUsers.removeFriend);
 
 // Routes: authentication & sign-up
 app.get('/api/auth/facebook',
@@ -66,46 +66,46 @@ app.get('/api/logout',
   }
 );
 
-app.get('/api/coveys/:userId', auth, routeCoveys.getAllCoveys);
+app.get('/api/coveys/:userId', routeCoveys.getAllCoveys);
 
-app.post('/api/coveys', auth, routeCoveys.addCovey);
+app.post('/api/coveys', routeCoveys.addCovey);
 
-app.delete('/api/coveys/:coveyId', auth, routeCoveys.removeCovey);
+app.delete('/api/coveys/:coveyId', routeCoveys.removeCovey);
 
-app.put('/api/coveys/:coveyId', auth, routeCoveys.updateCovey);
+app.put('/api/coveys/:coveyId', routeCoveys.updateCovey);
 
-app.get('/api/covey/:coveyId', auth, routeCoveys.getCovey);
+app.get('/api/covey/:coveyId', routeCoveys.getCovey);
 
-app.post('/api/coveys/:coveyId/:userId', auth, routeCoveys.addAttendee);
+app.post('/api/coveys/:coveyId/:userId', routeCoveys.addAttendee);
 
-app.delete('/api/coveys/:coveyId/:userId', auth, routeCoveys.removeAttendee);
+app.delete('/api/coveys/:coveyId/:userId', routeCoveys.removeAttendee);
 
-app.post('/api/rides', auth, routeRides.addRide);
+app.post('/api/rides', routeRides.addRide);
 
-app.put('/api/rides/:rideId', auth, routeRides.updateRide);
+app.put('/api/rides/:rideId', routeRides.updateRide);
 
-app.delete('/api/rides/:carId', auth, routeRides.removeRide);
+app.delete('/api/rides/:carId', routeRides.removeRide);
 
-app.get('/api/rides/:coveyId', auth, routeRides.getAllRides);
+app.get('/api/rides/:coveyId', routeRides.getAllRides);
 
-app.get('/api/riders/:carId', auth, routeRides.getAllRiders);
+app.get('/api/riders/:carId', routeRides.getAllRiders);
 
-app.delete('/api/riders/:carId/:userId', auth, routeRides.removeRider);
+app.delete('/api/riders/:carId/:userId', routeRides.removeRider);
 
-app.post('/api/riders/:carId/:userId', auth, routeRides.addRider);
+app.post('/api/riders/:carId/:userId', routeRides.addRider);
 
-app.post('/api/resources', auth, routeResources.addResource);
+app.post('/api/resources', routeResources.addResource);
 
-app.put('/api/resources/:resourceId', auth, routeResources.updateResource);
+app.put('/api/resources/:resourceId', routeResources.updateResource);
 
-app.delete('/api/resources/:resourceId', auth, routeResources.removeResource);
+app.delete('/api/resources/:resourceId', routeResources.removeResource);
 
-app.get('/api/resources/:coveyId', auth, routeResources.getAllResources);
+app.get('/api/resources/:coveyId', routeResources.getAllResources);
 
-app.get('/api/suppliers/:resourceId', auth, routeResources.getAllSuppliers);
+app.get('/api/suppliers/:resourceId', routeResources.getAllSuppliers);
 
-app.delete('/api/suppliers/:resourceId/:userId', auth, routeResources.removeSupplier);
+app.delete('/api/suppliers/:resourceId/:userId', routeResources.removeSupplier);
 
-app.post('/api/suppliers/:resourceId/:userId', auth, routeResources.addSupplier);
+app.post('/api/suppliers/:resourceId/:userId', routeResources.addSupplier);
 
 module.exports = app;

@@ -1,5 +1,6 @@
 const User = require('../models/user.js');
 const Users = require('../collections/users.js');
+const knex = require('../config/config.js').knex;
 
 // not using these yet, but they could come into play soon.
 // const API_KEYS = require('../api_keys.js');
@@ -59,4 +60,22 @@ exports.signup = (req, res) => {
   } else {
     res.status(404).json({ errorMessage: 'no facebookId' });
   }
+};
+
+exports.searchUsers = (req, res) => {
+  const searchVal = `%${req.params.searchVal}%`;
+
+  knex
+    .select(['users.firstName', 'users.lastName', 'users.email', 'users.photoUrl', 'users.id'])
+    .from('users')
+    .where('firstName', 'like', searchVal)
+    .orWhere('lastName', 'like', searchVal)
+    .orWhere('email', 'like', searchVal)
+    .then((users) => {
+      res.json({ users });
+    })
+    .catch((err) => {
+      console.log('error in searchUsers: ', err);
+      res.status(404).json(err);
+    });
 };

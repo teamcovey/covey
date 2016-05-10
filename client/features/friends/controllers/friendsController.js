@@ -45,7 +45,6 @@ angular.module('friends', ['friends.services', 'userId.services'])
   };
 
   $scope.searchUsers = (searchString) => {
-    // let friendIndex = $scope.friends.length;
     friendsFactory
       .searchUsers(searchString)
       .then((response) => {

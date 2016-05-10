@@ -48,19 +48,14 @@ angular.module('friends', ['friends.services', 'userId.services'])
     friendsFactory
       .searchUsers(searchString)
       .then((response) => {
-        console.log('got response in searchFriends...', response.data.users);
         const data = response.data;
-        if (data.length === 0) {
-          // When hasFriends is equal to 'false' a different view will be displayed on the page
-          $scope.Results = 'false';
+        if (data.users.length === 0) {
+          // When showFriends is equal to 'empty' a different view will be displayed on the page
+          $scope.showFriends = 'empty';
         } else {
           $scope.found = data.users;
-          $scope.Results = 'true';
           $scope.showFriends = 'search';
-          // $scope.sortFriendsByOwnershipStatus($scope.friends);
         }
-        console.log('make the page reload?');
-        // $scope.getFriends();
       });
   };
   /*
@@ -77,11 +72,9 @@ angular.module('friends', ['friends.services', 'userId.services'])
           $scope.showFriends = 'error';
         } else {
           if (data.length === 0) {
-            // When hasFriends is equal to 'false' a different view will be displayed on the page
             $scope.showFriends = 'false';
           } else {
             $scope.friends = data;
-            // $scope.sortFriendsByOwnershipStatus($scope.friends);
           }
         }
       });

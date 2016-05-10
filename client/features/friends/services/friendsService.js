@@ -25,7 +25,6 @@ friendServices.factory('friendsFactory', function ($http, userIdFactory) {
         .then((response) => response, (error) => error);
     },
     searchUsers: (searchString) => {
-      console.log('time to search for a user');
       const requestUrl = `/api/searchUsers/${searchString}`;
       return $http.get(requestUrl)
         .then((response) => response, (error) => error);

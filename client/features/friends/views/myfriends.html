@@ -7,7 +7,6 @@
           <h1>My Friends</h1>
         </div>
       </div>
-      <!-- this will need to be done as part of the search bar -->
       <div class="row">
         <div class="col-md-2 col-md-offset-10">
           <form ng-submit="searchUsers(searchString)">
@@ -50,7 +49,7 @@
       </div>
     </div>
   </div>
-  <!-- Search view -->
+  <!-- Search view populated-->
   <div class="row" ng-switch-when="search">
     <div class="col-md-12 text-center">
       <div class="row">
@@ -58,7 +57,6 @@
           <h1>Add Friends</h1>
         </div>
       </div>
-      <!-- this will need to be done as part of the search bar -->
       <div class="row">
         <div class="col-md-2 col-md-offset-10">
           <form ng-submit="searchUsers(searchString)">
@@ -73,6 +71,30 @@
           <h4>{{ friend.firstName }}</h4>
           <h4>{{ friend.lastName }}</h4>
           <h5>{{ friend.email }}</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Search view empty-->
+  <div class="row" ng-switch-when="empty">
+    <div class="col-md-12 text-center">
+      <div class="row">
+        <div class="col-md-12">
+          <h1>Add Friends</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2 col-md-offset-10">
+          <form ng-submit="searchUsers(searchString)">
+            <input type="text" name="friendSearch" placeholder="...friend to search for" class="none" ng-model="searchString"></input>
+            <input type="submit" id="submit" value="Search" />
+          </form>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <h3>Sorry, that search didn't match any users.</h3>
+          <h4>Search in the box above to find and add friends.</h4>
         </div>
       </div>
     </div>

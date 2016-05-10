@@ -412,21 +412,6 @@ describe('Testing attendee actions', () => {
   //       }
   //     });
   // });
-
-  it('DELETE /api/user/2ndUser for cleanup testing', (done) => {
-    request(server)
-      .del(`/api/user/${userId2}`)
-      .type('json')
-      .expect(200)
-      .end((err, res) => {
-        if (err) {
-          done(err);
-        } else if (res) {
-          res.body.should.have.property('success');
-          done();
-        }
-      });
-  });
 });
 
 describe('Testing resources functionality', () => {
@@ -672,7 +657,7 @@ describe('Testing resources functionality', () => {
   });
 });
 
-describe('Testing resources functionality', () => {
+describe('Testing cars functionality', () => {
   let server;
   let newCar;
   let updatedCar;
@@ -684,17 +669,246 @@ describe('Testing resources functionality', () => {
     /* eslint-enable */
     passportStub.install(server);
     passportStub.login({ username: 'john.doe' });
+    newCar = {
+      userId: userId,
+      name: 'Gandalf\'s car',
+      seats: 5,
+      location: 'The Shire',
+      departureTime: 'Whenever',
+      coveyId: coveyId,
+    };
+    updatedCar = newCar;
+    updatedCar.seats = 6;
   });
 
-  it('POST /api/resources should respond with 401 if user cookie not valid', (done) => {
+  it('POST /api/rides should respond with 401 if unauthorized', (done) => {
     request(server)
-      .post('/api/resources')
+      .post('/api/rides')
       .type('json')
+      .send(newCar)
       .expect(401)
       .end((err, res) => {
         if (err) {
           done(err);
         } else if (res) {
+          done();
+        }
+      });
+  });
+  it('POST /api/rides should respond with 201 if authorized', (done) => {
+    request(server)
+      .post('/api/rides')
+      .set('Cookie', [`user_id=${userId}`])
+      .type('json')
+      .send(newCar)
+      .expect(201)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          res.body.success.should.be.equal(true);
+          carId = res.body.id;
+          done();
+        }
+      });
+  });
+
+  it('PUT /api/rides/:carId should respond with 401 if unauthorized', (done) => {
+    request(server)
+      .put(`/api/rides/${carId}`)
+      .type('json')
+      .send(updatedCar)
+      .expect(401)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          done();
+        }
+      });
+  });
+  it('PUT /api/rides/:carId should respond with 201 if authorized', (done) => {
+    request(server)
+      .put(`/api/rides/${carId}`)
+      .set('Cookie', [`user_id=${userId}`])
+      .type('json')
+      .send(updatedCar)
+      .expect(201)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          res.body.updatedRide.seats.should.be.equal(6);
+          done();
+        }
+      });
+  });
+
+  it('GET /api/rides/:coveyId should respond with 401 if unauthorized', (done) => {
+    request(server)
+      .get(`/api/rides/${coveyId}`)
+      .set('Cookie', ['user_id=-1'])
+      .expect(401)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          done();
+        }
+      });
+  });
+  it('GET /api/rides/:coveyId should respond with 200 if authorized', (done) => {
+    request(server)
+      .get(`/api/rides/${coveyId}`)
+      .set('Cookie', [`user_id=${userId}`])
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          res.body[0].name.should.be.equal('Gandalf\'s car');
+          done();
+        }
+      });
+  });
+
+  it('POST /api/riders/:carId/:userId should respond with 401 if unauthorized', (done) => {
+    request(server)
+      .post(`/api/riders/${carId}/${userId2}`)
+      .set('Cookie', ['user_id=-1'])
+      .expect(401)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          done();
+        }
+      });
+  });
+  it('POST /api/riders/:carId/:userId should respond with 201 if authorized', (done) => {
+    request(server)
+      .post(`/api/riders/${carId}/${userId2}`)
+      .set('Cookie', [`user_id=${userId}`])
+      .expect(201)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          res.body.success.should.be.equal(true);
+          done();
+        }
+      });
+  });
+
+  it('GET /api/riders/:carId should respond with 401 if unauthorized', (done) => {
+    request(server)
+      .get(`/api/riders/${carId}`)
+      .set('Cookie', ['user_id=-1'])
+      .expect(401)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          done();
+        }
+      });
+  });
+  it('GET /api/riders/:carId should respond with 200 if authorized', (done) => {
+    request(server)
+      .get(`/api/riders/${carId}`)
+      .set('Cookie', [`user_id=${userId}`])
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          res.body.length.should.be.equal(2);
+          res.body[0].firstName.should.be.equal('Spider');
+          res.body[1].firstName.should.be.equal('Blue');
+          done();
+        }
+      });
+  });
+
+  it('DELETE /api/riders/:carId/:userId should respond with 401 if unauthorized', (done) => {
+    request(server)
+      .del(`/api/riders/${carId}/${userId2}`)
+      .set('Cookie', ['user_id=-1'])
+      .expect(401)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          done();
+        }
+      });
+  });
+  it('DELETE /api/riders/:carId/:userId should respond with 201 if authorized', (done) => {
+    request(server)
+      .del(`/api/riders/${carId}/${userId2}`)
+      .set('Cookie', [`user_id=${userId}`])
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          res.body.success.should.be.equal(true);
+          done();
+        }
+      });
+  });
+  it('Should not return deleted riders', (done) => {
+    request(server)
+      .get(`/api/riders/${carId}`)
+      .set('Cookie', [`user_id=${userId}`])
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          res.body.length.should.be.equal(1);
+          res.body[0].firstName.should.be.equal('Spider');
+          done();
+        }
+      });
+  });
+
+  it('DELETE /api/rides/:carId should respond with 401 if unauthorized', (done) => {
+    request(server)
+      .del(`/api/rides/${carId}`)
+      .expect(401)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          done();
+        }
+      });
+  });
+  it('DELETE /api/rides/:carId should respond with 200 if authorized', (done) => {
+    request(server)
+      .del(`/api/rides/${carId}`)
+      .set('Cookie', [`user_id=${userId}`])
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          res.body.success.should.be.equal(true);
+          done();
+        }
+      });
+  });
+  it('Should not return deleted cars', (done) => {
+    request(server)
+      .get(`/api/rides/${coveyId}`)
+      .set('Cookie', [`user_id=${userId}`])
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          res.body.length.should.be.equal(0);
           done();
         }
       });
@@ -716,6 +930,21 @@ describe('Testing Deletion', () => {
       gender: 'male',
       photoUrl: 'http://something.com/nope.jpg',
     });
+  });
+
+  it('DELETE /api/user/2ndUser for cleanup testing', (done) => {
+    request(server)
+      .del(`/api/user/${userId2}`)
+      .type('json')
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          res.body.should.have.property('success');
+          done();
+        }
+      });
   });
 
   it(`DELETE /api/coveys/${coveyId}`, (done) => {

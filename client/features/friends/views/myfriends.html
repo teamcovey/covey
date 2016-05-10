@@ -14,12 +14,11 @@
         </div>
       </div> -->
       <div class-"row" ng-repeat="friend in friends">
-        <div class="col-md-12 text-left covey-tile" ng-click="removeFriend(friend.friend_id)">
+        <div class="col-md-12 text-left covey-tile" ng-click="removeFriend(friend.id)">
           <img src="{{ friend.photoUrl }}" class="myfriends-profile-image"/>
           <h4>{{ friend.firstName }}</h4>
           <h4>{{ friend.lastName }}</h4>
           <h5>{{ friend.email }}</h5>
-          <h5>make it so.</h5>
         </div>
       </div>
     </div>

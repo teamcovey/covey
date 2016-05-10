@@ -244,6 +244,7 @@ describe('Testing Covey Creation, Editing, Retrieval', () => {
   it('GET /api/covey/*coveyId* for valid coveyId', (done) => {
     request(server)
       .get(`/api/covey/${coveyId}`)
+      .set('Cookie', [`user_id=${userId}`])
       .expect(200)
       .end((err, res) => {
         if (err) {
@@ -260,6 +261,7 @@ describe('Testing Covey Creation, Editing, Retrieval', () => {
     request(server)
       .put(`/api/coveys/${coveyId}`)
       .type('json')
+      .set('Cookie', [`user_id=${userId}`])
       .send(updateEvent)
       .expect(201)
       .end((err, res) => {
@@ -276,6 +278,7 @@ describe('Testing Covey Creation, Editing, Retrieval', () => {
   it(`GET /api/covey/${coveyId} after PUT. location, city`, (done) => {
     request(server)
       .get(`/api/covey/${coveyId}`)
+      .set('Cookie', [`user_id=${userId}`])
       .expect(200)
       .end((err, res) => {
         if (err) {
@@ -303,6 +306,7 @@ describe('Testing attendee actions', () => {
   it('POST /api/coveys/1stCovey/2ndUser', (done) => {
     request(server)
       .post(`/api/coveys/${coveyId}/${userId2}`)
+      .set('Cookie', [`user_id=${userId}`])
       .expect(201)
       .end((err, res) => {
         if (err) {
@@ -328,6 +332,65 @@ describe('Testing attendee actions', () => {
           // console.log('*************res.body: ', res.body);
           (res.body.length).should.be.equal(2);
           res.body[0].name.should.be.equal('Test 2');
+          done();
+        }
+      });
+  });
+
+  it('DELETE /api/coveys/:coveyId/:userId', (done) => {
+    request(server)
+      .del(`/api/coveys/${coveyId}/${userId2}`)
+      .set('Cookie', [`user_id=${userId}`])
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          done();
+        }
+      });
+  });
+
+  it('GET /api/covey/${coveyId} should respond with 401 for invalid user', (done) => {
+    request(server)
+      .get(`/api/covey/${coveyId}`)
+      .set('Cookie', [`user_id=${userId2}`])
+      .expect(401)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          done();
+        }
+      });
+  });
+
+  it('PUT /api/coveys/${coveyId} should respond with 401 for invalid user', (done) => {
+    request(server)
+      .put(`/api/coveys/${coveyId}`)
+      .type('json')
+      .set('Cookie', [`user_id=${userId2}`])
+      .send(updateEvent)
+      .expect(401)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          done();
+        }
+      });
+  });
+
+  it('DELETE /api/coveys/${coveyId} should respond with 401 for invalid user', (done) => {
+    request(server)
+      .del(`/api/coveys/${coveyId}`)
+      .type('json')
+      .set('Cookie', [`user_id=${userId2}`])
+      .expect(401)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
           done();
         }
       });
@@ -383,6 +446,22 @@ describe('Testing Deletion', () => {
     });
   });
 
+  it(`DELETE /api/coveys/${coveyId}`, (done) => {
+    request(server)
+      .del(`/api/coveys/${coveyId}`)
+      .set('Cookie', [`user_id=${userId}`])
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          coveyId = res.body.id;
+          res.body.should.have.property('success', true);
+          done();
+        }
+      });
+  });
+
   it('DELETE /api/user/#userId# should delete the user', (done) => {
     request(server)
       .del(`/api/user/${userId}`)
@@ -398,19 +477,5 @@ describe('Testing Deletion', () => {
       });
   });
 
-  it(`DELETE /api/coveys/${coveyId}`, (done) => {
-    request(server)
-      .del(`/api/coveys/${coveyId}`)
-      .expect(200)
-      .end((err, res) => {
-        if (err) {
-          done(err);
-        } else if (res) {
-          coveyId = res.body.id;
-          res.body.should.have.property('success', true);
-          done();
-        }
-      });
-  });
 });
 

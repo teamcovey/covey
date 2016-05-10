@@ -1,3 +1,5 @@
+// TODO: Validate resource changes through joins
+
 const app = require('../config/server-config.js');
 const express = require('express');
 
@@ -21,6 +23,11 @@ const passport = require('../config/passport.js');
 const auth = require('connect-ensure-login').ensureLoggedIn('/');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+
+// User Validation - this middleware checks if the user is authorized to modify the covey
+const userValidationMiddleware = require('./helpers/userValidationMiddleware.js');
+const isValidCoveyMember = userValidationMiddleware.isValidCoveyMember;
+const isValidResourceOwner = userValidationMiddleware.isValidResourceOwner;
 
 // Initialize
 app.use(cookieParser());
@@ -70,15 +77,15 @@ app.get('/api/coveys/:userId', auth, routeCoveys.getAllCoveys);
 
 app.post('/api/coveys', auth, routeCoveys.addCovey);
 
-app.delete('/api/coveys/:coveyId', auth, routeCoveys.removeCovey);
+app.delete('/api/coveys/:coveyId', auth, isValidCoveyMember, routeCoveys.removeCovey);
 
-app.put('/api/coveys/:coveyId', auth, routeCoveys.updateCovey);
+app.put('/api/coveys/:coveyId', auth, isValidCoveyMember, routeCoveys.updateCovey);
 
-app.get('/api/covey/:coveyId', auth, routeCoveys.getCovey);
+app.get('/api/covey/:coveyId', auth, isValidCoveyMember, routeCoveys.getCovey);
 
-app.post('/api/coveys/:coveyId/:userId', auth, routeCoveys.addAttendee);
+app.post('/api/coveys/:coveyId/:userId', auth, isValidCoveyMember, routeCoveys.addAttendee);
 
-app.delete('/api/coveys/:coveyId/:userId', auth, routeCoveys.removeAttendee);
+app.delete('/api/coveys/:coveyId/:userId', auth, isValidCoveyMember, routeCoveys.removeAttendee);
 
 app.post('/api/rides', auth, routeRides.addRide);
 
@@ -94,13 +101,13 @@ app.delete('/api/riders/:carId/:userId', auth, routeRides.removeRider);
 
 app.post('/api/riders/:carId/:userId', auth, routeRides.addRider);
 
-app.post('/api/resources', auth, routeResources.addResource);
+app.post('/api/resources', auth, isValidCoveyMember, routeResources.addResource);
 
-app.put('/api/resources/:resourceId', auth, routeResources.updateResource);
+app.put('/api/resources/:resourceId', auth, isValidCoveyMember, routeResources.updateResource);
 
 app.delete('/api/resources/:resourceId', auth, routeResources.removeResource);
 
-app.get('/api/resources/:coveyId', auth, routeResources.getAllResources);
+app.get('/api/resources/:coveyId', auth, isValidCoveyMember, routeResources.getAllResources);
 
 app.get('/api/suppliers/:resourceId', auth, routeResources.getAllSuppliers);
 

@@ -429,6 +429,278 @@ describe('Testing attendee actions', () => {
   });
 });
 
+describe('Testing resources functionality', () => {
+  let server;
+  let newResource;
+  let updatedResource;
+  let resourceId;
+
+  beforeEach(() => {
+    /* eslint-disable */
+    server = require('../../server/server.js');
+    /* eslint-enable */
+    passportStub.install(server);
+    passportStub.login({ username: 'john.doe' });
+    newResource = {
+      name: 'Beer',
+      quantity: '24',
+      type: 'food',
+      coveyId: coveyId,
+    };
+    updatedResource = newResource;
+    updatedResource.quantity = 12;
+  });
+
+  it('POST /api/resources should respond with 401 if user cookie not valid', (done) => {
+    request(server)
+      .post('/api/resources')
+      .type('json')
+      .expect(401)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          done();
+        }
+      });
+  });
+  it('POST /api/resources should add a new resource for valid users', (done) => {
+    request(server)
+      .post('/api/resources')
+      .type('json')
+      .set('Cookie', [`user_id=${userId}`])
+      .send(newResource)
+      .expect(201)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          res.body.success.should.be.equal(true);
+          resourceId = res.body.resource.id;
+          done();
+        }
+      });
+  });
+  it('PUT /api/resources/:resourceId should update resource', (done) => {
+    request(server)
+      .put(`/api/resources/${resourceId}`)
+      .type('json')
+      .set('Cookie', [`user_id=${userId}`])
+      .send(updatedResource)
+      .expect(201)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          res.body.updatedResource.quantity.should.be.equal(12);
+          done();
+        }
+      });
+  });
+  it('PUT /api/resources/:resourceId should respond with 401 if user is unauthorized', (done) => {
+    request(server)
+      .put(`/api/resources/${resourceId}`)
+      .type('json')
+      .send(updatedResource)
+      .expect(401)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          done();
+        }
+      });
+  });
+  it('GET /api/resources/:coveyid should respond w/ 401 for unauthorized user', (done) => {
+    request(server)
+      .get(`/api/resources/${coveyId}`)
+      .expect(401)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          done();
+        }
+      });
+  });
+  it('GET /api/resources/:coveyid should return resources, if authorized', (done) => {
+    request(server)
+      .get(`/api/resources/${coveyId}`)
+      .set('Cookie', [`user_id=${userId}`])
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          res.body[0].name.should.be.equal('Beer');
+          done();
+        }
+      });
+  });
+  it('POST /api/suppliers/:resourceid/:userid should respond w/ 401 if unauthorized', (done) => {
+    request(server)
+      .post(`/api/suppliers/${resourceId}/${userId}`)
+      .set('Cookie', ['user_id=-1'])
+      .expect(401)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          done();
+        }
+      });
+  });
+  it('POST /api/suppliers/:resourceid/:userid should respond w/ 201 if authorized', (done) => {
+    request(server)
+      .post(`/api/suppliers/${resourceId}/${userId}`)
+      .set('Cookie', [`user_id=${userId}`])
+      .expect(201)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          done();
+        }
+      });
+  });
+  it('GET /api/suppliers/:resourceid should respond w/ 401 if unauthorized', (done) => {
+    request(server)
+      .get(`/api/suppliers/${resourceId}`)
+      .set('Cookie', ['user_id=-1'])
+      .expect(401)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          done();
+        }
+      });
+  });
+  it('GET /api/suppliers/:resourceid should respond w/ 200 if authorized', (done) => {
+    request(server)
+      .get(`/api/suppliers/${resourceId}`)
+      .set('Cookie', [`user_id=${userId}`])
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          res.body[0].user_id.should.be.equal(userId);
+          done();
+        }
+      });
+  });
+  it('DELETE /api/suppliers/:resourceid/:userid should respond w/ 401 if unauthorized', (done) => {
+    request(server)
+      .del(`/api/suppliers/${resourceId}/${userId}`)
+      .expect(401)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          done();
+        }
+      });
+  });
+  it('DELETE /api/suppliers/:resourceid/:userid should respond w/ 200 if authorized', (done) => {
+    request(server)
+      .del(`/api/suppliers/${resourceId}/${userId}`)
+      .set('Cookie', [`user_id=${userId}`])
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          res.body.success.should.be.equal(true);
+          done();
+        }
+      });
+  });
+  it('Should return deleted suppliers', (done) => {
+    request(server)
+      .get(`/api/suppliers/${resourceId}`)
+      .set('Cookie', [`user_id=${userId}`])
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          res.body.length.should.be.equal(0);
+          done();
+        }
+      });
+  });
+  it('DELETE /api/resources/:resourceId should respond w/ 401 for unauthorized user', (done) => {
+    request(server)
+      .del(`/api/resources/${resourceId}`)
+      .expect(401)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          done();
+        }
+      });
+  });
+  it('DELETE /api/resources/:resourceId should delete resource if authorized', (done) => {
+    request(server)
+      .del(`/api/resources/${resourceId}`)
+      .set('Cookie', [`user_id=${userId}`])
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          res.body.success.should.be.equal(true);
+          done();
+        }
+      });
+  });
+  it('Should not return resources that were previously deleted', (done) => {
+    request(server)
+      .get(`/api/resources/${coveyId}`)
+      .set('Cookie', [`user_id=${userId}`])
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          res.body.length.should.be.equal(0);
+          done();
+        }
+      });
+  });
+});
+
+describe('Testing resources functionality', () => {
+  let server;
+  let newCar;
+  let updatedCar;
+  let carId;
+
+  beforeEach(() => {
+    /* eslint-disable */
+    server = require('../../server/server.js');
+    /* eslint-enable */
+    passportStub.install(server);
+    passportStub.login({ username: 'john.doe' });
+  });
+
+  it('POST /api/resources should respond with 401 if user cookie not valid', (done) => {
+    request(server)
+      .post('/api/resources')
+      .type('json')
+      .expect(401)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          done();
+        }
+      });
+  });
+});
+
 describe('Testing Deletion', () => {
   let server;
 

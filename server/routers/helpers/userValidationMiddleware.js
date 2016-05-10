@@ -5,7 +5,7 @@ const knex = require('../../config/config.js').knex;
  * exist, the user is considered inValid and will not be able to make changes to the covey
  */
 exports.isValidCoveyMember = (request, response, next) => {
-  const coveyId = request.params.coveyId;
+  const coveyId = request.params.coveyId || request.body.coveyId;
   const userId = request.cookies.user_id;
   knex('coveys_users')
     .where({
@@ -23,7 +23,7 @@ exports.isValidCoveyMember = (request, response, next) => {
 
 exports.isValidResourceOwner = (request, response, next) => {
   const userId = request.cookies.user_id;
-  const resourceId = request.params.resourceId;
+  const resourceId = request.params.resourceId || request.body.resourceId;
   // Gets coveyId from resources table
   knex
     .select('covey_id')
@@ -42,8 +42,40 @@ exports.isValidResourceOwner = (request, response, next) => {
             user_id: userId,
             covey_id: coveyId,
           })
-          .then((coveyUsersRows) => {
-            if (coveyUsersRows.length > 0) {
+          .then((coveysUsersRows) => {
+            if (coveysUsersRows.length > 0) {
+              next();
+            } else {
+              response.status(401).send();
+            }
+          });
+      }
+    });
+};
+
+exports.isValidCarOwner = (request, response, next) => {
+  const userId = request.cookies.user_id;
+  const carId = request.params.carId;
+  // Gets coveyId from cars table
+  knex
+    .select('covey_id')
+    .from('cars')
+    .where({
+      id: carId,
+    })
+    .then((carsRows) => {
+      if (carsRows.length === 0) {
+        response.status(404).send();
+      } else {
+        const coveyId = carsRows[0].covey_id;
+        // Checks if both coveyId and userId exist in join table
+        knex('coveys_users')
+          .where({
+            user_id: userId,
+            covey_id: coveyId,
+          })
+          .then((coveysUsersRows) => {
+            if (coveysUsersRows.length > 0) {
               next();
             } else {
               response.status(401).send();

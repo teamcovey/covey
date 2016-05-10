@@ -28,6 +28,7 @@ const session = require('express-session');
 const userValidationMiddleware = require('./helpers/userValidationMiddleware.js');
 const isValidCoveyMember = userValidationMiddleware.isValidCoveyMember;
 const isValidResourceOwner = userValidationMiddleware.isValidResourceOwner;
+const isValidCarOwner = userValidationMiddleware.isValidCarOwner;
 
 // Initialize
 app.use(cookieParser());
@@ -87,9 +88,9 @@ app.post('/api/coveys/:coveyId/:userId', auth, isValidCoveyMember, routeCoveys.a
 
 app.delete('/api/coveys/:coveyId/:userId', auth, isValidCoveyMember, routeCoveys.removeAttendee);
 
-app.post('/api/rides', auth, routeRides.addRide);
+app.post('/api/rides', auth, isValidCoveyMember, routeRides.addRide);
 
-app.put('/api/rides/:rideId', auth, routeRides.updateRide);
+app.put('/api/rides/:carId', auth, routeRides.updateRide);
 
 app.delete('/api/rides/:carId', auth, routeRides.removeRide);
 
@@ -105,15 +106,17 @@ app.post('/api/resources', auth, isValidCoveyMember, routeResources.addResource)
 
 app.put('/api/resources/:resourceId', auth, isValidCoveyMember, routeResources.updateResource);
 
-app.delete('/api/resources/:resourceId', auth, routeResources.removeResource);
+app.delete('/api/resources/:resourceId', auth, isValidResourceOwner, routeResources.removeResource);
 
 app.get('/api/resources/:coveyId', auth, isValidCoveyMember, routeResources.getAllResources);
 
-app.get('/api/suppliers/:resourceId', auth, routeResources.getAllSuppliers);
+app.get('/api/suppliers/:resourceId', auth, isValidResourceOwner, routeResources.getAllSuppliers);
 
-app.delete('/api/suppliers/:resourceId/:userId', auth, routeResources.removeSupplier);
+app.delete('/api/suppliers/:resourceId/:userId', auth, isValidResourceOwner,
+  routeResources.removeSupplier);
 
-app.post('/api/suppliers/:resourceId/:userId', auth, routeResources.addSupplier);
+app.post('/api/suppliers/:resourceId/:userId', auth, isValidResourceOwner,
+  routeResources.addSupplier);
 
 app.get('/api/searchUsers/:searchVal', auth, route.searchUsers);
 

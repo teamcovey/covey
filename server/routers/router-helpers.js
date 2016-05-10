@@ -66,7 +66,9 @@ exports.searchUsers = (req, res) => {
   const searchVal = `%${req.params.searchVal}%`;
   console.log('in searchUsers with: ', searchVal);
 
-  knex('users')
+  knex
+    .select(['users.firstName', 'users.lastName', 'users.email', 'users.photoUrl', 'users.id'])
+    .from('users')
     .where('firstName', 'like', searchVal)
     .orWhere('lastName', 'like', searchVal)
     .orWhere('email', 'like', searchVal)

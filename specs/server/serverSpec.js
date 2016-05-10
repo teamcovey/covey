@@ -324,6 +324,20 @@ describe('Testing attendee actions', () => {
       });
   });
 
+  it('should respond with 409 if user already in covey', (done) => {
+    request(server)
+      .post(`/api/coveys/${coveyId}/${userId2}`)
+      .set('Cookie', [`user_id=${userId}`])
+      .expect(409)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          done();
+        }
+      });
+  });
+
   it('GET /api/coveys/2ndUser after POST attendee', (done) => {
     request(server)
       .get(`/api/coveys/${userId2}`)

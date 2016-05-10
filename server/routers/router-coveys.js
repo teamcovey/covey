@@ -110,25 +110,36 @@ exports.addAttendee = (req, res) => {
   const userId = req.params.userId;
 
   knex('coveys_users')
-      .returning('covey_id')
-      .insert({ user_id: userId, covey_id: coveyId })
-  .then((coveyIs) => {
-    new User({ id: userId })
-      .fetch()
-      .then((foundUser) => {
-        if (foundUser) {
-          res.status(201).json({ id: coveyIs[0], user: foundUser });
-        } else {
-          res.status(404).json('Could not find user in database');
-        }
-      })
-      .catch((err) => {
-        res.status(404).json(err);
-      });
-  })
-  .catch((err) => {
-    res.status(404).json(err);
-  });
+    .where({
+      user_id: userId,
+      covey_id: coveyId,
+    })
+    .then((rows) => {
+      if (rows.length !== 0) {
+        res.status(409).send();
+      } else {
+        knex('coveys_users')
+            .returning('covey_id')
+            .insert({ user_id: userId, covey_id: coveyId })
+        .then((coveyIs) => {
+          new User({ id: userId })
+            .fetch()
+            .then((foundUser) => {
+              if (foundUser) {
+                res.status(201).json({ id: coveyIs[0], user: foundUser });
+              } else {
+                res.status(404).json('Could not find user in database');
+              }
+            })
+            .catch((err) => {
+              res.status(404).json(err);
+            });
+        })
+        .catch((err) => {
+          res.status(404).json(err);
+        });
+      }
+    });
 };
 
 exports.removeAttendee = (req, res) => {

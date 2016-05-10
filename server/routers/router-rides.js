@@ -30,7 +30,7 @@ exports.addRide = (req, res) => {
 };
 
 exports.updateRide = (req, res) => {
-  const rideId = req.params.rideId;
+  const carId = req.params.carId;
 
   const name = req.body.name;
   const seats = req.body.seats;
@@ -38,7 +38,7 @@ exports.updateRide = (req, res) => {
   const departureTime = req.body.departureTime;
   const coveyId = req.body.coveyId;
 
-  Car.where({ id: rideId })
+  Car.where({ id: carId })
     .fetch()
     .then((ride) => {
       ride.set('name', name);

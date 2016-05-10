@@ -38,8 +38,8 @@ exports.updateResource = (req, res) => {
       resource.set('type', type);
       resource.set('covey_id', coveyId);
       resource.save()
-        .then((updatedResouce) => {
-          res.status(201).json({ updatedResouce });
+        .then((updatedResource) => {
+          res.status(201).json({ updatedResource });
         });
     })
   .catch((err) => {

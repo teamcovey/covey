@@ -1,3 +1,5 @@
+// TODO: Validate resource changes through joins
+
 const app = require('../config/server-config.js');
 const express = require('express');
 
@@ -22,6 +24,16 @@ const auth = require('connect-ensure-login').ensureLoggedIn('/');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 
+/*
+ * User validation middleware checks if the user is authorized to modify the covey
+ * It has been injected into the appropriate routes below
+ */
+const userValidationMiddleware = require('./helpers/userValidationMiddleware.js');
+const isValidCoveyMember = userValidationMiddleware.isValidCoveyMember;
+const isValidResourceOwner = userValidationMiddleware.isValidResourceOwner;
+const isValidCarOwner = userValidationMiddleware.isValidCarOwner;
+const isValidUser = userValidationMiddleware.isValidUser;
+
 // Initialize
 app.use(cookieParser());
 app.use(bodyParser.json());
@@ -35,19 +47,19 @@ app.use(express.static('client'));
 // Routes: Users
 app.post('/api/signup', auth, route.signup); // This route is used for db + auth testing
 
-app.get('/api/user/:userId', auth, routeUsers.getUser);
+app.get('/api/user/:userId', auth, isValidUser, routeUsers.getUser);
 
-app.delete('/api/user/:userId', auth, routeUsers.removeUser);
+app.delete('/api/user/:userId', auth, isValidUser, routeUsers.removeUser);
 
-app.put('/api/user/:userId', auth, routeUsers.updateUser);
+app.put('/api/user/:userId', auth, isValidUser, routeUsers.updateUser);
 
-app.get('/api/users/:coveyId', auth, routeUsers.getAllUsers);
+app.get('/api/users/:coveyId', auth, isValidCoveyMember, routeUsers.getAllUsers);
 
-app.get('/api/friends/:userId', auth, routeUsers.getFriends);
+app.get('/api/friends/:userId', auth, isValidUser, routeUsers.getFriends);
 
-app.post('/api/friends/:userId/:friendId', auth, routeUsers.addFriend);
+app.post('/api/friends/:userId/:friendId', auth, isValidUser, routeUsers.addFriend);
 
-app.delete('/api/friends/:userId/:friendId', auth, routeUsers.removeFriend);
+app.delete('/api/friends/:userId/:friendId', auth, isValidUser, routeUsers.removeFriend);
 
 // Routes: authentication & sign-up
 app.get('/api/auth/facebook',
@@ -66,47 +78,49 @@ app.get('/api/logout',
   }
 );
 
-app.get('/api/coveys/:userId', auth, routeCoveys.getAllCoveys);
+app.get('/api/coveys/:userId', auth, isValidUser, routeCoveys.getAllCoveys);
 
-app.post('/api/coveys', auth, routeCoveys.addCovey);
+app.post('/api/coveys', auth, isValidUser, routeCoveys.addCovey);
 
-app.delete('/api/coveys/:coveyId', auth, routeCoveys.removeCovey);
+app.delete('/api/coveys/:coveyId', auth, isValidCoveyMember, routeCoveys.removeCovey);
 
-app.put('/api/coveys/:coveyId', auth, routeCoveys.updateCovey);
+app.put('/api/coveys/:coveyId', auth, isValidCoveyMember, routeCoveys.updateCovey);
 
-app.get('/api/covey/:coveyId', auth, routeCoveys.getCovey);
+app.get('/api/covey/:coveyId', auth, isValidCoveyMember, routeCoveys.getCovey);
 
-app.post('/api/coveys/:coveyId/:userId', auth, routeCoveys.addAttendee);
+app.post('/api/coveys/:coveyId/:userId', auth, isValidCoveyMember, routeCoveys.addAttendee);
 
-app.delete('/api/coveys/:coveyId/:userId', auth, routeCoveys.removeAttendee);
+app.delete('/api/coveys/:coveyId/:userId', auth, isValidCoveyMember, routeCoveys.removeAttendee);
 
-app.post('/api/rides', auth, routeRides.addRide);
+app.post('/api/rides', auth, isValidCoveyMember, routeRides.addRide);
 
-app.put('/api/rides/:rideId', auth, routeRides.updateRide);
+app.put('/api/rides/:carId', auth, isValidCoveyMember, routeRides.updateRide);
 
-app.delete('/api/rides/:carId', auth, routeRides.removeRide);
+app.delete('/api/rides/:carId', auth, isValidCarOwner, routeRides.removeRide);
 
-app.get('/api/rides/:coveyId', auth, routeRides.getAllRides);
+app.get('/api/rides/:coveyId', auth, isValidCoveyMember, routeRides.getAllRides);
 
-app.get('/api/riders/:carId', auth, routeRides.getAllRiders);
+app.get('/api/riders/:carId', auth, isValidCarOwner, routeRides.getAllRiders);
 
-app.delete('/api/riders/:carId/:userId', auth, routeRides.removeRider);
+app.delete('/api/riders/:carId/:userId', auth, isValidCarOwner, routeRides.removeRider);
 
-app.post('/api/riders/:carId/:userId', auth, routeRides.addRider);
+app.post('/api/riders/:carId/:userId', auth, isValidCarOwner, routeRides.addRider);
 
-app.post('/api/resources', auth, routeResources.addResource);
+app.post('/api/resources', auth, isValidCoveyMember, routeResources.addResource);
 
-app.put('/api/resources/:resourceId', auth, routeResources.updateResource);
+app.put('/api/resources/:resourceId', auth, isValidCoveyMember, routeResources.updateResource);
 
-app.delete('/api/resources/:resourceId', auth, routeResources.removeResource);
+app.delete('/api/resources/:resourceId', auth, isValidResourceOwner, routeResources.removeResource);
 
-app.get('/api/resources/:coveyId', auth, routeResources.getAllResources);
+app.get('/api/resources/:coveyId', auth, isValidCoveyMember, routeResources.getAllResources);
 
-app.get('/api/suppliers/:resourceId', auth, routeResources.getAllSuppliers);
+app.get('/api/suppliers/:resourceId', auth, isValidResourceOwner, routeResources.getAllSuppliers);
 
-app.delete('/api/suppliers/:resourceId/:userId', auth, routeResources.removeSupplier);
+app.delete('/api/suppliers/:resourceId/:userId', auth, isValidResourceOwner,
+  routeResources.removeSupplier);
 
-app.post('/api/suppliers/:resourceId/:userId', auth, routeResources.addSupplier);
+app.post('/api/suppliers/:resourceId/:userId', auth, isValidResourceOwner,
+  routeResources.addSupplier);
 
 app.get('/api/searchUsers/:searchVal', auth, route.searchUsers);
 

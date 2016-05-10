@@ -413,23 +413,6 @@ describe('Testing attendee actions', () => {
         }
       });
   });
-
-  // it(`PUT /api/coveys/${coveyId}`, (done) => {
-  //   request(server)
-  //     .put(`/api/coveys/${coveyId}`)
-  //     .type('json')
-  //     .send(updateEvent)
-  //     .expect(201)
-  //     .end((err, res) => {
-  //       if (err) {
-  //         done(err);
-  //       } else if (res) {
-  //         res.body.should.have.property('updatedCovey');
-  //         res.body.updatedCovey.should.have.property('blurb', 'bring me some ice cream');
-  //         done();
-  //       }
-  //     });
-  // });
 });
 
 describe('Testing resources functionality', () => {

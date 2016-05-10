@@ -96,20 +96,34 @@ exports.addFriend = (req, res) => {
   const userId = req.params.userId;
 
   knex('friends')
-      .returning('friend_id')
-      .insert({ user_id: userId, friend_id: friendId })
-  .then(() => {
-    knex('friends')
-      .returning('friend_id')
-      .insert({ user_id: friendId, friend_id: userId })
-      .then((friendIs) => {
-        res.status(201).json({ id: friendIs[0], success: true });
+  .where('user_id', userId)
+  .andWhere('friend_id', friendId)
+  .then((results) => {
+    console.log('doing the friends search first...', results.length);
+    if (results.length === 0) {
+      knex('friends')
+          .returning('friend_id')
+          .insert({ user_id: userId, friend_id: friendId })
+      .then(() => {
+        knex('friends')
+          .returning('friend_id')
+          .insert({ user_id: friendId, friend_id: userId })
+          .then((friendIs) => {
+            res.status(201).json({ id: friendIs[0], success: true });
+          })
+          .catch((err) => {
+            res.status(404).json(err);
+          });
       })
       .catch((err) => {
         res.status(404).json(err);
       });
+    } else {
+      // it was already a friend... just return friends list.
+    }
   })
   .catch((err) => {
+    console.log('error in checking for friend before adding');
     res.status(404).json(err);
   });
 };

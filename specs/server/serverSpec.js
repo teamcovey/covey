@@ -182,6 +182,7 @@ describe('Testing user creation', () => {
   it('should repond with 200 when when logged in and user exists', (done) => {
     request(server)
       .get(`/api/user/${userId}`)
+      .set('Cookie', [`user_id=${userId}`])
       .end((err, res) => {
         should.not.exist(err);
         res.status.should.be.equal(200);
@@ -207,6 +208,7 @@ describe('Testing Covey Creation, Editing, Retrieval', () => {
   it('POST /api/coveys', (done) => {
     request(server)
       .post('/api/coveys')
+      .set('Cookie', [`user_id=${userId}`])
       .type('json')
       .send(JSON.stringify(newEvent))
       .expect(201)
@@ -225,6 +227,7 @@ describe('Testing Covey Creation, Editing, Retrieval', () => {
   it('POST /api/coveys 2nd event', (done) => {
     request(server)
       .post('/api/coveys')
+      .set('Cookie', [`user_id=${userId2}`])
       .type('json')
       .send(JSON.stringify(newEvent2))
       .expect(201)
@@ -324,6 +327,7 @@ describe('Testing attendee actions', () => {
   it('GET /api/coveys/2ndUser after POST attendee', (done) => {
     request(server)
       .get(`/api/coveys/${userId2}`)
+      .set('Cookie', [`user_id=${userId2}`])
       .expect(200)
       .end((err, res) => {
         if (err) {
@@ -932,21 +936,6 @@ describe('Testing Deletion', () => {
     });
   });
 
-  it('DELETE /api/user/2ndUser for cleanup testing', (done) => {
-    request(server)
-      .del(`/api/user/${userId2}`)
-      .type('json')
-      .expect(200)
-      .end((err, res) => {
-        if (err) {
-          done(err);
-        } else if (res) {
-          res.body.should.have.property('success');
-          done();
-        }
-      });
-  });
-
   it(`DELETE /api/coveys/${coveyId}`, (done) => {
     request(server)
       .del(`/api/coveys/${coveyId}`)
@@ -963,10 +952,25 @@ describe('Testing Deletion', () => {
       });
   });
 
+  it('DELETE /api/user/2ndUser for cleanup testing', (done) => {
+    request(server)
+      .del(`/api/user/${userId2}`)
+      .set('Cookie', [`user_id=${userId2}`])
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          res.body.should.have.property('success');
+          done();
+        }
+      });
+  });
+
   it('DELETE /api/user/#userId# should delete the user', (done) => {
     request(server)
       .del(`/api/user/${userId}`)
-      .type('json')
+      .set('Cookie', [`user_id=${userId}`])
       .expect(200)
       .end((err, res) => {
         if (err) {

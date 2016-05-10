@@ -21,6 +21,10 @@ exports.isValidCoveyMember = (request, response, next) => {
     });
 };
 
+/*
+ * Checks if the user is authorized to make change to the resource
+ * Authorization is determined by their membership in the covey that contains this resource
+ */
 exports.isValidResourceOwner = (request, response, next) => {
   const userId = request.cookies.user_id;
   const resourceId = request.params.resourceId || request.body.resourceId;
@@ -53,6 +57,10 @@ exports.isValidResourceOwner = (request, response, next) => {
     });
 };
 
+/*
+ * Checks if the user is authorized to make change to the car
+ * Authorization is determined by their membership in the covey that contains this car
+ */
 exports.isValidCarOwner = (request, response, next) => {
   const userId = request.cookies.user_id;
   const carId = request.params.carId;
@@ -83,4 +91,17 @@ exports.isValidCarOwner = (request, response, next) => {
           });
       }
     });
+};
+
+/*
+ * Checks if the person trying to make profile changes is the user
+ */
+exports.isValidUser = (request, response, next) => {
+  const userIdParams = request.params.userId || request.body.userId;
+  const userIdCookie = request.cookies.user_id;
+  if (userIdParams.toString() === userIdCookie.toString()) {
+    next();
+  } else {
+    response.status(401).send();
+  }
 };

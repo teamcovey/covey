@@ -24,11 +24,15 @@ const auth = require('connect-ensure-login').ensureLoggedIn('/');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 
-// User Validation - this middleware checks if the user is authorized to modify the covey
+/*
+ * User validation middleware checks if the user is authorized to modify the covey
+ * It has been injected into the appropriate routes below
+ */
 const userValidationMiddleware = require('./helpers/userValidationMiddleware.js');
 const isValidCoveyMember = userValidationMiddleware.isValidCoveyMember;
 const isValidResourceOwner = userValidationMiddleware.isValidResourceOwner;
 const isValidCarOwner = userValidationMiddleware.isValidCarOwner;
+const isValidUser = userValidationMiddleware.isValidUser;
 
 // Initialize
 app.use(cookieParser());
@@ -43,19 +47,19 @@ app.use(express.static('client'));
 // Routes: Users
 app.post('/api/signup', auth, route.signup); // This route is used for db + auth testing
 
-app.get('/api/user/:userId', auth, routeUsers.getUser);
+app.get('/api/user/:userId', auth, isValidUser, routeUsers.getUser);
 
-app.delete('/api/user/:userId', auth, routeUsers.removeUser);
+app.delete('/api/user/:userId', auth, isValidUser, routeUsers.removeUser);
 
-app.put('/api/user/:userId', auth, routeUsers.updateUser);
+app.put('/api/user/:userId', auth, isValidUser, routeUsers.updateUser);
 
-app.get('/api/users/:coveyId', auth, routeUsers.getAllUsers);
+app.get('/api/users/:coveyId', auth, isValidCoveyMember, routeUsers.getAllUsers);
 
-app.get('/api/friends/:userId', auth, routeUsers.getFriends);
+app.get('/api/friends/:userId', auth, isValidUser, routeUsers.getFriends);
 
-app.post('/api/friends/:userId/:friendId', auth, routeUsers.addFriend);
+app.post('/api/friends/:userId/:friendId', auth, isValidUser, routeUsers.addFriend);
 
-app.delete('/api/friends/:userId/:friendId', auth, routeUsers.removeFriend);
+app.delete('/api/friends/:userId/:friendId', auth, isValidUser, routeUsers.removeFriend);
 
 // Routes: authentication & sign-up
 app.get('/api/auth/facebook',
@@ -74,9 +78,9 @@ app.get('/api/logout',
   }
 );
 
-app.get('/api/coveys/:userId', auth, routeCoveys.getAllCoveys);
+app.get('/api/coveys/:userId', auth, isValidUser, routeCoveys.getAllCoveys);
 
-app.post('/api/coveys', auth, routeCoveys.addCovey);
+app.post('/api/coveys', auth, isValidUser, routeCoveys.addCovey);
 
 app.delete('/api/coveys/:coveyId', auth, isValidCoveyMember, routeCoveys.removeCovey);
 

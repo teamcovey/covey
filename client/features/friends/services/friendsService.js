@@ -11,9 +11,10 @@ friendServices.factory('friendsFactory', function ($http, userIdFactory) {
         .then((response) => response, (error) => error);
     },
     // Creates a new covey for this user
-    postFriend: (friendData) => {
-      const requestUrl = '/api/friends';
-      return $http.post(requestUrl, friendData)
+    addFriend: (friendId) => {
+      const userId = userIdFactory.getUserId();
+      const requestUrl = `/api/friends/${userId}/${friendId}`;
+      return $http.post(requestUrl)
         .then((response) => response, (error) => error);
     },
     // Deletes a covey, based on user request
@@ -23,12 +24,11 @@ friendServices.factory('friendsFactory', function ($http, userIdFactory) {
       return $http.delete(requestUrl)
         .then((response) => response, (error) => error);
     },
-    searchUsers: (nameString) => {
+    searchUsers: (searchString) => {
       console.log('time to search for a user');
-      const userId = userIdFactory.getUserId();
-      // const requestUrl = `/api/friends/${userId}/${friendId}`;
-      // return $http.delete(requestUrl)
-      //   .then((response) => response, (error) => error);
+      const requestUrl = `/api/searchUsers/${searchString}`;
+      return $http.get(requestUrl)
+        .then((response) => response, (error) => error);
     },
   });
 });

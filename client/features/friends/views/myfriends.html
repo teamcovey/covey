@@ -1,5 +1,5 @@
 <!-- We are using switch to swap between the 'no coveys' and 'has coveys' views -->
-<div ng-controller="friendsController" ng-switch on="hasFriends">
+<div ng-controller="friendsController" ng-switch on="showFriends">
   <div class="row" ng-switch-when="true">
     <div class="cold-md-12 text-center">
       <div class="row">
@@ -10,10 +10,10 @@
       <!-- this will need to be done as part of the search bar -->
       <div class="row">
         <div class="col-md-2 col-md-offset-10">
-            <form ng-submit="editAttendees = !editAttendees; SearchFriends(someName)">
-              <input type="text" name="friendSearch" placeholder="...name to search for" class="none" ng-model="someName"></input>
-              <input type="submit" id="submit" value="Update" />
-            </form>
+          <form ng-submit="searchUsers(searchString)">
+            <input type="text" name="friendSearch" placeholder="...friend to search for" class="none" ng-model="searchString"></input>
+            <input type="submit" id="submit" value="Search" />
+          </form>
         </div>
       </div>
       <div class-"row" ng-repeat="friend in friends">
@@ -36,9 +36,9 @@
       </div>
       <div class="row">
         <div class="col-md-2 col-md-offset-10">
-          <form ng-submit="editAttendees = !editAttendees; SearchFriends(someName)">
-            <input type="text" name="friendSearch" placeholder="...friend to search for" class="panel-input" ng-model="someName"></input>
-            <input type="submit" id="submit" value="Update" />
+          <form ng-submit="searchUsers(searchString)">
+            <input type="text" name="friendSearch" placeholder="...friend to search for" class="none" ng-model="searchString"></input>
+            <input type="submit" id="submit" value="Search" />
           </form>
         </div>
       </div>
@@ -46,6 +46,33 @@
         <div class="cold-md-12 text-center">
           <h3>There was an error retrieving your friends!</h3>
           <h4>If the problem persists, please contact support@covey.com</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Search view -->
+  <div class="row" ng-switch-when="search">
+    <div class="col-md-12 text-center">
+      <div class="row">
+        <div class="col-md-12">
+          <h1>Add Friends</h1>
+        </div>
+      </div>
+      <!-- this will need to be done as part of the search bar -->
+      <div class="row">
+        <div class="col-md-2 col-md-offset-10">
+          <form ng-submit="searchUsers(searchString)">
+            <input type="text" name="friendSearch" placeholder="...friend to search for" class="none" ng-model="searchString"></input>
+            <input type="submit" id="submit" value="Search" />
+          </form>
+        </div>
+      </div>
+      <div class-"row" ng-repeat="friend in found">
+        <div class="col-md-12 text-left covey-tile" ng-click="addFriend(friend.id)">
+          <img src="{{ friend.photoUrl }}" class="myfriends-profile-image"/>
+          <h4>{{ friend.firstName }}</h4>
+          <h4>{{ friend.lastName }}</h4>
+          <h5>{{ friend.email }}</h5>
         </div>
       </div>
     </div>
@@ -60,8 +87,8 @@
       </div>
       <div class="row">
         <div class="col-md-2 col-md-offset-10">
-          <form ng-submit="editAttendees = !editAttendees; searchFriends(someName)">
-            <input type="text" name="friendSearch" placeholder="...friend to search for" class="none" ng-model="someName"></input>
+          <form ng-submit="searchUsers(searchString)">
+            <input type="text" name="friendSearch" placeholder="...friend to search for" class="none" ng-model="searchString"></input>
             <input type="submit" id="submit" value="Search" />
           </form>
         </div>

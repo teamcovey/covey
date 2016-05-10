@@ -23,26 +23,14 @@ angular.module('covey.covey', [])
     $scope.showPhoto = $scope.details.photoUrl.length ? true : false;
   };
 
+  $scope.selection = 'details';
+
   $scope.navbarSwitch = (clicked) => {
     $scope.selection = clicked;
   };
 
-  $scope.activeDetails = true;
-  $scope.inactiveDetails = false;
-  $scope.activeRides = false;
-  $scope.inactiveRides = true;
-
-  $scope.toggleClass = (clicked) => {
-    if (clicked === 'details') {
-      $scope.activeDetails = true;
-      $scope.inactiveDetails = false;
-      $scope.activeRides = false;
-      $scope.inactiveRides = true;
-    } else if (clicked === 'rides') {
-      $scope.activeDetails = false;
-      $scope.inactiveDetails = true;
-      $scope.activeRides = true;
-      $scope.inactiveRides = false;
-    }
+  $scope.isSelected = (section) => {
+    console.log('is selection: ', section);
+    return $scope.selection === section;
   };
 });

@@ -1,15 +1,17 @@
-<div class="panel panel-default">
+<!-- <div class="panel panel-default">
   <div class="panel-heading">
     Details
     <span ng-click="toggleEdit()" class="pencil-button glyphicon glyphicon-pencil"></span>
   </div>
-  <div class="panel-body details-panel">
-    <div ng-hide="editDetails">
+  <div class="panel-body details-panel"> -->
+  <!-- ng-hide="editDetails" -->
+    <div >
+      <img ng-show="showPhoto" ng-src="{{details.photoUrl}}" alt="Smiley face" height="200" width="100%">
+      <h2>{{details.name}}</h2>
       <p><i>{{details.blurb}}</i></p>
       <p><b>Location:</b> {{details.address}}, {{details.city}}, {{details.state}}</p>
       <p><b>Start Date:</b> {{formatDate(details.startTime)}}</p>
       <p><b>End Date:</b> {{formatDate(details.endTime)}}</p>
-      <img ng-show="showPhoto" ng-src="{{details.photoUrl}}" alt="Smiley face" height="100" width="200">
     </div>
     <div ng-show="editDetails">
       <form ng-submit="editDetails = !editDetails; updateCovey()">
@@ -26,5 +28,6 @@
         <input type="submit" id="submit" value="Update" />
       </form>
     </div>
-  </div>
+<!--   </div>
 </div>
+ -->

@@ -22,4 +22,27 @@ angular.module('covey.covey', [])
     // TODO: add validation to check that photoUrl is a real url:
     $scope.showPhoto = $scope.details.photoUrl.length ? true : false;
   };
+
+  $scope.navbarSwitch = (clicked) => {
+    $scope.selection = clicked;
+  };
+
+  $scope.activeDetails = true;
+  $scope.inactiveDetails = false;
+  $scope.activeRides = false;
+  $scope.inactiveRides = true;
+
+  $scope.toggleClass = (clicked) => {
+    if (clicked === 'details') {
+      $scope.activeDetails = true;
+      $scope.inactiveDetails = false;
+      $scope.activeRides = false;
+      $scope.inactiveRides = true;
+    } else if (clicked === 'rides') {
+      $scope.activeDetails = false;
+      $scope.inactiveDetails = true;
+      $scope.activeRides = true;
+      $scope.inactiveRides = false;
+    }
+  };
 });

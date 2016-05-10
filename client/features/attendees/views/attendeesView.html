@@ -1,15 +1,15 @@
-<div class="panel panel-default">
+<!-- <div class="panel panel-default">
   <div class="panel-heading">
     Friends
     <span ng-click="editAttendees = !editAttendees" class="glyphicon glyphicon-pencil pencil-button"></span>
   </div>
-  <div class="panel-body details-panel">
+  <div class="panel-body details-panel"> -->
     <div ng-hide="editAttendees">
       <div ng-repeat="friend in attendees" class="attendees-list">
         {{friend.firstName}}
       </div>
     </div>
-    <div ng-show="editAttendees">
+    <!-- <div ng-show="editAttendees">
       <form ng-submit="editAttendees = !editAttendees; addAttendee(newAttendee)">
         <div class="attendees-list attendees-removal-list" ng-click="removeAttendee(friend)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="friend in attendees">
           {{mouseOverTrue ? 'X' : friend.firstName}}
@@ -20,3 +20,4 @@
     </div>
   </div>
 </div>
+ -->

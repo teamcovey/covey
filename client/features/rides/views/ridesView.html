@@ -1,28 +1,27 @@
 <li class="panel panel-info">
   <!-- PANEL HEADING -->
-  <div class="panel-heading">
+  <!-- <div class="panel-heading">
     Rides
     <span ng-click="expandRides()" class="glyphicon glyphicon-pencil pencil-button"></span>
   </div>
-  <div class="panel-body">
+  <div class="panel-body"> -->
 
     <!-- BASIC PANEL VIEW -->
-    <div ng-hide="expandRide">Your ride: {{stringifyUsersRide()}}</div>
+    <!-- <div ng-hide="expandRide">Your ride: {{stringifyUsersRide()}}</div> -->
 
-    <!-- PANEL VIEW IN EDIT MODE -->
-    <ul ng-show="expandRide" class="list-unstyled">
+    <!-- PANEL VIEW IN EDIT MODE ng-show="expandRide" ng-hide="editMode" -->
+    <ul  class="list-unstyled">
       <li ng-repeat="ride in ridesDetails track by $index">
-          <div ng-hide="editMode" class="panel panel-static">
+          <<!-- div class="panel panel-static"> 
             {{ride.name}} - {{ride.departureTime}}
-            <!-- DISPLAY PASSENGERS -->
             <div ng-repeat="rider in ride.riders" class="panel-users">
                 {{rider.firstName}}
             </div>
             <button ng-click="editMode = !editMode" class="btn btn-sm pencil-button"><span class="glyphicon glyphicon-pencil"></span></button>
-          </div>
+          </div> -->
 
-          <!-- INDIVIDUAL RIDE EDIT VIEW -->
-          <div ng-show="editMode" class="panel panel-edit">
+          <!-- INDIVIDUAL RIDE EDIT VIEW ng-show="editMode"-->
+          <div  class="panel panel-edit">
             <form ng-submit="editMode = !editMode; submitRide(ride, $index)">
               <input type="text" name="driverName" class="panel-input" ng-model="ride.name"></input>
               <input type="text" name="timeToLeave" class="panel-input" ng-model="ride.departureTime"></input>
@@ -46,5 +45,5 @@
       </li>
     </ul>
     <button ng-show="expandRide" ng-click="addNewRide()" class="panel panel-add">add car</button>
-  </div>
+  <!-- </div>
 </li>

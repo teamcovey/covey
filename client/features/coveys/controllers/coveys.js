@@ -7,7 +7,7 @@ angular.module('coveys', ['covey.services', 'userId.services'])
    */
   $scope.hasCoveys = 'true';
   // Setting to testData for now, will update once server isrunning
-  $scope.coveys;
+  $scope.coveys = [];
   // Routes user to the specified covey (based on coveyId)
   $scope.goToCovey = (coveyId) => {
     $location.path(`/coveys/${coveyId}`);

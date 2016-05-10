@@ -1,34 +1,3 @@
-// Test data. To be removed once server is up.
-const testData = [
-  {
-    name: 'Brochella 2016',
-    blurb: 'Eat, sleep, rave, repeat',
-    startTime: 'April 15th, 2016',
-    endTime: 'April 17th, 2016',
-    isOwner: true,
-    photoUrl: '../styles/img/200x200.png',
-    covey_id: '123',
-  },
-  {
-    name: 'Burning man',
-    blurb: 'Hang out with Toben in the desert',
-    startTime: 'August 28th, 2016',
-    endTime: 'August 30th, 2016',
-    isOwner: false,
-    photoUrl: '../styles/img/200x200.png',
-    covey_id: '12345',
-  },
-  {
-    name: 'Camping at Redwood National and State Park',
-    blurb: 'Drink beer with the bears',
-    startTime: 'July 4th, 2016',
-    endTime: 'July 7th, 2016',
-    isOwner: true,
-    photoUrl: '../styles/img/200x200.png',
-    covey_id: '12345',
-  },
-];
-
 angular.module('coveys', ['covey.services', 'userId.services'])
 
 .controller('coveysController', function ($scope, $location, $rootScope, coveysFactory) {
@@ -38,7 +7,7 @@ angular.module('coveys', ['covey.services', 'userId.services'])
    */
   $scope.hasCoveys = 'true';
   // Setting to testData for now, will update once server isrunning
-  $scope.coveys = testData;
+  $scope.coveys = [];
   // Routes user to the specified covey (based on coveyId)
   $scope.goToCovey = (coveyId) => {
     $location.path(`/coveys/${coveyId}`);
@@ -88,7 +57,6 @@ angular.module('coveys', ['covey.services', 'userId.services'])
   };
   /*
    * Automatically gets all coveys on page load.
-   * TODO: uncomment the below line once server is running.
    */
   $scope.getCoveys();
 });

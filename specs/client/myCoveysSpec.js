@@ -1,3 +1,33 @@
+const testData = [
+  {
+    name: 'Brochella 2016',
+    blurb: 'Eat, sleep, rave, repeat',
+    startTime: 'April 15th, 2016',
+    endTime: 'April 17th, 2016',
+    isOwner: true,
+    photoUrl: '../styles/img/200x200.png',
+    covey_id: '123',
+  },
+  {
+    name: 'Burning man',
+    blurb: 'Hang out with Toben in the desert',
+    startTime: 'August 28th, 2016',
+    endTime: 'August 30th, 2016',
+    isOwner: false,
+    photoUrl: '../styles/img/200x200.png',
+    covey_id: '12345',
+  },
+  {
+    name: 'Camping at Redwood National and State Park',
+    blurb: 'Drink beer with the bears',
+    startTime: 'July 4th, 2016',
+    endTime: 'July 7th, 2016',
+    isOwner: true,
+    photoUrl: '../styles/img/200x200.png',
+    covey_id: '12345',
+  },
+];
+
 describe('Coveys', () => {
   let $controller;
   let $rootScope;
@@ -13,6 +43,7 @@ describe('Coveys', () => {
   it('Should sort coveys by attending status', () => {
     const $scope = {};
     const controller = $controller('coveysController', { $scope: $scope });
+    $scope.coveys = testData;
     expect($scope.coveys[1].name).to.equal('Burning man');
     $scope.sortCoveysByOwnershipStatus($scope.coveys);
     expect($scope.coveys[1].name).to.equal('Camping at Redwood National and State Park');

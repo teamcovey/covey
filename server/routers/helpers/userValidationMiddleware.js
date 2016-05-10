@@ -7,7 +7,7 @@ const knex = require('../../config/config.js').knex;
 exports.isValidCoveyMember = (request, response, next) => {
   const coveyId = request.params.coveyId;
   const userId = request.cookies.user_id;
-  return knex('coveys_users')
+  knex('coveys_users')
     .where({
       user_id: userId,
       covey_id: coveyId,
@@ -22,18 +22,33 @@ exports.isValidCoveyMember = (request, response, next) => {
 };
 
 exports.isValidResourceOwner = (request, response, next) => {
-  const resourceId = request.params.resourceId;
   const userId = request.cookies.user_id;
-  return knex('resources_users')
+  const resourceId = request.params.resourceId;
+  // Gets coveyId from resources table
+  knex
+    .select('covey_id')
+    .from('resources')
     .where({
-      resource_id: resourceId,
-      user_id: userId,
+      id: resourceId,
     })
-    .then((rows) => {
-      if (rows.length > 0) {
-        next();
+    .then((resourcesRows) => {
+      if (resourcesRows.length === 0) {
+        response.status(404).send();
       } else {
-        response.status(401).send();
+        const coveyId = resourcesRows[0].covey_id;
+        // Checks if both coveyId and userId exist in join table
+        knex('coveys_users')
+          .where({
+            user_id: userId,
+            covey_id: coveyId,
+          })
+          .then((coveyUsersRows) => {
+            if (coveyUsersRows.length > 0) {
+              next();
+            } else {
+              response.status(401).send();
+            }
+          });
       }
     });
 };

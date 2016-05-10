@@ -64,7 +64,6 @@ exports.signup = (req, res) => {
 
 exports.searchUsers = (req, res) => {
   const searchVal = `%${req.params.searchVal}%`;
-  console.log('in searchUsers with: ', searchVal);
 
   knex
     .select(['users.firstName', 'users.lastName', 'users.email', 'users.photoUrl', 'users.id'])

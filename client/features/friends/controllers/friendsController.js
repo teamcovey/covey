@@ -2,22 +2,23 @@ angular.module('friends', ['friends.services', 'userId.services'])
 
 .controller('friendsController', function ($scope, $location, $rootScope, friendsFactory) {
   /*
-   * hasCoveys can have a value of 'true', 'false', or 'error'
-   * the view will automatically change based on the value.
+   * showFriends can have a value of 'true', 'false', 'empty', 'search',
+   * or 'error' the view will automatically change based on the value.
    */
   $scope.showFriends = 'true';
   $scope.friends = [];
   // Routes user to the specified covey (based on coveyId)
   $scope.removeFriend = (friendId) => {
-    let friendIndex = $scope.friends.length;
+    let friendIndex;
     friendsFactory
       .removeFriend(friendId)
       .then((response) => {
         const data = response.data;
         if (data.success && data.success === true) {
-          for (let i = 0; i < friendIndex; i++) {
+          for (let i = 0; i < $scope.friends.length; i++) {
             if ($scope.friends[i].id === friendId) {
               friendIndex = i;
+              break;
             }
           }
           /* because we change the scope locally, we dont need to refresh

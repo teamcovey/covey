@@ -110,5 +110,4 @@ app.post('/api/suppliers/:resourceId/:userId', auth, routeResources.addSupplier)
 
 app.get('/api/searchUsers/:searchVal', auth, route.searchUsers);
 
-
 module.exports = app;

@@ -9,6 +9,7 @@ angular.module('covey', [
   'auth.controller',
   'createCovey',
   'coveys',
+  'friends',
   'hamburger',
   'ngRoute',
 ])
@@ -29,6 +30,10 @@ angular.module('covey', [
     .when('/coveys/:coveyId', {
       templateUrl: 'features/covey/views/coveyView.html',
       controller: 'coveyController',
+    })
+    .when('/friends', {
+      templateUrl: 'features/friends/views/friends.html',
+      controller: 'friendsController',
     })
     .otherwise({
       redirectTo: '/',

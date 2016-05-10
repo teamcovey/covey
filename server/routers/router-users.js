@@ -96,20 +96,34 @@ exports.addFriend = (req, res) => {
   const userId = req.params.userId;
 
   knex('friends')
-      .returning('friend_id')
-      .insert({ user_id: userId, friend_id: friendId })
-  .then(() => {
-    knex('friends')
-      .returning('friend_id')
-      .insert({ user_id: friendId, friend_id: userId })
-      .then((friendIs) => {
-        res.status(201).json({ id: friendIs[0], success: true });
+  .where('user_id', userId)
+  .andWhere('friend_id', friendId)
+  .then((results) => {
+    console.log('doing the friends search first...', results.length);
+    if (results.length === 0) {
+      knex('friends')
+          .returning('friend_id')
+          .insert({ user_id: userId, friend_id: friendId })
+      .then(() => {
+        knex('friends')
+          .returning('friend_id')
+          .insert({ user_id: friendId, friend_id: userId })
+          .then((friendIs) => {
+            res.status(201).json({ id: friendIs[0], success: true });
+          })
+          .catch((err) => {
+            res.status(404).json(err);
+          });
       })
       .catch((err) => {
         res.status(404).json(err);
       });
+    } else {
+      // it was already a friend... just return friends list.
+    }
   })
   .catch((err) => {
+    console.log('error in checking for friend before adding');
     res.status(404).json(err);
   });
 };
@@ -131,7 +145,7 @@ exports.removeFriend = (req, res) => {
           res.json({ success: true });
         })
         .catch((err) => {
-          console.log('error in deleting friends rows: ', err);
+          console.log('error in deleting friends matched rows: ', err);
           res.status(404).json(err);
         });
     })
@@ -144,9 +158,11 @@ exports.removeFriend = (req, res) => {
 exports.getFriends = (req, res) => {
   const userId = req.params.userId;
 
-  knex.from('users')
+  knex
+    .select(['users.firstName', 'users.lastName', 'users.email', 'users.photoUrl', 'users.id'])
+    .from('users')
     .innerJoin('friends', 'users.id', 'friends.user_id')
-    .where('user_id', '=', userId)
+    .where('friend_id', '=', userId)
     .then((users) => {
       res.status(200).json(users);
     })

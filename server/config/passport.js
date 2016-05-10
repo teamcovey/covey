@@ -6,7 +6,7 @@ const Users = require('../collections/users.js');
 // Set keys file based on environment
 var keys = process.env.covey_env === 'PROD' || process.env.covey_env === 'DEV'
   ? require('./keys.js')
-  : require('./keys.example.js');
+  : require('./keys.js');
 
 // Set host based on environment
 var callback;

@@ -18,11 +18,17 @@ friendServices.factory('friendsFactory', function ($http, userIdFactory) {
     },
     // Deletes a covey, based on user request
     removeFriend: (friendId) => {
-      console.log('removing a friend in friendService');
       const userId = userIdFactory.getUserId();
       const requestUrl = `/api/friends/${userId}/${friendId}`;
       return $http.delete(requestUrl)
         .then((response) => response, (error) => error);
+    },
+    searchUsers: (nameString) => {
+      console.log('time to search for a user');
+      const userId = userIdFactory.getUserId();
+      // const requestUrl = `/api/friends/${userId}/${friendId}`;
+      // return $http.delete(requestUrl)
+      //   .then((response) => response, (error) => error);
     },
   });
 });

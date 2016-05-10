@@ -8,11 +8,14 @@
         </div>
       </div>
       <!-- this will need to be done as part of the search bar -->
-<!--       <div class="row">
+      <div class="row">
         <div class="col-md-2 col-md-offset-10">
-          <button class="btn btn-primary" ng-click="toggleCreateCoveyModal()"><b>+ Create</b></button>
+            <form ng-submit="editAttendees = !editAttendees; SearchFriends(someName)">
+              <input type="text" name="friendSearch" placeholder="...name to search for" class="none" ng-model="someName"></input>
+              <input type="submit" id="submit" value="Update" />
+            </form>
         </div>
-      </div> -->
+      </div>
       <div class-"row" ng-repeat="friend in friends">
         <div class="col-md-12 text-left covey-tile" ng-click="removeFriend(friend.id)">
           <img src="{{ friend.photoUrl }}" class="myfriends-profile-image"/>
@@ -31,11 +34,14 @@
           <h1>My Friends</h1>
         </div>
       </div>
-<!--       <div class="row">
+      <div class="row">
         <div class="col-md-2 col-md-offset-10">
-          <button class="btn btn-primary" ng-click="toggleCreateCoveyModal()"><b>+ Create</b></button>
+          <form ng-submit="editAttendees = !editAttendees; SearchFriends(someName)">
+            <input type="text" name="friendSearch" placeholder="...friend to search for" class="panel-input" ng-model="someName"></input>
+            <input type="submit" id="submit" value="Update" />
+          </form>
         </div>
-      </div> -->
+      </div>
       <div class="row">
         <div class="cold-md-12 text-center">
           <h3>There was an error retrieving your friends!</h3>
@@ -52,11 +58,14 @@
           <h1>My Friends</h1>
         </div>
       </div>
-<!--       <div class="row">
+      <div class="row">
         <div class="col-md-2 col-md-offset-10">
-          <button class="btn btn-primary" ng-click="toggleCreateCoveyModal()"><b>+ Create</b></button>
+          <form ng-submit="editAttendees = !editAttendees; searchFriends(someName)">
+            <input type="text" name="friendSearch" placeholder="...friend to search for" class="none" ng-model="someName"></input>
+            <input type="submit" id="submit" value="Search" />
+          </form>
         </div>
-      </div> -->
+      </div>
       <div class="row">
         <div class="col-md-12">
           <h3>You have not yet added any friends</h3>

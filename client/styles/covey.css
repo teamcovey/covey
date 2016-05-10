@@ -1,18 +1,34 @@
 /* >> related to redesign */
-.clicked-nav {
+.active-nav {
   margin-bottom:20px;background-color:#FFB600;text-align:center;height:50px;line-height:50px;vertical-align: middle;width:105%;
 }
 
-.non-clicked-nav {
+.inactive-nav {
   margin-bottom:20px;text-align:center;height:50px;line-height:50px;vertical-align: middle;
 }
+
+.covey-sidenav {
+  background-color: #0191C8;color:white;height:100vh;padding:0;margin:0;text-align:center;
+}
+
+.test-hover {
+  background-color:#DDDDDD;
+  cursor: pointer;
+}
+.test-hover:focus {
+  background-color:#ffffff;
+  outline:0;
+}
+
 /* << */
 
 .covey {
   width: 100%;
-  background-color: #fff;
+  background-color: #DDDDDD;
   font-family: 'Open Sans', sans-serif;
   color: #0191C8;
+  padding:0;margin:0;border:0;
+  text-align:center;
 }
 
 .covey-nav {
@@ -82,7 +98,7 @@ span.glyphicon-menu-hamburger {
 
 .panel-input {
   margin: 2px;
-  width: 75%;
+  width: 20%;
   border: none;
 }
 
@@ -96,7 +112,7 @@ span.glyphicon-menu-hamburger {
 }
 
 .panel-users {
-  background-color:grey;display:inline-block;padding:1px;margin:3px;width:30px;height:30px;line-height:30px;font-size:13px;text-align:center;
+  background-color:green;display:inline-block;padding:1px;margin:3px;width:30px;height:30px;line-height:30px;font-size:13px;text-align:center;
 }
 
 .panel-current-users {

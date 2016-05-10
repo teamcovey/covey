@@ -1,20 +1,17 @@
-<div class="container covey" style="background-color: #DDDDDD;padding:0;margin:0;border:0;text-align:center;">
+<div class="container covey">
 
   <div class="row">
 
-    <div class="col-sm-2 side-nav-list" style="background-color: #0191C8;color:white;height:100vh;padding:0;margin:0">
+    <div class="col-sm-2 covey-sidenav">
       <h1>covey</h1>
-      <div style="margin-top:50px" ng-class="{'clicked-nav': isSelected('details'), 'non-clicked-nav': !isSelected('details')}" ng-click="navbarSwitch('details')">
+      <div style="margin-top:50px" ng-class="{'active-nav': isSelected('details'), 'inactive-nav': !isSelected('details')}" ng-click="navbarSwitch('details')">
         Details
       </div>
-      <div ng-class="{'clicked-nav': isSelected('rides'), 'non-clicked-nav': isSelected('details')}" ng-click="navbarSwitch('rides')">
+      <div ng-class="{'active-nav': isSelected('rides'), 'inactive-nav': !isSelected('rides')}" ng-click="navbarSwitch('rides')">
         Rides
       </div>
-      <div class="non-clicked-nav">
+      <div ng-class="{'active-nav': isSelected('supplies'), 'inactive-nav': !isSelected('supplies')}" ng-click="navbarSwitch('supplies')">
         Supplies
-      </div>
-      <div class="non-clicked-nav">
-        Expenses
       </div>
     </div>
 
@@ -41,17 +38,16 @@
 
     <div class="row">
       <div class="col-sm-6">
-        <!-- <div covey-details></div> -->
         <div class="panel panel-default" style="height: 75vh; margin-left:15px;padding:0">
-            <div ng-switch on="selection" class="panel-body" style="padding:0">
+            <div ng-switch on="selection" class="panel-body" style="padding:0;margin:0">
               <div ng-switch-default covey-details></div>
               <div ng-switch-when="rides" rides></div>
+              <div ng-switch-when="supplies" supplies></div>
             </div>
           </div>
       </div>
       <div class="col-sm-3">
         <ul class="list-unstyled">
-          <!-- <div supplies></div> -->
           <div chat></div>
           <div class="panel panel-default" style="height: 22vh;">
             <div class="panel-body">

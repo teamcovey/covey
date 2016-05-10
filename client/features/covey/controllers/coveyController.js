@@ -30,7 +30,6 @@ angular.module('covey.covey', [])
   };
 
   $scope.isSelected = (section) => {
-    console.log('is selection: ', section);
     return $scope.selection === section;
   };
 });

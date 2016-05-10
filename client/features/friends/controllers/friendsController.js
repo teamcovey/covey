@@ -7,7 +7,6 @@ angular.module('friends', ['friends.services', 'userId.services'])
    */
   $scope.showFriends = 'true';
   $scope.friends = [];
-  // Routes user to the specified covey (based on coveyId)
   $scope.removeFriend = (friendId) => {
     let friendIndex;
     friendsFactory
@@ -38,7 +37,7 @@ angular.module('friends', ['friends.services', 'userId.services'])
         const data = response.data;
         $scope.showFriends = 'true';
         if (data.success && data.success === true) {
-          // need to rewrite backend to just send the new list of friends
+          // rewrite backend to just send the new list of friends?
           $scope.getFriends();
         }
       });
@@ -50,7 +49,7 @@ angular.module('friends', ['friends.services', 'userId.services'])
       .then((response) => {
         const data = response.data;
         if (data.users.length === 0) {
-          // When showFriends is equal to 'empty' a different view will be displayed on the page
+          // When showFriends is 'empty' a different view will be displayed on the page
           $scope.showFriends = 'empty';
         } else {
           $scope.found = data.users;

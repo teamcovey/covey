@@ -99,7 +99,6 @@ exports.addFriend = (req, res) => {
   .where('user_id', userId)
   .andWhere('friend_id', friendId)
   .then((results) => {
-    console.log('doing the friends search first...', results.length);
     if (results.length === 0) {
       knex('friends')
           .returning('friend_id')
@@ -119,7 +118,8 @@ exports.addFriend = (req, res) => {
         res.status(404).json(err);
       });
     } else {
-      // it was already a friend... just return friends list.
+      // it was already a friend... just return success true.
+      res.status(201).json({ success: true });
     }
   })
   .catch((err) => {

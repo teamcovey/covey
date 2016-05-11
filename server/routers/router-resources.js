@@ -6,7 +6,7 @@ exports.addResource = (req, res) => {
   const name = req.body.name;
   const quantity = req.body.quantity;
   const type = req.body.type;
-  const coveyId = req.body.coveyId;
+  const coveyId = req.body.covey_id;
 
   Resources.create({
     name,
@@ -28,7 +28,7 @@ exports.updateResource = (req, res) => {
   const name = req.body.name;
   const quantity = req.body.quantity;
   const type = req.body.type;
-  const coveyId = req.body.coveyId;
+  const coveyId = req.body.covey_id;
 
   Resource.where({ id: resourceId })
     .fetch()

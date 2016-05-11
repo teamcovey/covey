@@ -1,16 +1,47 @@
+.coveys-container {
+  background-color: white;
+  padding: 0px 15px 15px 15px;
+  border-radius: 3px;
+  box-shadow: 3px 3px 5px 1px rgba(0, 0, 0, 0.1);
+  min-height: 80vh;
+  font-family: 'Open Sans', sans-serif;
+}
+.coveys-title-container {
+  background-color: #0191C8;
+  color: white;
+  border-radius: 3px;
+}
+.coveys-title-text {
+  padding: 10px;
+}
+.btn-row {
+  padding-top: 10px;
+}
+.btn-pineapple {
+  background-color: #FFB600;
+  color: white;
+  box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.1);
+}
+.btn-pineapple:hover {
+  background-color: #ffc533;
+  color: white;
+  box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.1);
+}
 .mycoveys-event-image {
   float: left;
   margin-right: 10px;
 }
 .covey-tile {
-  background-color: #FCFCFC;
+  background-color: #ccf0ff;
   margin-top: 10px;
   padding-left: 15px;
   padding-right: 15px;
   box-shadow: 3px 3px 5px 1px rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
 }
 .covey-tile:hover {
-  background: #e6f0ff;
+  background: #0191C8;
+  color: white;
 }
 .add-coveys-button {
   width: 25%;

@@ -63,6 +63,7 @@ exports.getAllUsers = (req, res) => {
 exports.updateUser = (req, res) => {
   const userId = req.params.userId;
   const newObj = {};
+  
   if (req.body.firstName) {
     newObj.firstName = req.body.firstName;
   }
@@ -88,26 +89,6 @@ exports.updateUser = (req, res) => {
   .catch((err) => {
     res.status(404).json(err);
   });
-
-  // User.where({ id: userId })
-  //   .fetch()
-  //   .then((user) => {
-  //     console.log('user is: ', user);
-  //     user.set('facebookId', facebookId);
-  //     user.set('firstName', firstName);
-  //     user.set('lastName', lastName);
-  //     user.set('email', email);
-  //     user.set('gender', gender);
-  //     user.set('photoUrl', photoUrl);
-  //     user.set('phoneNumber', phoneNumber);
-  //     User.save()
-  //       .then((updatedUser) => {
-  //         res.status(201).json({ updatedUser });
-  //       });
-  //   })
-  // .catch((err) => {
-  //   res.status(404).json(err);
-  // });
 };
 
 exports.addFriend = (req, res) => {

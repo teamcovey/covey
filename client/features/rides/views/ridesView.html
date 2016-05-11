@@ -1,10 +1,10 @@
-<div style="background-color:#0191C8;color:#ffffff">
-  <h2 style="display:inline;"><b>RIDES</b></h2>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your ride: {{stringifyUsersRide()}}
+<div style="height:50px;line-height:50px;vertical-align:center;background-color:#0191C8;color:#ffffff;padding: 0 10px;">
+  <p style="display:inline;float:left;font-size:32px;"><b>RIDES</b></p>
+  <p style="display:inline;float:right;">Your ride: {{stringifyUsersRide()}}</p>
 </div>
 <br>
 <div style="display:inline-block;width:90%;margin:0 auto;">
-  <div>
+  <!-- <div>
     <div style="display:inline-block;width:23%">
       <b>Car Name</b>
     </div>
@@ -17,27 +17,29 @@
     <div style="display:inline-block;width:23%">
       <b>Edit</b>
     </div>
-  </div>
+  </div> -->
 
-  <div style="background-color:#DDDDDD;margin-bottom:10px" ng-repeat="ride in ridesDetails track by $index">
+  <div style="background-color:#DDDDDD;margin-top:10px;" ng-repeat="ride in ridesDetails track by $index">
     <form ng-submit="submitRide(ride, $index)">
-      <input style="display:inline;width:25%" type="text" name="driverName" class="panel-input test-hover" ng-model="ride.name"></input>
+      <input style="display:inline;width:30%;float:left;padding:4px" type="text" name="driverName" class="panel-input rides-input-styles" ng-model="ride.name"></input>
 
-      <input style="display:inline;width:25%" type="text" name="timeToLeave" class="panel-input test-hover" ng-model="ride.departureTime"></input>
+      <input style="display:inline;width:25%;float:left;padding:4px" type="text" name="timeToLeave" class="panel-input rides-input-styles" ng-model="ride.departureTime"></input>
 
+      <div style="display:inline;width:35%;float:left">
         <div ng-click="removePassenger(passenger, ride)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="passenger in ride.riders" class="panel-current-users">
             {{mouseOverTrue ? 'X' : passenger.firstName}}
-            </div>
+        </div>
         <div ng-click="editMode = !editMode" class="panel-potential-users">+</div>
         <div ng-show="editMode">
           <div ng-click="addPassenger(friend, ride)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="friend in attendees | alreadyPassenger: ridesDetails" class="panel-potential-users">
             {{mouseOverTrue ? '+' : friend.firstName}}
           </div>
         </div>
+      </div>
 
-      <input style="display:inline;" type="submit" id="submit" value="Y" />
-      <button style="display:inline;background-color:grey;color:#ffffff;float:right;" ng-click="removeRide(ride, $index);">&nbsp;X&nbsp;</button>
+      <input style="display:none;" type="submit" id="submit" value="Y" />
+      <button style="display:inline;width:5%" class="remove-ride-btn" ng-click="removeRide(ride, $index);">X</button>
     </form>
   </div>
 </div>
-<button ng-click="addNewRide()" style="background-color:#DDDDDD;border:none;box-shadow:none;width:90%;margin:0 auto;">add a car...</button>
+<button class="add-ride-btn" ng-click="addNewRide()">add a car...</button>

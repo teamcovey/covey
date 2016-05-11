@@ -3,8 +3,29 @@
   margin-bottom:20px;background-color:#FFB600;text-align:center;height:50px;line-height:50px;vertical-align: middle;width:105%;
 }
 
+.add-ride-btn {
+  background-color:#DDDDDD;border:none;box-shadow:none;width:90%;margin:10px auto;
+}
+
+.add-ride-btn:hover {
+  background-color:#bfbfbf;
+}
+
+.remove-ride-btn {
+  display:inline;background-color:#DDDDDD;float:right;
+  border:none;box-shadow:none;height:100%;
+}
+
+.remove-ride-btn:hover {
+  background-color:#df9f9f;
+}
+
 .covey-details-edit-btn {
   float:right;border:none;box-shadow:none;background-color:#DDDDDD;padding:5px;margin-right:10px;
+}
+
+.covey-details-edit-btn:hover {
+  background-color:#bfbfbf;
 }
 
 .covey-details-edit-btn:focus {
@@ -19,12 +40,12 @@
   background-color: #0191C8;color:white;height:100vh;padding:0;margin:0;text-align:center;
 }
 
-.test-hover {
+.rides-input-styles {
   background-color:#DDDDDD;
   cursor: pointer;
 }
-.test-hover:focus {
-  background-color:#ffffff;
+.rides-input-styles:focus {
+  background-color:#bfbfbf;
   outline:0;
 }
 

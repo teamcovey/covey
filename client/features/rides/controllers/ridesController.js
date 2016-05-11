@@ -71,8 +71,8 @@ angular.module('covey.rides', ['userId.services', 'covey.attendees'])
           if ($scope.ridesDetails[i].id === ride.id) {
             $scope.ridesDetails[i].riders.push(passenger);
             /* Add usersRide if they were a passenger in the added ride: */
-            if (passenger.user_id === userId) {
-              // TODO: update $scope.usersRide
+            if (passenger.user_id.toString() === userId.toString()) {
+              $scope.usersRide = ridesHelpers.getUsersRide($scope.ridesDetails, userId);
             }
           }
         }
@@ -88,11 +88,11 @@ angular.module('covey.rides', ['userId.services', 'covey.attendees'])
         /* Refresh ridesDetails */
         for (let i = 0; i < $scope.ridesDetails.length; i++) {
           if ($scope.ridesDetails[i].id === ride.id) {
-            $scope.ridesDetails[i].splice($scope.ridesDetails[i].rides.indexOf(passenger), 1);
             /* If current user is the removed rider, remove ride from user's ride assignment */
-            if (passenger.user_id === userId) {
-              $scope.usersRide = 'You don\'t have a ride.';
+            if (passenger.user_id.toString() === userId.toString()) {
+              $scope.usersRide = { name: 'none.'};
             }
+            $scope.ridesDetails[i].riders.splice($scope.ridesDetails[i].riders.indexOf(passenger), 1);
           }
         }
       });

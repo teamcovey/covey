@@ -3,7 +3,7 @@
 
 angular.module('covey.rides')
 .filter('alreadyPassenger', function () {
-  return _.memoize((attendees, rides) => {
+  return (attendees, rides) => {
     if (Array.isArray(attendees)) {
       let allPassengers = [];
       rides.forEach((ride) => {
@@ -19,5 +19,5 @@ angular.module('covey.rides')
         return result;
       });
     }
-  });
+  };
 });

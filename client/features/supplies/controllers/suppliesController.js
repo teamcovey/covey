@@ -72,7 +72,7 @@ angular.module('covey.supplies', ['userId.services', 'covey.attendees'])
             $scope.supplyDetails[i].suppliers.push(supplier);
 
             /* If current user is the added supplier, add supply to user's supply assignments */
-            if (supplier.user_id === userId) {
+            if (supplier.user_id.toString() === userId.toString()) {
               $scope.usersSupplies = suppliesHelpers.getUsersSupplies($scope.supplyDetails, userId);
             }
           }
@@ -89,7 +89,7 @@ angular.module('covey.supplies', ['userId.services', 'covey.attendees'])
       for (let i = 0; i < $scope.supplyDetails.length; i++) {
         if ($scope.supplyDetails[i].id === supply.id) {
           /* If current user is the removed supplier, remove supply from user's suppy assignments */
-          if (supplier.user_id === userId) {
+          if (supplier.user_id.toString() === userId.toString()) {
             $scope.supplyDetails[i].suppliers.splice($scope.supplyDetails[i].suppliers.indexOf(supplier), 1);
             $scope.usersSupplies = suppliesHelpers.getUsersSupplies($scope.supplyDetails, userId);
           } else {

@@ -48,7 +48,7 @@
   cursor: pointer;
   background-color:#FFB600;display:inline-block;padding:1px;margin:3px;font-size:13px;text-align:center;
   border-radius:3px;box-shadow: 0 1px 0 0 #cc9200;
-  height:100%;padding:4px 10px;
+  height:100%;padding:4px 0;width:30px;text-align:center;
 }
 
 .panel-current-users:hover {
@@ -65,6 +65,7 @@
 .panel-potential-users:hover {
   background-color:#00cc85;
 }
+
 
 .remove-ride-btn {
   display:inline;background-color:#DDDDDD;float:right;

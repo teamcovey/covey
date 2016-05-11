@@ -8,7 +8,7 @@ exports.addRide = (req, res) => {
   const seats = req.body.seats;
   const location = req.body.location;
   const departureTime = req.body.departureTime;
-  const coveyId = req.body.coveyId;
+  const coveyId = req.body.covey_id;
 
   Cars.create({
     name,
@@ -36,7 +36,7 @@ exports.updateRide = (req, res) => {
   const seats = req.body.seats;
   const location = req.body.location;
   const departureTime = req.body.departureTime;
-  const coveyId = req.body.coveyId;
+  const coveyId = req.body.covey_id;
 
   Car.where({ id: carId })
     .fetch()

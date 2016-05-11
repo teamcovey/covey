@@ -48,10 +48,10 @@ describe('Coveys', () => {
     $scope.sortCoveysByOwnershipStatus($scope.coveys);
     expect($scope.coveys[1].name).to.equal('Camping at Redwood National and State Park');
   });
-  it('hasCoveys should be true by default', () => {
+  it('hasCoveys should be false by default', () => {
     const $scope = {};
     const controller = $controller(('coveysController'), { $scope: $scope });
-    expect($scope.hasCoveys).to.equal('true');
+    expect($scope.hasCoveys).to.equal('false');
   });
   it('Should navigate to new covey page on click', () => {
     const $scope = {};

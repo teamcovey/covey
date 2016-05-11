@@ -431,7 +431,7 @@ describe('Testing resources functionality', () => {
       name: 'Beer',
       quantity: '24',
       type: 'food',
-      coveyId: coveyId,
+      covey_id: coveyId,
     };
     updatedResource = newResource;
     updatedResource.quantity = 12;
@@ -676,7 +676,7 @@ describe('Testing cars functionality', () => {
       seats: 5,
       location: 'The Shire',
       departureTime: 'Whenever',
-      coveyId: coveyId,
+      covey_id: coveyId,
     };
     updatedCar = newCar;
     updatedCar.seats = 6;

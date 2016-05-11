@@ -5,6 +5,7 @@ angular.module('covey', [
   'covey.covey',
   'covey.services',
   'userId.services',
+  'date.services',
   'ngCookies',
   'auth.controller',
   'createCovey',
@@ -25,7 +26,6 @@ angular.module('covey', [
     })
     .when('/coveys', {
       templateUrl: 'features/coveys/views/coveys.html',
-      controller: 'coveysController',
     })
     .when('/coveys/:coveyId', {
       templateUrl: 'features/covey/views/coveyView.html',

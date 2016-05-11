@@ -1,4 +1,4 @@
-<div class="row" ng-controller="createCoveyController" ng-show="visible">
+<div ng-controller="createCoveyController" ng-show="visible">
   <!-- This div will create a grayed-out background when the moda pops up -->
   <div class="row gray-out-bg">
     <div class="col-md-12">
@@ -88,6 +88,14 @@
             </div>
             <div class="col-sm-5">
               <input type="time" class="form-control" id="endTime" ng-model="endTime">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-2">
+              <label for="photoUrl">Photo URL</label>
+            </div>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="photoUrl" placeholder="Photo URL" ng-model="photoUrl">
             </div>
           </div>
           <div class="form-group">

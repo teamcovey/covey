@@ -26,6 +26,7 @@ angular.module('createCovey', ['covey.services', 'userId.services'])
     $scope.endDate = '';
     $scope.endTime = '';
     $scope.details = '';
+    $scope.photoUrl = '';
   };
   // Set form fields to empty, by default
   $scope.resetFormFields();
@@ -60,7 +61,10 @@ angular.module('createCovey', ['covey.services', 'userId.services'])
       startTime: combinedStartDateTime,
       endTime: combinedEndDateTime,
       details: $scope.details,
-      blurb: $scope.details.slice(0, 97).concat('...'),
+      blurb: $scope.details.length > 100
+        ? $scope.details.slice(0, 97).concat('...')
+        : $scope.details,
+      photoUrl: $scope.photoUrl,
     };
     coveysFactory.postCovey(coveyData)
       .then((response) => {

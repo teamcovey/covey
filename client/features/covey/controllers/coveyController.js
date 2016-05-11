@@ -3,7 +3,7 @@ angular.module('covey.covey', [])
   coveyService.getCovey().then((response) => {
     $scope.details = response.covey;
     // TODO: add validation to check that photoUrl is a real url:
-    $scope.showPhoto = response.covey.photoUrl.length ? true : false;
+    $scope.showPhoto = response.covey.photoUrl ? true : false;
   });
 
   $scope.toggleEdit = () => {
@@ -20,7 +20,7 @@ angular.module('covey.covey', [])
   $scope.updateCovey = () => {
     coveyService.updateCovey($scope.details);
     // TODO: add validation to check that photoUrl is a real url:
-    $scope.showPhoto = $scope.details.photoUrl.length ? true : false;
+    $scope.showPhoto = $scope.details.photoUrl ? true : false;
   };
 
   $scope.selection = 'details';

@@ -1,6 +1,15 @@
-.coveys-container {
+.coveys-page-container {
+  width: 100%;
+  background-color: #DDDDDD;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+.coveys-view-container {
   background-color: white;
   padding: 0px 15px 15px 15px;
+  margin: 0px 30px;
   border-radius: 3px;
   box-shadow: 3px 3px 5px 1px rgba(0, 0, 0, 0.1);
   min-height: 80vh;
@@ -9,7 +18,8 @@
 .coveys-title-container {
   background-color: #0191C8;
   color: white;
-  border-radius: 3px;
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
 }
 .coveys-title-text {
   padding: 10px;
@@ -27,21 +37,45 @@
   color: white;
   box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.1);
 }
+.mycoveys-event-image-container {
+  overflow: hidden;
+  margin-right: 10px;
+  float: left;
+  width: 200px;
+  height: 200px;
+}
 .mycoveys-event-image {
   float: left;
-  margin-right: 10px;
+  height: 100%;
+  width: 100%;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+  object-position: center;
+  object-fit: cover;
 }
 .covey-tile {
   background-color: #ccf0ff;
   margin-top: 10px;
-  padding-left: 15px;
+  padding-left: 0px;
   padding-right: 15px;
   box-shadow: 3px 3px 5px 1px rgba(0, 0, 0, 0.1);
   border-radius: 3px;
+  height: 200px;
 }
 .covey-tile:hover {
   background: #0191C8;
   color: white;
+}
+
+.covey-tile-heading {
+  padding-bottom: 2.5px;
+  padding-top: 2.5px;
+  font-weight: bold;
+}
+
+.covey-tile-text {
+  padding-bottom: 2.5px;
+  padding-top: 2.5px;
 }
 .add-coveys-button {
   width: 25%;

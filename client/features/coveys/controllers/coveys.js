@@ -1,11 +1,11 @@
-angular.module('coveys', ['covey.services', 'userId.services'])
+angular.module('coveys', ['covey.services', 'userId.services', 'date.services'])
 
-.controller('coveysController', function ($scope, $location, $rootScope, coveysFactory) {
+.controller('coveysController', function ($scope, $location, $rootScope, coveysFactory, dateFactory) {
   /*
    * hasCoveys can have a value of 'true', 'false', or 'error'
    * the view will automatically change based on the value.
    */
-  $scope.hasCoveys = 'true';
+  $scope.hasCoveys = 'false';
   // Setting to testData for now, will update once server isrunning
   $scope.coveys = [];
   // Routes user to the specified covey (based on coveyId)
@@ -19,6 +19,8 @@ angular.module('coveys', ['covey.services', 'userId.services'])
   $scope.toggleCreateCoveyModal = () => {
     $rootScope.$broadcast('toggleCreateCoveyModal');
   };
+  // Converts the date string to a readable format
+  $scope.convertToTextDate = (dateString) => dateFactory.convertToTextDate(dateString);
   // Sorts coveys based on whether the user is planning
   $scope.sortCoveysByOwnershipStatus = (arrayOfCoveys) => {
     const coveysArray = arrayOfCoveys;
@@ -49,6 +51,7 @@ angular.module('coveys', ['covey.services', 'userId.services'])
             // When hasCoveys is equal to 'false' a different view will be displayed on the page
             $scope.hasCoveys = 'false';
           } else {
+            $scope.hasCoveys = 'true';
             $scope.coveys = data;
             $scope.sortCoveysByOwnershipStatus($scope.coveys);
           }

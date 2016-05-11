@@ -11,14 +11,7 @@ angular.module('covey.attendees', ['friends.services'])
 
     friendsFactory.getFriends()
       .then((friends) => {
-        if (friends.data.length < 1) {
-          $scope.friends = [
-            { firstName: 'John', lastName: 'Smith', user_id: 1234 },
-            { firstName: 'Anne', lastName: 'Smith', user_id: 5678 },
-          ];
-        } else {
-          $scope.friends = friends.data;
-        }
+        $scope.friends = friends.data;
       });
   };
 

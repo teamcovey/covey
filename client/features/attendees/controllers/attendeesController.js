@@ -17,12 +17,11 @@ angular.module('covey.attendees', ['friends.services'])
 
   init();
 
-  $scope.addAttendee = (newAttendeeId) => {
-    attendeesHttp.addAttendee(newAttendeeId).then((response) => {
+  $scope.addAttendee = (newAttendee) => {
+    attendeesHttp.addAttendee(newAttendee.id).then((response) => {
       if (!response.user.user_id) {
         response.user.user_id = response.user.id;
       }
-      console.log('Added attendee id: ', response.user.user_id);
       $scope.attendees.push(response.user);
     });
     $scope.newAttendee = '';

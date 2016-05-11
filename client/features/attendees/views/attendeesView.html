@@ -1,22 +1,21 @@
-<div class="panel panel-default">
-  <div class="panel-heading">
-    Friends
-    <span ng-click="editAttendees = !editAttendees" class="glyphicon glyphicon-pencil pencil-button"></span>
+<button class="covey-details-edit-btn" ng-click="editAttendees = !editAttendees">
+    Edit&nbsp;<span class="glyphicon glyphicon-pencil"></span>  
+  </button>
+<div ng-hide="editAttendees">
+  <div ng-repeat="friend in attendees" class="current-attendees">
+    {{friend.firstName.slice(0,1) + friend.lastName.slice(0,1)}}
   </div>
-  <div class="panel-body details-panel">
-    <div ng-hide="editAttendees">
-      <div ng-repeat="friend in attendees" class="attendees-list">
-        {{friend.firstName}}
-      </div>
+</div>
+<div ng-show="editAttendees">
+  <form ng-submit="editAttendees = !editAttendees; addAttendee(newAttendee)">
+    <div class="current-attendees" ng-click="removeAttendee(friend)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="friend in attendees">
+      {{mouseOverTrue ? 'X' : friend.firstName.slice(0,1) + friend.lastName.slice(0,1)}}
     </div>
-    <div ng-show="editAttendees">
-      <form ng-submit="editAttendees = !editAttendees; addAttendee(newAttendee)">
-        <div class="attendees-list attendees-removal-list" ng-click="removeAttendee(friend)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="friend in attendees">
-          {{mouseOverTrue ? 'X' : friend.firstName}}
-        </div>
-        <input type="text" name="attendees" placeholder="...add friend" class="panel-input" ng-model="newAttendee"></input>
-        <input type="submit" id="submit" value="Update" />
-      </form>
+    <br>
+    <br>
+    <div class="current-attendees potential-user-to-add" ng-click="addAttendee(friend.user_id)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="friend in friends">
+      {{mouseOverTrue ? '+' : friend.firstName.slice(0,1) + friend.lastName.slice(0,1)}}
     </div>
-  </div>
+    <input style="display:none" type="submit" id="submit" value="Update" />
+  </form>
 </div>

@@ -1,49 +1,29 @@
-<li class="panel panel-info">
-  <!-- PANEL HEADING -->
-  <div class="panel-heading">
-    Supplies
-    <span ng-click="expandSupplies()" class="pencil-button glyphicon glyphicon-pencil"></span>
-  </div>
-  <div class="panel-body">
+<div class="main-body-panel-header">
+  <p class="body-panel-header"><b>SUPPLIES</b></p>
+  <p class="body-panel-personal-details">You're bringing: {{reduceUsersSupplies().name.slice(2,20)}}...</p>
+</div>
+<br>
+<div class="main-body-panel-body">
+  <div class="main-body-inputs" ng-repeat="supply in supplyDetails track by $index">
+    <form ng-submit="submitSupply(supply, $index)">
+      <input type="text" name="supplyName" class="main-input-styles shared-inputs-color" ng-model="supply.name"></input>
+      <input type="text" name="supplyType" class="main-input-styles shared-inputs-color" ng-model="supply.type"></input>
 
-    <!-- BASIC PANEL VIEW -->
-    <div ng-hide="expandSupply">You're bringing: {{reduceUsersSupplies().name.slice(2)}}</div>
-
-    <!-- PANEL VIEW IN EDIT MODE -->
-    <ul ng-show="expandSupply" class="list-unstyled">
-      <li ng-repeat="supply in supplyDetails track by $index">
-        <div ng-hide="editMode" class="panel panel-static">
-          {{supply.name}}
-          <!-- DISPLAY SUPPLIERS -->
-          <div ng-repeat="supplier in supply.suppliers" class="panel-users">
-              {{supplier.firstName}}
+      <div class="current-attendees-added">
+        <div class="panel-current-users" ng-click="removeSupplier(supplier, supply)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="supplier in supply.suppliers">
+            {{mouseOverTrue ? 'X' : supplier.firstName.slice(0,1)+supplier.lastName.slice(0,1)}}
+        </div>
+        <div class="panel-potential-users" ng-click="editMode = !editMode">+ Supplier</div>
+        <div ng-show="editMode">
+          <div class="panel-current-users potential-user-to-add" ng-click="addSupplier(attendee, supply)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="attendee in attendees | alreadySupplier: supply.suppliers">
+            {{mouseOverTrue ? '+' : attendee.firstName.slice(0,1)+attendee.lastName.slice(0,1)}}
           </div>
-          <button ng-click="editMode = !editMode" class="btn btn-sm pencil-button"><span class="glyphicon glyphicon-pencil"></span></button>
         </div>
+      </div>
 
-        <!-- INDIVIDUAL SUPPLY EDIT VIEW -->
-        <div ng-show="editMode" class="panel panel-edit">
-          <form ng-submit="editMode = !editMode; submitSupply(supply, $index)">
-            <input type="text" name="supplyName" class="panel-input" ng-model="supply.name"></input>
-            <!-- DISPLAY SUPPLIERS -->
-            <div>
-              <div ng-click="removeSupplier(supplier, supply)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="supplier in supply.suppliers" class="panel-current-users">
-                {{mouseOverTrue ? 'X' : supplier.firstName}}
-              </div>
-            </div>
-            <!-- DISPLAY POTENTIAL SUPPLIERS -->
-            <div>
-              <div ng-click="addSupplier(attendee, supply)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="attendee in attendees | alreadySupplier: supply.suppliers" class="panel-potential-users">
-                {{mouseOverTrue ? '+' : attendee.firstName}}
-              </div>
-            </div>
-            <input type="submit" id="submit" value="Update" />
-          </form>
-          <button ng-click="editMode = !editMode;">Cancel</button>
-          <button ng-click="removeSupply(supply, $index); editMode = !editMode">Delete</button>
-        </div>
-      </li>
-    </ul>
-    <button ng-show="expandSupply" ng-click="addNewSupply()" class="panel panel-add">add supply</button>
+      <input style="display:none;" type="submit" id="submit" value="Y" />
+      <button class="remove-resource-ride-btn" ng-click="removeSupply(supply, $index);">X</button>
+    </form>
   </div>
-</li>
+</div>
+<button class="add-resource-ride-btn shared-inputs-color" ng-click="addNewSupply()">add a supply...</button>

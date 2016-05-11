@@ -63,11 +63,11 @@ exports.getAllUsers = (req, res) => {
 exports.updateUser = (req, res) => {
   const userId = req.params.userId;
   const newObj = {};
-  
+
   if (req.body.firstName) {
     newObj.firstName = req.body.firstName;
   }
-  if (req.body.firstName) {
+  if (req.body.lastName) {
     newObj.lastName = req.body.lastName;
   }
   if (req.body.email) {

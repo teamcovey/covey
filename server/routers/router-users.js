@@ -62,33 +62,52 @@ exports.getAllUsers = (req, res) => {
 
 exports.updateUser = (req, res) => {
   const userId = req.params.userId;
+  const newObj = {};
+  if (req.body.firstName) {
+    newObj.firstName = req.body.firstName;
+  }
+  if (req.body.firstName) {
+    newObj.lastName = req.body.lastName;
+  }
+  if (req.body.email) {
+    newObj.email = req.body.email;
+  }
+  if (req.body.gender) {
+    newObj.gender = req.body.gender;
+  }
+  if (req.body.phoneNumber) {
+    newObj.phoneNumber = req.body.phoneNumber;
+  }
 
-  const facebookId = req.body.facebookId;
-  const firstName = req.body.firstName;
-  const lastName = req.body.lastName;
-  const email = req.body.email;
-  const gender = req.body.gender;
-  const photoUrl = req.body.photoUrl;
-  const phoneNumber = req.body.phoneNumber;
-
-  User.where({ id: userId })
-    .fetch()
-    .then((user) => {
-      user.set('facebookId', facebookId);
-      user.set('firstName', firstName);
-      user.set('lastName', lastName);
-      user.set('email', email);
-      user.set('gender', gender);
-      user.set('photoUrl', photoUrl);
-      user.set('phoneNumber', phoneNumber);
-      user.save()
-        .then((updatedUser) => {
-          res.status(201).json({ updatedUser });
-        });
-    })
+  knex('users')
+  .where('id', userId)
+  .update(newObj)
+  .then((updatedUser) => {
+    res.status(201).json({ updatedUser });
+  })
   .catch((err) => {
     res.status(404).json(err);
   });
+
+  // User.where({ id: userId })
+  //   .fetch()
+  //   .then((user) => {
+  //     console.log('user is: ', user);
+  //     user.set('facebookId', facebookId);
+  //     user.set('firstName', firstName);
+  //     user.set('lastName', lastName);
+  //     user.set('email', email);
+  //     user.set('gender', gender);
+  //     user.set('photoUrl', photoUrl);
+  //     user.set('phoneNumber', phoneNumber);
+  //     User.save()
+  //       .then((updatedUser) => {
+  //         res.status(201).json({ updatedUser });
+  //       });
+  //   })
+  // .catch((err) => {
+  //   res.status(404).json(err);
+  // });
 };
 
 exports.addFriend = (req, res) => {

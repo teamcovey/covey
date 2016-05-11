@@ -1,24 +1,111 @@
-/* >> related to redesign */
-.active-nav {
-  margin-bottom:20px;background-color:#FFB600;text-align:center;height:50px;line-height:50px;vertical-align: middle;width:105%;
+/* RIDES VIEW >>> */
+.main-rides-panel-header {
+  height:50px;line-height:50px;vertical-align:center;background-color:#0191C8;color:#ffffff;padding: 0 10px;border-top-left-radius:3px;border-top-right-radius:3px;
 }
+
+
+
+.rides-panel-header {
+  display:inline;float:left;font-size:32px;
+}
+
+.rides-panel-personal-details {
+  display:inline;float:right;
+}
+
+.main-rides-panel-body {
+  display:inline-block;width:90%;margin:0 auto;
+}
+
+.rides-body-inputs {
+  background-color:#DDDDDD;margin-top:10px;
+}
+
+.rides-input-styles {
+  background-color:#DDDDDD;
+  cursor: pointer;
+  float:left;padding:4px 12px;border-radius:3px;box-shadow: 0 1px 0 0 #bfbfbf;
+  display:inline;
+  margin: 2px;
+  width: 25%;
+  border: none;
+}
+
+.rides-input-styles:hover {
+  background-color:#bfbfbf;
+}
+
+.rides-input-styles:focus {
+  background-color:#bfbfbf;
+  outline:0;
+}
+
+.rides-passengers {
+  display:inline;width:35%;float:left;
+}
+
+.panel-current-users {
+  cursor: pointer;
+  background-color:#FFB600;display:inline-block;padding:1px;margin:3px;font-size:13px;text-align:center;
+  border-radius:3px;box-shadow: 0 1px 0 0 #cc9200;
+  height:100%;padding:4px 10px;
+}
+
+.panel-current-users:hover {
+  background-color:#d27979;
+}
+
+.panel-potential-users {
+  cursor: pointer;
+  background-color:#00AB6F;display:inline-block;padding:1px 4px;margin:3px;font-size:13px;text-align:center;
+  border-radius:3px;box-shadow: 0 1px 0 0 #008053;
+  height:100%;padding:4px;
+}
+
+.panel-potential-users:hover {
+  background-color:#00cc85;
+}
+
+.remove-ride-btn {
+  display:inline;background-color:#DDDDDD;float:right;
+  border:none;
+  border-radius:3px;box-shadow: 0 1px 0 0 #bfbfbf;
+  height:100%;padding:4px 10px;
+}
+
+
 
 .add-ride-btn {
   background-color:#DDDDDD;border:none;box-shadow:none;width:90%;margin:10px auto;
+  border-radius:3px;box-shadow: 0 1px 0 0 #bfbfbf;
 }
 
 .add-ride-btn:hover {
   background-color:#bfbfbf;
 }
 
-.remove-ride-btn {
-  display:inline;background-color:#DDDDDD;float:right;
-  border:none;box-shadow:none;height:100%;
+.add-ride-btn:focus {
+  outline:0;
+}
+/* <<< RIDES VIEW */
+
+
+
+
+/* >> related to redesign */
+.active-nav {
+  margin-bottom:20px;background-color:#FFB600;text-align:center;height:50px;line-height:50px;vertical-align: middle;width:105%;
 }
 
-.remove-ride-btn:hover {
-  background-color:#df9f9f;
+.inactive-nav {
+  margin-bottom:20px;text-align:center;height:50px;line-height:50px;vertical-align: middle;
 }
+
+.covey-sidenav {
+  background-color: #0191C8;color:white;height:100vh;padding:0;margin:0;text-align:center;
+}
+
+
 
 .covey-details-edit-btn {
   float:right;border:none;box-shadow:none;background-color:#DDDDDD;padding:5px;margin-right:10px;
@@ -32,22 +119,7 @@
   outline:0;
 }
 
-.inactive-nav {
-  margin-bottom:20px;text-align:center;height:50px;line-height:50px;vertical-align: middle;
-}
 
-.covey-sidenav {
-  background-color: #0191C8;color:white;height:100vh;padding:0;margin:0;text-align:center;
-}
-
-.rides-input-styles {
-  background-color:#DDDDDD;
-  cursor: pointer;
-}
-.rides-input-styles:focus {
-  background-color:#bfbfbf;
-  outline:0;
-}
 
 .main-covey-panel {
   height: 75vh; margin-left:15px;padding:0;
@@ -153,14 +225,17 @@ span.glyphicon-menu-hamburger {
   float: right;
 }
 
+.shared-inputs-color {
+  background-color: #ccf0ff;
+}
+
+.remove-ride-btn:hover {
+  background-color:#d27979;
+}
+
+
+/* DELETE:
 .panel-users {
   background-color:green;display:inline-block;padding:1px;margin:3px;width:30px;height:30px;line-height:30px;font-size:13px;text-align:center;
 }
-
-.panel-current-users {
-  background-color:green;display:inline-block;padding:1px;margin:3px;width:30px;height:30px;line-height:30px;font-size:13px;text-align:center;
-}
-
-.panel-potential-users {
-  background-color:yellow;display:inline-block;padding:1px;margin:3px;width:30px;height:30px;line-height:30px;font-size:13px;text-align:center;
-}
+*/

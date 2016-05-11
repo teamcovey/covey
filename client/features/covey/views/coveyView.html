@@ -2,7 +2,7 @@
 
   <div class="row">
 
-    <div class="col-sm-2 covey-sidenav">
+    <div class="col-xs-2 covey-sidenav">
       <h1>covey</h1>
       <div style="margin-top:50px" ng-class="{'active-nav': isSelected('details'), 'inactive-nav': !isSelected('details')}" ng-click="navbarSwitch('details')">
         Details
@@ -16,7 +16,7 @@
     </div>
 
     <!-- <div hamburger-directive></div> -->
-    <div class="col-sm-offset-7 col-sm-3">
+    <div class="col-xs-offset-7 col-xs-3">
       <nav class="navbar">
         <div class="container-fluid">
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -37,7 +37,7 @@
 
 
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-xs-6">
         <div class="panel panel-default main-covey-panel">
             <div ng-switch on="selection" class="panel-body main-covey-body">
               <div ng-switch-default covey-details></div>
@@ -46,7 +46,7 @@
             </div>
           </div>
       </div>
-      <div class="col-sm-3">
+      <div class="col-xs-3">
         <ul class="list-unstyled">
           <div chat></div>
           <div class="panel panel-default" style="height: 22vh;">

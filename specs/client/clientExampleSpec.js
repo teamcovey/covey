@@ -12,9 +12,8 @@ describe('Routing', () => {
     $route = $injector.get('$route');
   }));
 
-  it('Should have /coveys route, template, and controller', () => {
+  it('Should have /coveys route, and template', () => {
     expect($route.routes['/coveys']).to.be.defined;
-    expect($route.routes['/coveys'].controller).to.equal('coveysController');
     expect($route.routes['/coveys'].templateUrl).to.equal('features/coveys/views/coveys.html');
   });
 });

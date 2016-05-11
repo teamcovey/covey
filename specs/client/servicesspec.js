@@ -70,14 +70,14 @@ describe('Date Factory', () => {
   });
   it('Should correctly convert date to a string', () => {
     let testDate = new Date(2016, 4, 15, 12, 15);
-    expect(dateFactory.convertToTextDate(testDate)).to.equal('Sunday May 15th, 2016 @ 12:15PM');
+    expect(dateFactory.convertToTextDate(testDate)).to.equal('Sun May 15th, 2016 @ 12:15PM');
     testDate = new Date(2016, 4, 16, 12, 15);
-    expect(dateFactory.convertToTextDate(testDate)).to.equal('Monday May 16th, 2016 @ 12:15PM');
+    expect(dateFactory.convertToTextDate(testDate)).to.equal('Mon May 16th, 2016 @ 12:15PM');
     testDate = new Date(2020, 2, 1, 0, 0);
-    expect(dateFactory.convertToTextDate(testDate)).to.equal('Sunday March 1st, 2020 @ 12:00AM');
+    expect(dateFactory.convertToTextDate(testDate)).to.equal('Sun Mar 1st, 2020 @ 12:00AM');
     testDate = new Date(2020, 2, 2, 13, 0);
-    expect(dateFactory.convertToTextDate(testDate)).to.equal('Monday March 2nd, 2020 @ 1:00PM');
+    expect(dateFactory.convertToTextDate(testDate)).to.equal('Mon Mar 2nd, 2020 @ 1:00PM');
     testDate = new Date(2020, 2, 3, 13, 0);
-    expect(dateFactory.convertToTextDate(testDate)).to.equal('Tuesday March 3rd, 2020 @ 1:00PM');
+    expect(dateFactory.convertToTextDate(testDate)).to.equal('Tue Mar 3rd, 2020 @ 1:00PM');
   });
 });

@@ -14,7 +14,7 @@
     <br>
     <br>
     <div class="current-attendees potential-user-to-add" ng-click="addAttendee(friend)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="friend in friends">
-      {{mouseOverTrue ? '+' : friend.firstName.slice(0,1) + friend.lastName.slice(0,1)}} - {{friend.user_id}}
+      {{mouseOverTrue ? '+' : friend.firstName.slice(0,1) + friend.lastName.slice(0,1)}}
     </div>
     <input style="display:none" type="submit" id="submit" value="Update" />
   </form>

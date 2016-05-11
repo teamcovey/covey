@@ -1,16 +1,18 @@
 angular.module('covey', [
+  'covey.index',
+  'index.services',
+  'covey.welcome',
   'covey.attendees',
   'covey.supplies',
   'covey.rides',
   'covey.covey',
+  'welcome.services',
   'covey.services',
   'userId.services',
   'date.services',
   'ngCookies',
-  'index.controller',
   'auth.controller',
   'createCovey',
-  'welcome',
   'coveys',
   'friends',
   'hamburger',
@@ -21,7 +23,7 @@ angular.module('covey', [
 .config(($routeProvider) => {
   $routeProvider
     .when('/', {
-      templateUrl: 'views/index.html',
+      templateUrl: 'features/index/views/index.html',
       controller: 'indexController',
     })
     .when('/about', {

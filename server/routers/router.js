@@ -13,6 +13,7 @@ const routeUsers = require('./router-users');
 const routeCoveys = require('./router-coveys');
 const routeRides = require('./router-rides');
 const routeResources = require('./router-resources');
+const routeTel = require('./router-tel');
 
 // can set up different routes for each path
 const bodyParser = require('body-parser');
@@ -129,5 +130,11 @@ app.post('/api/suppliers/:resourceId/:userId', auth, decryptUserId, isValidResou
   routeResources.addSupplier);
 
 app.get('/api/searchUsers/:searchVal', auth, decryptUserId, route.searchUsers);
+
+app.get('/api/tel/verify/:tel', auth, routeTel.generateCodeAndSend);
+
+app.post('/api/tel/', auth, routeTel.addTel);
+
+app.get('/api/tel/', auth, routeTel.hasTel);
 
 module.exports = app;

@@ -13,6 +13,7 @@
   <link rel="stylesheet" type="text/css" href="styles/about.css">
   <link rel="stylesheet" type="text/css" href="styles/friends.css">
   <link rel="stylesheet" type="text/css" href="styles/welcome.css">
+  <link rel="stylesheet" href="bower_components/intl-tel-input/build/css/intlTelInput.css">
 </head>
 <body class="site-container">
   
@@ -25,15 +26,18 @@
   <script src='bower_components/angular-cookies/angular-cookies.js'></script>
   <script src="bower_components/jquery/dist/jquery.min.js"></script>
   <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="bower_components/underscore/underscore-min.js"></script>
 
   <!-- Controllers -->
   <script src="scripts/controllers/auth.js"></script>
+  <script src="features/coveys/services/services.js"></script>
   <script src="features/hamburger/controllers/hamburger.js"></script>
   <script src="features/createcovey/controllers/createcovey.js"></script>
-  <script src="features/welcome/controllers/welcome.js"></script>
+  <script src="features/index/controllers/indexController.js"></script>
+  <script src="features/index/services/indexService.js"></script>
+  <script src="features/welcome/controllers/welcomeController.js"></script>
   <script src="features/welcome/directives/welcomeDirective.js"></script>
   <script src="features/welcome/services/welcomeService.js"></script>
-  <script src="scripts/controllers/index.js"></script>
   <script src="scripts/controllers/auth.js"></script>
   <script src="features/coveys/controllers/coveys.js"></script>
   <script src="features/rides/controllers/ridesController.js"></script>
@@ -44,7 +48,6 @@
   <script src="features/chat/controllers/chatController.js"></script>
  
   <!-- Services -->
-  <script src="bower_components/underscore/underscore-min.js"></script>
   <script src="features/coveys/services/services.js"></script>
   <script src="features/attendees/services/attendeesService.js"></script>
   <script src="features/supplies/services/suppliesService.js"></script>

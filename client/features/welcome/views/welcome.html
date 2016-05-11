@@ -1,15 +1,55 @@
 <div class="row" ng-controller="welcomeController" ng-show="visible">
 
   <!-- This div will create a grayed-out background when the modal pops up -->
-  <div class="row gray-out-bg">
+  <div class="gray-out-bg">
     <div class="col-md-12">
     </div>
   </div>
 
   <div class="col-md-12 welcome-modal">
-    <div class="col-md-12 text-center">
-      <h4>Welcome!</h4>
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <h2>Welcome {{name}}</h2>
+      </div>
     </div>
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <h4>What's your phone number?</h4>
+      </div>
+    </div>
+      <form class="form-horizontal">
+        <div class="form-group">
+          <div class="row">
+            <div class="col-sm-2 col-sm-offset-1">
+              <label for="name">Phone number</label>
+            </div>
+            <div class="col-sm-6">
+              <input type="tel" class="form-control" id="phoneNumber" ng-model="phoneNumber">
+            </div>
+            <div class="col-sm-2">
+              <button type="submit" class="btn btn-info" ng-click="verify()">Verify</button>
+            </div>
+          </div>
+          <div ng-show="showVerify">
+              <div class="row">
+                <div class="col-md-6 col-md-offset-3 text-center">
+                  <h4>A verification code has been sent to your mobile</h4>
+                </div>
+              </div>
+            <div class="row">
+              <div class="col-sm-2 col-sm-offset-1">
+                <label for="name">Verification code</label>
+              </div>
+              <div class="col-sm-6">
+                <input type="number" class="form-control" id="inputCode" ng-model="inputCode">
+              </div>
+              <div class="col-sm-2">
+                <button type="submit" class="btn btn-info" ng-click="compare()">All done</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
   </div>
 
 </div>

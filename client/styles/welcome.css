@@ -30,3 +30,8 @@
   opacity: 0.5;
   z-index: 1;
 }
+
+.row{
+  margin-top: 15px;
+  margin-bottom: 15px
+}

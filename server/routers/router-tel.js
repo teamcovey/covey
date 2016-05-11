@@ -1,6 +1,6 @@
 const User = require('../models/user.js');
 const knex = require('../config/config.js').knex;
-const keys = require('../config/keys.js');
+const keys = require('../config/keys.example.js');
 
 const generateCode = () => {
   const min = 1000;
@@ -51,14 +51,13 @@ exports.addTel = (req, res) => {
 exports.hasTel = (req, res) => {
   const userId = req.cookies.user_id;
 
-  console.log('In getTel', userId);
   new User({ id: userId })
     .fetch()
     .then((foundUser) => {
-      if (foundUser) {
-        res.status(200).json(Object.prototype.hasOwnProperty.call(foundUser.attributes, 'phoneNumber'));
+      if (foundUser.attributes.phoneNumber === null) {
+        res.status(200).json(false);
       } else {
-        res.status(404).json('User not found');
+        res.status(200).json(true);
       }
     })
     .catch((err) => {

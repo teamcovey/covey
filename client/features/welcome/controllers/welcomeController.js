@@ -55,7 +55,7 @@ angular.module('covey.welcome', ['ngCookies'])
    * Saves telephone number to database if codes match
    */
   $scope.compare = () => {
-    if ($scope.code === $scope.inputCode) {
+    if ($scope.code === +$scope.inputCode) {
       console.log('Successful code match');
       welcomeService.saveTel($scope.phoneNumber)
       .then((response) => {

@@ -12,7 +12,7 @@
         <h2>Welcome {{name}}</h2>
       </div>
     </div>
-    <div class="row-welcome">
+    <div class="row-welcome lg-top-margin">
       <div class="col-md-12 text-center">
         <h4>What's your phone number?</h4>
       </div>
@@ -20,10 +20,7 @@
       <form class="form-horizontal">
         <div class="form-group">
           <div class="row-welcome">
-            <div class="col-sm-2 col-sm-offset-1">
-              <label for="name">Phone number</label>
-            </div>
-            <div class="col-sm-6">
+            <div class="col-md-offset-3 col-md-6">
               <input type="tel" class="form-control" id="phoneNumber" ng-model="phoneNumber">
             </div>
             <div class="col-sm-2">
@@ -31,17 +28,14 @@
             </div>
           </div>
           <div ng-show="showVerify">
-              <div class="row-welcome">
-                <div class="col-md-6 col-md-offset-3 text-center">
+              <div class="row-welcome lg-top-margin-verify">
+                <div class="col-md-offset-3 col-md-6 text-center">
                   <h4>A verification code has been sent to your mobile</h4>
                 </div>
               </div>
             <div class="row-welcome">
-              <div class="col-sm-2 col-sm-offset-1">
-                <label for="name">Verification code</label>
-              </div>
-              <div class="col-sm-6">
-                <input type="number" class="form-control" id="inputCode" ng-model="inputCode">
+              <div class="col-md-offset-3 col-sm-6">
+                <input type="text" class="form-control" id="inputCode" ng-model="inputCode">
               </div>
               <div class="col-sm-2">
                 <button type="submit" class="btn btn-info" ng-click="compare()">All done</button>

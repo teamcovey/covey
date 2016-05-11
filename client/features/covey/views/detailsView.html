@@ -1,33 +1,60 @@
-<!-- <div class="panel panel-default">
-  <div class="panel-heading">
-    Details
-    <span ng-click="toggleEdit()" class="pencil-button glyphicon glyphicon-pencil"></span>
-  </div>
-  <div class="panel-body details-panel"> -->
-  <!-- ng-hide="editDetails" -->
-    <div >
-      <img ng-show="showPhoto" ng-src="{{details.photoUrl}}" alt="Smiley face" height="200" width="100%">
-      <h2>{{details.name}}</h2>
-      <p><i>{{details.blurb}}</i></p>
-      <p><b>Location:</b> {{details.address}}, {{details.city}}, {{details.state}}</p>
-      <p><b>Start Date:</b> {{formatDate(details.startTime)}}</p>
-      <p><b>End Date:</b> {{formatDate(details.endTime)}}</p>
-    </div>
-    <div ng-show="editDetails">
-      <form ng-submit="editDetails = !editDetails; updateCovey()">
-        <input type="text" name="name" class="panel-input" ng-model="details.name"></input>
-        <input type="text" name="details" class="panel-input" ng-model="details.details"></input>
-        <input type="text" name="blurb" class="panel-input" ng-model="details.blurb"></input>
-        <input type="text" name="location" class="panel-input" ng-model="details.location"></input>
-        <input type="text" name="address" class="panel-input" ng-model="details.address"></input>
-        <input type="text" name="city" class="panel-input" ng-model="details.city"></input>
-        <input type="text" name="state" class="panel-input" ng-model="details.state"></input>
-        <input type="text" name="startTime" class="panel-input" ng-model="details.startTime"></input>
-        <input type="text" name="endTime" class="panel-input" ng-model="details.endTime"></input>
-        <input type="text" name="photoUrl" class="panel-input" ng-model="details.photoUrl"></input>
-        <input type="submit" id="submit" value="Update" />
-      </form>
-    </div>
-<!--   </div>
+<img ng-show="showPhoto" ng-src="{{details.photoUrl}}" alt="Smiley face" height="200" width="100%">
+
+<div style="margin-top:20px;" ng-hide="editDetails">
+  <h2 style="display:inline;">{{details.name}}</h2>
+  <button class="covey-details-edit-btn" ng-click="toggleEdit()">
+    Edit&nbsp;<span class="pencil-button glyphicon glyphicon-pencil"></span>  
+  </button>
+  <br>
+  <br>
+  <p><i>{{details.details}}</i></p>
+  <p><b>Location:</b> {{details.address}}, {{details.city}}, {{details.state}}</p>
+  <p><b>Start Date:</b> {{formatDate(details.startTime)}}</p>
+  <p><b>End Date:</b> {{formatDate(details.endTime)}}</p>
 </div>
- -->
+
+<div style="margin-top:20px;" ng-show="editDetails">
+  <h2 style="display:inline">Edit Event</h2>
+  <button class="covey-details-edit-btn" ng-click="toggleEdit()">
+    Cancel&nbsp;<span class="pencil-button glyphicon glyphicon-pencil"></span>  
+  </button>
+  <br>
+  <br>
+  <form ng-submit="toggleEdit(); updateCovey()">
+    <div style="display:block">
+      <label>Event Name: </label>
+      <input type="text" name="name" class="details-inputs" ng-model="details.name"></input>
+    </div>
+    <div style="display:block">
+      <label>Details: </label>
+      <input type="text" name="details" class="details-inputs" ng-model="details.details"></input>
+    </div>
+    <div style="display:block">
+      <label>Blurb</label>
+      <input type="text" name="blurb" class="details-inputs" ng-model="details.blurb"></input>
+    </div>
+    <div style="display:block">
+      <label>Location</label>
+      <input type="text" name="location" class="details-inputs" ng-model="details.location"></input>
+      <label>Address</label>
+      <input type="text" name="address" class="details-inputs" ng-model="details.address"></input>
+    </div>
+    <div style="display:block">
+      <label>City</label>
+      <input type="text" name="city" class="details-inputs" ng-model="details.city"></input>
+      <label>State</label>
+      <input type="text" name="state" class="details-inputs" ng-model="details.state"></input>
+    </div>
+    <div style="display:block">
+      <label>Start Time</label>
+      <input type="text" name="startTime" class="details-inputs" ng-model="details.startTime"></input>
+      <label>End Time</label>
+      <input type="text" name="endTime" class="details-inputs" ng-model="details.endTime"></input>
+    </div>
+    <div style="display:block">
+      <label>Photo Url</label>
+      <input type="text" name="photoUrl" class="details-inputs" ng-model="details.photoUrl"></input>
+    </div>
+    <input style="display:none" type="submit" id="submit" value="Update" />
+  </form>
+</div>

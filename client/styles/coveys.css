@@ -1,3 +1,6 @@
+body {
+  overflow: hidden;
+}
 .coveys-page-container {
   width: 100%;
   background-color: #DDDDDD;
@@ -12,8 +15,11 @@
   margin: 0px 30px;
   border-radius: 3px;
   box-shadow: 3px 3px 5px 1px rgba(0, 0, 0, 0.1);
-  min-height: 80vh;
   font-family: 'Open Sans', sans-serif;
+}
+.covey-tiles-container {
+  height: 70vh;
+  overflow: auto;
 }
 .coveys-title-container {
   background-color: #0191C8;
@@ -26,6 +32,7 @@
 }
 .btn-row {
   padding-top: 10px;
+  padding-bottom: 10px;
 }
 .btn-pineapple {
   background-color: #FFB600;

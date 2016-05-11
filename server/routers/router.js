@@ -49,6 +49,8 @@ app.post('/api/signup', auth, route.signup); // This route is used for db + auth
 
 app.get('/api/user/:userId', auth, isValidUser, routeUsers.getUser);
 
+app.get('/api/username/:userId', auth, isValidUser, routeUsers.getUserName);
+
 app.delete('/api/user/:userId', auth, isValidUser, routeUsers.removeUser);
 
 app.put('/api/user/:userId', auth, isValidUser, routeUsers.updateUser);
@@ -74,7 +76,7 @@ app.get('/api/auth/facebook/return',
 app.get('/api/logout',
   (req, res) => {
     req.logout();
-    req.session.destroy(() => res.cookie('user_id', req.user).redirect('/#/'));
+    req.session.destroy(() => res.clearCookie('user_id').redirect('/#/'));
   }
 );
 

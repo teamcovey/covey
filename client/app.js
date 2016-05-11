@@ -13,6 +13,7 @@ angular.module('covey', [
   'friends',
   'hamburger',
   'ngRoute',
+  'covey.chat',
 ])
 .config(($routeProvider) => {
   $routeProvider

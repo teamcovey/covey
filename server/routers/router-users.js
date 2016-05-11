@@ -22,6 +22,25 @@ exports.getUser = (req, res) => {
   }
 };
 
+exports.getUserName = (req, res) => {
+  const userId = req.params.userId;
+
+  knex
+    .select(['users.firstName', 'users.lastName'])
+    .from('users')
+    .where('id', '=', userId)
+    .then((foundUser) => {
+      if (foundUser) {
+        res.status(200).json({ user: foundUser });
+      } else {
+        res.status(404).json('Could not find user in database');
+      }
+    })
+    .catch((err) => {
+      res.status(404).json(err);
+    });
+};
+
 exports.removeUser = (req, res) => {
   const userId = req.params.userId;
 

@@ -1,4 +1,4 @@
-<div class="row" ng-controller="welcomeController" ng-show="visible">
+<div class="row-welcome" ng-controller="welcomeController" ng-show="visible">
 
   <!-- This div will create a grayed-out background when the modal pops up -->
   <div class="gray-out-bg">
@@ -12,14 +12,14 @@
         <h2>Welcome {{name}}</h2>
       </div>
     </div>
-    <div class="row">
+    <div class="row-welcome">
       <div class="col-md-12 text-center">
         <h4>What's your phone number?</h4>
       </div>
     </div>
       <form class="form-horizontal">
         <div class="form-group">
-          <div class="row">
+          <div class="row-welcome">
             <div class="col-sm-2 col-sm-offset-1">
               <label for="name">Phone number</label>
             </div>
@@ -31,12 +31,12 @@
             </div>
           </div>
           <div ng-show="showVerify">
-              <div class="row">
+              <div class="row-welcome">
                 <div class="col-md-6 col-md-offset-3 text-center">
                   <h4>A verification code has been sent to your mobile</h4>
                 </div>
               </div>
-            <div class="row">
+            <div class="row-welcome">
               <div class="col-sm-2 col-sm-offset-1">
                 <label for="name">Verification code</label>
               </div>

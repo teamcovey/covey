@@ -81,7 +81,7 @@ angular.module('covey.welcome', ['ngCookies'])
       .then((response) => {
         if (response.data) {
           console.log('User is not a new user: ', response.data);
-          $scope.visible = true;
+          $scope.visible = false;
         } else {
           $scope.visible = true;
         }

@@ -63,14 +63,15 @@ exports.signup = (req, res) => {
 };
 
 exports.searchUsers = (req, res) => {
-  const searchVal = `%${req.params.searchVal}%`;
+  const searchVal = `%${req.params.searchVal}%`.toLowerCase();
+  // searchVal = searchVal.toLowerCase();
 
   knex
     .select(['users.firstName', 'users.lastName', 'users.email', 'users.photoUrl', 'users.id'])
     .from('users')
-    .where('firstName', 'like', searchVal)
-    .orWhere('lastName', 'like', searchVal)
-    .orWhere('email', 'like', searchVal)
+    .where(knex.raw('LOWER("firstName") like ?', searchVal))
+    .orWhere(knex.raw('LOWER("lastName") like ?', searchVal))
+    .orWhere(knex.raw('LOWER("email") like ?', searchVal))
     .then((users) => {
       res.json({ users });
     })

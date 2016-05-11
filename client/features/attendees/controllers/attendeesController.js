@@ -1,12 +1,25 @@
-angular.module('covey.attendees', [])
-.controller('attendeesController', function ($rootScope, $scope, attendeesHttp) {
+angular.module('covey.attendees', ['friends.services'])
+.controller('attendeesController', function ($rootScope, $scope, attendeesHttp, friendsFactory) {
   $scope.newAttendee = '';
 
-  /* Render view with all attendees for current covey */
+  /* Render view with all attendees for current covey
+   * and all friends for current user */
   const init = () => {
     attendeesHttp.getAllAttendees().then((attendees) => {
       $scope.attendees = attendees;
     });
+
+    friendsFactory.getFriends()
+      .then((friends) => {
+        if (friends.data.length < 1) {
+          $scope.friends = [
+            { firstName: 'John', lastName: 'Smith', user_id: 1234 },
+            { firstName: 'Anne', lastName: 'Smith', user_id: 5678 },
+          ];
+        } else {
+          $scope.friends = friends.data;
+        }
+      });
   };
 
   init();

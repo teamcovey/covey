@@ -1,55 +1,29 @@
-<div class="main-rides-panel-header">
-  <p class="rides-panel-header"><b>SUPPLIES</b></p>
-  <p class="rides-panel-personal-details">You're bringing: {{reduceUsersSupplies().name.slice(2,20)}}...</p>
+<div class="main-body-panel-header">
+  <p class="body-panel-header"><b>SUPPLIES</b></p>
+  <p class="body-panel-personal-details">You're bringing: {{reduceUsersSupplies().name.slice(2,20)}}...</p>
 </div>
 <br>
-<div class="main-rides-panel-body">
-  <div class="rides-body-inputs" ng-repeat="supply in supplyDetails track by $index">
+<div class="main-body-panel-body">
+  <div class="main-body-inputs" ng-repeat="supply in supplyDetails track by $index">
     <form ng-submit="submitSupply(supply, $index)">
-      <input type="text" name="supplyName" class="rides-input-styles shared-inputs-color" ng-model="supply.name"></input>
-      <input type="text" name="supplyType" class="rides-input-styles shared-inputs-color" ng-model="supply.type"></input>
+      <input type="text" name="supplyName" class="main-input-styles shared-inputs-color" ng-model="supply.name"></input>
+      <input type="text" name="supplyType" class="main-input-styles shared-inputs-color" ng-model="supply.type"></input>
 
-      <div class="rides-passengers">
+      <div class="current-attendees-added">
         <div class="panel-current-users" ng-click="removeSupplier(supplier, supply)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="supplier in supply.suppliers">
             {{mouseOverTrue ? 'X' : supplier.firstName.slice(0,1)+supplier.lastName.slice(0,1)}}
         </div>
         <div class="panel-potential-users" ng-click="editMode = !editMode">+ Supplier</div>
         <div ng-show="editMode">
-          <div class="panel-potential-users" ng-click="addSupplier(attendee, supply)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="attendee in attendees | alreadySupplier: supply.suppliers">
+          <div class="panel-current-users potential-user-to-add" ng-click="addSupplier(attendee, supply)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="attendee in attendees | alreadySupplier: supply.suppliers">
             {{mouseOverTrue ? '+' : attendee.firstName.slice(0,1)+attendee.lastName.slice(0,1)}}
           </div>
         </div>
       </div>
 
       <input style="display:none;" type="submit" id="submit" value="Y" />
-      <button class="remove-ride-btn" ng-click="removeSupply(supply, $index);">X</button>
+      <button class="remove-resource-ride-btn" ng-click="removeSupply(supply, $index);">X</button>
     </form>
   </div>
 </div>
-<button class="add-ride-btn shared-inputs-color" ng-click="addNewSupply()">add a supply...</button>
-
-
-
-<!-- <h2>SUPPLIES</h2>
-<p><b>You're bringing: {{reduceUsersSupplies().name.slice(2)}}</b></p>
-<ul class="list-unstyled">
-  <li ng-repeat="supply in supplyDetails track by $index">
-      <form ng-submit="editMode = !editMode; submitSupply(supply, $index)">
-        <div>
-          <div ng-click="removeSupplier(supplier, supply)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="supplier in supply.suppliers" class="panel-current-users">
-            {{mouseOverTrue ? 'X' : supplier.firstName}}
-          </div>
-        </div>
-        <div>
-          <div ng-click="addSupplier(attendee, supply)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="attendee in attendees | alreadySupplier: supply.suppliers" class="panel-potential-users">
-            {{mouseOverTrue ? '+' : attendee.firstName}}
-          </div>
-        </div>
-        <input type="submit" id="submit" value="Update" />
-      </form>
-      <button ng-click="editMode = !editMode;">Cancel</button>
-      <button ng-click="removeSupply(supply, $index); editMode = !editMode">Delete</button>
-  </li>
-</ul>
-<button ng-click="addNewSupply()" class="panel panel-add">add supply</button>
- -->
+<button class="add-resource-ride-btn shared-inputs-color" ng-click="addNewSupply()">add a supply...</button>

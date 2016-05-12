@@ -15,7 +15,7 @@
           </form>
         </div>
       </div>
-      <div class-"row" ng-repeat="friend in friends">
+      <div class-"row" ng-repeat="friend in friends" style="overflow-y: scroll;">
         <div class="col-md-12 text-left covey-tile" >
           <div class="mycoveys-event-image-container">
             <img src="{{ friend.photoUrl }}" class="myfriends-profile-image" ng-click="removeFriend(friend.id)"/>
@@ -67,7 +67,7 @@
           </form>
         </div>
       </div>
-      <div class-"row" ng-repeat="friend in found">
+      <div class-"row" ng-repeat="friend in found" style="overflow-y: scroll;">
         <div class="col-md-12 text-left covey-tile">
           <div class="mycoveys-event-image-container">
             <img src="{{ friend.photoUrl }}" class="myfriends-profile-image" ng-click="addFriend(friend.id)"/>

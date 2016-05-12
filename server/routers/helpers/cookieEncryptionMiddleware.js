@@ -5,6 +5,7 @@ const key = process.env.covey_env === 'PROD' || process.env.covey_env === 'DEV'
   ? require('../../config/keys.js').COOKIE_ENCRYPTION_KEY
   : require('../../config/keys.example.js').COOKIE_ENCRYPTION_KEY;
 
+// Encrypts any value using the COOKIE_ENCRY{TION_KEY}
 exports.encryptValue = (value) => {
   const cipher = crypto.createCipher('aes192', key);
   /* eslint-disable */
@@ -16,6 +17,7 @@ exports.encryptValue = (value) => {
 
 exports.decryptUserId = (request, response, next) => {
   try {
+    // Decrypts user id from cookie, if it exists
     if (request.cookies.user_id) {
       const decipherCookie = crypto.createDecipher('aes192', key);
       /* eslint-disable */
@@ -24,6 +26,7 @@ exports.decryptUserId = (request, response, next) => {
       request.cookies.user_id = decrypted;
       /* eslint-enable */
     }
+    // Decrypts user id from request parameters, if it exists
     if (request.params && request.params.userId) {
       const decipherParam = crypto.createDecipher('aes192', key);
       /* eslint-disable */
@@ -32,6 +35,7 @@ exports.decryptUserId = (request, response, next) => {
       request.params.userId = decrypted;
       /* eslint-enable */
     }
+    // Decrypts user id from request body, if it exists
     if (request.body && request.body.userId) {
       const decipherBody = crypto.createDecipher('aes192', key);
       /* eslint-disable */
@@ -42,6 +46,11 @@ exports.decryptUserId = (request, response, next) => {
     }
     next();
   } catch (err) {
+    /*
+     * If there is an error during the decryption process,
+     * then the client is sent a 401/Unauthorized
+     */
+
     /* eslint-disable */
     console.log('ERROR: Could not successfully decrypt cookie', err);
     /* eslint-enable */

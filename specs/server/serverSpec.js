@@ -1,9 +1,12 @@
 const request = require('supertest');
 const should = require('should');
 const passportStub = require('passport-stub-es6');
+const encrypt = require('../../server/routers/helpers/cookieEncryptionMiddleware');
 
 let userId;
+let userIdDecrypted;
 let userId2;
+let userId2Decrypted;
 let coveyId;
 let coveyId2;
 
@@ -147,7 +150,8 @@ describe('Testing user creation', () => {
         if (err) {
           done(err);
         } else if (res) {
-          userId = res.body.id;
+          userIdDecrypted = res.body.id;
+          userId = encrypt.encryptValue(res.body.id.toString());
           newEvent.userId = userId;
           res.body.should.have.property('success', true);
           res.body.should.have.property('id');
@@ -169,9 +173,10 @@ describe('Testing user creation', () => {
         if (err) {
           done(err);
         } else if (res) {
-          userId2 = res.body.id;
+          userId2Decrypted = res.body.id;
+          userId2 = encrypt.encryptValue(res.body.id.toString());
           newEvent2.userId = userId2;
-          (userId2).should.be.above(userId);
+          (userId2Decrypted).should.be.above(userIdDecrypted);
           res.body.should.have.property('success', true);
           res.body.should.have.property('id');
           done();
@@ -318,7 +323,7 @@ describe('Testing attendee actions', () => {
           coveyId2 = res.body.id;
           res.body.should.have.property('user');
           res.body.should.have.property('id');
-          res.body.user.should.have.property('id', userId2);
+          res.body.user.should.have.property('id', userId2Decrypted);
           done();
         }
       });
@@ -571,7 +576,7 @@ describe('Testing resources functionality', () => {
         if (err) {
           done(err);
         } else if (res) {
-          res.body[0].user_id.should.be.equal(userId);
+          res.body[0].user_id.should.be.equal(userIdDecrypted);
           done();
         }
       });
@@ -979,5 +984,83 @@ describe('Testing Deletion', () => {
       });
   });
 
-});
+  describe('Testing user id encryption/decryption', () => {
+    let server;
 
+    beforeEach(() => {
+      /* eslint-disable */
+      server = require('../../server/server.js');
+      /* eslint-enable */
+      passportStub.install(server);
+      passportStub.login({ email: 'fools@me.com',
+        facebookId: 'xxXtestingIdXxx',
+        firstName: 'Spider',
+        lastName: 'Monkey',
+        gender: 'male',
+        photoUrl: 'http://something.com/nope.jpg',
+      });
+    });
+
+    it('Should respond with a 401 if decrypted user id provided in url parameter', (done) => {
+      request(server)
+        .get(`/api/coveys/${userIdDecrypted}`)
+        .set('Cookie', [`user_id=${userId}`])
+        .expect(401)
+        .end((err, res) => {
+          if (err) {
+            done(err);
+          } else if (res) {
+            done();
+          }
+        });
+    });
+
+    it('Should respond with a 401 if decrypted user id provided in cookie', (done) => {
+      request(server)
+        .get(`/api/coveys/${userId}`)
+        .set('Cookie', [`user_id=${userIdDecrypted}`])
+        .expect(401)
+        .end((err, res) => {
+          if (err) {
+            done(err);
+          } else if (res) {
+            done();
+          }
+        });
+    });
+
+    it('Should respond with a 401 if decrypted user id provided in request body', (done) => {
+      request(server)
+        .post('/api/coveys')
+        .set('Cookie', [`user_id=${userId}`])
+        .type('json')
+        .send({
+          userId: userIdDecrypted,
+        })
+        .expect(401)
+        .end((err, res) => {
+          if (err) {
+            done(err);
+          } else if (res) {
+            done();
+          }
+        });
+    });
+
+
+    it('Should respond with a 200 if encrypted version of userId provided', (done) => {
+      request(server)
+        .get(`/api/coveys/${userId}`)
+        .set('Cookie', [`user_id=${userId}`])
+        .expect(200)
+        .end((err, res) => {
+          if (err) {
+            done(err);
+          } else if (res) {
+            done();
+          }
+        });
+    });
+
+  });
+});

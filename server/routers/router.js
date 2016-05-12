@@ -3,6 +3,24 @@
 const app = require('../config/server-config.js');
 const express = require('express');
 
+// TESTING SOCKETS
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
+
+io.on('connection', (socket) => {
+  console.log('YAY SOCKETS client connected!');
+  socket.on('echo', (data) => {
+    io.sockets.emit('message', data);
+  });
+});
+
+app.use((req, res, next) => {
+  req.io = io;
+  next();
+});
+// END TESTING SOCKETS
+
+
 /*
 We are using both knex and bookshelf in the router files.  We were unable to get
 bookshelf to create the join tables for us so decided to write the sql by hand.
@@ -137,4 +155,4 @@ app.post('/api/tel', auth, decryptUserId, routeTel.addTel);
 
 app.get('/api/tel', auth, decryptUserId, routeTel.hasTel);
 
-module.exports = app;
+module.exports = { app, server };

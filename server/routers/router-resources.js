@@ -6,7 +6,10 @@ exports.addResource = (req, res) => {
   const name = req.body.name;
   const quantity = req.body.quantity;
   const type = req.body.type;
-  const coveyId = req.body.covey_id;
+  const coveyId = req.body.covey_id || req.body.coveyId;
+
+  // TESTING SOCKETS:
+  req.io.sockets.emit('add new resource', { message: 'you added a resource!' });
 
   Resources.create({
     name,

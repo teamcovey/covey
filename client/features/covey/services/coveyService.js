@@ -13,4 +13,7 @@ angular.module('covey.covey')
       console.error(error);
     });
   };
+})
+.factory('socket', function (socketFactory) {
+  return socketFactory();
 });

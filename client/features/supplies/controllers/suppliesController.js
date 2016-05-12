@@ -1,9 +1,13 @@
 angular.module('covey.supplies', ['userId.services', 'covey.attendees'])
-.controller('suppliesController', function ($scope, $rootScope, suppliesHelpers, suppliesHttp, userIdFactory, attendeesHttp) {
+.controller('suppliesController', function ($scope, $rootScope, suppliesHelpers, suppliesHttp, userIdFactory, attendeesHttp, socket) {
   const userId = userIdFactory.getUserId();
   $scope.expandSupply = false;
   $scope.supplyDetails = [];
   $scope.usersSupplies = [];
+
+  socket.on('add new resource', (data) => {
+    console.log('SOCKET RESPONSE: ', data.message);
+  });
 
   /* Gets all attendees of this event */
   attendeesHttp.getAllAttendees()
@@ -40,6 +44,7 @@ angular.module('covey.supplies', ['userId.services', 'covey.attendees'])
 
   /* Creates or updates a supply when users selects 'Update' in edit view */
   $scope.submitSupply = (supply, supplyIndex) => {
+    console.log('SUBMITTING: ', supply);
     if (supply.id) {
       suppliesHttp.updateSupply(supply);
       $scope.usersSupplies = suppliesHelpers.getUsersSupplies($scope.supplyDetails, userId);

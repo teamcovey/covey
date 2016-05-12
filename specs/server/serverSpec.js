@@ -989,7 +989,7 @@ describe('Testing phoneNumber verification', () => {
   const phoneNumber = '+447766564019';
   let server;
 
-  beforeEach(() => {
+  beforeEach((done) => {
     /* eslint-disable */
     server = require('../../server/server.js');
     /* eslint-enable */
@@ -1017,13 +1017,13 @@ describe('Testing phoneNumber verification', () => {
         } else if (res) {
           console.log('*** new user CREATED');
           userId = res.body.id;
-          newEvent.userId = userId;
+          newEvent.userId = userId; // TODO: What does this do?
           done();
         }
       });
   });
 
-  afterEach(() => {
+  afterEach((done) => {
     /* eslint-disable */
     server = require('../../server/server.js');
     /* eslint-enable */
@@ -1066,16 +1066,17 @@ describe('Testing phoneNumber verification', () => {
       });
   });
 
-  it('GET /api/tel/ should check for phoneNumber in databse', (done) => {
+  it('GET /api/tel/ should check for phoneNumber in database', (done) => {
     request(server)
       .get('/api/tel/')
-      .set('Cookie', ['user_id=1'])
+      .set('Cookie', [`user_id=${userId}`])
       .expect(200)
       .end((err, res) => {
         if (err) {
           done(err);
         } else if (res) {
-          res.body.should.have.property(null);
+          console.log(res.body);
+          res.body.should.equal(false);
           done();
         }
       });

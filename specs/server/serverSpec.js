@@ -986,7 +986,6 @@ describe('Testing Deletion', () => {
 });
 
 describe('Testing phoneNumber verification', () => {
-
   const phoneNumber = '+447766564019';
   let server;
 
@@ -995,10 +994,64 @@ describe('Testing phoneNumber verification', () => {
     server = require('../../server/server.js');
     /* eslint-enable */
     passportStub.install(server);
-    passportStub.login({ username: 'john.doe' });
+    passportStub.login({ email: 'fools@me.com',
+      facebookId: 'xxXtestingIdXxx',
+      firstName: 'Spider',
+      lastName: 'Monkey',
+      gender: 'male',
+      photoUrl: 'http://something.com/nope.jpg',
+    });
+
+    request(server)
+      .post('/api/signup')
+      .type('json')
+      .send(newUser)
+      .expect('Content-Type', 'application/json; charset=utf-8')
+      .expect(201)
+      .end((err, res) => {
+        // Calling the end function will send the request
+        // errs are generated from the expect statements and passed to end as the first argument
+        if (err) {
+          console.log('*** new user NOT created');
+          done(err);
+        } else if (res) {
+          console.log('*** new user CREATED');
+          userId = res.body.id;
+          newEvent.userId = userId;
+          done();
+        }
+      });
   });
 
-  it('GET /api/tel/:tel should respond with a verfication code', (done) => {
+  afterEach(() => {
+    /* eslint-disable */
+    server = require('../../server/server.js');
+    /* eslint-enable */
+    passportStub.install(server);
+    passportStub.login({ email: 'fools@me.com',
+      facebookId: 'xxXtestingIdXxx',
+      firstName: 'Spider',
+      lastName: 'Monkey',
+      gender: 'male',
+      photoUrl: 'http://something.com/nope.jpg',
+    });
+
+    request(server)
+      .del(`/api/user/${userId}`)
+      .set('Cookie', [`user_id=${userId}`])
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          console.log('*** new user NOT DELETED');
+          done(err);
+        } else if (res) {
+          console.log('*** new user DELETED');
+          done();
+        }
+      });
+  });
+
+  xit('GET /api/tel/:tel should respond with a verfication code', (done) => {
     request(server)
       .get(`/api/tel/verify/${phoneNumber}`)
       .end((err, res) => {
@@ -1013,17 +1066,16 @@ describe('Testing phoneNumber verification', () => {
       });
   });
 
-  it('GET /api/tel/:tel should respond with a verfication code', (done) => {
+  it('GET /api/tel/ should check for phoneNumber in databse', (done) => {
     request(server)
-      .get(`/api/tel/verify/${phoneNumber}`)
+      .get('/api/tel/')
+      .set('Cookie', ['user_id=1'])
       .expect(200)
       .end((err, res) => {
-        console.log(res.body);
-        console.log(res.status);
         if (err) {
           done(err);
         } else if (res) {
-          res.body.should.have.property('code');
+          res.body.should.have.property(null);
           done();
         }
       });

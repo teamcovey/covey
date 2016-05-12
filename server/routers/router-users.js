@@ -113,7 +113,9 @@ exports.updateUser = (req, res) => {
 exports.addFriend = (req, res) => {
   const friendId = req.params.friendId;
   const userId = req.params.userId;
-
+  if (friendId === userId) {
+    res.status(409).json({ error: 'You cannot friend yourself' });
+  }
   knex('friends')
   .where('user_id', userId)
   .andWhere('friend_id', friendId)

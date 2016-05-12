@@ -16,8 +16,10 @@
         </div>
       </div>
       <div class-"row" ng-repeat="friend in friends">
-        <div class="col-md-12 text-left covey-tile" ng-click="removeFriend(friend.id)">
-          <img src="{{ friend.photoUrl }}" class="myfriends-profile-image"/>
+        <div class="col-md-12 text-left covey-tile" >
+          <div class="mycoveys-event-image-container">
+            <img src="{{ friend.photoUrl }}" class="myfriends-profile-image" ng-click="removeFriend(friend.id)"/>
+          </div>
           <h4>{{ friend.firstName }}</h4>
           <h4>{{ friend.lastName }}</h4>
           <h5>{{ friend.email }}</h5>
@@ -66,8 +68,10 @@
         </div>
       </div>
       <div class-"row" ng-repeat="friend in found">
-        <div class="col-md-12 text-left covey-tile" ng-click="addFriend(friend.id)">
-          <img src="{{ friend.photoUrl }}" class="myfriends-profile-image"/>
+        <div class="col-md-12 text-left covey-tile">
+          <div class="mycoveys-event-image-container">
+            <img src="{{ friend.photoUrl }}" class="myfriends-profile-image" ng-click="addFriend(friend.id)"/>
+          </div>
           <h4>{{ friend.firstName }}</h4>
           <h4>{{ friend.lastName }}</h4>
           <h5>{{ friend.email }}</h5>

@@ -977,89 +977,134 @@ describe('Testing Deletion', () => {
         if (err) {
           done(err);
         } else if (res) {
+          console.log(res.body);
           res.body.should.have.property('success');
           done();
         }
       });
   });
+});
 
-  describe('Testing user id encryption/decryption', () => {
-    let server;
+describe('Testing phoneNumber verification', () => {
 
-    beforeEach(() => {
-      /* eslint-disable */
-      server = require('../../server/server.js');
-      /* eslint-enable */
-      passportStub.install(server);
-      passportStub.login({ email: 'fools@me.com',
-        facebookId: 'xxXtestingIdXxx',
-        firstName: 'Spider',
-        lastName: 'Monkey',
-        gender: 'male',
-        photoUrl: 'http://something.com/nope.jpg',
+  const phoneNumber = '+447766564019';
+  let server;
+
+  beforeEach(() => {
+    /* eslint-disable */
+    server = require('../../server/server.js');
+    /* eslint-enable */
+    passportStub.install(server);
+    passportStub.login({ username: 'john.doe' });
+  });
+
+  it('GET /api/tel/:tel should respond with a verfication code', (done) => {
+    request(server)
+      .get(`/api/tel/verify/${phoneNumber}`)
+      .end((err, res) => {
+        console.log(res.body);
+        console.log(res.status);
+        if (err) {
+          done(err);
+        } else if (res) {
+          res.body.should.have.property('code');
+          done();
+        }
       });
+  });
+
+  it('GET /api/tel/:tel should respond with a verfication code', (done) => {
+    request(server)
+      .get(`/api/tel/verify/${phoneNumber}`)
+      .expect(200)
+      .end((err, res) => {
+        console.log(res.body);
+        console.log(res.status);
+        if (err) {
+          done(err);
+        } else if (res) {
+          res.body.should.have.property('code');
+          done();
+        }
+      });
+  });
+});
+
+describe('Testing user id encryption/decryption', () => {
+  let server;
+
+  beforeEach(() => {
+    /* eslint-disable */
+    server = require('../../server/server.js');
+    /* eslint-enable */
+    passportStub.install(server);
+    passportStub.login({ email: 'fools@me.com',
+      facebookId: 'xxXtestingIdXxx',
+      firstName: 'Spider',
+      lastName: 'Monkey',
+      gender: 'male',
+      photoUrl: 'http://something.com/nope.jpg',
     });
+  });
 
-    it('Should respond with a 401 if decrypted user id provided in url parameter', (done) => {
-      request(server)
-        .get(`/api/coveys/${userIdDecrypted}`)
-        .set('Cookie', [`user_id=${userId}`])
-        .expect(401)
-        .end((err, res) => {
-          if (err) {
-            done(err);
-          } else if (res) {
-            done();
-          }
-        });
-    });
+  it('Should respond with a 401 if decrypted user id provided in url parameter', (done) => {
+    request(server)
+      .get(`/api/coveys/${userIdDecrypted}`)
+      .set('Cookie', [`user_id=${userId}`])
+      .expect(401)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          done();
+        }
+      });
+  });
 
-    it('Should respond with a 401 if decrypted user id provided in cookie', (done) => {
-      request(server)
-        .get(`/api/coveys/${userId}`)
-        .set('Cookie', [`user_id=${userIdDecrypted}`])
-        .expect(401)
-        .end((err, res) => {
-          if (err) {
-            done(err);
-          } else if (res) {
-            done();
-          }
-        });
-    });
+  it('Should respond with a 401 if decrypted user id provided in cookie', (done) => {
+    request(server)
+      .get(`/api/coveys/${userId}`)
+      .set('Cookie', [`user_id=${userIdDecrypted}`])
+      .expect(401)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          done();
+        }
+      });
+  });
 
-    it('Should respond with a 401 if decrypted user id provided in request body', (done) => {
-      request(server)
-        .post('/api/coveys')
-        .set('Cookie', [`user_id=${userId}`])
-        .type('json')
-        .send({
-          userId: userIdDecrypted,
-        })
-        .expect(401)
-        .end((err, res) => {
-          if (err) {
-            done(err);
-          } else if (res) {
-            done();
-          }
-        });
-    });
+  it('Should respond with a 401 if decrypted user id provided in request body', (done) => {
+    request(server)
+      .post('/api/coveys')
+      .set('Cookie', [`user_id=${userId}`])
+      .type('json')
+      .send({
+        userId: userIdDecrypted,
+      })
+      .expect(401)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          done();
+        }
+      });
+  });
 
 
-    it('Should respond with a 200 if encrypted version of userId provided', (done) => {
-      request(server)
-        .get(`/api/coveys/${userId}`)
-        .set('Cookie', [`user_id=${userId}`])
-        .expect(200)
-        .end((err, res) => {
-          if (err) {
-            done(err);
-          } else if (res) {
-            done();
-          }
-        });
-    });
-
+  it('Should respond with a 200 if encrypted version of userId provided', (done) => {
+    request(server)
+      .get(`/api/coveys/${userId}`)
+      .set('Cookie', [`user_id=${userId}`])
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          done();
+        }
+      });
   });
 });

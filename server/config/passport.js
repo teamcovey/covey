@@ -1,13 +1,13 @@
 const passport = require('passport');
 const Strategy = require('passport-facebook').Strategy;
-const keys = require('./keys.example.js');
+// const keys = require('./keys.js');
 const User = require('../models/user.js');
 const Users = require('../collections/users.js');
 
 // Set keys file based on environment
 var keys = process.env.covey_env === 'PROD' || process.env.covey_env === 'DEV'
   ? require('./keys.js')
-  : require('./keys.example.js');
+  : require('./keys.js');
 
 // Set host based on environment
 var callback;

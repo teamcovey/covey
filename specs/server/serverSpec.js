@@ -979,5 +979,20 @@ describe('Testing Deletion', () => {
       });
   });
 
+  it('DELETE /api/user/#userId# should delete the user', (done) => {
+    request(server)
+      .del(`/api/user/${userId}`)
+      .set('Cookie', [`user_id=${userId}`])
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          res.status.to.equal(200);
+          done();
+        }
+      });
+  });
+
 });
 

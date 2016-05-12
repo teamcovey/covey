@@ -18,7 +18,7 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 .covey-tiles-container {
-  height: 70vh;
+  max-height: 70%;
   overflow: auto;
 }
 .coveys-title-container {

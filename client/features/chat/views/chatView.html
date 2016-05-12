@@ -1,5 +1,13 @@
-<div class="panel panel-default" style="height: 50vh;">
+<div class="panel panel-default panel-chat">
   <div class="panel-body">
     Chats panel
+<hr>
+<input ng-model="msg" ng-keydown="addMessage($event)" type="text" id="messageInput"  placeholder="Type a message...">
+          <ul id="example-messages" class="chat-messages">
+            <li ng-repeat="msg in messages.slice().reverse()">
+              <span class="chat-username">{{ msg.from }}</span>
+              {{ msg.body }}
+            </li>
+          </ul>
   </div>
 </div>

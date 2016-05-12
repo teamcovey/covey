@@ -17,26 +17,26 @@ exports.encryptValue = (value) => {
 exports.decryptUserId = (request, response, next) => {
   try {
     if (request.cookies.user_id) {
-      const decipher = crypto.createDecipher('aes192', key);
+      const decipherCookie = crypto.createDecipher('aes192', key);
       /* eslint-disable */
-      var decrypted = decipher.update(request.cookies.user_id, 'hex', 'utf8');
-      decrypted += decipher.final('utf8');
+      var decrypted = decipherCookie.update(request.cookies.user_id, 'hex', 'utf8');
+      decrypted += decipherCookie.final('utf8');
       request.cookies.user_id = decrypted;
       /* eslint-enable */
     }
     if (request.params && request.params.userId) {
-      const decipher = crypto.createDecipher('aes192', key);
+      const decipherParam = crypto.createDecipher('aes192', key);
       /* eslint-disable */
-      var decrypted = decipher.update(request.params.userId, 'hex', 'utf8');
-      decrypted += decipher.final('utf8');
+      var decrypted = decipherParam.update(request.params.userId, 'hex', 'utf8');
+      decrypted += decipherParam.final('utf8');
       request.params.userId = decrypted;
       /* eslint-enable */
     }
     if (request.body && request.body.userId) {
-      const decipher = crypto.createDecipher('aes192', key);
+      const decipherBody = crypto.createDecipher('aes192', key);
       /* eslint-disable */
-      var decrypted = decipher.update(request.body.userId, 'hex', 'utf8');
-      decrypted += decipher.final('utf8');
+      var decrypted = decipherBody.update(request.body.userId, 'hex', 'utf8');
+      decrypted += decipherBody.final('utf8');
       request.body.userId = decrypted;
       /* eslint-enable */
     }

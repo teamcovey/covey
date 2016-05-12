@@ -18,8 +18,8 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 .covey-tiles-container {
-  max-height: 70%;
-  overflow: auto;
+  height: 60vh;
+  overflow: scroll;
 }
 .coveys-title-container {
   background-color: #0191C8;
@@ -48,8 +48,8 @@ body {
   overflow: hidden;
   margin-right: 10px;
   float: left;
-  width: 200px;
-  height: 200px;
+  width: 100px;
+  height: 100px;
 }
 .mycoveys-event-image {
   float: left;
@@ -67,7 +67,7 @@ body {
   padding-right: 15px;
   box-shadow: 3px 3px 5px 1px rgba(0, 0, 0, 0.1);
   border-radius: 3px;
-  height: 200px;
+  height: 100px;
 }
 .covey-tile:hover {
   background: #0191C8;

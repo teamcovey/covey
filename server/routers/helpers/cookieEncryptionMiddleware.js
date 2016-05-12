@@ -22,7 +22,8 @@ exports.decryptUserIdCookie = (request, response, next) => {
       var decrypted = decipher.update(request.cookies.user_id, 'hex', 'utf8');
       decrypted += decipher.final('utf8');
       request.cookies.user_id = decrypted;
-      request.params.userId = decrypted;
+      if (request.params) request.params.userId = decrypted;
+      if (request.body) request.body.userId = decrypted;
       /* eslint-enable */
     }
   } catch (err) {

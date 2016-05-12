@@ -1,10 +1,7 @@
 angular.module('covey.chat', ['firebase'])
-.controller('chatController', function ($rootScope, $scope, chatFirebase, $firebaseObject, $firebaseArray) {
+.controller('chatController', function ($rootScope, $scope, chatFirebase, $firebaseArray) {
   const ref = new Firebase(chatFirebase.getRoute('https://amber-heat-3768.firebaseio.com/'));
-  // download the data into a local object
-  // const syncObject = $firebaseArray(ref);
-  // synchronize the object with a three-way data binding
-  // click on `index.html` above to see it used in the DOM!
+
   $scope.messages = $firebaseArray(ref);
 
   // ADD MESSAGE METHOD
@@ -28,25 +25,4 @@ angular.module('covey.chat', ['firebase'])
   };
 
   init();
-
-  // $scope.addChat = (newChatId) => {
-  //   chatsHttp.addChat(newChatId).then((response) => {
-  //     if (!response.user.user_id) {
-  //       response.user.user_id = response.user.id;
-  //     }
-  //     console.log('Added Chat id: ', response.user.user_id);
-  //     $scope.chats.push(response.user);
-  //   });
-  //   $scope.newChat = '';
-  // };
-
-  // $scope.removeChat = (chat) => {
-  //   chatsHttp.removechat(chat.user_id)
-  //     .then((response) => {
-  //       console.log('Removed chat id: ', chat.user_id);
-  //       $scope.chats.splice($scope.chats.indexOf(chat), 1);
-  //     }, (error) => {
-  //       console.error(error);
-  //     });
-  // };
 });

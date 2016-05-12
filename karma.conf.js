@@ -12,6 +12,8 @@ module.exports = function (config) {
       'client/bower_components/angular-route/angular-route.js',
       'client/bower_components/angular-mocks/angular-mocks.js',
       'client/bower_components/angular-cookies/angular-cookies.js',
+      'client/bower_components/angularfire/dist/angularfire.min.js',
+      'client/bower_components/firebase/firebase.js',
 
       // our app code
       'client/scripts/**/*.js',

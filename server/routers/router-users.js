@@ -115,38 +115,39 @@ exports.addFriend = (req, res) => {
   const userId = req.params.userId;
   if (friendId === userId) {
     res.status(409).json({ error: 'You cannot friend yourself' });
-  }
-  knex('friends')
-  .where('user_id', userId)
-  .andWhere('friend_id', friendId)
-  .then((results) => {
-    if (results.length === 0) {
-      knex('friends')
-          .returning('friend_id')
-          .insert({ user_id: userId, friend_id: friendId })
-      .then(() => {
+  } else {
+    knex('friends')
+    .where('user_id', userId)
+    .andWhere('friend_id', friendId)
+    .then((results) => {
+      if (results.length === 0) {
         knex('friends')
-          .returning('friend_id')
-          .insert({ user_id: friendId, friend_id: userId })
-          .then((friendIs) => {
-            res.status(201).json({ id: friendIs[0], success: true });
-          })
-          .catch((err) => {
-            res.status(404).json(err);
-          });
-      })
-      .catch((err) => {
-        res.status(404).json(err);
-      });
-    } else {
-      // it was already a friend... just return success true.
-      res.status(201).json({ success: true });
-    }
-  })
-  .catch((err) => {
-    console.log('error in checking for friend before adding');
-    res.status(404).json(err);
-  });
+            .returning('friend_id')
+            .insert({ user_id: userId, friend_id: friendId })
+        .then(() => {
+          knex('friends')
+            .returning('friend_id')
+            .insert({ user_id: friendId, friend_id: userId })
+            .then((friendIs) => {
+              res.status(201).json({ id: friendIs[0], success: true });
+            })
+            .catch((err) => {
+              res.status(404).json(err);
+            });
+        })
+        .catch((err) => {
+          res.status(404).json(err);
+        });
+      } else {
+        // it was already a friend... just return success true.
+        res.status(201).json({ success: true });
+      }
+    })
+    .catch((err) => {
+      console.log('error in checking for friend before adding');
+      res.status(404).json(err);
+    });
+  }
 };
 
 exports.removeFriend = (req, res) => {

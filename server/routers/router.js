@@ -135,14 +135,13 @@ app.post('/api/resources', auth, decryptUserId, isValidCoveyMember, routeResourc
 
 app.put('/api/resources/:resourceId', auth, decryptUserId, isValidCoveyMember, routeResources.updateResource);
 
-app.delete('/api/resources/:resourceId', auth, decryptUserId, isValidResourceOwner, routeResources.removeResource);
+app.delete('/api/resources/:coveyId/:resourceId', auth, decryptUserId, isValidResourceOwner, routeResources.removeResource);
 
 app.get('/api/resources/:coveyId', auth, decryptUserId, isValidCoveyMember, routeResources.getAllResources);
 
 app.get('/api/suppliers/:resourceId', auth, decryptUserId, isValidResourceOwner, routeResources.getAllSuppliers);
 
-app.delete('/api/suppliers/:resourceId/:userId', auth, decryptUserId, isValidResourceOwner,
-  routeResources.removeSupplier);
+app.delete('/api/suppliers/:coveyId/:resourceId/:userId', auth, decryptUserId, isValidResourceOwner, routeResources.removeSupplier);
 
 app.post('/api/suppliers/:resourceId/:userId', auth, decryptUserId, isValidResourceOwner,
   routeResources.addSupplier);

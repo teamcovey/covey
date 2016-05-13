@@ -985,114 +985,6 @@ describe('Testing Deletion', () => {
   });
 });
 
-describe('Testing phoneNumber verification', () => {
-  const phoneNumber = '+447766564019'; // JSON.stringify?
-  let server;
-
-  beforeEach((done) => {
-    /* eslint-disable */
-    server = require('../../server/server.js');
-    /* eslint-enable */
-    passportStub.install(server);
-    passportStub.login({ email: 'fools@me.com',
-      facebookId: 'xxXtestingIdXxx',
-      firstName: 'Spider',
-      lastName: 'Monkey',
-      gender: 'male',
-      photoUrl: 'http://something.com/nope.jpg',
-    });
-
-    request(server)
-      .post('/api/signup')
-      .type('json')
-      .send(newUser)
-      .expect('Content-Type', 'application/json; charset=utf-8')
-      .expect(201)
-      .end((err, res) => {
-        // Calling the end function will send the request
-        // errs are generated from the expect statements and passed to end as the first argument
-        if (err) {
-          done(err);
-        } else if (res) {
-          userId = res.body.id;
-          newEvent.userId = userId;
-          done();
-        }
-      });
-  });
-
-  afterEach((done) => {
-    /* eslint-disable */
-    server = require('../../server/server.js');
-    /* eslint-enable */
-    passportStub.install(server);
-    passportStub.login({ email: 'fools@me.com',
-      facebookId: 'xxXtestingIdXxx',
-      firstName: 'Spider',
-      lastName: 'Monkey',
-      gender: 'male',
-      photoUrl: 'http://something.com/nope.jpg',
-    });
-
-    request(server)
-      .del(`/api/user/${userId}`)
-      .set('Cookie', [`user_id=${userId}`])
-      .expect(200)
-      .end((err, res) => {
-        if (err) {
-          done(err);
-        } else if (res) {
-          done();
-        }
-      });
-  });
-
-  it('GET /api/tel/:tel should respond with a verfication code', (done) => {
-    request(server)
-      .get(`/api/tel/verify/${phoneNumber}`)
-      .expect(201)
-      .end((err, res) => {
-        if (err) {
-          done(err);
-        } else if (res) {
-          res.body.should.have.property('code');
-          done();
-        }
-      });
-  });
-
-  it('GET /api/tel/ should check for phoneNumber in database and return false', (done) => {
-    request(server)
-      .get('/api/tel')
-      .set('Cookie', [`user_id=${userId}`])
-      .expect(200)
-      .end((err, res) => {
-        if (err) {
-          done(err);
-        } else if (res) {
-          res.body.should.equal(false);
-          done();
-        }
-      });
-  });
-
-  it('GET /api/tel/ should add phoneNumber to database', (done) => {
-    request(server)
-      .post('/api/tel')
-      .set('Cookie', [`user_id=${userId}`])
-      .type('json')
-      .send(JSON.stringify({ tel: phoneNumber }))
-      .expect(201)
-      .end((err, res) => {
-        if (err) {
-          done(err);
-        } else if (res) {
-          done();
-        }
-      });
-  });
-});
-
 describe('Testing user id encryption/decryption', () => {
   let server;
 
@@ -1166,7 +1058,6 @@ describe('Testing user id encryption/decryption', () => {
         if (err) {
           done(err);
         } else if (res) {
-          res.body.should.have.property('updatedUser');
           done();
         }
       });

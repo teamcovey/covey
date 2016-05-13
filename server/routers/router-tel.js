@@ -1,6 +1,6 @@
 const User = require('../models/user.js');
 const knex = require('../config/config.js').knex;
-const keys = require('../config/keys.js');
+const keys = require('../config/keys.example.js');
 
 const generateCode = () => {
   const min = 1000;

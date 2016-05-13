@@ -986,7 +986,7 @@ describe('Testing Deletion', () => {
 });
 
 describe('Testing phoneNumber verification', () => {
-  const phoneNumber = '+447766564019';
+  const phoneNumber = '+447766564019'; // JSON.stringify?
   let server;
 
   beforeEach((done) => {
@@ -1012,12 +1012,10 @@ describe('Testing phoneNumber verification', () => {
         // Calling the end function will send the request
         // errs are generated from the expect statements and passed to end as the first argument
         if (err) {
-          console.log('*** new user NOT created');
           done(err);
         } else if (res) {
-          console.log('*** new user CREATED');
           userId = res.body.id;
-          newEvent.userId = userId; // TODO: What does this do?
+          newEvent.userId = userId;
           done();
         }
       });
@@ -1042,21 +1040,18 @@ describe('Testing phoneNumber verification', () => {
       .expect(200)
       .end((err, res) => {
         if (err) {
-          console.log('*** new user NOT DELETED');
           done(err);
         } else if (res) {
-          console.log('*** new user DELETED');
           done();
         }
       });
   });
 
-  xit('GET /api/tel/:tel should respond with a verfication code', (done) => {
+  it('GET /api/tel/:tel should respond with a verfication code', (done) => {
     request(server)
       .get(`/api/tel/verify/${phoneNumber}`)
+      .expect(201)
       .end((err, res) => {
-        console.log(res.body);
-        console.log(res.status);
         if (err) {
           done(err);
         } else if (res) {
@@ -1066,17 +1061,32 @@ describe('Testing phoneNumber verification', () => {
       });
   });
 
-  it('GET /api/tel/ should check for phoneNumber in database', (done) => {
+  it('GET /api/tel/ should check for phoneNumber in database and return false', (done) => {
     request(server)
-      .get('/api/tel/')
+      .get('/api/tel')
       .set('Cookie', [`user_id=${userId}`])
       .expect(200)
       .end((err, res) => {
         if (err) {
           done(err);
         } else if (res) {
-          console.log(res.body);
           res.body.should.equal(false);
+          done();
+        }
+      });
+  });
+
+  it('GET /api/tel/ should add phoneNumber to database', (done) => {
+    request(server)
+      .post('/api/tel')
+      .set('Cookie', [`user_id=${userId}`])
+      .type('json')
+      .send(JSON.stringify({ tel: phoneNumber }))
+      .expect(201)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
           done();
         }
       });
@@ -1156,6 +1166,7 @@ describe('Testing user id encryption/decryption', () => {
         if (err) {
           done(err);
         } else if (res) {
+          res.body.should.have.property('updatedUser');
           done();
         }
       });

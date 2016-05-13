@@ -5,7 +5,7 @@ angular.module('welcome.services', [])
     return $http.get(`/api/user/${userId}`)
     .then(
       (response) => response.data.user.firstName,
-      (error) => console.error(error)
+      (error) => error
     );
   };
 
@@ -13,16 +13,15 @@ angular.module('welcome.services', [])
     return $http.get(`/api/tel/verify/${tel}`)
     .then(
       (response) => response,
-      (error) => console.error(error)
+      (error) => error
     );
   };
 
   this.saveTel = (tel) => {
-    console.log('in save tel: ', { tel });
     return $http.post('api/tel/', { tel })
     .then(
       (response) => response,
-      (error) => console.error(error)
+      (error) => error
     );
   };
 

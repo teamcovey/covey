@@ -15,7 +15,8 @@ describe('Friends Factory', () => {
     expect(friendsFactory.addFriend).to.be.defined;
     expect(friendsFactory.removeFriend).to.be.defined;
     expect(friendsFactory.searchUsers).to.be.defined;
-  });  
+  });
+
   it('Should receive a 200 when getFriends is called', (done) => {
     $httpBackend.expectGET('/api/friends/1').respond(200, '');
     document.cookie = 'user_id=1';
@@ -26,6 +27,7 @@ describe('Friends Factory', () => {
       });
     $httpBackend.flush();
   });
+
   it('Should receive a 200 when searchUsers is called', (done) => {
     $httpBackend.expectGET('/api/searchUsers/foo').respond(200, { users: [] });
     friendsFactory.searchUsers('foo')
@@ -36,6 +38,7 @@ describe('Friends Factory', () => {
       });
     $httpBackend.flush();
   });
+
   it('Should receive a 201 when addFriend is called', (done) => {
     $httpBackend.expectPOST('/api/friends/1/2').respond(201, { id: 2, success: true });
     friendsFactory.addFriend('2')
@@ -47,6 +50,7 @@ describe('Friends Factory', () => {
       });
     $httpBackend.flush();
   });
+
   it('Should receive a 200 when removeFriend is called', (done) => {
     $httpBackend.expectDELETE('/api/friends/1/2').respond(200, { success: true });
     friendsFactory.removeFriend(2)

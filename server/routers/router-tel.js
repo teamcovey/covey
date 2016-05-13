@@ -1,6 +1,6 @@
 const User = require('../models/user.js');
 const knex = require('../config/config.js').knex;
-const keys = require('../config/keys.js');
+const keys = require('../config/keys.example.js');
 
 const generateCode = () => {
   const min = 1000;
@@ -28,7 +28,7 @@ exports.generateCodeAndSend = (req, res) => {
       res.status(500).json('Server could not send verification message');
     } else {
       console.log(message.sid);
-      res.status(200).json({ code });
+      res.status(201).json({ code });
     }
   });
 };
@@ -41,6 +41,7 @@ exports.addTel = (req, res) => {
     .where('id', userId)
     .update({ phoneNumber })
     .then((updatedUser) => {
+      console.log('In addTel: ', updatedUser);
       res.status(201).json({ updatedUser });
     })
     .catch((err) => {

@@ -13,7 +13,7 @@ angular.module('covey.welcome', ['ngCookies'])
    * This only exists if the 'sign up' button has been clicked.
    * TODO: This functionality has been replaced by the hasTel check but
    * is incomplete. There needs to be a way to check if user is not new
-   * and has clicked the sign-up button and asks them to login.
+   * and has clicked the sign-up button and then asks them to login.
    */
 
   // if ($cookies.getObject('new_user')) {
@@ -41,11 +41,11 @@ angular.module('covey.welcome', ['ngCookies'])
    */
   $scope.verify = () => {
     $scope.showVerifyVisibility();
-    // generate & send code
-    welcomeService.getVerificationCode($scope.phoneNumber)
+
+    return welcomeService.getVerificationCode($scope.phoneNumber)
       .then((response) => {
         $scope.code = response.data.code;
-        console.log('$scope.code: ', $scope.code);
+        console.log(response.data.code);
       })
       .catch((err) => console.error(err));
   };
@@ -56,11 +56,11 @@ angular.module('covey.welcome', ['ngCookies'])
    */
   $scope.compare = () => {
     if ($scope.code === +$scope.inputCode) {
-      console.log('Successful code match');
       welcomeService.saveTel($scope.phoneNumber)
       .then((response) => {
-        console.log(response.data);
-        $scope.toggleWelcomeModalVisibility();
+        if (response) {
+          $scope.toggleWelcomeModalVisibility();
+        }
       })
       .catch((err) => console.error(err));
     } else {
@@ -80,7 +80,6 @@ angular.module('covey.welcome', ['ngCookies'])
     welcomeService.hasTel()
       .then((response) => {
         if (response.data) {
-          console.log('User is not a new user: ', response.data);
           $scope.visible = false;
         } else {
           $scope.visible = true;

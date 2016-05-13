@@ -4,6 +4,7 @@ const keys = {
   TWILIO_ACCOUNT_SID: '12345',
   TWILIO_AUTH_TOKEN: '12345',
   TWILIO_FROM_NUM: '12345',
+  COOKIE_ENCRYPTION_KEY: 'password',
 };
 
 module.exports = keys;

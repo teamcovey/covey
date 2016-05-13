@@ -14,6 +14,7 @@ angular.module('covey', [
   'hamburger',
   'ngRoute',
   'covey.chat',
+  'auth.services',
 ])
 .config(($routeProvider) => {
   $routeProvider
@@ -40,5 +41,18 @@ angular.module('covey', [
       redirectTo: '/',
     });
 })
-.run(() => {
+.run(function ($location, $rootScope, auth) {
+  $rootScope.$on('$routeChangeStart', (event) => {
+    auth.checkAuthentication()
+      .then((isAuth) => {
+        if (!isAuth) {
+          event.preventDefault();
+          $location.path('/');
+        }
+      })
+      .catch(() => {
+        event.preventDefault();
+        $location.path('/');
+      });
+  });
 });

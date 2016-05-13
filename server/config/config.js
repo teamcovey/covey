@@ -50,7 +50,7 @@ db.knex.schema.hasTable('coveys').then((exists) => {
       covey.string('address', 100);
       covey.string('city', 100);
       covey.string('state', 20);
-      covey.string('photoUrl', 100);
+      covey.string('photoUrl', 255);
       covey.string('details', 10000);
       // we may need to think about how we store event details?
       // maybe as a separate file storage due to length?

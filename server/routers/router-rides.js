@@ -17,14 +17,18 @@ exports.addRide = (req, res) => {
     departureTime,
     covey_id: coveyId,
   })
-  .then((car) => knex('cars_users')
-      .returning('car_id')
-      .insert({ user_id: userId, car_id: car.attributes.id, isDriver: true })
-  )
-  .then((carId) => {
-    res.status(201).json({ id: carId[0], success: true });
-  })
-  .catch((err) => {
+  .then((car) => {
+    req.io.sockets.emit(`add ride ${coveyId}`, { response: car });
+    res.status(201).json({ car, success: true });
+
+    // TODO: maybe remove setting driver?
+    knex('cars_users')
+        .returning('car_id')
+        .insert({ user_id: userId, car_id: car.attributes.id, isDriver: true })
+    .catch((err) => {
+      console.log(err);
+    });
+  }).catch((err) => {
     res.status(404).json(err);
   });
 };
@@ -48,6 +52,7 @@ exports.updateRide = (req, res) => {
       ride.set('covey_id', coveyId);
       ride.save()
         .then((updatedRide) => {
+          req.io.sockets.emit(`update ride ${coveyId}`, { response: updatedRide });
           res.status(201).json({ updatedRide });
         });
     })

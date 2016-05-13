@@ -352,7 +352,6 @@ describe('Testing attendee actions', () => {
         if (err) {
           done(err);
         } else if (res) {
-          // console.log('*************res.body: ', res.body);
           (res.body.length).should.be.equal(2);
           res.body[0].name.should.be.equal('Test 2');
           done();

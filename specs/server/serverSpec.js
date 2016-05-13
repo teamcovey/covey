@@ -68,7 +68,9 @@ describe('loading express', () => {
     request(server)
       .get('/')
       .expect(200)
-      .end(done);
+      .end((err, res) => {
+        done();
+      });
   });
 });
 
@@ -580,9 +582,9 @@ describe('Testing resources functionality', () => {
         }
       });
   });
-  it('DELETE /api/suppliers/:resourceid/:userid should respond w/ 401 if unauthorized', (done) => {
+  it('DELETE /api/suppliers/:coveyId/:resourceid/:userid should respond w/ 401 if unauthorized', (done) => {
     request(server)
-      .del(`/api/suppliers/${resourceId}/${userId}`)
+      .del(`/api/suppliers/${coveyId}/${resourceId}/${userId}`)
       .expect(401)
       .end((err, res) => {
         if (err) {
@@ -592,9 +594,9 @@ describe('Testing resources functionality', () => {
         }
       });
   });
-  it('DELETE /api/suppliers/:resourceid/:userid should respond w/ 200 if authorized', (done) => {
+  it('DELETE /api/suppliers/:coveyId/:resourceid/:userid should respond w/ 200 if authorized', (done) => {
     request(server)
-      .del(`/api/suppliers/${resourceId}/${userId}`)
+      .del(`/api/suppliers/${coveyId}/${resourceId}/${userId}`)
       .set('Cookie', [`user_id=${userId}`])
       .expect(200)
       .end((err, res) => {
@@ -620,9 +622,9 @@ describe('Testing resources functionality', () => {
         }
       });
   });
-  it('DELETE /api/resources/:resourceId should respond w/ 401 for unauthorized user', (done) => {
+  it('DELETE /api/resources/:coveyId/:resourceId should respond w/ 401 for unauthorized user', (done) => {
     request(server)
-      .del(`/api/resources/${resourceId}`)
+      .del(`/api/resources/${coveyId}/${resourceId}`)
       .expect(401)
       .end((err, res) => {
         if (err) {
@@ -632,9 +634,9 @@ describe('Testing resources functionality', () => {
         }
       });
   });
-  it('DELETE /api/resources/:resourceId should delete resource if authorized', (done) => {
+  it('DELETE /api/resources/:coveyId/:resourceId should delete resource if authorized', (done) => {
     request(server)
-      .del(`/api/resources/${resourceId}`)
+      .del(`/api/resources/${coveyId}/${resourceId}`)
       .set('Cookie', [`user_id=${userId}`])
       .expect(200)
       .end((err, res) => {
@@ -712,7 +714,8 @@ describe('Testing cars functionality', () => {
           done(err);
         } else if (res) {
           res.body.success.should.be.equal(true);
-          carId = res.body.id;
+          console.log(res.body);
+          carId = res.body.car.id;
           done();
         }
       });

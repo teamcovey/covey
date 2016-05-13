@@ -14,6 +14,7 @@ module.exports = function (config) {
       'client/bower_components/angular-cookies/angular-cookies.js',
       'client/bower_components/angularfire/dist/angularfire.min.js',
       'client/bower_components/firebase/firebase.js',
+      'client/bower_components/angular-socket-io/socket.js',
 
       // our app code
       'client/scripts/**/*.js',

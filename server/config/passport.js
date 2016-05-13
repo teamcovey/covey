@@ -68,12 +68,10 @@ passport.use(new Strategy(
 ));
 
 passport.serializeUser((user, done) => {
-  console.log('In serialzeUser');
   done(null, user.id);
 });
 
 passport.deserializeUser((id, done) => {
-  console.log('In deserializeUser / id: ', id);
   User.where({ id })
   .fetch()
   .then((user) => {

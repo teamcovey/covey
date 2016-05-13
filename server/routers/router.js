@@ -3,6 +3,22 @@
 const app = require('../config/server-config.js');
 const express = require('express');
 
+/* Set up sockets with http server and express middleware */
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
+
+io.on('connection', (socket) => {
+  console.log('Client connected...');
+  socket.on('echo', (data) => {
+    io.sockets.emit('message', data);
+  });
+});
+
+app.use((req, res, next) => {
+  req.io = io;
+  next();
+});
+
 /*
 We are using both knex and bookshelf in the router files.  We were unable to get
 bookshelf to create the join tables for us so decided to write the sql by hand.
@@ -117,14 +133,13 @@ app.post('/api/resources', auth, decryptUserId, isValidCoveyMember, routeResourc
 
 app.put('/api/resources/:resourceId', auth, decryptUserId, isValidCoveyMember, routeResources.updateResource);
 
-app.delete('/api/resources/:resourceId', auth, decryptUserId, isValidResourceOwner, routeResources.removeResource);
+app.delete('/api/resources/:coveyId/:resourceId', auth, decryptUserId, isValidResourceOwner, routeResources.removeResource);
 
 app.get('/api/resources/:coveyId', auth, decryptUserId, isValidCoveyMember, routeResources.getAllResources);
 
 app.get('/api/suppliers/:resourceId', auth, decryptUserId, isValidResourceOwner, routeResources.getAllSuppliers);
 
-app.delete('/api/suppliers/:resourceId/:userId', auth, decryptUserId, isValidResourceOwner,
-  routeResources.removeSupplier);
+app.delete('/api/suppliers/:coveyId/:resourceId/:userId', auth, decryptUserId, isValidResourceOwner, routeResources.removeSupplier);
 
 app.post('/api/suppliers/:resourceId/:userId', auth, decryptUserId, isValidResourceOwner,
   routeResources.addSupplier);
@@ -137,4 +152,4 @@ app.post('/api/tel', auth, decryptUserId, routeTel.addTel);
 
 app.get('/api/tel', auth, decryptUserId, routeTel.hasTel);
 
-module.exports = app;
+module.exports = { app, server };

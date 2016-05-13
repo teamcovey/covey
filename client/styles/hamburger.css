@@ -5,17 +5,23 @@
   background-color: #d3e2ef;
   font-weight: bold;
   width: 100%;
-  padding-top: 15px;
-  padding-bottom: 15px;
+  padding: 15px 0;
+  margin:0;border:0;
   border-bottom: 1px solid #b3b3cb;
 }
 .hamburger-menu-item:hover {
   background-color: #0191C8;
 }
+
 .hamburger-menu-item:last-child {
   border-bottom: 0px;
   margin-bottom: 10px;
 }
+
 .hamburger-menu-item-text {
   color: #33334d;
+}
+
+.hamburger-menu-container {
+  width:100%;padding:0;margin:0;border:0;
 }

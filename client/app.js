@@ -19,6 +19,7 @@ angular.module('covey', [
   'ngRoute',
   'covey.chat',
   'auth.services',
+  'btford.socket-io',
 ])
 .config(($routeProvider) => {
   $routeProvider

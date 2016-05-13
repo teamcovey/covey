@@ -99,10 +99,12 @@
 
 .active-nav {
   margin-bottom:20px;background-color:#FFB600;text-align:center;height:50px;line-height:50px;vertical-align: middle;width:105%;
+  cursor:pointer;
 }
 
 .inactive-nav {
   margin-bottom:20px;text-align:center;height:50px;line-height:50px;vertical-align: middle;
+  cursor:pointer;
 }
 
 .covey-sidenav {

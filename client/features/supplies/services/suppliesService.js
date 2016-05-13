@@ -3,14 +3,17 @@ angular.module('covey.supplies')
   /* Iterates through all supplies and finds the user's assigned supplies */
   this.getUsersSupplies = (supplies, userId) => {
     const usersSupplies = [];
-
-    supplies.forEach((supply) => {
-      supply.suppliers.forEach((supplier) => {
-        if (supplier.user_id.toString() === userId.toString()) {
-          usersSupplies.push(supply);
+    if (supplies) {
+      supplies.forEach((supply) => {
+        if (supply.suppliers) {
+          supply.suppliers.forEach((supplier) => {
+            if (supplier.user_id.toString() === userId.toString()) {
+              usersSupplies.push(supply);
+            }
+          });
         }
       });
-    });
+    }
 
     return usersSupplies;
   };
@@ -79,21 +82,21 @@ angular.module('covey.supplies')
   };
 
   this.removeSupply = (supplyId) => {
-    return $http.delete(`/api/resources/${supplyId}`)
+    return $http.delete(`/api/resources/${$routeParams.coveyId}/${supplyId}`)
     .then((response) => response, (error) => {
       console.error(error);
     });
   };
 
   this.addSupplier = (supplyId, supplierId) => {
-    return $http.post(`/api/suppliers/${supplyId}/${supplierId}`, {})
+    return $http.post(`/api/suppliers/${supplyId}/${supplierId}`, { coveyId: $routeParams.coveyId })
     .then((supply) => supply.data, (error) => {
       console.error(error);
     });
   };
 
   this.removeSupplier = (supplyId, supplierId) => {
-    return $http.delete(`/api/suppliers/${supplyId}/${supplierId}`)
+    return $http.delete(`/api/suppliers/${$routeParams.coveyId}/${supplyId}/${supplierId}`)
     .then((response) => response, (error) => {
       console.error(error);
     });

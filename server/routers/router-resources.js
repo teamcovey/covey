@@ -6,7 +6,7 @@ exports.addResource = (req, res) => {
   const name = req.body.name;
   const quantity = req.body.quantity;
   const type = req.body.type;
-  const coveyId = req.body.covey_id;
+  const coveyId = req.body.covey_id || req.body.coveyId;
 
   Resources.create({
     name,
@@ -15,6 +15,7 @@ exports.addResource = (req, res) => {
     covey_id: coveyId,
   })
   .then((resource) => {
+    req.io.sockets.emit(`add resource ${coveyId}`, { response: resource });
     res.status(201).json({ resource, success: true });
   })
   .catch((err) => {
@@ -39,6 +40,7 @@ exports.updateResource = (req, res) => {
       resource.set('covey_id', coveyId);
       resource.save()
         .then((updatedResource) => {
+          req.io.sockets.emit(`update resource ${coveyId}`, { response: updatedResource });
           res.status(201).json({ updatedResource });
         });
     })
@@ -48,6 +50,7 @@ exports.updateResource = (req, res) => {
 };
 
 exports.removeResource = (req, res) => {
+  const coveyId = req.params.coveyId;
   const resourceId = req.params.resourceId;
 
   // we will remove the join tables that have the user_id in them
@@ -64,6 +67,7 @@ exports.removeResource = (req, res) => {
   new Resource({ id: resourceId })
     .destroy()
     .then(() => {
+      req.io.sockets.emit(`remove resource ${coveyId}`, { response: resourceId });
       res.json({ success: true });
     })
     .catch((err) => {
@@ -133,6 +137,7 @@ exports.getAllResources = (req, res) => {
 exports.removeSupplier = (req, res) => {
   const resourceId = req.params.resourceId;
   const userId = req.params.userId;
+  const coveyId = req.params.coveyId;
 
   knex('resources_users')
     .where('user_id', userId)
@@ -140,6 +145,7 @@ exports.removeSupplier = (req, res) => {
     .del()
     .then((affectedRows) => {
       console.log('deleted rows were: ', affectedRows);
+      req.io.sockets.emit(`remove supplier ${coveyId}`, { response: { resourceId, userId } });
       res.json({ success: true });
     })
     .catch((err) => {
@@ -151,11 +157,14 @@ exports.removeSupplier = (req, res) => {
 exports.addSupplier = (req, res) => {
   const resourceId = req.params.resourceId;
   const userId = req.params.userId;
+  const coveyId = req.body.coveyId;
 
+  console.log('inside add supplier!');
   knex('resources_users')
       .returning('resource_id')
       .insert({ user_id: userId, resource_id: resourceId })
   .then((resourceIs) => {
+    req.io.sockets.emit(`add supplier ${coveyId}`, { response: { resourceId, userId } });
     res.status(201).json({ id: resourceIs[0], success: true });
   })
   .catch((err) => {

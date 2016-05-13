@@ -68,7 +68,9 @@ exports.removeUser = (req, res) => {
 exports.getAllUsers = (req, res) => {
   const coveyId = req.params.coveyId;
 
-  knex.from('users')
+  knex
+    .select(['users.firstName', 'users.lastName', 'users.email', 'users.photoUrl', 'users.id'])
+    .from('users')
     .innerJoin('coveys_users', 'users.id', 'coveys_users.user_id')
     .where('covey_id', '=', coveyId)
     .then((users) => {

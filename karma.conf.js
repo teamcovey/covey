@@ -27,6 +27,7 @@ module.exports = function (config) {
       'specs/client/createCoveySpec.js',
       'specs/client/servicesspec.js',
       'specs/client/friendSpec.js',
+      'specs/client/welcomeSpec.js',
     ],
 
     preprocessors: {

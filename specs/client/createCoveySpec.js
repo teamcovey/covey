@@ -1,11 +1,13 @@
 describe('Create Covey', () => {
   let $controller;
   let $rootScope;
+  let $httpBackend;
   beforeEach(module('createCovey'));
 
-  beforeEach(inject((_$controller_, _$rootScope_) => {
+  beforeEach(inject((_$httpBackend_, _$controller_, _$rootScope_) => {
     $controller = _$controller_;
     $rootScope = _$rootScope_;
+    $httpBackend = _$httpBackend_;
   }));
   it('Create modal should not be visible by default', () => {
     const $scope = {};

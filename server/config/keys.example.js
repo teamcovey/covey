@@ -1,3 +1,10 @@
-exports.FB_CLIENT_ID = '123456789';
-exports.FB_CLIENT_SECRET = '123456789';
-exports.COOKIE_ENCRYPTION_KEY = 'password';
+const keys = {
+  FB_CLIENT_SECRET: '12345',
+  FB_CLIENT_ID: '12345',
+  TWILIO_ACCOUNT_SID: '12345',
+  TWILIO_AUTH_TOKEN: '12345',
+  TWILIO_FROM_NUM: '12345',
+  COOKIE_ENCRYPTION_KEY: 'password',
+};
+
+module.exports = keys;

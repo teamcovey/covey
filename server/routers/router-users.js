@@ -58,7 +58,7 @@ exports.removeUser = (req, res) => {
   new User({ id: userId })
     .destroy()
     .then(() => {
-      res.json({ success: true });
+      res.status(200).json({ success: true });
     })
     .catch((err) => {
       res.status(404).json(err);

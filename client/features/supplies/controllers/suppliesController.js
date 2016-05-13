@@ -32,7 +32,9 @@ angular.module('covey.supplies', ['userId.services', 'covey.attendees'])
   socket.on(`update resource ${$routeParams.coveyId}`, (data) => {
     for (let i = 0; i < $scope.supplyDetails.length; i++) {
       if ($scope.supplyDetails[i].id === data.response.id) {
+        const currentSuppliers = $scope.supplyDetails[i].suppliers;
         $scope.supplyDetails[i] = data.response;
+        $scope.supplyDetails[i].suppliers = currentSuppliers;
         break;
       }
     }
@@ -119,11 +121,13 @@ angular.module('covey.supplies', ['userId.services', 'covey.attendees'])
   };
 
   $scope.addSupplier = (supplier, supply) => {
-    suppliesHttp.addSupplier(supply.id, supplier.id);
+    const supplierId = supplier.user_id || supplier.userId || supplier.id;
+    suppliesHttp.addSupplier(supply.id, supplierId);
   };
 
   $scope.removeSupplier = (supplier, supply) => {
-    suppliesHttp.removeSupplier(supply.id, supplier.user_id);
+    const supplierId = supplier.user_id || supplier.userId || supplier.id;
+    suppliesHttp.removeSupplier(supply.id, supplierId);
   };
 })
 .filter('alreadySupplier', function () {

@@ -52,16 +52,18 @@ angular.module('covey', [
 })
 .run(function ($location, $rootScope, auth) {
   $rootScope.$on('$routeChangeStart', (event) => {
-    auth.checkAuthentication()
-      .then((isAuth) => {
-        if (!isAuth) {
+    if ($location.path() !== '/about') {
+      auth.checkAuthentication()
+        .then((isAuth) => {
+          if (!isAuth) {
+            event.preventDefault();
+            $location.path('/');
+          }
+        })
+        .catch(() => {
           event.preventDefault();
           $location.path('/');
-        }
-      })
-      .catch(() => {
-        event.preventDefault();
-        $location.path('/');
-      });
+        });
+    }
   });
 });

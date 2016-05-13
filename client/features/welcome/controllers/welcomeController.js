@@ -1,6 +1,6 @@
 angular.module('covey.welcome', ['ngCookies'])
 
-.controller('welcomeController', function ($scope, $cookies, welcomeService) {
+.controller('welcomeController', function ($scope, $cookies, welcomeService, userIdFactory) {
   $scope.visible = false;
   $scope.showVerify = false;
   $scope.name = '';
@@ -20,7 +20,7 @@ angular.module('covey.welcome', ['ngCookies'])
   //   $scope.visible = true;
   // }
 
-  const userId = $cookies.getObject('user_id');
+  const userId = userIdFactory.getUserId();
 
   welcomeService.getUser(userId)
     .then((user) => {

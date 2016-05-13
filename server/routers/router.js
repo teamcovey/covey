@@ -131,10 +131,10 @@ app.post('/api/suppliers/:resourceId/:userId', auth, decryptUserId, isValidResou
 
 app.get('/api/searchUsers/:searchVal', auth, decryptUserId, route.searchUsers);
 
-app.get('/api/tel/verify/:tel', auth, routeTel.generateCodeAndSend);
+app.get('/api/tel/verify/:tel', auth, decryptUserId, routeTel.generateCodeAndSend);
 
-app.post('/api/tel', auth, routeTel.addTel);
+app.post('/api/tel', auth, decryptUserId, routeTel.addTel);
 
-app.get('/api/tel', auth, routeTel.hasTel);
+app.get('/api/tel', auth, decryptUserId, routeTel.hasTel);
 
 module.exports = app;

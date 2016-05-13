@@ -1,6 +1,10 @@
 const User = require('../models/user.js');
 const knex = require('../config/config.js').knex;
-const keys = require('../config/keys.example.js');
+// const keys = require('../config/keys.js');
+
+var keys = process.env.covey_env === 'PROD' || process.env.covey_env === 'DEV'
+  ? require('../config/keys.js')
+  : require('../config/keys.example.js');
 
 const generateCode = () => {
   const min = 1000;
@@ -12,7 +16,6 @@ const generateCode = () => {
 exports.generateCodeAndSend = (req, res) => {
   const tel = req.params.tel;
   const code = generateCode();
-
   const accountSid = keys.TWILIO_ACCOUNT_SID;
   const authToken = keys.TWILIO_AUTH_TOKEN;
   const client = require('twilio')(accountSid, authToken);

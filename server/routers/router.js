@@ -121,11 +121,11 @@ app.put('/api/rides/:carId', auth, decryptUserId, isValidCoveyMember, routeRides
 
 app.delete('/api/rides/:coveyId/:carId', auth, decryptUserId, isValidCarOwner, routeRides.removeRide);
 
-app.get('/api/rides/:coveyId', auth, decryptUserId, isValidCarOwner, routeRides.getAllRides);
+app.get('/api/rides/:coveyId', auth, decryptUserId, isValidCoveyMember, routeRides.getAllRides);
 
 app.get('/api/riders/:carId', auth, decryptUserId, isValidCarOwner, routeRides.getAllRiders);
 
-app.delete('/api/riders/:coveyId/:carId/:userId', auth, routeRides.removeRider);
+app.delete('/api/riders/:coveyId/:carId/:userId', auth, decryptUserId, isValidCarOwner, routeRides.removeRider);
 
 app.post('/api/riders/:carId/:userId', auth, decryptUserId, isValidCarOwner, routeRides.addRider);
 

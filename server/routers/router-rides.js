@@ -22,12 +22,12 @@ exports.addRide = (req, res) => {
     res.status(201).json({ car, success: true });
 
     // TODO: maybe remove setting driver?
-    // knex('cars_users')
-    //     .returning('car_id')
-    //     .insert({ user_id: userId, car_id: car.attributes.id, isDriver: true })
-    // .catch((err) => {
-    //   console.log(err);
-    // });
+    knex('cars_users')
+        .returning('car_id')
+        .insert({ user_id: userId, car_id: car.attributes.id, isDriver: true })
+    .catch((err) => {
+      console.log(err);
+    });
   }).catch((err) => {
     res.status(404).json(err);
   });

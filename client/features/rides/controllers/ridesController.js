@@ -26,7 +26,6 @@ angular.module('covey.rides', ['userId.services', 'covey.attendees'])
 
   /* SOCKETS:add ride */
   socket.on(`add ride ${$routeParams.coveyId}`, (data) => {
-    console.log('received add ride.');
     $scope.ridesDetails.push(data.response);
   });
 
@@ -55,8 +54,6 @@ angular.module('covey.rides', ['userId.services', 'covey.attendees'])
   /* SOCKETS:add rider */
   socket.on(`add rider ${$routeParams.coveyId}`, (data) => {
     for (let i = 0; i < $scope.ridesDetails.length; i++) {
-      console.log('in add rider: ', $scope.ridesDetails[i], data.response);
-
       if ($scope.ridesDetails[i].id.toString() === data.response.carId.toString()) {
         for (let j = 0; j < $scope.attendees.length; j++) {
           if ($scope.attendees[j].id.toString() === data.response.userId.toString()) {

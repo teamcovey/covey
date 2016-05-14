@@ -121,7 +121,7 @@ app.put('/api/rides/:carId', auth, decryptUserId, isValidCoveyMember, routeRides
 
 app.delete('/api/rides/:coveyId/:carId', auth, decryptUserId, isValidCarOwner, routeRides.removeRide);
 
-app.get('/api/rides/:coveyId', auth, routeRides.getAllRides);
+app.get('/api/rides/:coveyId', auth, isValidCarOwner, routeRides.getAllRides);
 
 app.get('/api/riders/:carId', auth, decryptUserId, isValidCarOwner, routeRides.getAllRiders);
 

@@ -838,9 +838,9 @@ describe('Testing cars functionality', () => {
       });
   });
 
-  it('DELETE /api/riders/:carId/:userId should respond with 401 if unauthorized', (done) => {
+  it('DELETE /api/riders/:coveyId/:carId/:userId should respond with 401 if unauthorized', (done) => {
     request(server)
-      .del(`/api/riders/${carId}/${userId2}`)
+      .del(`/api/riders/${coveyId}/${carId}/${userId2}`)
       .set('Cookie', ['user_id=-1'])
       .expect(401)
       .end((err, res) => {
@@ -851,9 +851,9 @@ describe('Testing cars functionality', () => {
         }
       });
   });
-  it('DELETE /api/riders/:carId/:userId should respond with 201 if authorized', (done) => {
+  it('DELETE /api/riders/:coveyId/:carId/:userId should respond with 201 if authorized', (done) => {
     request(server)
-      .del(`/api/riders/${carId}/${userId2}`)
+      .del(`/api/riders/${coveyId}/${carId}/${userId2}`)
       .set('Cookie', [`user_id=${userId}`])
       .expect(200)
       .end((err, res) => {
@@ -881,9 +881,9 @@ describe('Testing cars functionality', () => {
       });
   });
 
-  it('DELETE /api/rides/:carId should respond with 401 if unauthorized', (done) => {
+  it('DELETE /api/rides/:coveyId/:carId should respond with 401 if unauthorized', (done) => {
     request(server)
-      .del(`/api/rides/${carId}`)
+      .del(`/api/rides/${coveyId}/${carId}`)
       .expect(401)
       .end((err, res) => {
         if (err) {
@@ -893,9 +893,9 @@ describe('Testing cars functionality', () => {
         }
       });
   });
-  it('DELETE /api/rides/:carId should respond with 200 if authorized', (done) => {
+  it('DELETE /api/rides/:coveyId/:carId should respond with 200 if authorized', (done) => {
     request(server)
-      .del(`/api/rides/${carId}`)
+      .del(`/api/rides/${coveyId}/${carId}`)
       .set('Cookie', [`user_id=${userId}`])
       .expect(200)
       .end((err, res) => {

@@ -11,8 +11,49 @@ body {
 .profile-photo {
   height: auto;
   overflow: hidden;
+  border: 0px
 }
-.profile-text {
+.profile-text-panel {
   height: 300px;
   overflow: hidden;
+}
+
+.profile-text {
+  text-align: left;
+  margin: 20px 35px;
+}
+
+.profile-name {
+  margin: 30px;
+}
+
+.col-centered {
+  float: none;
+  margin: 0 auto;
+}
+
+.profile-glyphicon-pencil {
+  position: absolute;
+  top: 20px;
+  right: 40px;
+  font-size: 20px;
+  color: #0191C8;
+}
+
+.blue {
+  color: #0191C8;
+}
+
+.orange {
+  color: #FFB600;
+}
+
+.profile-edit-btn {
+  border: none;
+  box-shadow: none;
+  background-color: transparent;
+}
+
+.profile-edit-btn:hover {
+  color: #FFB600;
 }

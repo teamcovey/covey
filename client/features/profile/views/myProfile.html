@@ -1,24 +1,20 @@
 <div class="container profile-container" class="coveys-view-container" ng-controller="profileController">
-  <div class="cold-md-12 text-center">
-    <h3 class="col-md-12 text-center">Edit your profile...</h3>
-    <div class="row">
-      <div class="col-xs-3">
-        <div class="panel profile-photo">
-          <img class="center-block" ng-show="showPhoto" ng-src="{{photoUrl}}" alt="Smiley face" height="298" width="298">
-        </div>
+  <h3 class="col-md-12 text-center blue">Edit your profile...</h3>
+  <div class="row">
+    <div class="col-xs-3 col-xs-offset-1">
+      <div class="panel profile-photo">
+        <img class="center-block" ng-show="showPhoto" ng-src="{{photoUrl}}" alt="Smiley face" height="300" width="300">
       </div>
-      <div class="col-xs-3">
-        <div class="panel profile-text">
-          <h1>{{firstName}} {{lastName}}</h1>
-          <h3>{{email}}</h3>
-          <h3>{{phoneNumber}}</h3>
-        </div>
+    </div>
+    <div class="col-xs-7">
+      <button class="profile-glyphicon-pencil profile-edit-btn">
+        <span class="glyphicon glyphicon-pencil"></span>
+      </button>
+      <div class="panel profile-text-panel">
+        <h1 class="profile-text profile-name blue">{{firstName}} {{lastName}}</h1>
+        <h3 class="profile-text"><span class="orange space">e.</span> {{email}}</h3>
+        <h3 class="profile-text"><span class="orange">t.</span> {{phoneNumber}}</h3>
       </div>
     </div>
   </div>
 </div>
-
-
-<!-- <div>
-  <input type="text" name="email" class="details-inputs" ng-model="email"></input>
-</div> -->

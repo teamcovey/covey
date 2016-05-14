@@ -56,7 +56,6 @@ angular.module('covey.supplies', ['userId.services', 'covey.attendees'])
       if ($scope.supplyDetails[i].id.toString() === data.response.resourceId.toString()) {
         for (let j = 0; j < $scope.attendees.length; j++) {
           if ($scope.attendees[j].id.toString() === data.response.userId.toString()) {
-          if ($scope.attendees[j].user_id.toString() === data.response.userId.toString()) {
             if ($scope.supplyDetails[i].suppliers) {
               $scope.supplyDetails[i].suppliers.push($scope.attendees[j]);
             } else {

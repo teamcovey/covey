@@ -25,6 +25,7 @@ angular.module('covey.supplies', ['userId.services', 'covey.attendees'])
 
   /* SOCKETS:add resource */
   socket.on(`add resource ${$routeParams.coveyId}`, (data) => {
+    console.log('we adding a resource');
     $scope.supplyDetails.push(data.response);
   });
 

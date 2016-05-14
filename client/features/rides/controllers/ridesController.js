@@ -1,5 +1,5 @@
 angular.module('covey.rides', ['userId.services', 'covey.attendees'])
-.controller('ridesController', function ($rootScope, $scope, ridesHelpers, ridesHttp, userIdFactory, attendeesHttp) {
+.controller('ridesController', function ($rootScope, $scope, ridesHelpers, ridesHttp, userIdFactory, attendeesHttp, socket, $routeParams) {
   const userId = userIdFactory.getUserId();
   $scope.expandRide = false;
   $scope.ridesDetails = [];
@@ -24,6 +24,80 @@ angular.module('covey.rides', ['userId.services', 'covey.attendees'])
 
   init();
 
+  /* SOCKETS:add ride */
+  socket.on(`add ride ${$routeParams.coveyId}`, (data) => {
+    console.log('received add ride.');
+    $scope.ridesDetails.push(data.response);
+  });
+
+  /* SOCKETS:update ride */
+  socket.on(`update ride ${$routeParams.coveyId}`, (data) => {
+    for (let i = 0; i < $scope.ridesDetails.length; i++) {
+      if ($scope.ridesDetails[i].id === data.response.id) {
+        $scope.ridesDetails[i] = data.response;
+        break;
+      }
+    }
+    $scope.usersRide = ridesHelpers.getUsersRide($scope.ridesDetails, userId);
+  });
+
+  /* SOCKETS:remove ride */
+  socket.on(`remove ride ${$routeParams.coveyId}`, (data) => {
+    for (let i = 0; i < $scope.ridesDetails.length; i++) {
+      if ($scope.ridesDetails[i].id.toString() === data.response.toString()) {
+        $scope.ridesDetails.splice(i, 1);
+        break;
+      }
+    }
+    $scope.usersRide = ridesHelpers.getUsersRide($scope.ridesDetails, userId);
+  });
+
+  /* SOCKETS:add rider */
+  socket.on(`add rider ${$routeParams.coveyId}`, (data) => {
+    for (let i = 0; i < $scope.ridesDetails.length; i++) {
+      console.log('in add rider: ', $scope.ridesDetails[i], data.response);
+
+      if ($scope.ridesDetails[i].id.toString() === data.response.carId.toString()) {
+        for (let j = 0; j < $scope.attendees.length; j++) {
+          if ($scope.attendees[j].id.toString() === data.response.userId.toString()) {
+            if ($scope.ridesDetails[i].riders) {
+              $scope.ridesDetails[i].riders.push($scope.attendees[j]);
+            } else {
+              $scope.ridesDetails[i].riders = [$scope.attendees[j]];
+            }
+
+            // If current user is the added rider, set ride to user's ride assignment
+            if (data.response.userId.toString() === userId.toString()) {
+              $scope.usersRide = ridesHelpers.getUsersRide($scope.ridesDetails, userId);
+            }
+            break;
+          }
+        }
+      }
+    }
+    $scope.usersRide = ridesHelpers.getUsersRide($scope.ridesDetails, userId);
+  });
+
+  /* SOCKETS:remove rider */
+  socket.on(`remove rider ${$routeParams.coveyId}`, (data) => {
+    for (let i = 0; i < $scope.ridesDetails.length; i++) {
+      if ($scope.ridesDetails[i].id.toString() === data.response.carId.toString()) {
+        // iterate over ridesDetails and find one that matches rideId; splice out the data.userId from that riders
+        for (let j = 0; j < $scope.ridesDetails[i].riders.length; j++) {
+          const riderId = $scope.ridesDetails[i].riders[j].user_id || $scope.ridesDetails[i].riders[j].id || $scope.ridesDetails[i].riders[j].userId;;
+          if (riderId.toString() === data.response.userId.toString()) {
+            $scope.ridesDetails[i].riders.splice(j, 1);
+            if (data.response.userId.toString() === userId.toString()) {
+              $scope.usersRide = ridesHelpers.getUsersRide($scope.ridesDetails, userId);
+            }
+            break;
+          }
+        }
+      }
+    }
+    $scope.usersRide = ridesHelpers.getUsersRide($scope.ridesDetails, userId);
+  });
+
   /* Displays user's current ride */
   $scope.stringifyUsersRide = () => {
     return $scope.usersRide.name;
@@ -34,67 +108,26 @@ angular.module('covey.rides', ['userId.services', 'covey.attendees'])
     $scope.expandRide = !$scope.expandRide;
   };
 
-  /* Inserts placeholder for new supply for editing purposes */
   $scope.addNewRide = () => {
-    $scope.ridesDetails.push(ridesHelpers.newRideInput());
+    ridesHttp.addRide(ridesHelpers.newRideInput());
   };
 
   /* Creates or updates a ride when user select 'Update' in edit view */
-  $scope.submitRide = (ride, rideIndex) => {
-    if (ride.id) {
-      ridesHttp.updateRide(ride).then((response) => {
-        console.log('ride updated: ', response);
-      });
-    } else {
-      ridesHttp.addRide(ride).then((response) => {
-        $scope.ridesDetails[rideIndex].id = response.id;
-      });
-    }
+  $scope.submitRide = (ride) => {
+    ridesHttp.updateRide(ride);
   };
 
-  $scope.removeRide = (ride, rideIndex) => {
-    if (!ride.id) {
-      /* removes the empty placeholder ride */
-      $scope.ridesDetails.pop();
-    } else {
-      ridesHttp.removeRide(ride.id).then(() => {
-        $scope.ridesDetails.splice(rideIndex, 1);
-      });
-    }
+  $scope.removeRide = (ride) => {
+    ridesHttp.removeSupply(ride.id);
   };
 
   $scope.addPassenger = (passenger, ride) => {
-    ridesHttp.addPassenger(ride.id, passenger.user_id)
-      .then((newPassenger) => {
-        /* Refresh ridesDetails with added passenger on success from db: */
-        for (let i = 0; i < $scope.ridesDetails.length; i++) {
-          if ($scope.ridesDetails[i].id === ride.id) {
-            $scope.ridesDetails[i].riders.push(passenger);
-            /* Add usersRide if they were a passenger in the added ride: */
-            if (passenger.user_id.toString() === userId.toString()) {
-              $scope.usersRide = ridesHelpers.getUsersRide($scope.ridesDetails, userId);
-            }
-          }
-        }
-        console.log('Added new passenger: ', newPassenger);
-      }, (error) => {
-        console.error(error);
-      });
+    const passengerId = passenger.user_id || passenger.userId || passenger.id;
+    ridesHttp.addPassenger(ride.id, passengerId);
   };
 
   $scope.removePassenger = (passenger, ride) => {
-    ridesHttp.removePassenger(ride.id, passenger.user_id)
-      .then(() => {
-        /* Refresh ridesDetails */
-        for (let i = 0; i < $scope.ridesDetails.length; i++) {
-          if ($scope.ridesDetails[i].id === ride.id) {
-            /* If current user is the removed rider, remove ride from user's ride assignment */
-            if (passenger.user_id.toString() === userId.toString()) {
-              $scope.usersRide = { name: 'none.'};
-            }
-            $scope.ridesDetails[i].riders.splice($scope.ridesDetails[i].riders.indexOf(passenger), 1);
-          }
-        }
-      });
+    const passengerId = passenger.user_id || passenger.userId || passenger.id;
+    ridesHttp.removePassenger(ride.id, passengerId);
   };
 });

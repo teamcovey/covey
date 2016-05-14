@@ -22,12 +22,12 @@ exports.addRide = (req, res) => {
     res.status(201).json({ car, success: true });
 
     // TODO: maybe remove setting driver?
-    knex('cars_users')
-        .returning('car_id')
-        .insert({ user_id: userId, car_id: car.attributes.id, isDriver: true })
-    .catch((err) => {
-      console.log(err);
-    });
+    // knex('cars_users')
+    //     .returning('car_id')
+    //     .insert({ user_id: userId, car_id: car.attributes.id, isDriver: true })
+    // .catch((err) => {
+    //   console.log(err);
+    // });
   }).catch((err) => {
     res.status(404).json(err);
   });
@@ -62,6 +62,7 @@ exports.updateRide = (req, res) => {
 };
 
 exports.removeRide = (req, res) => {
+  const coveyId = req.params.coveyId;
   const carId = req.params.carId;
 
   // we will remove the join tables that have the user_id in them
@@ -78,6 +79,7 @@ exports.removeRide = (req, res) => {
   new Car({ id: carId })
     .destroy()
     .then(() => {
+      req.io.sockets.emit(`remove ride ${coveyId}`, { response: carId });
       res.json({ success: true });
     })
     .catch((err) => {
@@ -148,6 +150,7 @@ exports.getAllRides = (req, res) => {
 exports.removeRider = (req, res) => {
   const carId = req.params.carId;
   const userId = req.params.userId;
+  const coveyId = req.params.coveyId;
 
   knex('cars_users')
     .where('user_id', userId)
@@ -155,6 +158,7 @@ exports.removeRider = (req, res) => {
     .del()
     .then((affectedRows) => {
       console.log('deleted rows were: ', affectedRows);
+      req.io.sockets.emit(`remove rider ${coveyId}`, { response: { carId, userId } });
       res.json({ success: true });
     })
     .catch((err) => {
@@ -166,11 +170,13 @@ exports.removeRider = (req, res) => {
 exports.addRider = (req, res) => {
   const carId = req.params.carId;
   const userId = req.params.userId;
+  const coveyId = req.body.coveyId;
 
   knex('cars_users')
       .returning('car_id')
       .insert({ user_id: userId, car_id: carId })
   .then((carIs) => {
+    req.io.sockets.emit(`add rider ${coveyId}`, { response: { carId, userId } });
     res.status(201).json({ id: carIs[0], success: true });
   })
   .catch((err) => {

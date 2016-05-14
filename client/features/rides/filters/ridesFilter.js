@@ -12,7 +12,8 @@ angular.module('covey.rides')
       return attendees.filter((attendee) => {
         let result = true;
         allPassengers.forEach((currentPassenger) => {
-          if (currentPassenger.user_id === attendee.user_id) {
+          // console.log('in ridesFilter.  checking: ', currentPassenger, attendee);
+          if (currentPassenger && currentPassenger.user_id === attendee.user_id) {
             result = false;
           }
         });

@@ -119,15 +119,15 @@ app.post('/api/rides', auth, decryptUserId, isValidCoveyMember, routeRides.addRi
 
 app.put('/api/rides/:carId', auth, decryptUserId, isValidCoveyMember, routeRides.updateRide);
 
-app.delete('/api/rides/:carId', auth, decryptUserId, isValidCarOwner, routeRides.removeRide);
+app.delete('/api/rides/:coveyId/:carId', auth, decryptUserId, isValidCarOwner, routeRides.removeRide);
 
-app.get('/api/rides/:coveyId', auth, decryptUserId, isValidCoveyMember, routeRides.getAllRides);
+app.get('/api/rides/:coveyId', auth, routeRides.getAllRides);
 
 app.get('/api/riders/:carId', auth, decryptUserId, isValidCarOwner, routeRides.getAllRiders);
 
-app.delete('/api/riders/:carId/:userId', auth, decryptUserId, isValidCarOwner, routeRides.removeRider);
+app.delete('/api/riders/:coveyId/:carId/:userId', auth, routeRides.removeRider);
 
-app.post('/api/riders/:carId/:userId', auth, decryptUserId, isValidCarOwner, routeRides.addRider);
+app.post('/api/riders/:carId/:userId', auth, routeRides.addRider);
 
 app.post('/api/resources', auth, decryptUserId, isValidCoveyMember, routeResources.addResource);
 

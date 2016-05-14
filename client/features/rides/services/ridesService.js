@@ -5,11 +5,13 @@ angular.module('covey.rides')
     let usersRide = { name: 'none.'};
 
     rides.forEach((ride) => {
-      ride.riders.forEach((rider) => {
-        if (rider.user_id.toString() === userId.toString()) {
-          usersRide = ride;
-        }
-      });
+      if (ride.riders) {
+        ride.riders.forEach((rider) => {
+          if (rider.id.toString() === userId.toString()) {
+            usersRide = ride;
+          }
+        });
+      }
     });
 
     return usersRide;
@@ -58,7 +60,7 @@ angular.module('covey.rides')
   };
 
   this.removeRide = (rideId) => {
-    return $http.delete(`/api/rides/${rideId}`)
+    return $http.delete(`/api/rides/${$routeParams.coveyId}/${rideId}`)
       .then((response) => response, (error) => {
         console.error(error);
       });
@@ -66,14 +68,14 @@ angular.module('covey.rides')
 
 
   this.addPassenger = (rideId, userId) => {
-    return $http.post(`/api/riders/${rideId}/${userId}`, {})
+    return $http.post(`/api/riders/${rideId}/${userId}`, { coveyId: $routeParams.coveyId })
       .then((response) => response, (error) => {
         console.error(error);
       });
   };
 
   this.removePassenger = (rideId, userId) => {
-    return $http.delete(`/api/riders/${rideId}/${userId}`)
+    return $http.delete(`/api/riders/${$routeParams.coveyId}/${rideId}/${userId}`)
       .then((response) => response, (error) => {
         console.error(error);
       });

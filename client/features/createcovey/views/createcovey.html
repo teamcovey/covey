@@ -29,13 +29,13 @@
         <h4>Create a Covey</h4>
       </div>
       <div class="col-md-12 text-right">
-        <form class="form-horizontal">
+        <form class="form-horizontal" name="coveyForm">
           <div class="form-group">
             <div class="col-sm-2">
               <label for="name">Event Name</label>
             </div>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="name" placeholder="Event Name" maxlength="100" ng-model="name">
+              <input type="text" class="form-control" id="name" placeholder="Event Name" maxlength="100" ng-model="name" ng-required="true">
             </div>
           </div>
           <div class="form-group">
@@ -43,7 +43,7 @@
               <label for="location">Location</label>
             </div>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="location" placeholder="Location" maxlength="100" ng-model="location">
+              <input type="text" class="form-control" id="location" placeholder="Location" maxlength="100" ng-model="location" ng-required="true">
             </div>
           </div>
           <div class="form-group">
@@ -51,7 +51,7 @@
               <label for="address">Address</label>
             </div>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="address" placeholder="Address" maxlength="100" ng-model="address">
+              <input type="text" class="form-control" id="address" placeholder="Address" maxlength="100" ng-model="address" ng-required="true">
             </div>
           </div>
           <div class="form-group">
@@ -59,13 +59,13 @@
               <label for="city">City</label>
             </div>
             <div class="col-sm-5">
-              <input type="text" class="form-control" id="city" placeholder="City" maxlength="100" ng-model="city">
+              <input type="text" class="form-control" id="city" placeholder="City" maxlength="100" ng-model="city" ng-required="true">
             </div>
             <div class="col-sm-1">
               <label for="state">State</label>
             </div>
             <div class="col-sm-4">
-              <input type="text" class="form-control" id="state" placeholder="State" maxlength="20" ng-model="state">
+              <input type="text" class="form-control" id="state" placeholder="State" maxlength="20" ng-model="state" ng-required="true">
             </div>
           </div>
           <div class="form-group">
@@ -73,10 +73,10 @@
               <label for="startDate">Start</label>
             </div>
             <div class="col-sm-5">
-              <input type="date" class="form-control" id="startDate" ng-model="startDate">
+              <input type="date" class="form-control" id="startDate" ng-model="startDate" ng-required="true">
             </div>
             <div class="col-sm-5">
-              <input type="time" class="form-control" id="startTime" ng-model="startTime">
+              <input type="time" class="form-control" id="startTime" ng-model="startTime" ng-required="true">
             </div>
           </div>
           <div class="form-group">
@@ -84,10 +84,10 @@
               <label for="endDate">End</label>
             </div>
             <div class="col-sm-5">
-              <input type="date" class="form-control" id="endDate" ng-model="endDate">
+              <input type="date" class="form-control" id="endDate" ng-model="endDate" ng-required="true">
             </div>
             <div class="col-sm-5">
-              <input type="time" class="form-control" id="endTime" ng-model="endTime">
+              <input type="time" class="form-control" id="endTime" ng-model="endTime" ng-required="true">
             </div>
           </div>
           <div class="form-group">
@@ -108,7 +108,7 @@
           </div>
           <div class="form-group">
             <div class="col-sm-2 col-sm-offset-10">
-              <button type="submit" class="btn btn-info" ng-click="submitCovey()">Create</button>
+              <button type="submit" class="btn btn-info" ng-click="submitCovey(coveyForm.$invalid)">Create</button>
             </div>
           </div>
         </form>

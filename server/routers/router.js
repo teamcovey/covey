@@ -30,6 +30,7 @@ const routeCoveys = require('./router-coveys');
 const routeRides = require('./router-rides');
 const routeResources = require('./router-resources');
 const routeTel = require('./router-tel');
+const routeExpenses = require('./router-expenses');
 
 // can set up different routes for each path
 const bodyParser = require('body-parser');
@@ -151,5 +152,21 @@ app.get('/api/tel/verify/:tel', auth, decryptUserId, routeTel.generateCodeAndSen
 app.post('/api/tel', auth, decryptUserId, routeTel.addTel);
 
 app.get('/api/tel', auth, decryptUserId, routeTel.hasTel);
+
+// Routes for expense functionality
+
+app.post('/api/expenses/:coveyId', routeExpenses.postExpense);
+
+app.put('/api/expenses/:coveyId', routeExpenses.updateExpense);
+
+app.get('/api/expenses/:coveyId', routeExpenses.getExpenses);
+
+app.delete('/api/expenses/:coveyId/:expenseId', routeExpenses.deleteExpense);
+
+// route to add particpant
+app.post('/api/expenses/participants/:coveyId', routeExpenses.addParticipant);
+
+// route to delete particpant
+app.delete('api/expenses/:expenseId/:particpantId/:coveyId', routeExpenses.deleteParticipant);
 
 module.exports = { app, server };

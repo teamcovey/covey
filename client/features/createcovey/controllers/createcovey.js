@@ -35,7 +35,8 @@ angular.module('createCovey', ['covey.services', 'userId.services'])
    * it will close the modal and angular will redirect the new covey.
    * If there's an error, it will display the error modal.
   */
-  $scope.submitCovey = () => {
+  $scope.submitCovey = (isInvalid) => {
+    if (isInvalid) return;
     // Combines date/times into a single value
     const combinedStartDateTime = new Date(
       $scope.startDate.getFullYear(),

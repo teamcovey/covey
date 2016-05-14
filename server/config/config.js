@@ -180,5 +180,43 @@ db.knex.schema.hasTable('friends').then((exists) => {
   }
 });
 
+db.knex.schema.hasTable('expenses').then((exists) => {
+  if (!exists) {
+    db.knex.schema.createTable('expenses', (expense) => {
+      expense.increments('expense_id').primary();
+      expense.string('name', 100);
+      expense.float('amount');
+      expense.integer('covey_id')
+        .unsigned()
+        .references('id')
+        .inTable('coveys')
+        .onDelete('CASCADE');
+    }).then((table) => {
+      console.log('Created Expenses Table', table);
+    });
+  }
+});
+
+db.knex.schema.hasTable('expenses_users').then((exists) => {
+  if (!exists) {
+    db.knex.schema.createTable('expenses_users', (expense) => {
+      expense.increments('id').primary();
+      expense.integer('user_id')
+        .unsigned()
+        .references('id')
+        .inTable('users')
+        .onDelete('CASCADE');
+      expense.integer('expense_id')
+        .unsigned()
+        .references('expense_id')
+        .inTable('expenses')
+        .onDelete('CASCADE');
+      expense.boolean('is_owner');
+    }).then((table) => {
+      console.log('Created Expenses_Users Table', table);
+    });
+  }
+});
+
 module.exports.db = db;
 module.exports.knex = knex;

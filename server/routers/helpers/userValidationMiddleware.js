@@ -5,9 +5,11 @@ const knex = require('../../config/config.js').knex;
  * exist, the user is considered inValid and will not be able to make changes to the covey
  */
 exports.isValidCoveyMember = (request, response, next) => {
-  const coveyId = request.params.coveyId || request.body.covey_id || request.body.coveyId;
+  const coveyId = request.params.coveyId 
+    || request.params.covey_id
+    || request.body.covey_id
+    || request.body.coveyId;
   const userId = request.cookies.user_id;
-  console.log(request.body);
   knex('coveys_users')
     .where({
       user_id: userId,

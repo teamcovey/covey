@@ -155,18 +155,16 @@ app.get('/api/tel', auth, decryptUserId, routeTel.hasTel);
 
 // Routes for expense functionality
 
-app.post('/api/expenses/:coveyId', routeExpenses.postExpense);
+app.post('/api/expenses/:covey_id', auth, isValidCoveyMember, routeExpenses.postExpense);
 
-app.put('/api/expenses/:coveyId', routeExpenses.updateExpense);
+app.put('/api/expenses/:covey_id', auth, isValidCoveyMember, routeExpenses.updateExpense);
 
-app.get('/api/expenses/:coveyId', routeExpenses.getExpenses);
+app.get('/api/expenses/:covey_id', auth, isValidCoveyMember, routeExpenses.getExpenses);
 
-app.delete('/api/expenses/:coveyId/:expenseId', routeExpenses.deleteExpense);
+app.delete('/api/expenses/:covey_id/:expense_id', auth, isValidCoveyMember, routeExpenses.deleteExpense);
 
-// route to add particpant
-app.post('/api/expenses/participants/:coveyId', routeExpenses.addParticipant);
+app.post('/api/expenses/participants/:covey_id', auth, isValidCoveyMember, routeExpenses.addParticipant);
 
-// route to delete particpant
-app.delete('api/expenses/:expenseId/:particpantId/:coveyId', routeExpenses.deleteParticipant);
+app.delete('/api/expenses/participants/:covey_id/:expense_id/:user_id', auth, isValidCoveyMember, routeExpenses.deleteParticipant);
 
 module.exports = { app, server };

@@ -8,29 +8,29 @@ describe('Covey Controllers: ', () => {
   }));
 
   /* Rides Controller */
-  describe('ridesController', () => {
-    let $scope;
-    let controller;
+  // describe('ridesController', () => {
+  //   let $scope;
+  //   let controller;
 
-    beforeEach(() => {
-      $scope = {};
-      $scope.details = {
-        attendees: ['Freddie Ryder', 'Rahim Dharssi', 'Toben Green', 'Skye Free'],
-      };
-      let controller = $controller('ridesController', { $scope });
-    });
+  //   beforeEach(() => {
+  //     $scope = {};
+  //     $scope.details = {
+  //       attendees: ['Freddie Ryder', 'Rahim Dharssi', 'Toben Green', 'Skye Free'],
+  //     };
+  //     let controller = $controller('ridesController', { $scope });
+  //   });
 
-    it('should display driver for car current user is riding in', () => {
-      $scope.usersRide = { name: 'Test Car' };
-      expect($scope.stringifyUsersRide()).to.equal('Test Car');
-    });
+  //   it('should display driver for car current user is riding in', () => {
+  //     $scope.usersRide = { name: 'Test Car' };
+  //     expect($scope.stringifyUsersRide()).to.equal('Test Car');
+  //   });
 
-    it('should expand rides panel to edit mode when clicked', () => {
-      $scope.expandRide = false;
-      $scope.expandRides();
-      expect($scope.expandRide).to.equal(true);
-    });
-  });
+  //   it('should expand rides panel to edit mode when clicked', () => {
+  //     $scope.expandRide = false;
+  //     $scope.expandRides();
+  //     expect($scope.expandRide).to.equal(true);
+  //   });
+  // });
 
 
   /* Supplies Controller */

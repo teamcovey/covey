@@ -159,7 +159,6 @@ exports.addSupplier = (req, res) => {
   const userId = req.params.userId;
   const coveyId = req.body.coveyId;
 
-  console.log('inside add supplier!');
   knex('resources_users')
       .returning('resource_id')
       .insert({ user_id: userId, resource_id: resourceId })

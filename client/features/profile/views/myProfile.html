@@ -1,0 +1,24 @@
+<div class="container profile-container" class="coveys-view-container" ng-controller="profileController">
+  <div class="cold-md-12 text-center">
+    <h3 class="col-md-12 text-center">Edit your profile...</h3>
+    <div class="row">
+      <div class="col-xs-3">
+        <div class="panel profile-photo">
+          <img class="center-block" ng-show="showPhoto" ng-src="{{photoUrl}}" alt="Smiley face" height="298" width="298">
+        </div>
+      </div>
+      <div class="col-xs-3">
+        <div class="panel profile-text">
+          <h1>{{firstName}} {{lastName}}</h1>
+          <h3>{{email}}</h3>
+          <h3>{{phoneNumber}}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- <div>
+  <input type="text" name="email" class="details-inputs" ng-model="email"></input>
+</div> -->

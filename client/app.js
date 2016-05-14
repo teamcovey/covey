@@ -15,6 +15,7 @@ angular.module('covey', [
   'createCovey',
   'coveys',
   'friends',
+  'profile',
   'hamburger',
   'ngRoute',
   'covey.chat',
@@ -41,6 +42,9 @@ angular.module('covey', [
     .when('/friends', {
       templateUrl: 'features/friends/views/friends.html',
       controller: 'friendsController',
+    })
+    .when('/profile', {
+      templateUrl: 'features/profile/views/profile.html',
     })
     .otherwise({
       redirectTo: '/',

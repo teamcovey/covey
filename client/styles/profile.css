@@ -1,0 +1,86 @@
+body {
+  overflow: hidden;
+}
+.profile-page-container {
+  width: 100%;
+  background-color: #DDDDDD;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+.profile-photo {
+  height: auto;
+  overflow: hidden;
+  border: 8px solid white;
+}
+.profile-text-panel {
+  height: 300px;
+  overflow: hidden;
+}
+.profile-text {
+  text-align: left;
+  margin: 20px 35px;
+}
+.profile-name {
+  margin: 30px;
+}
+.col-centered {
+  float: none;
+  margin: 0 auto;
+}
+.profile-glyphicon-pencil {
+  position: absolute;
+  top: 20px;
+  right: 40px;
+  font-size: 20px;
+  color: #0191C8;
+}
+.profile-glyphicon-pencil:hover .save-text {
+  font-size: 15px;
+  color: #FFB600;
+}
+.blue {
+  color: #0191C8;
+}
+.orange {
+  color: #FFB600;
+}
+.grey {
+  color: #bfbfbf;
+}
+.profile-edit-btn {
+  border: none;
+  box-shadow: none;
+  background-color: transparent;
+}
+.profile-edit-btn:hover {
+  color: #FFB600;
+}
+.underline-adjust {
+  padding-top: 3px;
+}
+.profile-input-text {
+  height: 36px;
+  width: 80%;
+  font-size: 24px;
+  margin: 0px 0px 40px 6px;
+  border: none;
+}
+.profile-input-label {
+  font-size: 24px;
+  margin: 5px 0px 30px 40px;
+  border: none;
+}
+.bold {
+  font-weight: 500;
+}
+.underline {
+  border-bottom: 2px solid #bfbfbf;
+}
+.underline-adjust {
+  margin-bottom: 40px;
+}
+.save-text {
+  font-size: 15px;
+  color: #0191C8;
+}

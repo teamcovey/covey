@@ -1,0 +1,53 @@
+<div class="container profile-container" class="coveys-view-container" ng-controller="profileController">
+  
+<!-- Content dsiplayed on page load -->
+  <div class="container" ng-hide="editDetails">
+    <h3 class="col-md-12 text-center blue">My profile...</h3>
+    <div class="row">
+      <div class="col-xs-3 col-xs-offset-1">
+        <div class="panel profile-photo">
+          <img class="center-block" ng-show="showPhoto" ng-src="{{photoUrl}}" alt="Smiley face" height="284" width="284">
+        </div>
+      </div>
+      <div class="col-xs-7">
+        <button class="profile-glyphicon-pencil profile-edit-btn" ng-click="toggleEdit()">
+          <span class="glyphicon glyphicon-pencil"></span><br><span class="save-text">Edit</span>
+        </button>
+        <div class="panel profile-text-panel">
+          <h1 class="profile-text profile-name blue">{{firstName}} {{lastName}}</h1>
+          <h3 class="profile-text"><span class="orange space">e.</span> {{email}}</h3>
+          <h3 class="profile-text"><span class="orange">t.</span> {{phoneNumber}}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content shows on pencil click -->
+  <div class="container" ng-show="editDetails">
+  <h3 class="col-md-12 text-center blue">My profile...</h3>
+    <div class="row" ng-show="editDetails">
+      <div class="col-xs-3 col-xs-offset-1">
+        <div class="panel profile-photo">
+          <img class="center-block" ng-show="showPhoto" ng-src="{{photoUrl}}" alt="Smiley face" height="284" width="284">
+        </div>
+      </div>
+      <div class="col-xs-7">
+        <button class="profile-glyphicon-pencil profile-edit-btn" ng-click="save()">
+          <span class="glyphicon glyphicon-pencil"></span><br><span class="save-text">Save</span>
+        </button>
+        <div class="panel profile-text-panel">
+          <h1 class="profile-text profile-name grey">{{firstName}} {{lastName}}</h1>
+          <div>
+            <span class="profile-input-label bold grey">e.</span><input class="profile-input-text profile-name blue bold underline underline-adjust" ng-model="email"></input>
+          </div>
+          <div>
+            <span class="profile-input-label bold grey">t.</span><input class="profile-input-text profile-name blue bold underline" ng-model="phoneNumber"></input>
+          </div>
+          <!-- <h3 class="profile-text underline blue"><span class="grey space">e.</span> {{email}}</h3>
+          <h3 class="profile-text underline underline-adjust blue"><span class="grey">t.</span> {{phoneNumber}}</h3> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

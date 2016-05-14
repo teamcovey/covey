@@ -1,9 +1,9 @@
 <div class="main-body-panel-header">
-  <p class="body-panel-header"><b>SUPPLIES</b></p>
+  <p class="body-panel-title"><b>SUPPLIES</b></p>
   <p class="body-panel-personal-details">You're bringing: {{reduceUsersSupplies().name.slice(2,20)}}...</p>
 </div>
 <br>
-<div class="main-body-panel-body">
+<div class="main-panel-body">
   <div class="main-body-inputs" ng-repeat="supply in supplyDetails track by $index">
     <form ng-submit="submitSupply(supply, $index)">
       <input type="text" name="supplyName" class="main-input-styles shared-inputs-color" ng-model="supply.name"></input>

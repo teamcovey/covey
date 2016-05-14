@@ -1,9 +1,25 @@
 angular.module('covey.covey', [])
-.controller('coveyController', function ($scope, coveyService, googleCalendarService) {
+.controller('coveyController', function ($scope, $location, coveyService, googleCalendarService) {
+
+  if (window.innerWidth > 770) {
+    $('ul.nav-pills').css('height', '100vh');
+    $('.covey').css('width', '97%');
+  }
+
+  $(window).resize(() => {
+    if (window.innerWidth > 770) {
+      $('ul.nav-pills').css('height', '100vh');
+      $('.covey').css('width', '97%');
+    } else {
+      $('ul.nav-pills').css('height', '');
+      $('.covey').css('width', '');
+    }
+  });
+
   coveyService.getCovey().then((response) => {
     $scope.details = response.covey;
     // TODO: add validation to check that photoUrl is a real url:
-    $scope.showPhoto = response.covey.photoUrl ? true : false;
+    $scope.showPhoto = response.covey.photoUrl || false;
   });
 
   $scope.toggleEdit = () => {
@@ -20,7 +36,7 @@ angular.module('covey.covey', [])
   $scope.updateCovey = () => {
     coveyService.updateCovey($scope.details);
     // TODO: add validation to check that photoUrl is a real url:
-    $scope.showPhoto = $scope.details.photoUrl ? true : false;
+    $scope.showPhoto = $scope.details.photoUrl || false;
   };
 
   $scope.selection = 'details';
@@ -35,5 +51,15 @@ angular.module('covey.covey', [])
 
   $scope.addToCalendar = () => {
     googleCalendarService.addToCalendar($scope.details);
+  };
+
+  $scope.expandMenu = true;
+  $scope.toggleMenu = () => {
+    $scope.expandMenu = !$scope.expandMenu;
+  };
+  $scope.isExpanded = () => $scope.expandMenu;
+
+  $scope.navigateTo = (somePath) => {
+    $location.path(somePath);
   };
 });

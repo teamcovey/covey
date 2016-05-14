@@ -48,6 +48,10 @@ body {
   color: #FFB600;
 }
 
+.grey {
+  color: #bfbfbf;
+}
+
 .profile-edit-btn {
   border: none;
   box-shadow: none;

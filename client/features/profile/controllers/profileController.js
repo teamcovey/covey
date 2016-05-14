@@ -2,6 +2,7 @@ angular.module('profile', ['profile.services'])
 
 .controller('profileController', function ($scope, profileService, userIdFactory) {
   const userId = userIdFactory.getUserId();
+  $scope.editDetails = false;
 
   profileService.getUser(userId)
     .then((response) => {
@@ -13,4 +14,8 @@ angular.module('profile', ['profile.services'])
       $scope.photoUrl = response.data.user.photoUrl;
       $scope.showPhoto = $scope.photoUrl ? true : false;
     });
+
+  $scope.toggleEdit = () => {
+    $scope.editDetails = !$scope.editDetails;
+  };
 });

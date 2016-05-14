@@ -80,10 +80,8 @@ angular.module('covey.supplies', ['userId.services', 'covey.attendees'])
       if ($scope.supplyDetails[i].id.toString() === data.response.resourceId.toString()) {
         // iterate over supplyDetails and find one that matches resourceId; splice out the data.userId from that suppliers
         for (let j = 0; j < $scope.supplyDetails[i].suppliers.length; j++) {
-          
           const supplierId = $scope.supplyDetails[i].suppliers[j].user_id || $scope.supplyDetails[i].suppliers[j].id || $scope.supplyDetails[i].suppliers[j].userId;;
           if (supplierId.toString() === data.response.userId.toString()) {
-          if ($scope.supplyDetails[i].suppliers[j].user_id.toString() === data.response.userId.toString()) {
             $scope.supplyDetails[i].suppliers.splice(j, 1);
             if (data.response.userId.toString() === userId.toString()) {
               $scope.usersSupplies = suppliesHelpers.getUsersSupplies($scope.supplyDetails, userId);

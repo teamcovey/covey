@@ -8,4 +8,12 @@ profileServices.service('profileService', function ($http) {
       (error) => error
     );
   };
+
+  this.updateUser = (userId, details) => {
+    return $http.put(`/api/user/${userId}`, details)
+      .then(
+        (response) => response,
+        (error) => error
+      );
+  };
 });

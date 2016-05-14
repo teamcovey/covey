@@ -40,6 +40,11 @@ body {
   color: #0191C8;
 }
 
+.profile-glyphicon-pencil:hover .save-text {
+  font-size: 15px;
+  color: #FFB600;
+}
+
 .blue {
   color: #0191C8;
 }
@@ -61,3 +66,41 @@ body {
 .profile-edit-btn:hover {
   color: #FFB600;
 }
+
+.underline-adjust {
+  padding-top: 3px;
+}
+
+.profile-input-text {
+  height: 36px;
+  width: 80%;
+  font-size: 24px;
+  margin: 0px 0px 40px 6px;
+  border: none;
+}
+
+.profile-input-label {
+  font-size: 24px;
+  margin: 5px 0px 30px 40px;
+  border: none;
+}
+
+.bold {
+  font-weight: 500;
+}
+
+.underline {
+  border-bottom: 2px solid #bfbfbf;
+}
+
+.underline-adjust {
+  margin-bottom: 40px;
+}
+.save-text {
+  font-size: 15px;
+  color: #0191C8;
+}
+/*.save-text {
+  font-size: 15px;
+  color: #FFB600;
+}*/

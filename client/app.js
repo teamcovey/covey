@@ -21,6 +21,7 @@ angular.module('covey', [
   'covey.chat',
   'auth.services',
   'btford.socket-io',
+  'calendar.services',
 ])
 .config(($routeProvider) => {
   $routeProvider

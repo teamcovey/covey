@@ -11,6 +11,7 @@
   <p><b>Location:</b> {{details.address}}, {{details.city}}, {{details.state}}</p>
   <p><b>Start Date:</b> {{formatDate(details.startTime)}}</p>
   <p><b>End Date:</b> {{formatDate(details.endTime)}}</p>
+  <button ng-click="addToCalendar()">Add to Google calendar</button>
 </div>
 
 <div style="margin-top:20px;" ng-show="editDetails">

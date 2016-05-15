@@ -81,6 +81,20 @@ exports.getExpenses = (request, response) => {
       response.status(500).send({ success: false });
     });
 };
+exports.getExpense = (request, response) => {
+  knex('expenses')
+    .where({ expense_id: request.params.expense_id })
+    .then((expenses) => {
+      const expense = expenses[0];
+      response.status(200).send({ expense });
+    })
+    .catch((err) => {
+      /*eslint-disable*/
+      console.log('ERROR: Could not get expense', err);
+      /*eslint-enable*/
+      response.status(500).send({ success: false });
+    });
+};
 
 // Checks if user already participating in expense. Used in addParticpant request handler
 const checkIfParticipantExists = (expenseId, userId) => {
@@ -142,7 +156,21 @@ exports.deleteParticipant = (request, response) => {
       /*eslint-disable*/
       console.log('ERROR: Could not delete participant', err);
       /*eslint-enable*/
-      response.status(500).send({success: false });
+      response.status(500).send({ success: false });
+    });
+};
+
+exports.getParticipants = (request, response) => {
+  knex('expenses_users')
+    .where({ expense_id: request.params.expense_id })
+    .then((participants) => {
+      response.status(200).send({ success: true, participants });
+    })
+    .catch((err) => {
+      /*eslint-disable*/
+      console.log('ERROR: Could not get particpants', err);
+      /*eslint-enable*/
+      response.status(500).send({ success: false });
     });
 };
 

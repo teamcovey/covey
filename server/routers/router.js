@@ -134,13 +134,15 @@ app.post('/api/resources', auth, isValidCoveyMember, routeResources.addResource)
 
 app.put('/api/resources/:resourceId', auth, isValidCoveyMember, routeResources.updateResource);
 
-app.delete('/api/resources/:coveyId/:resourceId', auth, isValidResourceOwner, routeResources.removeResource);
+app.delete('/api/resources/:coveyId/:resourceId',
+  auth, isValidResourceOwner, routeResources.removeResource);
 
 app.get('/api/resources/:coveyId', auth, isValidCoveyMember, routeResources.getAllResources);
 
 app.get('/api/suppliers/:resourceId', auth, isValidResourceOwner, routeResources.getAllSuppliers);
 
-app.delete('/api/suppliers/:coveyId/:resourceId/:userId', auth, isValidResourceOwner, routeResources.removeSupplier);
+app.delete('/api/suppliers/:coveyId/:resourceId/:userId',
+  auth, isValidResourceOwner, routeResources.removeSupplier);
 
 app.post('/api/suppliers/:resourceId/:userId', auth, isValidResourceOwner,
   routeResources.addSupplier);
@@ -161,10 +163,18 @@ app.put('/api/expenses/:covey_id', auth, isValidCoveyMember, routeExpenses.updat
 
 app.get('/api/expenses/:covey_id', auth, isValidCoveyMember, routeExpenses.getExpenses);
 
-app.delete('/api/expenses/:covey_id/:expense_id', auth, isValidCoveyMember, routeExpenses.deleteExpense);
+app.get('/api/expenses/:covey_id/:expense_id', auth, isValidCoveyMember, routeExpenses.getExpense);
 
-app.post('/api/expenses/participants/:covey_id', auth, isValidCoveyMember, routeExpenses.addParticipant);
+app.delete('/api/expenses/:covey_id/:expense_id',
+  auth, isValidCoveyMember, routeExpenses.deleteExpense);
 
-app.delete('/api/expenses/participants/:covey_id/:expense_id/:user_id', auth, isValidCoveyMember, routeExpenses.deleteParticipant);
+app.post('/api/expenses/participants/:covey_id',
+  auth, isValidCoveyMember, routeExpenses.addParticipant);
+
+app.get('/api/expenses/participants/:covey_id/:expense_id',
+  auth, isValidCoveyMember, routeExpenses.getParticipants);
+
+app.delete('/api/expenses/participants/:covey_id/:expense_id/:user_id',
+  auth, isValidCoveyMember, routeExpenses.deleteParticipant);
 
 module.exports = { app, server };

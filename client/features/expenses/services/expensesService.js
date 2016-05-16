@@ -53,7 +53,6 @@ angular.module('covey.expenses')
   };
 
   this.addParticipant = (expenseId, userId) => {
-    console.log('in add Participant', expenseId, userId);
     return $http.post(`/api/expenses/participants/${expenseId}/${userId}`, { covey_id: $routeParams.coveyId })
       .then((response) => response, (error) => {
         console.error(error);

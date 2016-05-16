@@ -18,8 +18,6 @@ angular.module('covey.chat', ['firebase'])
 
   const init = () => {
     chatFirebase.getUserName().then((userName) => {
-      console.log('boom goes the dynamite', userName.user[0]);
-
       $scope.chatName = userName.user[0].firstName + ' ' + userName.user[0].lastName.slice(0, 1) + '.';
     });
   };

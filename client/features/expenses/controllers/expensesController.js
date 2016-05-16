@@ -26,14 +26,11 @@ angular.module('covey.expenses', ['userId.services', 'covey.attendees'])
 
   /* SOCKETS:add expense */
   socket.on(`add expense ${$routeParams.coveyId}`, (data) => {
-    console.log('socket: adding expense: ', data);
     $scope.expensesDetails.push(data.response);
   });
 
   /* SOCKETS:update expense */
   socket.on(`update expense ${$routeParams.coveyId}`, (data) => {
-    console.log('socket: update expense: ', data);
-
     for (let i = 0; i < $scope.expensesDetails.length; i++) {
       if ($scope.expensesDetails[i].id === data.response.expense_id) {
         $scope.expensesDetails[i] = data.response;
@@ -45,8 +42,6 @@ angular.module('covey.expenses', ['userId.services', 'covey.attendees'])
 
   /* SOCKETS:remove expense */
   socket.on(`remove expense ${$routeParams.coveyId}`, (data) => {
-    console.log('socket: remove expense: ', data);
-
     for (let i = 0; i < $scope.expensesDetails.length; i++) {
       if ($scope.expensesDetails[i].id.toString() === data.response.toString()) {
         $scope.expensesDetails.splice(i, 1);
@@ -58,11 +53,10 @@ angular.module('covey.expenses', ['userId.services', 'covey.attendees'])
 
   /* SOCKETS:add participant */
   socket.on(`add participant ${$routeParams.coveyId}`, (data) => {
-    console.log('socket: add participant: ', data);
     for (let i = 0; i < $scope.expensesDetails.length; i++) {
-      if ($scope.expensesDetails[i].id.toString() === data.response.carId.toString()) {
+      if ($scope.expensesDetails[i].expense_id.toString() === data.response.expense_id.toString()) {
         for (let j = 0; j < $scope.attendees.length; j++) {
-          if ($scope.attendees[j].id.toString() === data.response.userId.toString()) {
+          if ($scope.attendees[j].id.toString() === data.response.user_id.toString()) {
             if ($scope.expensesDetails[i].participants) {
               $scope.expensesDetails[i].participants.push($scope.attendees[j]);
             } else {
@@ -70,7 +64,7 @@ angular.module('covey.expenses', ['userId.services', 'covey.attendees'])
             }
 
             // If current user is the added participant, set expense to user's total
-            if (data.response.userId.toString() === userId.toString()) {
+            if (data.response.user_id.toString() === userId.toString()) {
               $scope.usersExpense = expensesHelpers.getUsersTotal($scope.expensesDetails, userId);
             }
             break;
@@ -83,15 +77,15 @@ angular.module('covey.expenses', ['userId.services', 'covey.attendees'])
 
   /* SOCKETS:remove participant */
   socket.on(`remove participant ${$routeParams.coveyId}`, (data) => {
-    console.log('socket: remove participant: ', data);
     for (let i = 0; i < $scope.expensesDetails.length; i++) {
-      if ($scope.expensesDetails[i].id.toString() === data.response.carId.toString()) {
-        // iterate over expensesDetails and find one that matches expenseId; splice out the data.userId from that participants
+      if ($scope.expensesDetails[i].expense_id.toString() === data.response.expense_id.toString()) {
+        // iterate over expensesDetails and find one that matches expenseId
+        // splice out the data.userId from that participants
         for (let j = 0; j < $scope.expensesDetails[i].participants.length; j++) {
-          const participantId = $scope.expensesDetails[i].participants[j].user_id || $scope.expensesDetails[i].participants[j].id || $scope.expensesDetails[i].participants[j].userId;;
-          if (participantId.toString() === data.response.userId.toString()) {
+          const participantId = $scope.expensesDetails[i].participants[j].user_id;
+          if (participantId.toString() === data.response.user_id.toString()) {
             $scope.expensesDetails[i].participants.splice(j, 1);
-            if (data.response.userId.toString() === userId.toString()) {
+            if (data.response.user_id.toString() === userId.toString()) {
               $scope.usersExpense = expensesHelpers.getUsersTotal($scope.expensesDetails, userId);
             }
             break;

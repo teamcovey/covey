@@ -1,6 +1,38 @@
 angular.module('coveys', ['covey.services', 'userId.services', 'date.services'])
 
 .controller('coveysController', function ($scope, $location, $rootScope, coveysFactory, dateFactory) {
+  if (window.innerWidth > 770) {
+    $('.covey').css('width', '97%');
+  }
+
+  $(window).resize(() => {
+    if (window.innerWidth > 770) {
+      $('ul.nav-pills').css('height', '100vh');
+      $('.covey').css('width', '97%');
+    } else {
+      $('ul.nav-pills').css('height', '');
+      $('.covey').css('width', '');
+    }
+  });
+  $scope.selection = 'details';
+
+  $scope.navbarSwitch = (clicked) => {
+    $scope.selection = clicked;
+  };
+
+  $scope.isSelected = (section) => {
+    return $scope.selection === section;
+  };
+
+  $scope.expandMenu = true;
+  $scope.toggleMenu = () => {
+    $scope.expandMenu = !$scope.expandMenu;
+  };
+  $scope.isExpanded = () => $scope.expandMenu;
+
+  $scope.navigateTo = (somePath) => {
+    $location.path(somePath);
+  };
   /*
    * hasCoveys can have a value of 'true', 'false', or 'error'
    * the view will automatically change based on the value.

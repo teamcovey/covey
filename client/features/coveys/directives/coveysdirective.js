@@ -4,4 +4,9 @@ angular.module('coveys')
   return {
     templateUrl: 'features/coveys/views/mycoveys.html',
   };
+})
+.directive('friendsDirective', () => {
+  return {
+    templateUrl: 'features/friends/views/myfriends.html',
+  };
 });

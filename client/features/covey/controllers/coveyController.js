@@ -1,8 +1,7 @@
 angular.module('covey.covey', [])
 .controller('coveyController', function ($scope, $location, coveyService, googleCalendarService) {
-
+  // Necessary to initialize left side nav & columns at correct height/width:
   if (window.innerWidth > 770) {
-    $('ul.nav-pills').css('height', '100vh');
     $('.covey').css('width', '97%');
   }
 

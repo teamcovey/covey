@@ -1,7 +1,6 @@
 angular.module('covey.chat', ['firebase'])
 .controller('chatController', function ($rootScope, $scope, chatFirebase, $firebaseArray) {
   const ref = new Firebase(chatFirebase.getRoute('https://amber-heat-3768.firebaseio.com/'));
-
   $scope.messages = $firebaseArray(ref);
 
   // ADD MESSAGE METHOD

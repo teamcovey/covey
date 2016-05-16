@@ -1,140 +1,33 @@
 <div class="container covey">
-
   <div class="row">
 
-    <!-- /* Left Side Nav: */ -->
-    <div ng-class="{'col-sm-2': isExpanded(), 'col-sm-1': !isExpanded()}">
-      <!-- /* Change this into a directive >> */ -->
-      <ul class="nav nav-pills nav-stacked">
-        <li role="presentation" class="brand-nav-pill">
-          <span class="nav-pill-text-align side-nav-title" ng-hide="!isExpanded()">Covey</span>
-          <span class="nav-pill-text-align" ng-hide="isExpanded()"><img class="covey-nav-icon" src="styles/assets/quailMiniWhite.png"></span>
-        </li>
+  <div side-nav></div>
 
-        <li role="presentation" ng-click="toggleMenu();">
-          <div class="nav-pill-text-align">
-            <span ng-hide="!isExpanded()" class="glyphicon glyphicon-chevron-left"></span> <span ng-hide="!isExpanded()">Menu</span>
-            <span ng-hide="isExpanded()" class="glyphicon glyphicon-chevron-right">
-          </div>
-        </li>
-        <li role="presentation" ng-class="{'active-nav': isSelected('details'), 'inactive-nav': !isSelected('details')}" ng-click="navbarSwitch('details')">
-          <div class="nav-pill-text-align">
-            <span class="glyphicon glyphicon-calendar"></span> <span ng-hide="!isExpanded()">Details</span>
-          </div>
-        </li>
-        <li role="presentation" ng-class="{'active-nav': isSelected('rides'), 'inactive-nav': !isSelected('rides')}" ng-click="navbarSwitch('rides')">
-          <div class="nav-pill-text-align">
-            <img class="nav-car-icon" src="styles/assets/car2White.png">
-            <span ng-hide="!isExpanded()"> Rides</span>
-          </div>
-        </li>
-        <li role="presentation" ng-class="{'active-nav': isSelected('supplies'), 'inactive-nav': !isSelected('supplies')}" ng-click="navbarSwitch('supplies')">
-          <div class="nav-pill-text-align">
-            <span class="glyphicon glyphicon-list"></span> <span ng-hide="!isExpanded()">Supplies</span>
-          </div>
-        </li>
-
-        <hr/>
-
-        <li role="presentation" ng-click="navigateTo('/coveys')"> 
-          <div class="nav-pill-text-align">
-            <span class="glyphicon glyphicon-home"></span> <span ng-hide="!isExpanded()">Home</span>
-          </div>
-        </li>
-
-        <li role="presentation" ng-click="navigateTo('/friends')"> 
-          <div class="nav-pill-text-align">
-            <span class="glyphicon glyphicon-cog"></span> <span ng-hide="!isExpanded()">Settings</span>
-          </div>
-        </li>
-
-        <li role="presentation" ng-click="navigateTo('/logout')"> 
-          <div class="nav-pill-text-align">
-            <span class="glyphicon glyphicon-log-out"></span> <span ng-hide="!isExpanded()">Logout</span>
-          </div>
-        </li>
-      </ul>
-      <!-- /* << change this into a directive */ -->
+  <div ng-class="{'col-sm-7': isExpanded(), 'col-sm-8': !isExpanded()}">
+    <div class="panel panel-default main-covey-panel">
+      <div ng-switch on="selection" class="panel-body main-covey-body">
+        <div ng-switch-default covey-details></div>
+        <div ng-switch-when="rides" rides></div>
+        <div ng-switch-when="supplies" supplies></div>
+        <div ng-switch-when="expenses" expenses></div>
+      </div>
     </div>
-
-    <!-- /* Main Body: */ -->
-    <div ng-class="{'col-sm-7': isExpanded(), 'col-sm-8': !isExpanded()}">
-      <div class="panel panel-default main-covey-panel">
-          <div ng-switch on="selection" class="panel-body main-covey-body">
-            <div ng-switch-default covey-details></div>
-            <div ng-switch-when="rides" rides></div>
-            <div ng-switch-when="supplies" supplies></div>
-          </div>
+  </div>
+  
+  <div class="col-sm-3">
+    <ul class="list-unstyled">
+      <div class="panel panel-default panel-chat">
+        <div class="panel-body">
+          <div chat></div>
         </div>
-    </div>
-    <div class="col-sm-3">
-      <ul class="list-unstyled">
-        <div class="panel panel-default panel-chat">
-          <div class="panel-body">
-            <div chat></div>
-          </div>
+      </div>
+      <div class="panel panel-default panel-attendees">
+        <div class="panel-body">
+          <div covey-attendees></div>
         </div>
-        <div class="panel panel-default panel-attendees">
-          <div class="panel-body">
-            <div covey-attendees></div>
-          </div>
-        </div>
-      </ul>
-    </div>
+      </div>
+    </ul>
+  </div>
     
   </div>
 </div>
-
-
-<!-- /******************************************************/ -->
-<!-- Old Style: -->
-<!-- <div class="container covey">
-
-  <div class="row">
-
-    <div class="col-xs-2 covey-sidenav">
-      <h1>covey</h1>
-      <div style="margin-top:50px" ng-class="{'active-nav': isSelected('details'), 'inactive-nav': !isSelected('details')}" ng-click="navbarSwitch('details')">
-        Details
-      </div>
-      <div ng-class="{'active-nav': isSelected('rides'), 'inactive-nav': !isSelected('rides')}" ng-click="navbarSwitch('rides')">
-        Rides
-      </div>
-      <div ng-class="{'active-nav': isSelected('supplies'), 'inactive-nav': !isSelected('supplies')}" ng-click="navbarSwitch('supplies')">
-        Supplies
-      </div>
-      <div ng-class="{'active-nav': isSelected('expenses'), 'inactive-nav': !isSelected('expenses')}" ng-click="navbarSwitch('expenses')">
-        Expenses
-      </div>
-    </div>
-
-    <div class="col-xs-offset-7 col-xs-3">
-      <div hamburger-directive></div>
-    </div>
-
-
-    <div class="row">
-      <div class="col-xs-6">
-        <div class="panel panel-default main-covey-panel">
-            <div ng-switch on="selection" class="panel-body main-covey-body">
-              <div ng-switch-default covey-details></div>
-              <div ng-switch-when="rides" rides></div>
-              <div ng-switch-when="supplies" supplies></div>
-              <div ng-switch-when="expenses" expenses></div>
-            </div>
-          </div>
-      </div>
-      <div class="col-xs-3">
-        <ul class="list-unstyled">
-          <div chat></div>
-          <div class="panel panel-default" style="height: 22vh;">
-            <div class="panel-body">
-              <div covey-attendees></div>
-            </div>
-          </div>
-        </ul>
-      </div>
-    </div>
-    
-  </div>
-</div> -->

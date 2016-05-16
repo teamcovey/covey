@@ -2,6 +2,7 @@ angular.module('covey', [
   'covey.index',
   'index.services',
   'covey.welcome',
+  'covey.nav',
   'covey.attendees',
   'covey.supplies',
   'covey.rides',

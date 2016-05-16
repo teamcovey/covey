@@ -39,7 +39,6 @@ angular.module('covey.expenses')
   };
 
   this.updateExpense = (updateExpense) => {
-    console.log('attempt to update expense', updateExpense, $routeParams.coveyId);
     return $http.put(`/api/expenses/${updateExpense.expense_id}`, updateExpense)
       .then((response) => response, (error) => {
         console.error(error);
@@ -55,7 +54,7 @@ angular.module('covey.expenses')
 
   this.addParticipant = (expenseId, userId) => {
     console.log('in add Participant', expenseId, userId);
-    return $http.post(`/api/expenses/participants/${expenseId}/${userId}`, { coveyId: $routeParams.coveyId })
+    return $http.post(`/api/expenses/participants/${expenseId}/${userId}`, { covey_id: $routeParams.coveyId })
       .then((response) => response, (error) => {
         console.error(error);
       });

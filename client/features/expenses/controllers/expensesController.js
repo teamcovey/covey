@@ -17,7 +17,6 @@ angular.module('covey.expenses', ['userId.services', 'covey.attendees'])
   const init = () => {
     expensesHttp.getAllExpenses()
       .then((expenses) => {
-        console.log('got expenses: ', expenses.expenses);
         $scope.expensesDetails = expenses.expenses;
         $scope.usersExpense = expensesHelpers.getUsersTotal(expenses.expenses, userId);
       });
@@ -27,33 +26,39 @@ angular.module('covey.expenses', ['userId.services', 'covey.attendees'])
 
   /* SOCKETS:add expense */
   socket.on(`add expense ${$routeParams.coveyId}`, (data) => {
+    console.log('socket: adding expense: ', data);
     $scope.expensesDetails.push(data.response);
   });
 
   /* SOCKETS:update expense */
   socket.on(`update expense ${$routeParams.coveyId}`, (data) => {
+    console.log('socket: update expense: ', data);
+
     for (let i = 0; i < $scope.expensesDetails.length; i++) {
-      if ($scope.expensesDetails[i].id === data.response.id) {
+      if ($scope.expensesDetails[i].id === data.response.expense_id) {
         $scope.expensesDetails[i] = data.response;
         break;
       }
     }
-    $scope.usersExpense = expensesHelpers.getUsersExpense($scope.expensesDetails, userId);
+    $scope.usersExpense = expensesHelpers.getUsersTotal($scope.expensesDetails, userId);
   });
 
   /* SOCKETS:remove expense */
   socket.on(`remove expense ${$routeParams.coveyId}`, (data) => {
+    console.log('socket: remove expense: ', data);
+
     for (let i = 0; i < $scope.expensesDetails.length; i++) {
       if ($scope.expensesDetails[i].id.toString() === data.response.toString()) {
         $scope.expensesDetails.splice(i, 1);
         break;
       }
     }
-    $scope.usersExpense = expensesHelpers.getUsersExpense($scope.expensesDetails, userId);
+    $scope.usersExpense = expensesHelpers.getUsersTotal($scope.expensesDetails, userId);
   });
 
   /* SOCKETS:add participant */
   socket.on(`add participant ${$routeParams.coveyId}`, (data) => {
+    console.log('socket: add participant: ', data);
     for (let i = 0; i < $scope.expensesDetails.length; i++) {
       if ($scope.expensesDetails[i].id.toString() === data.response.carId.toString()) {
         for (let j = 0; j < $scope.attendees.length; j++) {
@@ -66,18 +71,19 @@ angular.module('covey.expenses', ['userId.services', 'covey.attendees'])
 
             // If current user is the added participant, set expense to user's total
             if (data.response.userId.toString() === userId.toString()) {
-              $scope.usersExpense = expensesHelpers.getUsersExpense($scope.expensesDetails, userId);
+              $scope.usersExpense = expensesHelpers.getUsersTotal($scope.expensesDetails, userId);
             }
             break;
           }
         }
       }
     }
-    $scope.usersExpense = expensesHelpers.getUsersExpense($scope.expensesDetails, userId);
+    $scope.usersExpense = expensesHelpers.getUsersTotal($scope.expensesDetails, userId);
   });
 
   /* SOCKETS:remove participant */
   socket.on(`remove participant ${$routeParams.coveyId}`, (data) => {
+    console.log('socket: remove participant: ', data);
     for (let i = 0; i < $scope.expensesDetails.length; i++) {
       if ($scope.expensesDetails[i].id.toString() === data.response.carId.toString()) {
         // iterate over expensesDetails and find one that matches expenseId; splice out the data.userId from that participants
@@ -86,14 +92,14 @@ angular.module('covey.expenses', ['userId.services', 'covey.attendees'])
           if (participantId.toString() === data.response.userId.toString()) {
             $scope.expensesDetails[i].participants.splice(j, 1);
             if (data.response.userId.toString() === userId.toString()) {
-              $scope.usersExpense = expensesHelpers.getUsersExpense($scope.expensesDetails, userId);
+              $scope.usersExpense = expensesHelpers.getUsersTotal($scope.expensesDetails, userId);
             }
             break;
           }
         }
       }
     }
-    $scope.usersExpense = expensesHelpers.getUsersExpense($scope.expensesDetails, userId);
+    $scope.usersExpense = expensesHelpers.getUsersTotal($scope.expensesDetails, userId);
   });
 
   /* Displays user's current expense */
@@ -112,12 +118,10 @@ angular.module('covey.expenses', ['userId.services', 'covey.attendees'])
 
   /* Creates or updates a expense when user select 'Update' in edit view */
   $scope.submitExpense = (expense) => {
-    console.log('submit expense? ', expense);
     expensesHttp.updateExpense(expense);
   };
 
   $scope.removeExpense = (expense) => {
-    console.log('expense: ', expense);
     expensesHttp.removeExpense(expense.expense_id);
   };
 

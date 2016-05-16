@@ -14,12 +14,12 @@ angular.module('calendar.services', [])
 
 .service('calendarHelpers', function ($http) {
   this.makeURL = (details, time, name) => {
-    const url = 'https://www.google.com/calendar/render' +
-    '?action=TEMPLATE' +
+    const url = 'http://www.google.com/calendar/event?' +
+    'action=TEMPLATE' +
     '&text=' + details.name +
     '&dates=' + time.start + '/' + time.end +
-    '&details=' + 'Added by ' + name + ', using Covey. Join a Covey at http://mycovey.com' +
-    '&sprop=&sprop=name:';
+    '&details=Added by ' + name + ', using Covey. Join a Covey at mycovey.com' +
+    '&location=' + details.location;
     return url.replace(/ /g, '%20');
   };
 

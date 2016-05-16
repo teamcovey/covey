@@ -31,7 +31,6 @@ angular.module('covey', [
     })
     .when('/about', {
       templateUrl: 'views/about.html',
-      controller: 'authController',
     })
     .when('/coveys', {
       templateUrl: 'features/coveys/views/coveys.html',

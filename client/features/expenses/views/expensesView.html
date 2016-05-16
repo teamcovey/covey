@@ -10,7 +10,7 @@
       <input type="text" name="expenseAmount" class="main-input-styles shared-inputs-color" ng-model="expense.amount"></input>
 
       <div class="current-attendees-added">
-        <div class="panel-current-users" ng-click="removeParticipant(participant, expense)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="participant in expense.participant">
+        <div class="panel-current-users" ng-click="removeParticipant(participant, expense)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="participant in expense.participants">
             {{mouseOverTrue ? 'X' : participant.firstName.slice(0,1)+participant.lastName.slice(0,1)}}
         </div>
         <div class="panel-potential-users" ng-click="editMode = !editMode">+ Paid</div>
@@ -23,7 +23,7 @@
       </div>
       <input style="display:none;" type="submit" id="submit" value="Y" />
     </form>
-    <button class="remove-resource-expense-btn" ng-click="removeExpense(expense, $index);">X</button>
+    <button class="remove-resource-ride-btn" ng-click="removeExpense(expense, $index);">X</button>
   </div>
 </div>
-<button class="add-resource-expense-btn shared-inputs-color" ng-click="addNewExpense()">add an expense</button>
+<button class="add-resource-ride-btn shared-inputs-color" ng-click="addNewExpense()">add an expense</button>

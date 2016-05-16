@@ -1,5 +1,29 @@
 const knex = require('../config/config.js').knex;
 
+/*
+ * This function is used by the request handlers to
+ * retrieve the user(s) associated with an expense
+ */
+const getExpenseParticipants = expense =>
+  knex('users')
+    .innerJoin('expenses_users', 'users.id', 'expenses_users.user_id')
+    .select('expenses_users.user_id', 'expenses_users.is_owner',
+      'users.firstName', 'users.lastName', 'users.photoUrl')
+    .where({
+      expense_id: expense.expense_id,
+    })
+    .then((participants) => {
+      /*eslint-disable*/
+      expense.participants = participants;
+      /*eslint-enable*/
+      return expense;
+    })
+    .catch((err) => {
+      /*eslint-disable*/
+      console.log('ERROR: Could not retrieve participants for expense', err);
+      /*eslint-enable*/
+    });
+
 exports.postExpense = (request, response) => {
   knex('expenses')
     .returning(['expense_id', 'name', 'amount', 'covey_id'])
@@ -16,8 +40,18 @@ exports.postExpense = (request, response) => {
           is_owner: true,
         }))
         .then(() => {
-          request.io.sockets.emit(`add expense ${request.body.covey_id}`, { response: expense });
-          response.status(201).send({ success: true, expense });
+          getExpenseParticipants(expense)
+            .then((expenseWithParticipants) => {
+              request.io.sockets.emit(`add expense ${request.body.covey_id}`,
+                { response: expenseWithParticipants });
+              response.status(201).send({ success: true, expense: expenseWithParticipants });
+            })
+            .catch((err) => {
+              /*eslint-disable*/
+              console.log('ERROR: Could not retrieve participants for expense', err);
+              /*eslint-enable*/
+              response.status(201).send({ success: true, expense });
+            });
         })
         .catch((err) => {
           /*eslint-disable*/
@@ -60,37 +94,18 @@ exports.deleteExpense = (request, response) => {
     .where({ expense_id: request.params.expense_id })
     .del()
     .then(() => {
+      request.io.sockets.emit(`remove expense ${request.params.covey_id}`,
+        { response: request.params.expense_id });
       response.status(200).send({ success: true });
     })
     .catch((err) => {
       /*eslint-disable*/
       console.log('ERROR: Could not delete expense', err);
       /*eslint-enable*/
-      request.io.sockets.emit(`remove expense ${request.params.covey_id}`,
-        { response: request.params.expense_id });
       response.status(500).send({ success: false });
     });
 };
 
-const getExpenseParticipants = expense =>
-  knex('users')
-    .innerJoin('expenses_users', 'users.id', 'expenses_users.user_id')
-    .select('expenses_users.user_id', 'expenses_users.is_owner',
-      'users.firstName', 'users.lastName', 'users.photoUrl')
-    .where({
-      expense_id: expense.expense_id,
-    })
-    .then((participants) => {
-      /*eslint-disable*/
-      expense.participants = participants;
-      /*eslint-enable*/
-      return expense;
-    })
-    .catch((err) => {
-      /*eslint-disable*/
-      console.log('ERROR: Could not retrieve participants for expense', err);
-      /*eslint-enable*/
-    });
 
 exports.getExpenses = (request, response) => {
   const expensesArray = [];
@@ -177,6 +192,8 @@ exports.addParticipant = (request, response) => {
             /*eslint-disable*/
             console.log('ERROR: Could not add participant to expense', err);
             /*eslint-enable*/
+            request.io.sockets.emit(`add particpant ${request.body.covey_id}`,
+              { response: { user_id: userId, expense_id: expenseId } });
             response.status(500).send({ success: false });
           });
       } else {
@@ -187,8 +204,6 @@ exports.addParticipant = (request, response) => {
       /*eslint-disable*/
       console.log('ERROR: Could not check for participant in expense', err);
       /*eslint-enable*/
-      request.io.sockets.emit(`add particpant ${request.body.covey_id}`,
-        { response: { user_id: userId, expense_id: expenseId } });
       response.status(500).send({ success: false });
     });
 };
@@ -204,14 +219,14 @@ exports.deleteParticipant = (request, response) => {
     })
     .del()
     .then(() => {
+      request.io.sockets.emit(`remove particpant ${request.params.covey_id}`,
+        { response: { user_id: userId, expense_id: expenseId } });
       response.status(200).send({ success: true });
     })
     .catch((err) => {
       /*eslint-disable*/
       console.log('ERROR: Could not delete participant', err);
       /*eslint-enable*/
-      request.io.sockets.emit(`remove particpant ${request.params.covey_id}`,
-        { response: { user_id: userId, expense_id: expenseId } });
       response.status(500).send({ success: false });
     });
 };

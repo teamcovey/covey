@@ -1,21 +1,27 @@
-<button class="covey-details-edit-btn" ng-click="editAttendees = !editAttendees">
-    Edit&nbsp;<span class="glyphicon glyphicon-pencil"></span>  
-  </button>
-<div ng-hide="editAttendees">
-  <div ng-repeat="friend in attendees" class="current-attendees">
-    {{friend.firstName.slice(0,1) + friend.lastName.slice(0,1)}}
+<div class="row">
+  <div ng-hide="editAttendees">
+    <div ng-repeat="friend in attendees">
+      <!-- {{friend.firstName.slice(0,1) + friend.lastName.slice(0,1)}} -->
+      <img ng-src="{{friend.photoUrl}}" height="40px" width="40px" border-radius="3px" margin="10px">
+    </div>
+  </div>
+
+  <div ng-show="editAttendees">
+    <form ng-submit="editAttendees = !editAttendees; addAttendee(newAttendee)">
+      <div class="current-attendees" ng-click="removeAttendee(friend)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="friend in attendees">
+        {{mouseOverTrue ? 'X' : friend.firstName.slice(0,1) + friend.lastName.slice(0,1)}}
+      </div>
+      <br>
+      <br>
+      <div class="current-attendees potential-user-to-add" ng-click="addAttendee(friend)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="friend in friends">
+        {{mouseOverTrue ? '+' : friend.firstName.slice(0,1) + friend.lastName.slice(0,1)}}
+      </div>
+      <input style="display:none" type="submit" id="submit" value="Update" />
+    </form>
   </div>
 </div>
-<div ng-show="editAttendees">
-  <form ng-submit="editAttendees = !editAttendees; addAttendee(newAttendee)">
-    <div class="current-attendees" ng-click="removeAttendee(friend)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="friend in attendees">
-      {{mouseOverTrue ? 'X' : friend.firstName.slice(0,1) + friend.lastName.slice(0,1)}}
-    </div>
-    <br>
-    <br>
-    <div class="current-attendees potential-user-to-add" ng-click="addAttendee(friend)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="friend in friends">
-      {{mouseOverTrue ? '+' : friend.firstName.slice(0,1) + friend.lastName.slice(0,1)}}
-    </div>
-    <input style="display:none" type="submit" id="submit" value="Update" />
-  </form>
-</div>
+
+<button class="covey-details-edit-btn" ng-click="editAttendees = !editAttendees">
+  Edit&nbsp;<span class="glyphicon glyphicon-pencil"></span>  
+</button>
+<input type="text" placeholder="Invite friends...">

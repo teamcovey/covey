@@ -12,10 +12,6 @@ io.on('connection', (socket) => {
   socket.on('echo', (data) => {
     io.sockets.emit('message', data);
   });
-
-  socket.on('disconnect', () => {
-    console.log('Got disconnect!');
-  });
 });
 
 app.use((req, res, next) => {

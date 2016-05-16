@@ -28,7 +28,7 @@ exports.isValidCoveyMember = (request, response, next) => {
  * Checks if the user is authorized to make change to the resource
  * Authorization is determined by their membership in the covey that contains this resource
  */
-exports.isValidResourceOwner = (request, response, next) => {
+exports.isAuthorizedToUpdateResource = (request, response, next) => {
   const userId = request.cookies.user_id;
   const resourceId = request.params.resourceId || request.body.resourceId;
   // Gets coveyId from resources table
@@ -64,7 +64,7 @@ exports.isValidResourceOwner = (request, response, next) => {
  * Checks if the user is authorized to make change to the car
  * Authorization is determined by their membership in the covey that contains this car
  */
-exports.isValidCarOwner = (request, response, next) => {
+exports.isAuthorizedToUpdateCar = (request, response, next) => {
   const userId = request.cookies.user_id;
   const carId = request.params.carId;
   // Gets coveyId from cars table
@@ -79,6 +79,42 @@ exports.isValidCarOwner = (request, response, next) => {
         response.status(404).send();
       } else {
         const coveyId = carsRows[0].covey_id;
+        // Checks if both coveyId and userId exist in join table
+        knex('coveys_users')
+          .where({
+            user_id: userId,
+            covey_id: coveyId,
+          })
+          .then((coveysUsersRows) => {
+            if (coveysUsersRows.length > 0) {
+              next();
+            } else {
+              response.status(401).send();
+            }
+          });
+      }
+    });
+};
+
+/*
+ * Checks if the user is authorized to make change to the expense
+ * Authorization is determined by their membership in the covey that contains this expense
+ */
+exports.isAuthorizedToUpdateExpense = (request, response, next) => {
+  const userId = request.cookies.user_id;
+  const expenseId = request.params.expense_id || request.body.expense_id;
+  // Gets coveyId from expenses table
+  knex
+    .select('covey_id')
+    .from('expenses')
+    .where({
+      expense_id: expenseId,
+    })
+    .then((expensesRows) => {
+      if (expensesRows.length === 0) {
+        response.status(404).send();
+      } else {
+        const coveyId = expensesRows[0].covey_id;
         // Checks if both coveyId and userId exist in join table
         knex('coveys_users')
           .where({

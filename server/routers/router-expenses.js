@@ -1,12 +1,13 @@
 const knex = require('../config/config.js').knex;
 
 exports.postExpense = (request, response) => {
+
   knex('expenses')
     .returning(['expense_id', 'name', 'amount', 'covey_id'])
     .insert({
       name: request.body.name,
       amount: request.body.amount,
-      covey_id: request.params.covey_id,
+      covey_id: request.body.covey_id,
     }).then((expenses) => {
       const expense = expenses[0];
       knex('expenses_users')
@@ -36,7 +37,7 @@ exports.postExpense = (request, response) => {
 exports.updateExpense = (request, response) => {
   knex('expenses')
     .returning(['expense_id', 'name', 'amount', 'covey_id'])
-    .where({ expense_id: request.body.expense_id })
+    .where({ expense_id: request.params.expense_id })
     .update({
       name: request.body.name,
       amount: request.body.amount,
@@ -60,7 +61,7 @@ exports.deleteExpense = (request, response) => {
     .then(() => {
       response.status(200).send({ success: true });
     })
-    .catch(() => {
+    .catch((err) => {
       /*eslint-disable*/
       console.log('ERROR: Could not delete expense', err);
       /*eslint-enable*/
@@ -68,11 +69,55 @@ exports.deleteExpense = (request, response) => {
     });
 };
 
+const getExpenseParticipants = expense =>
+  knex('users')
+    .innerJoin('expenses_users', 'users.id', 'expenses_users.user_id')
+    .select('expenses_users.user_id', 'expenses_users.is_owner',
+      'users.firstName', 'users.lastName', 'users.photoUrl')
+    .where({
+      expense_id: expense.expense_id,
+    })
+    .then((participants) => {
+      /*eslint-disable*/
+      expense.participants = participants;
+      /*eslint-enable*/
+      return expense;
+    })
+    .catch((err) => {
+      /*eslint-disable*/
+      console.log('ERROR: Could not retrieve participants for expense', err);
+      /*eslint-enable*/
+    });
+
 exports.getExpenses = (request, response) => {
+  const expensesArray = [];
+  const expensePromises = [];
   knex('expenses')
+    .select('expense_id', 'name', 'amount')
     .where({ covey_id: request.params.covey_id })
     .then((expenses) => {
-      response.status(200).send({ expenses });
+      /*eslint-disable*/
+      for (var i = 0; i < expenses.length; i++) {
+        const expensePromise = new Promise(resolve =>
+            getExpenseParticipants(expenses[i])
+              .then((expense) => {
+                console.log(expense);
+                expensesArray.push(expense);
+                resolve();
+              })
+              .catch((err) => {
+                /*eslint-disable*/
+                console.log('ERROR: Could not retrieve participants for expense', err);
+                /*eslint-enable*/
+              })
+        );
+        expensePromises.push(expensePromise);
+      }
+      /*eslint-enable*/
+      Promise.all(expensePromises)
+        .then(() => {
+          response.status(200).send({ success: true, expenses: expensesArray });
+        });
     })
     .catch((err) => {
       /*eslint-disable*/
@@ -81,16 +126,16 @@ exports.getExpenses = (request, response) => {
       response.status(500).send({ success: false });
     });
 };
-exports.getExpense = (request, response) => {
-  knex('expenses')
+
+exports.getParticipants = (request, response) => {
+  knex('expenses_users')
     .where({ expense_id: request.params.expense_id })
-    .then((expenses) => {
-      const expense = expenses[0];
-      response.status(200).send({ expense });
+    .then((participants) => {
+      response.status(200).send({ success: true, participants });
     })
     .catch((err) => {
       /*eslint-disable*/
-      console.log('ERROR: Could not get expense', err);
+      console.log('ERROR: Could not get particpants', err);
       /*eslint-enable*/
       response.status(500).send({ success: false });
     });
@@ -111,13 +156,13 @@ const checkIfParticipantExists = (expenseId, userId) => {
 };
 
 exports.addParticipant = (request, response) => {
-  checkIfParticipantExists(request.body.expense_id, request.body.user_id)
+  checkIfParticipantExists(request.params.expense_id, request.params.user_id)
     .then((exists) => {
       if (!exists) {
         knex('expenses_users')
           .insert({
-            user_id: request.body.user_id,
-            expense_id: request.body.expense_id,
+            user_id: request.params.user_id,
+            expense_id: request.params.expense_id,
             is_owner: false,
           })
           .then(() => {
@@ -155,20 +200,6 @@ exports.deleteParticipant = (request, response) => {
     .catch((err) => {
       /*eslint-disable*/
       console.log('ERROR: Could not delete participant', err);
-      /*eslint-enable*/
-      response.status(500).send({ success: false });
-    });
-};
-
-exports.getParticipants = (request, response) => {
-  knex('expenses_users')
-    .where({ expense_id: request.params.expense_id })
-    .then((participants) => {
-      response.status(200).send({ success: true, participants });
-    })
-    .catch((err) => {
-      /*eslint-disable*/
-      console.log('ERROR: Could not get particpants', err);
       /*eslint-enable*/
       response.status(500).send({ success: false });
     });

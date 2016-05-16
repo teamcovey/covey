@@ -52,8 +52,9 @@ const decryptUserId = require('./helpers/cookieEncryptionMiddleware.js').decrypt
  */
 const userValidationMiddleware = require('./helpers/userValidationMiddleware.js');
 const isValidCoveyMember = userValidationMiddleware.isValidCoveyMember;
-const isValidResourceOwner = userValidationMiddleware.isValidResourceOwner;
-const isValidCarOwner = userValidationMiddleware.isValidCarOwner;
+const isAuthorizedToUpdateResource = userValidationMiddleware.isAuthorizedToUpdateResource;
+const isAuthorizedToUpdateCar = userValidationMiddleware.isAuthorizedToUpdateCar;
+const isAuthorizedToUpdateExpense = userValidationMiddleware.isAuthorizedToUpdateExpense;
 const isValidUser = userValidationMiddleware.isValidUser;
 
 // Initialize
@@ -120,32 +121,59 @@ app.post('/api/rides', auth, isValidCoveyMember, routeRides.addRide);
 
 app.put('/api/rides/:carId', auth, isValidCoveyMember, routeRides.updateRide);
 
-app.delete('/api/rides/:coveyId/:carId', auth, isValidCarOwner, routeRides.removeRide);
+app.delete('/api/rides/:coveyId/:carId', auth, isAuthorizedToUpdateCar, routeRides.removeRide);
 
 app.get('/api/rides/:coveyId', auth, isValidCoveyMember, routeRides.getAllRides);
 
-app.get('/api/riders/:carId', auth, isValidCarOwner, routeRides.getAllRiders);
+app.get('/api/riders/:carId', auth, isAuthorizedToUpdateCar, routeRides.getAllRiders);
 
-app.delete('/api/riders/:coveyId/:carId/:userId', auth, isValidCarOwner, routeRides.removeRider);
+app.delete('/api/riders/:coveyId/:carId/:userId', auth, isAuthorizedToUpdateCar, routeRides.removeRider);
 
-app.post('/api/riders/:carId/:userId', auth, isValidCarOwner, routeRides.addRider);
+app.post('/api/riders/:carId/:userId', auth, isAuthorizedToUpdateCar, routeRides.addRider);
+
+// Routes for resources functionality
 
 app.post('/api/resources', auth, isValidCoveyMember, routeResources.addResource);
 
 app.put('/api/resources/:resourceId', auth, isValidCoveyMember, routeResources.updateResource);
 
 app.delete('/api/resources/:coveyId/:resourceId',
-  auth, isValidResourceOwner, routeResources.removeResource);
+  auth, isAuthorizedToUpdateResource, routeResources.removeResource);
 
 app.get('/api/resources/:coveyId', auth, isValidCoveyMember, routeResources.getAllResources);
 
-app.get('/api/suppliers/:resourceId', auth, isValidResourceOwner, routeResources.getAllSuppliers);
+app.get('/api/suppliers/:resourceId',
+  auth, isAuthorizedToUpdateResource, routeResources.getAllSuppliers);
 
 app.delete('/api/suppliers/:coveyId/:resourceId/:userId',
-  auth, isValidResourceOwner, routeResources.removeSupplier);
+  auth, isAuthorizedToUpdateResource, routeResources.removeSupplier);
 
-app.post('/api/suppliers/:resourceId/:userId', auth, isValidResourceOwner,
+app.post('/api/suppliers/:resourceId/:userId', auth, isAuthorizedToUpdateResource,
   routeResources.addSupplier);
+
+// Routes for expense functionality
+
+app.post('/api/expenses', auth, isValidCoveyMember, routeExpenses.postExpense);
+
+app.put('/api/expenses/:expense_id',
+  auth, isAuthorizedToUpdateExpense, routeExpenses.updateExpense);
+
+app.delete('/api/expenses/:covey_id/:expense_id',
+  auth, isValidCoveyMember, routeExpenses.deleteExpense);
+
+app.get('/api/expenses/:covey_id',
+  auth, isValidCoveyMember, routeExpenses.getExpenses);
+
+app.get('/api/expenses/participants/:expense_id',
+  auth, isAuthorizedToUpdateExpense, routeExpenses.getParticipants);
+
+app.delete('/api/expenses/participants/:covey_id/:expense_id/:user_id',
+  auth, isAuthorizedToUpdateExpense, routeExpenses.deleteParticipant);
+
+app.post('/api/expenses/participants/:expense_id/:user_id',
+  auth, isAuthorizedToUpdateExpense, routeExpenses.addParticipant);
+
+// Routes for phone verification
 
 app.get('/api/searchUsers/:searchVal', auth, route.searchUsers);
 
@@ -154,27 +182,5 @@ app.get('/api/tel/verify/:tel', auth, routeTel.generateCodeAndSend);
 app.post('/api/tel', auth, routeTel.addTel);
 
 app.get('/api/tel', auth, routeTel.hasTel);
-
-// Routes for expense functionality
-
-app.post('/api/expenses/:covey_id', auth, isValidCoveyMember, routeExpenses.postExpense);
-
-app.put('/api/expenses/:covey_id', auth, isValidCoveyMember, routeExpenses.updateExpense);
-
-app.get('/api/expenses/:covey_id', auth, isValidCoveyMember, routeExpenses.getExpenses);
-
-app.get('/api/expenses/:covey_id/:expense_id', auth, isValidCoveyMember, routeExpenses.getExpense);
-
-app.delete('/api/expenses/:covey_id/:expense_id',
-  auth, isValidCoveyMember, routeExpenses.deleteExpense);
-
-app.post('/api/expenses/participants/:covey_id',
-  auth, isValidCoveyMember, routeExpenses.addParticipant);
-
-app.get('/api/expenses/participants/:covey_id/:expense_id',
-  auth, isValidCoveyMember, routeExpenses.getParticipants);
-
-app.delete('/api/expenses/participants/:covey_id/:expense_id/:user_id',
-  auth, isValidCoveyMember, routeExpenses.deleteParticipant);
 
 module.exports = { app, server };

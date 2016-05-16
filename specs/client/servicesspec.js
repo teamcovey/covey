@@ -81,3 +81,31 @@ describe('Date Factory', () => {
     expect(dateFactory.convertToTextDate(testDate)).to.equal('Tue Mar 3rd, 2020 @ 1:00PM');
   });
 });
+
+describe('Add to calendar', () => {
+  let calendarHelpers;
+  let times;
+  const details = {};
+  details.startTime = '2016-05-16T19:00:00.000Z';
+  details.endTime = '2016-05-16T21:00:00.000Z';
+  details.name = 'A big trip';
+  details.location = 'Earth';
+  const name = 'Dave';
+
+  beforeEach(module('calendar.services'));
+  beforeEach(inject((_calendarHelpers_) => {
+    calendarHelpers = _calendarHelpers_;
+  }));
+
+  it('should return an object with startTime and endTime in ISO format', () => {
+    times = calendarHelpers.formatTime(details);
+    expect(times.start).to.equal('20160516T190000Z');
+    expect(times.end).to.equal('20160516T210000Z');
+  });
+
+  it('should return formatted url string for Google calendar API', () => {
+    times = calendarHelpers.formatTime(details);
+    const url = calendarHelpers.makeURL(details, times, name);
+    expect(url).to.be.equal('http://www.google.com/calendar/event?action=TEMPLATE&text=A%20big%20trip&dates=20160516T190000Z/20160516T210000Z&details=Added%20by%20Dave,%20using%20Covey.%20Join%20a%20Covey%20at%20mycovey.com&location=Earth');
+  });
+});

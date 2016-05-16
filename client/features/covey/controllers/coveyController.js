@@ -1,5 +1,5 @@
 angular.module('covey.covey', [])
-.controller('coveyController', function ($scope, coveyService) {
+.controller('coveyController', function ($scope, coveyService, googleCalendarService) {
   coveyService.getCovey().then((response) => {
     $scope.details = response.covey;
     // TODO: add validation to check that photoUrl is a real url:
@@ -31,5 +31,9 @@ angular.module('covey.covey', [])
 
   $scope.isSelected = (section) => {
     return $scope.selection === section;
+  };
+
+  $scope.addToCalendar = () => {
+    googleCalendarService.addToCalendar($scope.details);
   };
 });

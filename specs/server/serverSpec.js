@@ -673,18 +673,18 @@ describe('Testing expenses functionality', () => {
     passportStub.install(server);
     passportStub.login({ username: 'john.doe' });
     newExpense = {
+      covey_id: coveyId,
       name: 'Food',
       amount: 50,
     };
     updatedExpense = {
       name: 'Beer',
       amount: 100,
-      expense_id: expenseId,
     };
   });
-  it('POST /api/expenses/:covey_id should be able to add an expense', (done) => {
+  it('POST /api/expenses should be able to add an expense', (done) => {
     request(server)
-      .post(`/api/expenses/${coveyId}`)
+      .post('/api/expenses')
       .set('Cookie', [`user_id=${userId}`])
       .type('json')
       .send(newExpense)
@@ -696,15 +696,16 @@ describe('Testing expenses functionality', () => {
           res.body.expense.name.should.be.equal('Food');
           res.body.expense.amount.should.be.equal(50);
           expenseId = res.body.expense.expense_id;
-          updatedExpense.expense_id = expenseId;
           done();
         }
       });
   });
-  it('POST /api/expenses/:covey_id should not add expense if user not part of covey', (done) => {
+  it('POST /api/expenses should not add expense for unauthorized user', (done) => {
     request(server)
-      .post(`/api/expenses/${coveyId}`)
+      .post('/api/expenses')
       .set('Cookie', ['user_id=12345'])
+      .type('json')
+      .send(newExpense)
       .expect(401)
       .end((err, res) => {
         if (err) {
@@ -714,22 +715,9 @@ describe('Testing expenses functionality', () => {
         }
       });
   });
-  it('POST /api/expenses/:covey_id should not add expense if invalid covey id provided', (done) => {
+  it('PUT /api/expenses/:expense_id should update the expense', (done) => {
     request(server)
-      .post('/api/expenses/12345')
-      .set('Cookie', [`user_id=${userId}`])
-      .expect(401)
-      .end((err, res) => {
-        if (err) {
-          done(err);
-        } else if (res) {
-          done();
-        }
-      });
-  });
-  it('PUT /api/expenses/:covey_id should update the expense', (done) => {
-    request(server)
-      .put(`/api/expenses/${coveyId}`)
+      .put(`/api/expenses/${expenseId}`)
       .set('Cookie', [`user_id=${userId}`])
       .type('json')
       .send(updatedExpense)
@@ -743,24 +731,9 @@ describe('Testing expenses functionality', () => {
         }
       });
   });
-  it('Should contain updated values for an updated expense', (done) => {
+  it('PUT /api/expenses/:expense_id should not update expanse for unauthorized user', (done) => {
     request(server)
-      .get(`/api/expenses/${coveyId}/${expenseId}`)
-      .set('Cookie', [`user_id=${userId}`])
-      .expect(200)
-      .end((err, res) => {
-        if (err) {
-          done(err);
-        } else if (res) {
-          res.body.expense.name.should.be.equal('Beer');
-          res.body.expense.amount.should.be.equal(100);
-          done();
-        }
-      });
-  });
-  it('PUT /api/expenses/:covey_id should not allow updates for invalid user', (done) => {
-    request(server)
-      .put(`/api/expenses/${coveyId}`)
+      .put(`/api/expenses/${expenseId}`)
       .set('Cookie', ['user_id=12345'])
       .type('json')
       .send(updatedExpense)
@@ -783,19 +756,30 @@ describe('Testing expenses functionality', () => {
           done(err);
         } else if (res) {
           res.body.expenses.length.should.be.equal(1);
+          res.body.expenses[0].participants.length.should.be.equal(1);
+          res.body.expenses[0].participants[0].firstName.should.be.equal('Spider');
+          res.body.expenses[0].participants[0].is_owner.should.be.equal(true);
           done();
         }
       });
   });
-  it('POST /api/expenses/participants/:covey_id should add particpant', (done) => {
+  it('GET /api/expenses/:covey_id should not return expenses if unauthorized', (done) => {
     request(server)
-      .post(`/api/expenses/participants/${coveyId}`)
+      .get(`/api/expenses/${coveyId}`)
+      .set('Cookie', ['user_id=12345'])
+      .expect(401)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          done();
+        }
+      });
+  });
+  it('POST /api/expenses/participants/:expense_id/:user_id should add particpant', (done) => {
+    request(server)
+      .post(`/api/expenses/participants/${expenseId}/${userId2}`)
       .set('Cookie', [`user_id=${userId}`])
-      .type('json')
-      .send({
-        expense_id: expenseId,
-        user_id: userId2,
-      })
       .expect(201)
       .end((err, res) => {
         if (err) {
@@ -806,27 +790,9 @@ describe('Testing expenses functionality', () => {
         }
       });
   });
-  it('POST /api/expenses/participants/:covey_id should not add particpant for invalid user', (done) => {
-    request(server)
-      .post(`/api/expenses/participants/${coveyId}`)
-      .set('Cookie', ['user_id=12345'])
-      .type('json')
-      .send({
-        expense_id: expenseId,
-        user_id: userId2,
-      })
-      .expect(401)
-      .end((err, res) => {
-        if (err) {
-          done(err);
-        } else if (res) {
-          done();
-        }
-      });
-  });
   it('Should contain added participants', (done) => {
     request(server)
-      .get(`/api/expenses/participants/${coveyId}/${expenseId}`)
+      .get(`/api/expenses/participants/${expenseId}`)
       .set('Cookie', [`user_id=${userId}`])
       .expect(200)
       .end((err, res) => {
@@ -837,6 +803,19 @@ describe('Testing expenses functionality', () => {
           res.body.participants.length.should.be.equal(2);
           res.body.participants[0].user_id.should.be.equal(userId);
           res.body.participants[1].user_id.should.be.equal(userId2);
+          done();
+        }
+      });
+  });
+  it('POST /api/expenses/participants/:expense_id/:user_id shouldn\'t update if unauthorized', (done) => {
+    request(server)
+      .post(`/api/expenses/participants/${expenseId}/${userId2}`)
+      .set('Cookie', ['user_id=12345'])
+      .expect(401)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
           done();
         }
       });
@@ -855,22 +834,9 @@ describe('Testing expenses functionality', () => {
         }
       });
   });
-  it('Should not delete participants if user unauthorized', (done) => {
-    request(server)
-      .del(`/api/expenses/participants/${coveyId}/${expenseId}/${userId2}`)
-      .set('Cookie', ['user_id=12345'])
-      .expect(401)
-      .end((err, res) => {
-        if (err) {
-          done(err);
-        } else if (res) {
-          done();
-        }
-      });
-  });
   it('Should not contain deleted participants', (done) => {
     request(server)
-      .get(`/api/expenses/participants/${coveyId}/${expenseId}`)
+      .get(`/api/expenses/participants/${expenseId}`)
       .set('Cookie', [`user_id=${userId}`])
       .expect(200)
       .end((err, res) => {
@@ -880,6 +846,19 @@ describe('Testing expenses functionality', () => {
           res.body.success.should.be.equal(true);
           res.body.participants.length.should.be.equal(1);
           res.body.participants[0].user_id.should.be.equal(userId);
+          done();
+        }
+      });
+  });
+  it('DELETE /api/expenses/participants/:covey_id/:expense_id/:user_id should not delete if unauthorized', (done) => {
+    request(server)
+      .del(`/api/expenses/participants/${coveyId}/${expenseId}/${userId2}`)
+      .set('Cookie', ['user_id=12345'])
+      .expect(401)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
           done();
         }
       });
@@ -898,19 +877,6 @@ describe('Testing expenses functionality', () => {
         }
       });
   });
-  it('Should not delete expense if user unauthorized', (done) => {
-    request(server)
-      .del(`/api/expenses/${coveyId}/${expenseId}`)
-      .set('Cookie', ['user_id=12345'])
-      .expect(401)
-      .end((err, res) => {
-        if (err) {
-          done(err);
-        } else if (res) {
-          done();
-        }
-      });
-  });
   it('Should not contain deleted expenses', (done) => {
     request(server)
       .get(`/api/expenses/${coveyId}`)
@@ -921,6 +887,19 @@ describe('Testing expenses functionality', () => {
           done(err);
         } else if (res) {
           res.body.expenses.length.should.be.equal(0);
+          done();
+        }
+      });
+  });
+  it('DELETE /api/expenses/:covey_id/:expense_id should not delete if unauthorized', (done) => {
+    request(server)
+      .del(`/api/expenses/${coveyId}/${expenseId}`)
+      .set('Cookie', ['user_id=12345'])
+      .expect(401)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
           done();
         }
       });

@@ -55,6 +55,8 @@ angular.module('covey', [
     });
 })
 .run(function ($location, $rootScope, auth) {
+  $rootScope.expandMenu = true;
+  
   $rootScope.$on('$routeChangeStart', (event) => {
     if ($location.path() !== '/about') {
       auth.checkAuthentication()

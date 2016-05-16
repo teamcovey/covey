@@ -1,7 +1,9 @@
 angular.module('covey.covey')
 .directive('sideNav', () => (
   {
-    templateUrl: 'features/navbar/views/navView.html',
+    templateUrl: function (elem, attr) {
+      return 'features/navbar/views/nav' + attr.type + 'View.html';
+    },
     controller: 'navController',
   }
 ))

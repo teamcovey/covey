@@ -1,0 +1,33 @@
+<!-- Left Side Navbar: Coveys Home View -->
+<div ng-class="{'col-sm-2': isExpanded(), 'col-sm-1': !isExpanded()}">
+  <ul class="nav nav-pills nav-stacked">
+    <li role="presentation" class="brand-nav-pill">
+      <span class="nav-pill-text-align side-nav-title" ng-hide="!isExpanded()">Covey</span>
+      <span class="nav-pill-text-align" ng-hide="isExpanded()"><img class="covey-nav-icon" src="styles/assets/quailMiniWhite.png"></span>
+    </li>
+    <li role="presentation" ng-click="toggleMenu();">
+      <div class="nav-pill-text-align">
+        <span ng-hide="!isExpanded()" class="glyphicon glyphicon-chevron-left"></span> <span ng-hide="!isExpanded()">Menu</span>
+        <span ng-hide="isExpanded()" class="glyphicon glyphicon-chevron-right">
+      </div>
+    </li>
+  
+    <li role="presentation" ng-click="navigateTo('/coveys')"> 
+      <div class="nav-pill-text-align">
+        <span class="glyphicon glyphicon-home"></span> <span ng-hide="!isExpanded()">Home</span>
+      </div>
+    </li>
+
+    <li role="presentation" ng-click="navigateTo('/profile')"> 
+      <div class="nav-pill-text-align">
+        <span class="glyphicon glyphicon-cog"></span> <span ng-hide="!isExpanded()">Settings</span>
+      </div>
+    </li>
+
+    <li role="presentation" ng-click="navigateTo('/logout')"> 
+      <div class="nav-pill-text-align">
+        <span class="glyphicon glyphicon-log-out"></span> <span ng-hide="!isExpanded()">Logout</span>
+      </div>
+    </li>
+  </ul>
+</div>

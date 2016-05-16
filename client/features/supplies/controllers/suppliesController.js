@@ -119,7 +119,7 @@ angular.module('covey.supplies', ['userId.services', 'covey.attendees'])
   };
 
   $scope.addSupplier = (supplier, supply) => {
-    suppliesHttp.addSupplier(supply.id, supplier.user_id);
+    suppliesHttp.addSupplier(supply.id, supplier.id);
   };
 
   $scope.removeSupplier = (supplier, supply) => {

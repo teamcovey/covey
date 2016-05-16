@@ -27,4 +27,10 @@ angular.module('covey.covey')
     templateUrl: 'features/chat/views/chatView.html',
     controller: 'chatController',
   }
+))
+.directive('expenses', () => (
+  {
+    templateUrl: 'features/expenses/views/expensesView.html',
+    controller: 'expensesController',
+  }
 ));

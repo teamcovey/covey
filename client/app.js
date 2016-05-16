@@ -5,6 +5,7 @@ angular.module('covey', [
   'covey.attendees',
   'covey.supplies',
   'covey.rides',
+  'covey.expenses',
   'covey.covey',
   'welcome.services',
   'covey.services',

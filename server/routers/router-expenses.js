@@ -1,7 +1,6 @@
 const knex = require('../config/config.js').knex;
 
 exports.postExpense = (request, response) => {
-
   knex('expenses')
     .returning(['expense_id', 'name', 'amount', 'covey_id'])
     .insert({
@@ -17,6 +16,7 @@ exports.postExpense = (request, response) => {
           is_owner: true,
         }))
         .then(() => {
+          request.io.sockets.emit(`add expense ${request.body.covey_id}`, { response: expense });
           response.status(201).send({ success: true, expense });
         })
         .catch((err) => {
@@ -44,6 +44,7 @@ exports.updateExpense = (request, response) => {
     })
     .then((expenses) => {
       const expense = expenses[0];
+      request.io.sockets.emit(`update expense ${expense.covey_id}`, { response: expense });
       response.status(201).send({ success: true, expense });
     })
     .catch((err) => {
@@ -65,6 +66,8 @@ exports.deleteExpense = (request, response) => {
       /*eslint-disable*/
       console.log('ERROR: Could not delete expense', err);
       /*eslint-enable*/
+      request.io.sockets.emit(`remove expense ${request.params.covey_id}`,
+        { response: request.params.expense_id });
       response.status(500).send({ success: false });
     });
 };
@@ -156,13 +159,15 @@ const checkIfParticipantExists = (expenseId, userId) => {
 };
 
 exports.addParticipant = (request, response) => {
-  checkIfParticipantExists(request.params.expense_id, request.params.user_id)
+  const userId = request.params.user_id;
+  const expenseId = request.params.expense_id;
+  checkIfParticipantExists(expenseId, userId)
     .then((exists) => {
       if (!exists) {
         knex('expenses_users')
           .insert({
-            user_id: request.params.user_id,
-            expense_id: request.params.expense_id,
+            user_id: userId,
+            expense_id: expenseId,
             is_owner: false,
           })
           .then(() => {
@@ -182,16 +187,20 @@ exports.addParticipant = (request, response) => {
       /*eslint-disable*/
       console.log('ERROR: Could not check for participant in expense', err);
       /*eslint-enable*/
+      request.io.sockets.emit(`add particpant ${request.body.covey_id}`,
+        { response: { user_id: userId, expense_id: expenseId } });
       response.status(500).send({ success: false });
     });
 };
 
 
 exports.deleteParticipant = (request, response) => {
+  const userId = request.params.user_id;
+  const expenseId = request.params.expense_id;
   knex('expenses_users')
     .where({
-      user_id: request.params.user_id,
-      expense_id: request.params.expense_id,
+      user_id: userId,
+      expense_id: expenseId,
     })
     .del()
     .then(() => {
@@ -201,6 +210,8 @@ exports.deleteParticipant = (request, response) => {
       /*eslint-disable*/
       console.log('ERROR: Could not delete participant', err);
       /*eslint-enable*/
+      request.io.sockets.emit(`remove particpant ${request.params.covey_id}`,
+        { response: { user_id: userId, expense_id: expenseId } });
       response.status(500).send({ success: false });
     });
 };

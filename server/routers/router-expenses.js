@@ -50,6 +50,7 @@ exports.postExpense = (request, response) => {
               /*eslint-disable*/
               console.log('ERROR: Could not retrieve participants for expense', err);
               /*eslint-enable*/
+              response.status(201).send({ success: true, expense });
             });
         })
         .catch((err) => {
@@ -191,6 +192,8 @@ exports.addParticipant = (request, response) => {
             /*eslint-disable*/
             console.log('ERROR: Could not add participant to expense', err);
             /*eslint-enable*/
+            request.io.sockets.emit(`add particpant ${request.body.covey_id}`,
+              { response: { user_id: userId, expense_id: expenseId } });
             response.status(500).send({ success: false });
           });
       } else {
@@ -201,8 +204,6 @@ exports.addParticipant = (request, response) => {
       /*eslint-disable*/
       console.log('ERROR: Could not check for participant in expense', err);
       /*eslint-enable*/
-      request.io.sockets.emit(`add particpant ${request.body.covey_id}`,
-        { response: { user_id: userId, expense_id: expenseId } });
       response.status(500).send({ success: false });
     });
 };
@@ -218,14 +219,14 @@ exports.deleteParticipant = (request, response) => {
     })
     .del()
     .then(() => {
+      request.io.sockets.emit(`remove particpant ${request.params.covey_id}`,
+        { response: { user_id: userId, expense_id: expenseId } });
       response.status(200).send({ success: true });
     })
     .catch((err) => {
       /*eslint-disable*/
       console.log('ERROR: Could not delete participant', err);
       /*eslint-enable*/
-      request.io.sockets.emit(`remove particpant ${request.params.covey_id}`,
-        { response: { user_id: userId, expense_id: expenseId } });
       response.status(500).send({ success: false });
     });
 };

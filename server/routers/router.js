@@ -153,7 +153,8 @@ app.post('/api/suppliers/:resourceId/:userId', auth, isAuthorizedToUpdateResourc
 
 // Routes for expense functionality
 
-app.post('/api/expenses', routeExpenses.postExpense);
+app.post('/api/expenses',
+  auth, isValidCoveyMember, routeExpenses.postExpense);
 
 app.put('/api/expenses/:expense_id',
   auth, isAuthorizedToUpdateExpense, routeExpenses.updateExpense);

@@ -48,6 +48,7 @@ angular.module('covey', [
     })
     .when('/profile', {
       templateUrl: 'features/profile/views/profile.html',
+      controller: 'profileController',
     })
     .otherwise({
       redirectTo: '/',

@@ -1,11 +1,9 @@
-<div class="container profile-page-container">
-  <div class="container hamburger-menu-container">
-    <!-- Hamburger menu -->
-    <div class="col-xs-offset-9 col-xs-3">
-      <div hamburger-directive></div>
-    </div>
-    <!-- Profile view. -->
+<div class="container covey">
+  <div class="row">
+
+  <div side-nav></div>
+
+  <div ng-class="{'col-sm-9': isExpanded(), 'col-sm-10': !isExpanded()}">
     <div profile-directive class="row"></div>
   </div>
 </div>
-<br>

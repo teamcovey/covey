@@ -1,6 +1,39 @@
 angular.module('profile', ['profile.services'])
 
-.controller('profileController', function ($scope, profileService, userIdFactory) {
+.controller('profileController', function ($scope, $location, profileService, userIdFactory) {
+  if (window.innerWidth > 770) {
+    $('.covey').css('width', '97%');
+  }
+
+  $(window).resize(() => {
+    if (window.innerWidth > 770) {
+      $('ul.nav-pills').css('height', '100vh');
+      $('.covey').css('width', '97%');
+    } else {
+      $('ul.nav-pills').css('height', '');
+      $('.covey').css('width', '');
+    }
+  });
+  $scope.selection = 'details';
+
+  $scope.navbarSwitch = (clicked) => {
+    $scope.selection = clicked;
+  };
+
+  $scope.isSelected = (section) => {
+    return $scope.selection === section;
+  };
+
+  $scope.expandMenu = true;
+  $scope.toggleMenu = () => {
+    $scope.expandMenu = !$scope.expandMenu;
+  };
+  $scope.isExpanded = () => $scope.expandMenu;
+
+  $scope.navigateTo = (somePath) => {
+    $location.path(somePath);
+  };
+
   const userId = userIdFactory.getUserId();
   $scope.email = '';
   $scope.phoneNumber = '';

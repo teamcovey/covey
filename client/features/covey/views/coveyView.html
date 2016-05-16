@@ -13,6 +13,9 @@
       <div ng-class="{'active-nav': isSelected('supplies'), 'inactive-nav': !isSelected('supplies')}" ng-click="navbarSwitch('supplies')">
         Supplies
       </div>
+      <div ng-class="{'active-nav': isSelected('expenses'), 'inactive-nav': !isSelected('expenses')}" ng-click="navbarSwitch('expenses')">
+        Expenses
+      </div>
     </div>
 
     <div class="col-xs-offset-7 col-xs-3">
@@ -27,6 +30,7 @@
               <div ng-switch-default covey-details></div>
               <div ng-switch-when="rides" rides></div>
               <div ng-switch-when="supplies" supplies></div>
+              <div ng-switch-when="expenses" expenses></div>
             </div>
           </div>
       </div>

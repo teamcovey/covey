@@ -1,0 +1,28 @@
+<div class="main-body-panel-header">
+  <p class="body-panel-header"><b>Expenses</b></p>
+  <p class="body-panel-personal-details">Your owe/are owed: {{stringifyUsersRide()}}</p>
+</div>
+<br>
+<div class="main-body-panel-body">
+  <div class="main-body-inputs" ng-repeat="expense in expensesDetails track by $index">
+    <form ng-submit="submitExpense(expense, $index)">
+      <input type="text" name="expenseName" class="main-input-styles shared-inputs-color" ng-model="expense.name"></input>
+      <div class="current-attendees-added">
+        <div class="panel-current-users" ng-click="removePayer(payer, expense)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="payer in expense.payer">
+            {{mouseOverTrue ? 'X' : payer.firstName.slice(0,1)+payer.lastName.slice(0,1)}}
+        </div>
+        <div class="panel-potential-users" ng-click="editMode = !editMode">+ Paid</div>
+        <div ng-show="editMode">
+          <div class="panel-current-users potential-user-to-add" ng-click="addPayer(friend, expense)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="friend in attendees ">
+          <!-- removed  | alreadyPayer: expensesDetails from above -->
+            {{mouseOverTrue ? '+' : friend.firstName.slice(0,1)+friend.lastName.slice(0,1)}}
+          </div>
+        </div>
+      </div>
+
+      <input style="display:none;" type="submit" id="submit" value="Y" />
+      <button class="remove-resource-expense-btn" ng-click="removeExpense(expense, $index);">X</button>
+    </form>
+  </div>
+</div>
+<button class="add-resource-expense-btn shared-inputs-color" ng-click="addNewExpense()">add an expense</button>

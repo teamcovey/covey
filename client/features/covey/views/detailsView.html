@@ -1,27 +1,33 @@
 <img ng-show="showPhoto" ng-src="{{details.photoUrl}}" alt="Smiley face" height="200" width="100%">
 
-<div style="margin-top:20px;" ng-hide="editDetails">
-  <h2 style="display:inline;">{{details.name}}</h2>
-  <button class="covey-details-edit-btn" ng-click="toggleEdit()">
+<div class="row details-header-section">
+  <div class="col-sm-offset-1 col-sm-5">
+    <h2 class="details-header-title"><b>{{details.name}}</b></h2>
+  </div>
+  <div class="col-sm-offset-4 col-sm-2">
+    <button class="covey-details-edit-btn" ng-click="toggleEdit()">
     Edit&nbsp;<span class="glyphicon glyphicon-pencil"></span>  
   </button>
-  <br>
-  <br>
-  <p><i>{{details.details}}</i></p>
-  <p><b>Location:</b> {{details.address}}, {{details.city}}, {{details.state}}</p>
-  <p><b>Start Date:</b> {{formatDate(details.startTime)}}</p>
-  <p><b>End Date:</b> {{formatDate(details.endTime)}}</p>
-  <button class="btn btn-pineapple" ng-click="addToCalendar()">Add to Google calendar</button>
+  </div>
 </div>
 
-<div style="margin-top:20px;" ng-show="editDetails">
-  <h2 style="display:inline">Edit Event</h2>
-  <button class="covey-details-edit-btn" ng-click="toggleEdit()">
-    Cancel&nbsp;<span class="pencil-button glyphicon glyphicon-pencil"></span>  
-  </button>
-  <br>
-  <br>
-  <form ng-submit="toggleEdit(); updateCovey()">
+<div class="row details-body-section" ng-hide="editDetails">
+  <div class="col-sm-offset-1 col-sm-5">
+    <p><span class="glyphicon glyphicon-time"></span> From {{formatDate(details.startTime)}} to {{formatDate(details.endTime)}}
+    <p><i>{{details.details}}</i></p>
+    <button class="btn btn-pineapple" ng-click="addToCalendar()">Add to Google calendar</button>
+  </div>
+  <div class="col-sm-offset-1 col-sm-4">
+    <span class="glyphicon glyphicon-map-marker"></span> {{details.location}}
+    <br>
+    MAP GOES HERE
+    <p>{{details.address}}, {{details.city}}, {{details.state}}</p>
+  </div>
+</div>
+
+<div class="row details-body-section" ng-show="editDetails">
+  <div class="col-sm-offset-1 col-sm-10">
+    <form ng-submit="toggleEdit(); updateCovey()">
     <div style="display:block">
       <label>Event Name: </label>
       <input type="text" name="name" class="details-inputs" ng-model="details.name"></input>
@@ -58,4 +64,5 @@
     </div>
     <input style="display:none" type="submit" id="submit" value="Update" />
   </form>
+  </div>
 </div>

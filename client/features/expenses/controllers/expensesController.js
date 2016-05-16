@@ -12,13 +12,14 @@ angular.module('covey.expenses', ['userId.services', 'covey.attendees'])
       $scope.attendees = response;
     });
 
-  /* Gets all expenses (& payers) info for current covey,
+  /* Gets all expenses (& participants) info for current covey,
   *  and sets logged-in user's current total for display. */
   const init = () => {
     expensesHttp.getAllExpenses()
       .then((expenses) => {
-        $scope.expensesDetails = expenses;
-        $scope.usersExpense = expensesHelpers.getUsersTotal(expenses, userId);
+        console.log('got expenses: ', expenses.expenses);
+        $scope.expensesDetails = expenses.expenses;
+        $scope.usersExpense = expensesHelpers.getUsersTotal(expenses.expenses, userId);
       });
   };
 
@@ -51,19 +52,19 @@ angular.module('covey.expenses', ['userId.services', 'covey.attendees'])
     $scope.usersExpense = expensesHelpers.getUsersExpense($scope.expensesDetails, userId);
   });
 
-  /* SOCKETS:add payer */
-  socket.on(`add payer ${$routeParams.coveyId}`, (data) => {
+  /* SOCKETS:add participant */
+  socket.on(`add participant ${$routeParams.coveyId}`, (data) => {
     for (let i = 0; i < $scope.expensesDetails.length; i++) {
       if ($scope.expensesDetails[i].id.toString() === data.response.carId.toString()) {
         for (let j = 0; j < $scope.attendees.length; j++) {
           if ($scope.attendees[j].id.toString() === data.response.userId.toString()) {
-            if ($scope.expensesDetails[i].payers) {
-              $scope.expensesDetails[i].payers.push($scope.attendees[j]);
+            if ($scope.expensesDetails[i].participants) {
+              $scope.expensesDetails[i].participants.push($scope.attendees[j]);
             } else {
-              $scope.expensesDetails[i].payers = [$scope.attendees[j]];
+              $scope.expensesDetails[i].participants = [$scope.attendees[j]];
             }
 
-            // If current user is the added payer, set expense to user's total
+            // If current user is the added participant, set expense to user's total
             if (data.response.userId.toString() === userId.toString()) {
               $scope.usersExpense = expensesHelpers.getUsersExpense($scope.expensesDetails, userId);
             }
@@ -75,15 +76,15 @@ angular.module('covey.expenses', ['userId.services', 'covey.attendees'])
     $scope.usersExpense = expensesHelpers.getUsersExpense($scope.expensesDetails, userId);
   });
 
-  /* SOCKETS:remove payer */
-  socket.on(`remove payer ${$routeParams.coveyId}`, (data) => {
+  /* SOCKETS:remove participant */
+  socket.on(`remove participant ${$routeParams.coveyId}`, (data) => {
     for (let i = 0; i < $scope.expensesDetails.length; i++) {
       if ($scope.expensesDetails[i].id.toString() === data.response.carId.toString()) {
-        // iterate over expensesDetails and find one that matches expenseId; splice out the data.userId from that payers
-        for (let j = 0; j < $scope.expensesDetails[i].payers.length; j++) {
-          const payerId = $scope.expensesDetails[i].payers[j].user_id || $scope.expensesDetails[i].payers[j].id || $scope.expensesDetails[i].payers[j].userId;;
-          if (payerId.toString() === data.response.userId.toString()) {
-            $scope.expensesDetails[i].payers.splice(j, 1);
+        // iterate over expensesDetails and find one that matches expenseId; splice out the data.userId from that participants
+        for (let j = 0; j < $scope.expensesDetails[i].participants.length; j++) {
+          const participantId = $scope.expensesDetails[i].participants[j].user_id || $scope.expensesDetails[i].participants[j].id || $scope.expensesDetails[i].participants[j].userId;;
+          if (participantId.toString() === data.response.userId.toString()) {
+            $scope.expensesDetails[i].participants.splice(j, 1);
             if (data.response.userId.toString() === userId.toString()) {
               $scope.usersExpense = expensesHelpers.getUsersExpense($scope.expensesDetails, userId);
             }
@@ -95,7 +96,7 @@ angular.module('covey.expenses', ['userId.services', 'covey.attendees'])
     $scope.usersExpense = expensesHelpers.getUsersExpense($scope.expensesDetails, userId);
   });
 
-  /* Displays user's current ride */
+  /* Displays user's current expense */
   $scope.stringifyUsersExpense = () => {
     return $scope.usersExpense.name;
   };
@@ -109,22 +110,43 @@ angular.module('covey.expenses', ['userId.services', 'covey.attendees'])
     expensesHttp.addExpense(expensesHelpers.newExpenseInput());
   };
 
-  /* Creates or updates a ride when user select 'Update' in edit view */
-  $scope.submitExpense = (ride) => {
-    expensesHttp.updateExpense(ride);
+  /* Creates or updates a expense when user select 'Update' in edit view */
+  $scope.submitExpense = (expense) => {
+    console.log('submit expense? ', expense);
+    expensesHttp.updateExpense(expense);
   };
 
-  $scope.removeExpense = (ride) => {
-    expensesHttp.removeSupply(ride.id);
+  $scope.removeExpense = (expense) => {
+    console.log('expense: ', expense);
+    expensesHttp.removeExpense(expense.expense_id);
   };
 
-  $scope.addPayer = (payer, ride) => {
-    const payerId = payer.user_id || payer.userId || payer.id;
-    expensesHttp.addPayer(ride.id, payerId);
+  $scope.addParticipant = (participant, expense) => {
+    const participantId = participant.user_id || participant.userId || participant.id;
+    expensesHttp.addParticipant(expense.expense_id, participantId);
   };
 
-  $scope.removePayer = (payer, ride) => {
-    const payerId = payer.user_id || payer.userId || payer.id;
-    expensesHttp.removePayer(ride.id, payerId);
+  $scope.removeParticipant = (participant, expense) => {
+    const participantId = participant.user_id || participant.userId || participant.id;
+    expensesHttp.removeParticipant(expense.expense_id, participantId);
+  };
+})
+.filter('alreadyParticipant', function () {
+  return (attendees, participants) => {
+    if (Array.isArray(attendees)) {
+      return attendees.filter((attendee) => {
+        let result = true;
+        if (participants) {
+          participants.forEach((currentParticipant) => {
+            if (currentParticipant.user_id === attendee.user_id) {
+              result = false;
+            }
+          });
+          return result;
+        } else {
+          return true;
+        }
+      });
+    }
   };
 });

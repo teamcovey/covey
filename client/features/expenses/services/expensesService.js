@@ -12,6 +12,16 @@ angular.module('covey.expenses')
 
     return userTotal;
   };
+
+  this.newExpenseInput = () => (
+    {
+      name: 'add expense',
+      quantity: 10,
+      amount: '0',
+      coveyId: $routeParams.coveyId,
+      suppliers: [],
+    }
+  );
 })
 .service('expensesHttp', function ($http, $routeParams) {
   this.getAllExpenses = () => {
@@ -22,13 +32,14 @@ angular.module('covey.expenses')
   };
 
   this.addExpense = (newExpense) => {
-    return $http.post('/api/expenses', newExpense)
+    return $http.post(`/api/expenses/${$routeParams.coveyId}`, newExpense)
       .then((response) => response.data, (error) => {
         console.error(error);
       });
   };
 
   this.updateExpense = (updateExpense) => {
+    console.log('attempt to remove expense', expenseId, $routeParams.coveyId);
     return $http.put(`/api/expenses/${updateExpense.id}`, updateExpense)
       .then((response) => response, (error) => {
         console.error(error);
@@ -42,14 +53,14 @@ angular.module('covey.expenses')
       });
   };
 
-  this.addPayer = (expenseId, userId) => {
-    return $http.post(`/api/expensers/${expenseId}/${userId}`, { coveyId: $routeParams.coveyId })
+  this.addParticipant = (expenseId, userId) => {
+    return $http.post(`/api/expenses/participants/${$routeParams.coveyId}`, { expense_id: $routeParams.coveyId, user_id: userId })
       .then((response) => response, (error) => {
         console.error(error);
       });
   };
 
-  this.removePayer = (expenseId, userId) => {
+  this.removeParticipant = (expenseId, userId) => {
     return $http.delete(`/api/expensers/${$routeParams.coveyId}/${expenseId}/${userId}`)
       .then((response) => response, (error) => {
         console.error(error);

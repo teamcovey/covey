@@ -14,25 +14,7 @@ angular.module('coveys', ['covey.services', 'userId.services', 'date.services'])
       $('.covey').css('width', '');
     }
   });
-  $scope.selection = 'details';
 
-  $scope.navbarSwitch = (clicked) => {
-    $scope.selection = clicked;
-  };
-
-  $scope.isSelected = (section) => {
-    return $scope.selection === section;
-  };
-
-  $scope.expandMenu = true;
-  $scope.toggleMenu = () => {
-    $scope.expandMenu = !$scope.expandMenu;
-  };
-  $scope.isExpanded = () => $scope.expandMenu;
-
-  $scope.navigateTo = (somePath) => {
-    $location.path(somePath);
-  };
   /*
    * hasCoveys can have a value of 'true', 'false', or 'error'
    * the view will automatically change based on the value.

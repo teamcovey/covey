@@ -14,25 +14,6 @@ angular.module('profile', ['profile.services'])
       $('.covey').css('width', '');
     }
   });
-  $scope.selection = 'details';
-
-  $scope.navbarSwitch = (clicked) => {
-    $scope.selection = clicked;
-  };
-
-  $scope.isSelected = (section) => {
-    return $scope.selection === section;
-  };
-
-  $scope.expandMenu = true;
-  $scope.toggleMenu = () => {
-    $scope.expandMenu = !$scope.expandMenu;
-  };
-  $scope.isExpanded = () => $scope.expandMenu;
-
-  $scope.navigateTo = (somePath) => {
-    $location.path(somePath);
-  };
 
   const userId = userIdFactory.getUserId();
   $scope.email = '';

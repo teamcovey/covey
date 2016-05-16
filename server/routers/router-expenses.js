@@ -186,14 +186,14 @@ exports.addParticipant = (request, response) => {
             is_owner: false,
           })
           .then(() => {
+            request.io.sockets.emit(`add participant ${request.body.covey_id}`,
+              { response: { user_id: userId, expense_id: expenseId } });
             response.status(201).send({ success: true });
           })
           .catch((err) => {
             /*eslint-disable*/
             console.log('ERROR: Could not add participant to expense', err);
             /*eslint-enable*/
-            request.io.sockets.emit(`add particpant ${request.body.covey_id}`,
-              { response: { user_id: userId, expense_id: expenseId } });
             response.status(500).send({ success: false });
           });
       } else {
@@ -208,7 +208,6 @@ exports.addParticipant = (request, response) => {
     });
 };
 
-
 exports.deleteParticipant = (request, response) => {
   const userId = request.params.user_id;
   const expenseId = request.params.expense_id;
@@ -219,7 +218,7 @@ exports.deleteParticipant = (request, response) => {
     })
     .del()
     .then(() => {
-      request.io.sockets.emit(`remove particpant ${request.params.covey_id}`,
+      request.io.sockets.emit(`remove participant ${request.params.covey_id}`,
         { response: { user_id: userId, expense_id: expenseId } });
       response.status(200).send({ success: true });
     })

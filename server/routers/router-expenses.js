@@ -44,7 +44,7 @@ exports.updateExpense = (request, response) => {
     })
     .then((expenses) => {
       const expense = expenses[0];
-      request.io.sockets.emit(`update expense ${request.body.covey_id}`, { response: expense });
+      request.io.sockets.emit(`update expense ${expense.covey_id}`, { response: expense });
       response.status(201).send({ success: true, expense });
     })
     .catch((err) => {
@@ -187,15 +187,16 @@ exports.addParticipant = (request, response) => {
       /*eslint-disable*/
       console.log('ERROR: Could not check for participant in expense', err);
       /*eslint-enable*/
-      request.io.sockets.emit(`add particpant ${request.body.covey_id}`, { response: { user_id: userId, expense_id: expenseId } });
+      request.io.sockets.emit(`add particpant ${request.body.covey_id}`,
+        { response: { user_id: userId, expense_id: expenseId } });
       response.status(500).send({ success: false });
     });
 };
 
 
 exports.deleteParticipant = (request, response) => {
-  const userId = userId;
-  const expenseId = expenseId;
+  const userId = request.params.user_id;
+  const expenseId = request.params.expense_id;
   knex('expenses_users')
     .where({
       user_id: userId,
@@ -209,7 +210,8 @@ exports.deleteParticipant = (request, response) => {
       /*eslint-disable*/
       console.log('ERROR: Could not delete participant', err);
       /*eslint-enable*/
-      request.io.sockets.emit(`remove particpant ${request.params.covey_id}`, { response: { user_id: userId, expense_id: expenseId } });
+      request.io.sockets.emit(`remove particpant ${request.params.covey_id}`,
+        { response: { user_id: userId, expense_id: expenseId } });
       response.status(500).send({ success: false });
     });
 };

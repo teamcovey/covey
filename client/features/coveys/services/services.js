@@ -49,7 +49,7 @@ userIdService.factory('userIdFactory', () => {
     // Parses out and returns user_id cookie
     getUserId: () => {
       return document.cookie && document.cookie.match(/user_id=(\w+);*/)
-        ? document.cookie.match(/user_id=(\w+);*/)[1] || '' : '';
+        ? document.cookie.match(/user_id=(\d+);*/)[1] || '' : '';
     },
   });
 });

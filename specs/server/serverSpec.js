@@ -4,9 +4,7 @@ const passportStub = require('passport-stub-es6');
 const encrypt = require('../../server/routers/helpers/cookieEncryptionMiddleware');
 
 let userId;
-let userIdDecrypted;
 let userId2;
-let userId2Decrypted;
 let coveyId;
 let coveyId2;
 
@@ -152,8 +150,7 @@ describe('Testing user creation', () => {
         if (err) {
           done(err);
         } else if (res) {
-          userIdDecrypted = res.body.id;
-          userId = encrypt.encryptValue(res.body.id.toString());
+          userId = res.body.id;
           newEvent.userId = userId;
           res.body.should.have.property('success', true);
           res.body.should.have.property('id');
@@ -175,10 +172,9 @@ describe('Testing user creation', () => {
         if (err) {
           done(err);
         } else if (res) {
-          userId2Decrypted = res.body.id;
-          userId2 = encrypt.encryptValue(res.body.id.toString());
+          userId2 = res.body.id;
           newEvent2.userId = userId2;
-          (userId2Decrypted).should.be.above(userIdDecrypted);
+          (userId2).should.be.above(userId);
           res.body.should.have.property('success', true);
           res.body.should.have.property('id');
           done();
@@ -325,7 +321,7 @@ describe('Testing attendee actions', () => {
           coveyId2 = res.body.id;
           res.body.should.have.property('user');
           res.body.should.have.property('id');
-          res.body.user.should.have.property('id', userId2Decrypted);
+          res.body.user.should.have.property('id', userId2);
           done();
         }
       });
@@ -577,7 +573,7 @@ describe('Testing resources functionality', () => {
         if (err) {
           done(err);
         } else if (res) {
-          res.body[0].user_id.should.be.equal(userIdDecrypted);
+          res.body[0].user_id.should.be.equal(userId);
           done();
         }
       });
@@ -658,6 +654,273 @@ describe('Testing resources functionality', () => {
           done(err);
         } else if (res) {
           res.body.length.should.be.equal(0);
+          done();
+        }
+      });
+  });
+});
+
+describe('Testing expenses functionality', () => {
+  let server;
+  let newExpense;
+  let updatedExpense;
+  let expenseId;
+
+  beforeEach(() => {
+    /*eslint-disable*/
+    server = require('../../server/server.js');
+    /*eslint-enable*/
+    passportStub.install(server);
+    passportStub.login({ username: 'john.doe' });
+    newExpense = {
+      name: 'Food',
+      amount: 50,
+    };
+    updatedExpense = {
+      name: 'Beer',
+      amount: 100,
+      expense_id: expenseId,
+    };
+  });
+  it('POST /api/expenses/:covey_id should be able to add an expense', (done) => {
+    request(server)
+      .post(`/api/expenses/${coveyId}`)
+      .set('Cookie', [`user_id=${userId}`])
+      .type('json')
+      .send(newExpense)
+      .expect(201)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          res.body.expense.name.should.be.equal('Food');
+          res.body.expense.amount.should.be.equal(50);
+          expenseId = res.body.expense.expense_id;
+          updatedExpense.expense_id = expenseId;
+          done();
+        }
+      });
+  });
+  it('POST /api/expenses/:covey_id should not add expense if user not part of covey', (done) => {
+    request(server)
+      .post(`/api/expenses/${coveyId}`)
+      .set('Cookie', ['user_id=12345'])
+      .expect(401)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          done();
+        }
+      });
+  });
+  it('POST /api/expenses/:covey_id should not add expense if invalid covey id provided', (done) => {
+    request(server)
+      .post('/api/expenses/12345')
+      .set('Cookie', [`user_id=${userId}`])
+      .expect(401)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          done();
+        }
+      });
+  });
+  it('PUT /api/expenses/:covey_id should update the expense', (done) => {
+    request(server)
+      .put(`/api/expenses/${coveyId}`)
+      .set('Cookie', [`user_id=${userId}`])
+      .type('json')
+      .send(updatedExpense)
+      .expect(201)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          res.body.success.should.be.equal(true);
+          done();
+        }
+      });
+  });
+  it('Should contain updated values for an updated expense', (done) => {
+    request(server)
+      .get(`/api/expenses/${coveyId}/${expenseId}`)
+      .set('Cookie', [`user_id=${userId}`])
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          res.body.expense.name.should.be.equal('Beer');
+          res.body.expense.amount.should.be.equal(100);
+          done();
+        }
+      });
+  });
+  it('PUT /api/expenses/:covey_id should not allow updates for invalid user', (done) => {
+    request(server)
+      .put(`/api/expenses/${coveyId}`)
+      .set('Cookie', ['user_id=12345'])
+      .type('json')
+      .send(updatedExpense)
+      .expect(401)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          done();
+        }
+      });
+  });
+  it('GET /api/expenses/:covey_id should return all expenses for covey', (done) => {
+    request(server)
+      .get(`/api/expenses/${coveyId}`)
+      .set('Cookie', [`user_id=${userId}`])
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          res.body.expenses.length.should.be.equal(1);
+          done();
+        }
+      });
+  });
+  it('POST /api/expenses/participants/:covey_id should add particpant', (done) => {
+    request(server)
+      .post(`/api/expenses/participants/${coveyId}`)
+      .set('Cookie', [`user_id=${userId}`])
+      .type('json')
+      .send({
+        expense_id: expenseId,
+        user_id: userId2,
+      })
+      .expect(201)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          res.body.success.should.be.equal(true);
+          done();
+        }
+      });
+  });
+  it('POST /api/expenses/participants/:covey_id should not add particpant for invalid user', (done) => {
+    request(server)
+      .post(`/api/expenses/participants/${coveyId}`)
+      .set('Cookie', ['user_id=12345'])
+      .type('json')
+      .send({
+        expense_id: expenseId,
+        user_id: userId2,
+      })
+      .expect(401)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          done();
+        }
+      });
+  });
+  it('Should contain added participants', (done) => {
+    request(server)
+      .get(`/api/expenses/participants/${coveyId}/${expenseId}`)
+      .set('Cookie', [`user_id=${userId}`])
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          res.body.success.should.be.equal(true);
+          res.body.participants.length.should.be.equal(2);
+          res.body.participants[0].user_id.should.be.equal(userId);
+          res.body.participants[1].user_id.should.be.equal(userId2);
+          done();
+        }
+      });
+  });
+  it('DELETE /api/expenses/participants/:covey_id/:expense_id/:user_id should delete participant', (done) => {
+    request(server)
+      .del(`/api/expenses/participants/${coveyId}/${expenseId}/${userId2}`)
+      .set('Cookie', [`user_id=${userId}`])
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          res.body.success.should.be.equal(true);
+          done();
+        }
+      });
+  });
+  it('Should not delete participants if user unauthorized', (done) => {
+    request(server)
+      .del(`/api/expenses/participants/${coveyId}/${expenseId}/${userId2}`)
+      .set('Cookie', ['user_id=12345'])
+      .expect(401)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          done();
+        }
+      });
+  });
+  it('Should not contain deleted participants', (done) => {
+    request(server)
+      .get(`/api/expenses/participants/${coveyId}/${expenseId}`)
+      .set('Cookie', [`user_id=${userId}`])
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          res.body.success.should.be.equal(true);
+          res.body.participants.length.should.be.equal(1);
+          res.body.participants[0].user_id.should.be.equal(userId);
+          done();
+        }
+      });
+  });
+  it('DELETE /api/expenses/:covey_id/:expense_id should delete the expense', (done) => {
+    request(server)
+      .del(`/api/expenses/${coveyId}/${expenseId}`)
+      .set('Cookie', [`user_id=${userId}`])
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          res.body.success.should.be.equal(true);
+          done();
+        }
+      });
+  });
+  it('Should not delete expense if user unauthorized', (done) => {
+    request(server)
+      .del(`/api/expenses/${coveyId}/${expenseId}`)
+      .set('Cookie', ['user_id=12345'])
+      .expect(401)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          done();
+        }
+      });
+  });
+  it('Should not contain deleted expenses', (done) => {
+    request(server)
+      .get(`/api/expenses/${coveyId}`)
+      .set('Cookie', [`user_id=${userId}`])
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else if (res) {
+          res.body.expenses.length.should.be.equal(0);
           done();
         }
       });
@@ -982,85 +1245,6 @@ describe('Testing Deletion', () => {
         } else if (res) {
           console.log(res.body);
           res.body.should.have.property('success');
-          done();
-        }
-      });
-  });
-});
-
-describe('Testing user id encryption/decryption', () => {
-  let server;
-
-  beforeEach(() => {
-    /* eslint-disable */
-    server = require('../../server/server.js');
-    /* eslint-enable */
-    passportStub.install(server);
-    passportStub.login({ email: 'fools@me.com',
-      facebookId: 'xxXtestingIdXxx',
-      firstName: 'Spider',
-      lastName: 'Monkey',
-      gender: 'male',
-      photoUrl: 'http://something.com/nope.jpg',
-    });
-  });
-
-  it('Should respond with a 401 if decrypted user id provided in url parameter', (done) => {
-    request(server)
-      .get(`/api/coveys/${userIdDecrypted}`)
-      .set('Cookie', [`user_id=${userId}`])
-      .expect(401)
-      .end((err, res) => {
-        if (err) {
-          done(err);
-        } else if (res) {
-          done();
-        }
-      });
-  });
-
-  it('Should respond with a 401 if decrypted user id provided in cookie', (done) => {
-    request(server)
-      .get(`/api/coveys/${userId}`)
-      .set('Cookie', [`user_id=${userIdDecrypted}`])
-      .expect(401)
-      .end((err, res) => {
-        if (err) {
-          done(err);
-        } else if (res) {
-          done();
-        }
-      });
-  });
-
-  it('Should respond with a 401 if decrypted user id provided in request body', (done) => {
-    request(server)
-      .post('/api/coveys')
-      .set('Cookie', [`user_id=${userId}`])
-      .type('json')
-      .send({
-        userId: userIdDecrypted,
-      })
-      .expect(401)
-      .end((err, res) => {
-        if (err) {
-          done(err);
-        } else if (res) {
-          done();
-        }
-      });
-  });
-
-
-  it('Should respond with a 200 if encrypted version of userId provided', (done) => {
-    request(server)
-      .get(`/api/coveys/${userId}`)
-      .set('Cookie', [`user_id=${userId}`])
-      .expect(200)
-      .end((err, res) => {
-        if (err) {
-          done(err);
-        } else if (res) {
           done();
         }
       });

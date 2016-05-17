@@ -363,3 +363,9 @@ span.glyphicon-menu-hamburger {
   width: 100%;
   color: #0191C8;
 }
+
+.map-tile {
+  min-height: 250px;
+  width: 100%;
+  box-shadow: 1px 1px 0 0 #bfbfbf;
+}

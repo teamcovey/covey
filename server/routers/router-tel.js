@@ -1,10 +1,10 @@
 const User = require('../models/user.js');
 const knex = require('../config/config.js').knex;
-const keys = require('../config/keys.js');
+// const keys = require('../config/keys.js');
 
-// var keys = process.env.covey_env === 'PROD' || process.env.covey_env === 'DEV'
-//   ? require('../config/keys.js')
-//   : require('../config/keys.example.js');
+var keys = process.env.covey_env === 'PROD' || process.env.covey_env === 'DEV'
+  ? require('../config/keys.js')
+  : require('../config/keys.example.js');
 
 const generateCode = () => {
   const min = 1000;

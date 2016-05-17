@@ -24,16 +24,18 @@ angular.module('covey.attendees', ['friends.services'])
       }
       $scope.attendees.push(response.user);
     });
+    $scope.friends.splice($scope.friends.indexOf(newAttendee), 1);
     $scope.newAttendee = '';
   };
 
   $scope.removeAttendee = (attendee) => {
-    attendeesHttp.removeAttendee(attendee.user_id)
+    attendeesHttp.removeAttendee(attendee.id)
       .then((response) => {
-        console.log('Removed Attendee id: ', attendee.user_id);
+        console.log('Removed Attendee id: ', attendee.id);
         $scope.attendees.splice($scope.attendees.indexOf(attendee), 1);
       }, (error) => {
         console.error(error);
       });
+    $scope.friends.push(attendee);
   };
 });

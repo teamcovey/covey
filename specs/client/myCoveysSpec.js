@@ -70,17 +70,16 @@ describe('Coveys', () => {
     });
     $scope.toggleCreateCoveyModal();
   });
-  it('Should toggle delete confirmation view', () => {
+  it('Delete feature should toggle confirmation on first click', () => {
     const $scope = {};
     const fakeEvent = { stopPropagation: () => {} };
     const fakeCovey = { confirmDelete: false };
     const controller = $controller(('coveysController'), { $scope: $scope });
-
     expect(fakeCovey.confirmDelete).to.equal(false);
-    $scope.confirmDeletion(fakeCovey, fakeEvent);
+    $scope.deleteCovey(fakeCovey, fakeEvent);
     expect(fakeCovey.confirmDelete).to.equal(true);
   });
-  it('Should delete covey from the array when deleteCovey is called', () => {
+  it('Should delete covey if already confirmed', () => {
     const $scope = {};
     const fakeEvent = { stopPropagation: () => {} };
     const controller = $controller(('coveysController'), { $scope: $scope });
@@ -90,6 +89,7 @@ describe('Coveys', () => {
     expect($scope.coveys[0].name).to.equal('Camping at Redwood National and State Park');
     expect($scope.coveys[1].name).to.equal('Burning man');
 
+    $scope.coveys[0].confirmDelete = true;
     $scope.deleteCovey($scope.coveys[0], fakeEvent);
 
     expect($scope.coveys.length).to.equal(2);

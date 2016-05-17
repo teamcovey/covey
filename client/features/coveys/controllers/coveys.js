@@ -29,7 +29,7 @@ angular.module('coveys', ['covey.services', 'userId.services', 'date.services'])
   };
 
   // Deletes the covey
-  $scope.deleteCovey = (covey) => {
+  $scope.deleteCovey = (covey, event) => {
     // If user has not been asked for confirmation, it will confirm first
     if (covey.confirmDelete) {
       event.stopPropagation();

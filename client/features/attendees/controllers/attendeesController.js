@@ -7,13 +7,6 @@ angular.module('covey.attendees', ['friends.services'])
   const init = () => {
     attendeesHttp.getAllAttendees().then((attendees) => {
       $scope.attendees = attendees;
-      console.log('ALL ATTENDEES: ', attendees);
-      // profileService
-      // profileService.getUser(userId)
-      //   .then((response) => {
-      //     $scope.photoUrl = response.data.user.photoUrl;
-      //   });
-
     });
 
     friendsFactory.getFriends()

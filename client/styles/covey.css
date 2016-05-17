@@ -354,17 +354,6 @@ ul.chat-messages .chat-body:hover {
   width: 90%;
 }
 
-
-
-/* TO DELETE: */
-/*.covey-sidenav {
-  background-color: #0191C8;
-  color:white;
-  height:100vh;
-  padding:0;
-  margin:0;
-  text-align:center;
-}*/
 /* overrides bootstrap hover color change: */
 button.hamburger:hover {
   background-color: #fff;

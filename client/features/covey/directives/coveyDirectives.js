@@ -41,4 +41,17 @@ angular.module('covey.covey')
     templateUrl: 'features/expenses/views/expensesView.html',
     controller: 'expensesController',
   }
-));
+))
+.directive('format', ['$filter', function ($filter) {
+  return {
+    require: '?ngModel',
+    link: (scope, elem, attrs, ctrl) => {
+      if (!ctrl) return;
+      ctrl.$formatters.unshift(() => $filter(attrs.format)(ctrl.$modelValue));
+      elem.bind('blur', () => {
+        const plainNumber = elem.val().replace(/[^\d|\-+|\.+]/g, '');
+        elem.val($filter(attrs.format)(plainNumber));
+      });
+    },
+  };
+}]);

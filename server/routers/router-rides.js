@@ -41,6 +41,7 @@ exports.updateRide = (req, res) => {
   const location = req.body.location;
   const departureTime = req.body.departureTime;
   const coveyId = req.body.covey_id;
+  const riders = req.body.riders;
 
   Car.where({ id: carId })
     .fetch()
@@ -52,6 +53,7 @@ exports.updateRide = (req, res) => {
       ride.set('covey_id', coveyId);
       ride.save()
         .then((updatedRide) => {
+          updatedRide.attributes.riders = riders;
           req.io.sockets.emit(`update ride ${coveyId}`, { response: updatedRide });
           res.status(201).json({ updatedRide });
         });

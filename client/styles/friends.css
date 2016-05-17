@@ -1,6 +1,25 @@
 .scroll-box {
   overflow-y: scroll;
 }
-.pad-search {
+.pad-bottom-5 {
   padding-bottom: 5px;
+}
+.potential-friend-to-add {
+  background-color:#FFFFFF;
+}
+.potential-friend-to-add:hover {
+  background-color:#00cc85;
+}
+.potential-friend-to-remove {
+  background-color:#FFFFFF;
+}
+.potential-friend-to-remove:hover {
+  background-color:#FF0000;
+}
+.verticle-center {
+  display: flex;
+  align-items: center;
+}
+.plus-up {
+  margin-top: -5px;
 }

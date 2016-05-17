@@ -2,14 +2,21 @@ angular.module('covey.expenses')
 .service('expensesHelpers', function ($routeParams) {
   /* Iterates through all expenses and finds the user's assigned Expense */
   this.getUsersTotal = (expenses, userId) => {
-    let userTotal = { balance: 0 };
+    const userTotal = { paid: 0, owe: 0 };
 
     expenses.forEach((expense) => {
-      if (expense.owner && expense.owner.id.toString() === userId.toString()) {
-        userTotal += expense.value;
-      }
+      // need to check each participant
+      expense.participants.forEach((participant) => {
+        const testId = participant.user_id || participant.id;
+        if (testId.toString() === userId.toString()) {
+          if (participant.is_owner) {
+            userTotal.paid += parseFloat(expense.amount);
+          } else {
+            userTotal.owe += parseFloat(expense.amount / expense.participants.length);
+          }
+        }
+      });
     });
-
     return userTotal;
   };
 

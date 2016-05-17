@@ -43,7 +43,7 @@ angular.module('covey.expenses', ['userId.services', 'covey.attendees'])
   /* SOCKETS:remove expense */
   socket.on(`remove expense ${$routeParams.coveyId}`, (data) => {
     for (let i = 0; i < $scope.expensesDetails.length; i++) {
-      if ($scope.expensesDetails[i].id.toString() === data.response.toString()) {
+      if ($scope.expensesDetails[i].expense_id.toString() === data.response.toString()) {
         $scope.expensesDetails.splice(i, 1);
         break;
       }
@@ -61,11 +61,6 @@ angular.module('covey.expenses', ['userId.services', 'covey.attendees'])
               $scope.expensesDetails[i].participants.push($scope.attendees[j]);
             } else {
               $scope.expensesDetails[i].participants = [$scope.attendees[j]];
-            }
-
-            // If current user is the added participant, set expense to user's total
-            if (data.response.user_id.toString() === userId.toString()) {
-              $scope.usersExpense = expensesHelpers.getUsersTotal($scope.expensesDetails, userId);
             }
             break;
           }
@@ -112,6 +107,7 @@ angular.module('covey.expenses', ['userId.services', 'covey.attendees'])
 
   /* Creates or updates a expense when user select 'Update' in edit view */
   $scope.submitExpense = (expense) => {
+    expense.amount = Number(expense.amount.replace(/[^0-9\.]+/g, ''));
     expensesHttp.updateExpense(expense);
   };
 
@@ -136,7 +132,7 @@ angular.module('covey.expenses', ['userId.services', 'covey.attendees'])
         let result = true;
         if (participants) {
           participants.forEach((currentParticipant) => {
-            if (currentParticipant.user_id === attendee.user_id) {
+            if (currentParticipant.user_id === attendee.id || currentParticipant.id === attendee.id) {
               result = false;
             }
           });

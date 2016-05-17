@@ -137,7 +137,7 @@ angular.module('covey.supplies', ['userId.services', 'covey.attendees'])
         let result = true;
         if (suppliers) {
           suppliers.forEach((currentSupplier) => {
-            if (currentSupplier.user_id === attendee.user_id) {
+            if (currentSupplier.user_id === attendee.id) {
               result = false;
             }
           });

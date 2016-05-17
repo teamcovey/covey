@@ -82,6 +82,15 @@ angular.module('friends', ['friends.services', 'userId.services'])
   $scope.hideSearch = () => {
     $scope.showFriends = 'true';
   }
+
+  $scope.confirmDelete = (friend) => {
+    // using a confirm click to make sure people cant accidentally remove friends
+    if (friend.removeConfirm) {
+      $scope.removeFriend(friend.id);
+    } else {
+      friend.removeConfirm = true;
+    }
+  }
   /*
    * Automatically gets all friends on page load.
    */

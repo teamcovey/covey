@@ -6,17 +6,21 @@
 
   <div class="row" ng-switch-when="true">
     <div class="col-md-12 text-center">
-      <div class="row pad-search">
+      <div class="row pad-bottom-5">
           <form ng-submit="searchUsers(searchString)">
             <input type="text" name="friendSearch" placeholder="...friend to search for" class="none" ng-model="searchString" />
             <input type="submit" id="submit" value="Search" />
           </form>
       </div>
-      <div class="row" ng-repeat="friend in friends">
-        <div class="col-sm-4">
-          <img src="{{ friend.photoUrl }}" height="40px" width="40px" border-radius="3px" margin="10px" ng-click="removeFriend(friend.id)"/>
+      <div class="row potential-friend-to-remove verticle-center" ng-repeat="friend in friends" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false; friend.removeConfirm = false" ng-click="confirmDelete(friend)">
+        <div class="col-sm-3">
+          <img src="{{ friend.photoUrl }}" height="40px" width="40px" border-radius="3px" margin="10px"/>
         </div>
-        <div class="col-sm-8">
+        <div class="col-sm-2 plus-up" ng-switch on="friend.removeConfirm">
+          <div ng-switch-default class="side-nav-title">{{mouseOverTrue ? '-' : ''}}</div>
+          <div ng-switch-when="true">Remove?</div>
+        </div>
+        <div class="col-sm-6">
           <h5>{{ friend.firstName }} {{ friend.lastName }}</h5>
           <h5>{{ friend.email }}</h5>
         </div>
@@ -54,20 +58,21 @@
         </h3>
       </div>
 
-      <div class="row pad-search"> 
+      <div class="row pad-bottom-5"> 
         <form ng-submit="searchUsers(searchString)">
           <input type="text" name="friendSearch" placeholder="refine your search" class="none" ng-model="searchString" />
           <input type="submit" id="submit" value="Search" />
         </form>
       </div>
 
-      <div class="row" ng-repeat="friend in found">
+      <div class="row potential-friend-to-add verticle-center" ng-repeat="friend in found" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-click="addFriend(friend.id)">
         <div class="col-sm-4">
-          <img src="{{ friend.photoUrl }}" height="40px" width="40px" border-radius="3px" margin="10px" ng-click="addFriend(friend.id)"/>
+          <div><img src="{{ friend.photoUrl }}" height="40px" width="40px" border-radius="3px" margin="10px"/></div>
         </div>
-        <div class="col-sm-8">
-          <h5>{{ friend.firstName }} {{ friend.lastName }}</h5>
-          <h5>{{ friend.email }}</h5>
+        <div class="col-sm-2 side-nav-title plus-up"><div>{{mouseOverTrue ? '+' : ''}}</div></div>
+        <div class="col-sm-6">
+          <div><h5>{{ friend.firstName }} {{ friend.lastName }}</h5>
+          <h5>{{ friend.email }}</h5></div>
         </div>
       </div>
 
@@ -83,7 +88,7 @@
           <button class="btn btn-pineapple" ng-click="hideSearch()">Close Search</button></h1>
         </div>
       </div>
-      <div class="row pad-search">
+      <div class="row pad-bottom-5">
           <form ng-submit="searchUsers(searchString)">
             <input type="text" name="friendSearch" placeholder="refine your search" class="none" ng-model="searchString"></input>
             <input type="submit" id="submit" value="Search" />

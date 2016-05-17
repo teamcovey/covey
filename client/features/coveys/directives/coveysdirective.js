@@ -8,5 +8,6 @@ angular.module('coveys')
 .directive('friendsDirective', () => {
   return {
     templateUrl: 'features/friends/views/myfriends.html',
+    controller: 'friendsController',
   };
 });

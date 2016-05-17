@@ -42,10 +42,6 @@ angular.module('covey', [
       templateUrl: 'features/covey/views/coveyView.html',
       controller: 'coveyController',
     })
-    .when('/friends', {
-      templateUrl: 'features/friends/views/friends.html',
-      controller: 'friendsController',
-    })
     .when('/profile', {
       templateUrl: 'features/profile/views/profile.html',
       controller: 'profileController',

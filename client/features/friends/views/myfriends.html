@@ -3,37 +3,34 @@
   <p class="chat-panel-title"><b>Friends</b></p>
 </div>
 <div ng-switch on="showFriends">
+
   <div class="row" ng-switch-when="true">
     <div class="col-md-12 text-center">
       <div class="row">
-        <div class="col-md-2 col-md-offset-10">
           <form ng-submit="searchUsers(searchString)">
-            <input type="text" name="friendSearch" placeholder="...friend to search for" class="none" ng-model="searchString"></input>
+            <input type="text" name="friendSearch" placeholder="...friend to search for" class="none" ng-model="searchString" />
             <input type="submit" id="submit" value="Search" />
           </form>
-        </div>
       </div>
-      <div class="scroll-box">
-        <div class-"row" ng-repeat="friend in friends">
-          <div class="col-md-6 text-left covey-tile">
-            <div class="mycoveys-event-image-container">
-              <img src="{{ friend.photoUrl }}" class="myfriends-profile-image" ng-click="removeFriend(friend.id)"/>
-            </div>
-            <h4>{{ friend.firstName }}</h4>
-            <h4>{{ friend.lastName }}</h4>
-            <h5>{{ friend.email }}</h5>
-          </div>
+      <div class="row" ng-repeat="friend in friends">
+        <div class="col-sm-4">
+          <img src="{{ friend.photoUrl }}" height="40px" width="40px" border-radius="3px" margin="10px" ng-click="removeFriend(friend.id)"/>
+        </div>
+        <div class="col-sm-8">
+          <h5>{{ friend.firstName }} {{ friend.lastName }}</h5>
+          <h5>{{ friend.email }}</h5>
         </div>
       </div>
     </div>
   </div>
+
   <!-- Error view -->
   <div class="row" ng-switch-when="error">
     <div class="col-md-12 text-center">
       <div class="row">
         <div class="col-md-2 col-md-offset-10">
           <form ng-submit="searchUsers(searchString)">
-            <input type="text" name="friendSearch" placeholder="...friend to search for" class="none" ng-model="searchString"></input>
+            <input type="text" name="friendSearch" placeholder="...friend to search for" class="none" ng-model="searchString" />
             <input type="submit" id="submit" value="Search" />
           </form>
         </div>
@@ -46,36 +43,35 @@
       </div>
     </div>
   </div>
+
   <!-- Search view populated-->
   <div class="row" ng-switch-when="search">
-    <div class="col-md-12 text-center">
-      <div class="row">
-        <div class="col-md-12">
-          <h3>Add Friends</h3>
+    <div class="col-md-12 text-center"> 
+
+      <div class="row"> 
+        <h3>Add Friends</h3>
+      </div>
+
+      <div class="row"> 
+        <form ng-submit="searchUsers(searchString)">
+          <input type="text" name="friendSearch" placeholder="...friend to search for" class="none" ng-model="searchString" />
+          <input type="submit" id="submit" value="Search" />
+        </form>
+      </div>
+
+      <div class="row" ng-repeat="friend in found">
+        <div class="col-sm-4">
+          <img src="{{ friend.photoUrl }}" height="40px" width="40px" border-radius="3px" margin="10px" ng-click="addFriend(friend.id)"/>
+        </div>
+        <div class="col-sm-8">
+          <h5>{{ friend.firstName }} {{ friend.lastName }}</h5>
+          <h5>{{ friend.email }}</h5>
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-2 col-md-offset-10">
-          <form ng-submit="searchUsers(searchString)">
-            <input type="text" name="friendSearch" placeholder="...friend to search for" class="none" ng-model="searchString"></input>
-            <input type="submit" id="submit" value="Search" />
-          </form>
-        </div>
-      </div>
-      <div class="scroll-box">
-        <div class-"row" ng-repeat="friend in found">
-          <div class="col-md-12 text-left covey-tile">
-            <div class="mycoveys-event-image-container">
-              <img src="{{ friend.photoUrl }}" class="myfriends-profile-image" ng-click="addFriend(friend.id)"/>
-            </div>
-            <h4>{{ friend.firstName }}</h4>
-            <h4>{{ friend.lastName }}</h4>
-            <h5>{{ friend.email }}</h5>
-          </div>
-        </div>
-      </div>
+
     </div>
   </div>
+
   <!-- Search view empty-->
   <div class="row" ng-switch-when="empty">
     <div class="col-md-12 text-center">
@@ -100,6 +96,7 @@
       </div>
     </div>
   </div>
+
   <!-- 'No coveys' view -->
   <div class="row" ng-switch-default>
     <div class="col-md-12 text-center">

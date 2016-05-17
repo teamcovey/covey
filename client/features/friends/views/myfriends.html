@@ -12,7 +12,7 @@
             <input type="submit" id="submit" value="Search" />
           </form>
       </div>
-      <div class="row potential-friend-to-remove verticle-center" ng-repeat="friend in friends" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-click="removeFriend(friend.id)">
+      <div class="row potential-friend-to-remove verticle-center" ng-repeat="friend in friends" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-click="confirmDelete(friend.firstName, friend.id)">
         <div class="col-sm-4">
           <img src="{{ friend.photoUrl }}" height="40px" width="40px" border-radius="3px" margin="10px"/>
         </div>

@@ -78,6 +78,10 @@ angular.module('friends', ['friends.services', 'userId.services'])
         }
       });
   };
+
+  $scope.hideSearch = () => {
+    $scope.showFriends = 'true';
+  }
   /*
    * Automatically gets all friends on page load.
    */

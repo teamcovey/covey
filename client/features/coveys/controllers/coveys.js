@@ -28,23 +28,21 @@ angular.module('coveys', ['covey.services', 'userId.services', 'date.services'])
     $location.path(`/coveys/${covey.covey_id}`);
   };
 
-  // Confirms whether user wants to delete covey
-  $scope.confirmDeletion = (covey, event) => {
-    // Prevent's parent div's ng-click from being triggered
-    event.stopPropagation();
-    // Toggles the confirm deletion view
-    covey.confirmDelete = true;
-  }
   // Deletes the covey
-  $scope.deleteCovey = (covey, event) => {
-    // Prevent's parent div's ng-click from being triggered
-    event.stopPropagation();
-    // Deletes the covey
-    const coveyIndex = $scope.coveys.indexOf(covey);
-    coveysFactory.deleteCovey(covey.covey_id);
-    $scope.coveys.splice(coveyIndex, 1);
+  $scope.deleteCovey = (covey) => {
+    // If user has not been asked for confirmation, it will confirm first
+    if (covey.confirmDelete) {
+      event.stopPropagation();
+      // Deletes the covey
+      const coveyIndex = $scope.coveys.indexOf(covey);
+      coveysFactory.deleteCovey(covey.covey_id);
+      $scope.coveys.splice(coveyIndex, 1);
+    } else {
+      event.stopPropagation();
+      // Toggles the confirm deletion view
+      covey.confirmDelete = true;
+    }
   }
-
 
   /*
    *  Triggered whenever the 'create' button is clicked.

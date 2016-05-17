@@ -17,6 +17,8 @@
     <p><span class="glyphicon glyphicon-time"></span> From {{formatDate(details.startTime)}} to {{formatDate(details.endTime)}}
     <p><i>{{details.details}}</i></p>
     <button class="btn btn-pineapple" ng-click="addToCalendar()">Add to Google calendar</button>
+    <button class="btn btn-pineapple" ng-click="emailAttendees()">Email the group</button><br><br>
+  <textarea class="email-text-area" ng-model="emailBody"></textarea>
   </div>
   <div class="col-sm-5">
     <span class="glyphicon glyphicon-map-marker"></span> {{details.location}}

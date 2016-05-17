@@ -1,5 +1,5 @@
 angular.module('covey.covey', [])
-.controller('coveyController', function ($scope, $location, coveyService, googleCalendarService, $sce) {
+.controller('coveyController', function ($scope, $location, coveyService, googleCalendarService, $sce, emailAttendeesService) {
   // Necessary to initialize left side nav & columns at correct height/width:
   if (window.innerWidth > 770) {
     $('.covey').css('width', '97%');
@@ -46,5 +46,11 @@ angular.module('covey.covey', [])
 
   $scope.addToCalendar = () => {
     googleCalendarService.addToCalendar($scope.details);
+  };
+
+  $scope.emailMessage = 'this';
+
+  $scope.emailAttendees = () => {
+    emailAttendeesService.emailAttendees($scope.details, $scope.emailMessage);
   };
 });

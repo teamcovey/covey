@@ -373,3 +373,14 @@ span.glyphicon-menu-hamburger {
   width: 100%;
   box-shadow: 1px 1px 0 0 #bfbfbf;
 }
+
+.email-text-area {
+  width: 300px;
+  height: 150px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  resize: none;
+}

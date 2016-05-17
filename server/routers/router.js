@@ -31,6 +31,7 @@ const routeRides = require('./router-rides');
 const routeResources = require('./router-resources');
 const routeTel = require('./router-tel');
 const routeExpenses = require('./router-expenses');
+const routeEmail = require('./router-email');
 
 // can set up different routes for each path
 const bodyParser = require('body-parser');
@@ -183,5 +184,9 @@ app.get('/api/tel/verify/:tel', auth, routeTel.generateCodeAndSend);
 app.post('/api/tel', auth, routeTel.addTel);
 
 app.get('/api/tel', auth, routeTel.hasTel);
+
+// Routes for phone verification
+
+app.post('/api/email/:coveyId/:userId', auth, isValidCoveyMember, routeEmail.sendEmail);
 
 module.exports = { app, server };

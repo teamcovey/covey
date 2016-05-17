@@ -5,9 +5,8 @@
 <br>
 <div class="main-panel-body" ng-switch on="hasCoveys">
   <div ng-switch-when="true">
-
     <div class="row text-right btn-row">
-      <div class="col-md-2 col-md-offset-10">
+      <div class="col-sm-offset-9 col-sm-3">
         <button class="btn btn-pineapple" ng-click="toggleCreateCoveyModal()"><b>+ Create</b></button>
       </div>
     </div>
@@ -24,41 +23,35 @@
         </div>
       </div>
     </div>
+  </div>
 
-    <div ng-switch-when="error">
+  <div ng-switch-when="error">
+    <div class="row text-right btn-row">
+      <div class="col-sm-offset-9 col-sm-3">
+        <button class="btn btn-pineapple" ng-click="toggleCreateCoveyModal()"><b>+ Create</b></button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <h3>There was an error retrieving your coveys!</h3>
+        <h4>If the problem persists, please contact support@covey.com</h4>
+      </div>
+    </div>
+  </div>
+
+  <div ng-switch-default>
+    <div class="col-md-12 text-center">
       <div class="row text-right btn-row">
-        <div class="col-md-2 col-md-offset-10">
+        <div class="col-sm-offset-9 col-sm-3">
           <button class="btn btn-pineapple" ng-click="toggleCreateCoveyModal()"><b>+ Create</b></button>
         </div>
       </div>
       <div class="row">
-        <div class="cold-md-12 text-center">
-          <h3>There was an error retrieving your coveys!</h3>
-          <h4>If the problem persists, please contact support@covey.com</h4>
+        <div class="col-md-12">
+          <h3>You have no coveys</h3>
+          <h4>Click the 'create' button to make a new one!</h4>
         </div>
       </div>
     </div>
-
-    <div ng-switch-default>
-      <div class="cold-md-12 text-center">
-        <div class="row text-left coveys-title-container">
-          <div class="col-md-12">
-            <h1 class="coveys-title-text">My Coveys</h1>
-          </div>
-        </div>
-        <div class="row text-right btn-row">
-          <div class="col-md-2 col-md-offset-10">
-            <button class="btn btn-pineapple" ng-click="toggleCreateCoveyModal()"><b>+ Create</b></button>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <h3>You have no coveys</h3>
-            <h4>Click the 'create' button to make a new one!</h4>
-          </div>
-        </div>
-      </div>
-    </div>
-
   </div>
 </div>

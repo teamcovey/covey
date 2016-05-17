@@ -23,4 +23,8 @@ angular.module('covey.nav', [])
   $scope.navigateTo = (somePath) => {
     $location.path(somePath);
   };
+
+  $scope.logout = () => {
+    window.location.href = '/api/logout'
+  }
 });

@@ -36,6 +36,15 @@ describe('Coveys Factory', () => {
       });
     $httpBackend.flush();
   });
+  it('Should receive a 200 when deleteCovey is called', (done) => {
+    $httpBackend.expectDELETE('/api/coveys/1').respond(200, []);
+    coveysFactory.deleteCovey(1)
+      .then((response) => {
+        expect(response.status).to.equal(200);
+        done();
+      });
+    $httpBackend.flush();
+  });
 });
 
 describe('User Id Factory', () => {

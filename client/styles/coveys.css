@@ -88,6 +88,50 @@
   padding-bottom: 2.5px;
   padding-top: 2.5px;
 }
+.covey-tile-owner {
+  float: right;
+  position: absolute;
+  right: 0;
+}
+.covey-tile-owner-tag {
+  font-weight: bold;
+
+  background-color: #0191C8;
+  color: white;
+
+  border-top-right-radius: 3px;
+  padding: 2px;
+}
+.covey-tile-owner-delete-image {
+  position: absolute;
+  padding-top: 3px;
+  right: 10px;
+  top: 37.5px;
+  height: 25px;
+  width: 25px;
+}
+.covey-tile-delete-confirm {
+  color: red;
+
+  padding: 2px;
+
+  position: absolute;
+  right: 0px;
+  top: 37.5px;
+  height: 25px;
+}
+.covey-tile-attending {
+  float: right;
+  position: absolute;
+  right: 0;
+  font-weight: bold;
+
+  background-color: #DDDDDD;
+  color: black;
+
+  border-top-right-radius: 3px;
+  padding: 2px;
+}
 .add-coveys-button {
   width: 25%;
 }

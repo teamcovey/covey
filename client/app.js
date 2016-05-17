@@ -2,6 +2,7 @@ angular.module('covey', [
   'covey.index',
   'index.services',
   'covey.welcome',
+  'covey.nav',
   'covey.attendees',
   'covey.supplies',
   'covey.rides',
@@ -35,6 +36,7 @@ angular.module('covey', [
     })
     .when('/coveys', {
       templateUrl: 'features/coveys/views/coveys.html',
+      controller: 'coveysController',
     })
     .when('/coveys/:coveyId', {
       templateUrl: 'features/covey/views/coveyView.html',
@@ -46,12 +48,15 @@ angular.module('covey', [
     })
     .when('/profile', {
       templateUrl: 'features/profile/views/profile.html',
+      controller: 'profileController',
     })
     .otherwise({
       redirectTo: '/',
     });
 })
 .run(function ($location, $rootScope, auth) {
+  $rootScope.expandMenu = true;
+  
   $rootScope.$on('$routeChangeStart', (event) => {
     if ($location.path() !== '/about') {
       auth.checkAuthentication()

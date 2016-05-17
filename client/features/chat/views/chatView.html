@@ -1,13 +1,11 @@
-<div class="panel panel-default panel-chat">
-  <div class="panel-body">
-    Chats panel
-<hr>
-<input ng-model="msg" ng-keydown="addMessage($event)" type="text" id="messageInput"  placeholder="Type a message...">
-          <ul id="example-messages" class="chat-messages">
-            <li ng-repeat="msg in messages.slice().reverse()">
-              <span class="chat-username">{{ msg.from }}</span>
-              {{ msg.body }}
-            </li>
-          </ul>
-  </div>
+<div class="chat-panel-header">
+  <p class="chat-panel-title"><b>Messages</b></p>
 </div>
+
+<input ng-model="msg" ng-keydown="addMessage($event)" type="text" id="messageInput"  placeholder="Type a message...">
+<ul class="list-unstyled chat-messages">
+  <li ng-repeat="msg in messages.slice().reverse()">
+    <span class="main-input-styles shared-inputs-color chat-username">{{ msg.from }}</span>
+    <span class="main-input-styles chat-body">{{ msg.body }}</span>
+  </li>
+</ul>

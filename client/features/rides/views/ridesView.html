@@ -1,9 +1,9 @@
 <div class="main-body-panel-header">
-  <p class="body-panel-header"><b>RIDES</b></p>
+  <p class="body-panel-title"><b>RIDES</b></p>
   <p class="body-panel-personal-details">Your ride: {{stringifyUsersRide()}}</p>
 </div>
 <br>
-<div class="main-body-panel-body">
+<div class="main-panel-body">
   <div class="main-body-inputs" ng-repeat="ride in ridesDetails track by $index">
     <form ng-submit="submitRide(ride, $index)">
       <input type="text" name="driverName" class="main-input-styles shared-inputs-color" ng-model="ride.name"></input>

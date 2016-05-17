@@ -1,12 +1,10 @@
 <!-- We are using switch to swap between the 'no coveys' and 'has coveys' views -->
-<div ng-controller="friendsController" ng-switch on="showFriends">
+<div class="chat-panel-header">
+  <p class="chat-panel-title"><b>Friends</b></p>
+</div>
+<div ng-switch on="showFriends">
   <div class="row" ng-switch-when="true">
-    <div class="cold-md-12 text-center">
-      <div class="row">
-        <div class="col-md-12">
-          <h1>My Friends</h1>
-        </div>
-      </div>
+    <div class="col-md-12 text-center">
       <div class="row">
         <div class="col-md-2 col-md-offset-10">
           <form ng-submit="searchUsers(searchString)">
@@ -33,11 +31,6 @@
   <div class="row" ng-switch-when="error">
     <div class="col-md-12 text-center">
       <div class="row">
-        <div class="col-md-12">
-          <h1>My Friends</h1>
-        </div>
-      </div>
-      <div class="row">
         <div class="col-md-2 col-md-offset-10">
           <form ng-submit="searchUsers(searchString)">
             <input type="text" name="friendSearch" placeholder="...friend to search for" class="none" ng-model="searchString"></input>
@@ -46,7 +39,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="cold-md-12 text-center">
+        <div class="col-md-12 text-center">
           <h3>There was an error retrieving your friends!</h3>
           <h4>If the problem persists, please contact support@covey.com</h4>
         </div>
@@ -58,7 +51,7 @@
     <div class="col-md-12 text-center">
       <div class="row">
         <div class="col-md-12">
-          <h1>Add Friends</h1>
+          <h3>Add Friends</h3>
         </div>
       </div>
       <div class="row">
@@ -109,19 +102,12 @@
   </div>
   <!-- 'No coveys' view -->
   <div class="row" ng-switch-default>
-    <div class="cold-md-12 text-center">
+    <div class="col-md-12 text-center">
       <div class="row">
-        <div class="col-md-12">
-          <h1>My Friends</h1>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-2 col-md-offset-10">
-          <form ng-submit="searchUsers(searchString)">
-            <input type="text" name="friendSearch" placeholder="...friend to search for" class="none" ng-model="searchString"></input>
-            <input type="submit" id="submit" value="Search" />
-          </form>
-        </div>
+        <form ng-submit="searchUsers(searchString)">
+          <input type="text" name="friendSearch" placeholder="...friend to search for" class="none" ng-model="searchString"></input>
+          <input type="submit" id="submit" value="Search" />
+        </form>
       </div>
       <div class="row">
         <div class="col-md-12">

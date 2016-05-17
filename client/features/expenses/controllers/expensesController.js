@@ -107,7 +107,6 @@ angular.module('covey.expenses', ['userId.services', 'covey.attendees'])
 
   /* Creates or updates a expense when user select 'Update' in edit view */
   $scope.submitExpense = (expense) => {
-    console.log('need to check expense ', expense);
     expense.amount = Number(expense.amount.replace(/[^0-9\.]+/g, ''));
     expensesHttp.updateExpense(expense);
   };

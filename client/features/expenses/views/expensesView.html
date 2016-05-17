@@ -1,10 +1,10 @@
 <div class="main-body-panel-header">
-  <p class="body-panel-header"><b>Expenses</b></p>
+  <p class="body-panel-title"><b>EXPENSES</b></p>
   <p class="body-panel-personal-details">You paid: ${{usersExpense.paid.toFixed(2)}} You owe: ${{usersExpense.owe.toFixed(2)}}</p>
   $ represents the person who paid
 </div>
 <br>
-<div class="main-body-panel-body">
+<div class="main-panel-body">
   <div class="main-body-inputs" ng-repeat="expense in expensesDetails track by $index">
     <form ng-submit="submitExpense(expense, $index)">
       <input type="text" name="expenseName" class="main-input-styles shared-inputs-color" ng-model="expense.name"></input>

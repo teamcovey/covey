@@ -6,7 +6,7 @@
 
   <div class="row" ng-switch-when="true">
     <div class="col-md-12 text-center">
-      <div class="row">
+      <div class="row pad-search">
           <form ng-submit="searchUsers(searchString)">
             <input type="text" name="friendSearch" placeholder="...friend to search for" class="none" ng-model="searchString" />
             <input type="submit" id="submit" value="Search" />
@@ -49,12 +49,14 @@
     <div class="col-md-12 text-center"> 
 
       <div class="row"> 
-        <h3>Add Friends</h3>
+        <h3>
+        <button class="btn btn-pineapple" ng-click="hideSearch()">Close Search</button>
+        </h3>
       </div>
 
-      <div class="row"> 
+      <div class="row pad-search"> 
         <form ng-submit="searchUsers(searchString)">
-          <input type="text" name="friendSearch" placeholder="...friend to search for" class="none" ng-model="searchString" />
+          <input type="text" name="friendSearch" placeholder="refine your search" class="none" ng-model="searchString" />
           <input type="submit" id="submit" value="Search" />
         </form>
       </div>
@@ -77,16 +79,15 @@
     <div class="col-md-12 text-center">
       <div class="row">
         <div class="col-md-12">
-          <h1>Add Friends</h1>
+          <h1>
+          <button class="btn btn-pineapple" ng-click="hideSearch()">Close Search</button></h1>
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-2 col-md-offset-10">
+      <div class="row pad-search">
           <form ng-submit="searchUsers(searchString)">
-            <input type="text" name="friendSearch" placeholder="...friend to search for" class="none" ng-model="searchString"></input>
+            <input type="text" name="friendSearch" placeholder="refine your search" class="none" ng-model="searchString"></input>
             <input type="submit" id="submit" value="Search" />
           </form>
-        </div>
       </div>
       <div class="row">
         <div class="col-md-12">
@@ -97,7 +98,7 @@
     </div>
   </div>
 
-  <!-- 'No coveys' view -->
+  <!-- 'No friends' view -->
   <div class="row" ng-switch-default>
     <div class="col-md-12 text-center">
       <div class="row">

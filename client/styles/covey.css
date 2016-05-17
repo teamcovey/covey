@@ -350,6 +350,10 @@ ul.chat-messages .chat-body:hover {
   box-shadow: 2px 2px 2px #CACACA;
 }
 
+.attendee-block {
+  display: inline-block;
+}
+
 #messageInput {
   width: 90%;
 }

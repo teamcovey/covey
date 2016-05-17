@@ -62,10 +62,6 @@ angular.module('covey.expenses', ['userId.services', 'covey.attendees'])
             } else {
               $scope.expensesDetails[i].participants = [$scope.attendees[j]];
             }
-            // If current user is the added participant, set expense to user's total
-            // if (data.response.user_id.toString() === userId.toString()) {
-            //   $scope.usersExpense = expensesHelpers.getUsersTotal($scope.expensesDetails, userId);
-            // }
             break;
           }
         }

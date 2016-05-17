@@ -12,11 +12,14 @@
             <input type="submit" id="submit" value="Search" />
           </form>
       </div>
-      <div class="row potential-friend-to-remove verticle-center" ng-repeat="friend in friends" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-click="confirmDelete(friend.firstName, friend.id)">
-        <div class="col-sm-4">
+      <div class="row potential-friend-to-remove verticle-center" ng-repeat="friend in friends" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false; friend.removeConfirm = false" ng-click="confirmDelete(friend)">
+        <div class="col-sm-3">
           <img src="{{ friend.photoUrl }}" height="40px" width="40px" border-radius="3px" margin="10px"/>
         </div>
-        <div class="col-sm-2 side-nav-title plus-up"><div>{{mouseOverTrue ? '-' : ''}}</div></div>
+        <div class="col-sm-2 plus-up" ng-switch on="friend.removeConfirm">
+          <div ng-switch-default class="side-nav-title">{{mouseOverTrue ? '-' : ''}}</div>
+          <div ng-switch-when="true">Remove?</div>
+        </div>
         <div class="col-sm-6">
           <h5>{{ friend.firstName }} {{ friend.lastName }}</h5>
           <h5>{{ friend.email }}</h5>

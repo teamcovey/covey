@@ -13,9 +13,17 @@
 
     <div>
       <div ng-repeat="covey in coveys track by $index">
-        <div class="col-md-12 text-left covey-tile" ng-click="goToCovey(covey.covey_id)">
+        <div class="col-md-12 text-left covey-tile" ng-click="goToCovey(covey)">
           <div class="mycoveys-event-image-container">
             <img src="{{ covey.photoUrl }}" class="mycoveys-event-image"/>
+          </div>
+          <div ng-switch on="covey.isOwner">
+            <div class="covey-tile-owner" ng-switch-when="true" ng-switch on="covey.confirmDelete">
+              <div class="covey-tile-owner-tag">ADMIN</div>
+              <div class="covey-tile-delete-confirm" ng-switch-when="true" ng-click="deleteCovey(covey, $event)">DELETE?</div>
+              <img class="covey-tile-owner-delete-image" src="../../../styles/img/deletecovey.ico" ng-click="confirmDeletion(covey, $event)" ng-switch-default/>
+            </div>
+            <div class="covey-tile-attending" ng-switch-default>ATTENDING</div>
           </div>
           <h4 class="covey-tile-heading">{{ covey.name }}</h4>
           <h5 class="covey-tile-text">{{ convertToTextDate(covey.startTime) }} to {{ convertToTextDate(covey.endTime) }}</h5>

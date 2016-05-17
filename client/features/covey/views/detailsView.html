@@ -4,23 +4,26 @@
   <div class="col-sm-offset-1 col-sm-5">
     <h2 class="details-header-title"><b>{{details.name}}</b></h2>
   </div>
-  <div class="col-sm-offset-4 col-sm-2">
+  <div class="col-sm-offset-3 col-sm-2">
     <button class="covey-details-edit-btn" ng-click="toggleEdit()">
     Edit&nbsp;<span class="glyphicon glyphicon-pencil"></span>  
   </button>
   </div>
 </div>
-
 <div class="row details-body-section" ng-hide="editDetails">
   <div class="col-sm-offset-1 col-sm-5">
+    <br>
+    <br>
     <p><span class="glyphicon glyphicon-time"></span> From {{formatDate(details.startTime)}} to {{formatDate(details.endTime)}}
     <p><i>{{details.details}}</i></p>
     <button class="btn btn-pineapple" ng-click="addToCalendar()">Add to Google calendar</button>
   </div>
-  <div class="col-sm-offset-1 col-sm-4">
+  <div class="col-sm-5">
     <span class="glyphicon glyphicon-map-marker"></span> {{details.location}}
     <br>
-    MAP GOES HERE
+    <iframe class="map-tile" frameborder="0" style="border:0"
+      src="{{ gMapUrl }}" allowfullscreen>
+    </iframe>
     <p>{{details.address}}, {{details.city}}, {{details.state}}</p>
   </div>
 </div>

@@ -1,5 +1,5 @@
 angular.module('covey.covey', [])
-.controller('coveyController', function ($scope, $location, coveyService, googleCalendarService) {
+.controller('coveyController', function ($scope, $location, coveyService, googleCalendarService, $sce) {
   // Necessary to initialize left side nav & columns at correct height/width:
   if (window.innerWidth > 770) {
     $('.covey').css('width', '97%');
@@ -18,6 +18,9 @@ angular.module('covey.covey', [])
   coveyService.getCovey().then((response) => {
     $scope.details = response.covey;
     // TODO: add validation to check that photoUrl is a real url:
+    $scope.gMapUrl = $sce.trustAsResourceUrl('https://www.google.com/maps/embed/v1/place?'
+      + 'key=AIzaSyCYGIGwHNJ8Z7KKpSo6-JdK6t7mYfap05I&'
+      + `q=${$scope.details.address} ${$scope.details.city} ${$scope.details.state}`);
     $scope.showPhoto = response.covey.photoUrl || false;
   });
 
@@ -35,6 +38,9 @@ angular.module('covey.covey', [])
   $scope.updateCovey = () => {
     coveyService.updateCovey($scope.details);
     // TODO: add validation to check that photoUrl is a real url:
+    $scope.gMapUrl = $sce.trustAsResourceUrl('https://www.google.com/maps/embed/v1/place?'
+      + 'key=AIzaSyCYGIGwHNJ8Z7KKpSo6-JdK6t7mYfap05I&'
+      + `q=${$scope.details.address} ${$scope.details.city} ${$scope.details.state}`);
     $scope.showPhoto = $scope.details.photoUrl || false;
   };
 

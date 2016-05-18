@@ -1,8 +1,8 @@
-/* Hides all scrollbars everywhere
+/* webkit-scrollbar styling hides all scrollbars on our site
 *  Alternatively, select only the elements you want:
-  #element::-webkit-scrollbar { 
-    display: none; 
-  }
+      #element::-webkit-scrollbar { 
+        display: none; 
+      }
 */
 ::-webkit-scrollbar { 
   display: none; 
@@ -11,7 +11,6 @@
 .site-container {
   background-color: #DDDDDD;
 }
-
 
 .index {
   height: 100vh;
@@ -97,24 +96,85 @@ a.nav-text:hover {
 }
 
 .sign-up-btn {
+  background-color:#FFB600;
+  border-radius:5px;
+  padding-left:5px;
+  padding-right:8px;
+  font-size:16px
 }
 
-.image-box {
-  height: auto;
-  width: 600px;
+.scroll-down-chevron-row {
+  margin-top:3%;
 }
 
-.judgecovey {
-  position: absolute;
-  top: -17px;
-  left: 470px;
-  height: 100px;
-  width: auto;
-  -webkit-transform: rotate(25deg); /* Chrome, Safari, Opera */
-  transform: rotate(25deg);
+.scroll-down-chevron {
+  margin: 0 auto;
+  text-align:center; 
+  border: 2px solid #fff;
+  border-radius:50%;
+  width:47px;
+  height:47px;
+}
+
+.scroll-down-chevron span {
+   font-size:32px;
+   color:#fff;
+   line-height:47px;
+   vertical-align:middle;
+}
+
+.about-header-title {
+  font-size:30px;
+  font-weight: 600;
+}
+.about-header-text {
+  font-size:20px;
+  font-family: 'Lora', serif;
+}
+.about-section-body {
+  margin-top:50px;
+}
+.about-section-body-container {
+   text-align:left;
+}
+.about-header-title-small {
+  font-size:20px;
+  font-weight: 600;
+}
+.about-header-body-small {
+  font-size:16px;
+  font-family: 'Lora', serif;
+}
+
+.team-section-title {
+  font-size:32px;
+}
+
+.team-section hr {
+  width:200px;
+}
+
+.team-section-body {
+   padding-top: 50px;
+}
+
+.team-section-body img {
+   border-radius:3px;
+}
+
+.team-section-body p {
+  font-size:14px;
+  padding-top:8px;
+}
+.team-github-icon {
+  margin-right:5px;
 }
 
 /* SCROLLABLE INDEX SECTION */
+.team-scroll-btn {
+  background-color:#F6F8F9;
+}
+
 .about-section {
   height: 100vh;
   padding-top: 80px;

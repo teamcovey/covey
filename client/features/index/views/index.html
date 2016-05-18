@@ -12,22 +12,14 @@
           <h1>Join a <span>Covey</span></h1>
           <h3>Plan your next group adventure</h3>
         </div>
-        <button ng-click="setCookie()" onclick="window.location.href='/api/auth/facebook'" type="submit" class="btn btn-lg sign-up-btn" style="background-color:#FFB600;border-radius:5px;padding-left:5px;padding-right:8px;font-size:16px"><img src="../../../styles/assets/facebook-logo.png" height="20px" width="20px" border-radius="3px" margin="10px"> | Connect with Facebook</button>
-        <!-- <br>
-        <br>
-        <a class="btn btn-lg page-scroll" href="#about" style="background-color:#0191C8;color:#fff;border-color:#fff;padding:10px;margin-left:20px;border-radius:5px">Learn More <span class="glyphicon glyphicon-chevron-down"></span></a>
-      </div> -->
+        <button ng-click="setCookie()" onclick="window.location.href='/api/auth/facebook'" type="submit" class="btn btn-lg sign-up-btn"><img src="../../../styles/assets/facebook-logo.png" height="20px" width="20px" border-radius="3px" margin="10px"> | Connect with Facebook</button>
       </div>
     </div>
   </form>
-  <div class="row" style="margin-top:3%">
+  <div class="row scroll-down-chevron-row">
     <div class="col-sm-offset-5 col-sm-2">
-
-      <!-- <div style="margin: 0 auto; text-align:center">
-        <a class="btn btn-default page-scroll" href="#about" style="background-color:#0191C8;color:#fff;padding:10px 20px">LEARN MORE <span class="glyphicon glyphicon-chevron-down"></span></a>
-      </div> -->
-      <div style="margin: 0 auto; text-align:center; border: 2px solid #fff;border-radius:50%;width:47px;height:47px;">
-        <a class="page-scroll" href="#about"><span class="glyphicon glyphicon-chevron-down" style="font-size:32px;color:#fff;line-height:47px;vertical-align:middle"></span></a>
+      <div class="scroll-down-chevron">
+        <a class="page-scroll" href="#about"><span class="glyphicon glyphicon-chevron-down"></span></a>
       </div>
     </div>
   </div>
@@ -36,21 +28,21 @@
 <section id="about" class="about-section">
   <div class="row">
     <div class="col-sm-offset-2 col-sm-8">
-      <p style="font-size:30px;font-weight: 600;">Plan your next great adventure with us</p>
-      <p style="font-size:20px;font-family: 'Lora', serif;">Covey is an interactive tool that simplifies group trip organization. Collaborate with your friends to share rides, supplies, and expenses.</p>
+      <p class="about-header-title">Plan your next great adventure with us</p>
+      <p class="about-header-text">Covey is an interactive tool that simplifies group trip organization. Collaborate with your friends to share rides, supplies, and expenses.</p>
     </div>
   </div>
-  <div class="row" style="margin-top:50px">
+  <div class="row about-section-body">
     <div class="col-sm-offset-1 col-sm-5">
       <img src="../../../styles/assets/mountains.png" height="300px" width="300px" border-radius="3px" margin="10px">
     </div>
-    <div class="col-sm-5" style="text-align:left">
+    <div class="col-sm-5 about-section-body-container">
       <br>
       <br>
-      <p style="font-size:20px;font-weight: 600;">World class trip planner</p>
-      <p style="font-size:16px;font-family: 'PT Serif', serif;">Covey is a live collaboration tool for organizing events.  More stuff about Covey, this awesome application that everyone should be using now! Yay here's something else to say... Powered by AngularJS and backed by Postgres awesome relational database it beats out Google Sheets hands down.</p>
+      <p class="about-header-title-small">World class trip planner</p>
+      <p class="about-header-body-small">Covey makes it easy to coordinate groups in real-time. Backed by a powerful Postgres database and Google's AngularJS framework, Covey is ready to take on your greatest event planning challenges.</p>
       <br>
-      <a class="btn btn-default page-scroll" href="#team" style="background-color:#F6F8F9">Meet the Team <span class="glyphicon glyphicon-chevron-down"></span></a>
+      <a class="btn btn-default page-scroll team-scroll-btn" href="#team">Meet the Team <span class="glyphicon glyphicon-chevron-down"></span></a>
     </div>
   </div>
 </section>
@@ -58,33 +50,33 @@
 <section id="team" class="team-section">
   <div class="row">
     <div class="col-sm-offset-2 col-sm-8">
-      <p style="font-size:32px">Who we are</p>
-      <hr style="width:200px">
+      <p class="team-section-title">Who we are</p>
+      <hr>
     </div>
   </div>
-  <div class="row" style="padding-top: 50px">
+  <div class="row team-section-body">
     <div class="col-sm-offset-2 col-sm-2">
-      <img src="../../../styles/assets/fred.png" height="100px" width="100px" margin="10px" style="border-radius:3px;">
-      <p style="font-size:14px;padding-top:8px"><b>Freddie Ryder</b><br>Software Engineer</p>
-      <a href="https://github.com/fredryder" target="_blank"><img src="../../../styles/assets/github-sign.png" height="24px" width="24px" style="margin-right:5px"></a>
+      <img src="../../../styles/assets/fred.png" height="100px" width="100px" margin="10px">
+      <p><b>Freddie Ryder</b><br>Software Engineer</p>
+      <a href="https://github.com/fredryder" target="_blank"><img src="../../../styles/assets/github-sign.png" height="24px" width="24px" class="team-github-icon"></a>
       <a href="https://www.linkedin.com/in/fred-ryder-629b1824" target="_blank"><img src="../../../styles/assets/linkedin.png" height="24px" width="24px"></a>
     </div>
     <div class="col-sm-2">
-      <img src="../../../styles/assets/rahim.png" height="100px" width="100px" margin="10px" style="border-radius:3px;">
-      <p style="font-size:14px;padding-top:8px"><b>Rahim Dharssi</b><br>Software Engineer</p>
-      <a href="https://github.com/rahimftd" target="_blank"><img src="../../../styles/assets/github-sign.png" height="24px" width="24px" style="margin-right:5px"></a>
+      <img src="../../../styles/assets/rahim.png" height="100px" width="100px" margin="10px">
+      <p><b>Rahim Dharssi</b><br>Software Engineer</p>
+      <a href="https://github.com/rahimftd" target="_blank"><img src="../../../styles/assets/github-sign.png" height="24px" width="24px" class="team-github-icon"></a>
       <a href="https://www.linkedin.com/in/rahimdharssi" target="_blank"><img src="../../../styles/assets/linkedin.png" height="24px" width="24px"></a>
     </div>
     <div class="col-sm-2">
-      <img src="../../../styles/assets/toben.png" height="100px" width="100px" margin="10px" style="border-radius:3px;">
-      <p style="font-size:14px;padding-top:8px"><b>Toben Green</b><br>Software Engineer</p>
-      <a href="https://github.com/tobensg" target="_blank"><img src="../../../styles/assets/github-sign.png" height="24px" width="24px" style="margin-right:5px"></a>
+      <img src="../../../styles/assets/toben.png" height="100px" width="100px" margin="10px">
+      <p><b>Toben Green</b><br>Software Engineer</p>
+      <a href="https://github.com/tobensg" target="_blank"><img src="../../../styles/assets/github-sign.png" height="24px" width="24px" class="team-github-icon"></a>
       <a href="https://www.linkedin.com/in/tobengreen" target="_blank"><img src="../../../styles/assets/linkedin.png" height="24px" width="24px"></a>
     </div>
     <div class="col-sm-2">
-      <img src="../../../styles/assets/skye.png" height="100px" width="100px" margin="10px" style="border-radius:3px;">
-      <p style="font-size:14px;padding-top:8px"><b>Skye Free</b><br>Software Engineer</p>
-      <a href="https://github.com/swfree" target="_blank"><img src="../../../styles/assets/github-sign.png" height="24px" width="24px" style="margin-right:5px"></a>
+      <img src="../../../styles/assets/skye.png" height="100px" width="100px" margin="10px">
+      <p><b>Skye Free</b><br>Software Engineer</p>
+      <a href="https://github.com/swfree" target="_blank"><img src="../../../styles/assets/github-sign.png" height="24px" width="24px" class="team-github-icon"></a>
       <a href="https://www.linkedin.com/in/skyefree" target="_blank"><img src="../../../styles/assets/linkedin.png" height="24px" width="24px"></a>
     </div>
   </div>

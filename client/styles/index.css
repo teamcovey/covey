@@ -40,6 +40,19 @@
   margin-top: 5%;
 }
 
+.index-main-message {
+  margin-bottom:10px;
+}
+
+.index-main-message h1 span {
+  font-size: 65px;
+  font-family: 'Pacifico', cursive;
+}
+
+.index-main-message h3 {
+  margin-top:10px;
+}
+
 button {
   background-color: #FFB600;
 }

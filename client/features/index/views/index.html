@@ -1,17 +1,16 @@
 <section id="intro" class="index" ng-controller="indexController">
   <form>
     <div class="row custom-navbar">
-      <div class="col-sm-offset-10 col-sm-1"><!-- <a href="/#/about" class="nav-text">ABOUT</a> --></div>
-      <div class="col-sm-1"><a href="/api/auth/facebook" class="nav-text">LOGIN</a></div>
+      <div class="col-sm-offset-11 col-sm-1"><a href="/api/auth/facebook" class="nav-text">LOGIN</a></div>
     </div>
     <div class="row promo-container">
       <div class="col-sm-6 hidden-xs">
         <img class="logo" src="styles/assets/coveyLogo2.svg">
       </div>
       <div class="col-sm-6 message-container">
-        <div style="margin-bottom:10px">
-          <h1>Join a <span style="font-size:65px;font-family: 'Pacifico', cursive;">Covey</span></h1>
-          <h3 style="margin-top:10px">Plan your next group adventure</h3>
+        <div class="index-main-message">
+          <h1>Join a <span>Covey</span></h1>
+          <h3>Plan your next group adventure</h3>
         </div>
         <button ng-click="setCookie()" onclick="window.location.href='/api/auth/facebook'" type="submit" class="btn btn-lg sign-up-btn" style="background-color:#FFB600;border-radius:5px;padding-left:5px;padding-right:8px;font-size:16px"><img src="../../../styles/assets/facebook-logo.png" height="20px" width="20px" border-radius="3px" margin="10px"> | Connect with Facebook</button>
         <!-- <br>

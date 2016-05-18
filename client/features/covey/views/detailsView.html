@@ -1,39 +1,42 @@
-<img ng-show="showPhoto" ng-src="{{details.photoUrl}}" alt="Smiley face" height="200" width="100%">
+<img class="covey-photo" ng-show="showPhoto" ng-src="{{details.photoUrl}}" alt="Smiley face" height="200" width="100%">
 
-<div class="row details-header-section">
-  <div class="col-sm-offset-1 col-sm-5">
-    <h2 class="details-header-title"><b>{{details.name}}</b></h2>
+<!-- Header -->
+<div ng-hide="editDetails">
+
+  <div class="col-sm-12">
+  <div class="row details-header-section">
+    <div class="col-sm-offset-1 col-sm-5">
+      <h2 class="details-header-title"><b>{{details.name}}</b></h2>
+    </div>
+
+    <!-- Covey View buttons -->
+    <div class="col-sm-5 text-right">
+      <!-- <div class="buttons-left"> -->
+      <button class="btn btn-pineapple" ng-click="addToCalendar()">Add to Google calendar</button> 
+      <button class="btn btn-pineapple" ng-click="toggleEdit()">Edit&nbsp;<span class="glyphicon glyphicon-pencil"></span></button>
+    <!-- </div> -->
+    </div>
   </div>
-  <div class="col-sm-offset-1 col-sm-5">
-    <table>
-      <tr>
-      <td>
-        <button class="btn btn-pineapple margin-left" ng-click="addToCalendar()">Add to Google calendar</button> 
-      </td>
-      <td>
-        <button class="covey-details-edit-btn" ng-click="toggleEdit()">Edit&nbsp;<span class="glyphicon glyphicon-pencil"></span></button>
-      </td>
-      </tr>
-    </table>
   </div>
-</div>
-<div class="row details-body-section" ng-hide="editDetails">
+
+  <!-- Body -->
   <div class="col-sm-offset-1 col-sm-5">
     <br>
-    <p><span class="glyphicon glyphicon-time"></span> <strong>From:</strong> {{convertToTextDate(details.startTime)}}<br> <strong>To:</strong> {{convertToTextDate(details.endTime)}}
+    <p>
+    <span class="glyphicon glyphicon-time"></span><strong>From:</strong> {{convertToTextDate(details.startTime)}}<br>
+    <strong>To:</strong> {{convertToTextDate(details.endTime)}}
     <p><i>{{details.details}}</i></p>
     <form ng-submit="emailAttendees()">
       <div class="row">
-        <div class="col-md-offset-3 col-md-4">
-            <button class="btn btn-pineapple send-email" value="submit">Email the group</button>
+        <div class="col-sm-offset-3 col-md-6">
+              <button class="btn btn-pineapple send-email" value="submit">Email the group</button>
         </div>
-        <div class = "col-md-offset-1 col-md-1">
+        <div class = "col-sm-1">
             <div class="email-spinner v-mid" ng-show="spinnerVisible"></div>
             <div class="orange v-mid" ng-show="emailSentTick"><span class="glyphicon glyphicon-ok"></span></div>
         </div>
       </div>
       <textarea name="emailMessage" class="email-text-area" ng-model="details.email" ng-focus="setSentFalse()" required></textarea>
-      <!-- <input type="text" name="emailMessage" ng-model="details.email"></input> -->
     </form>
   </div>
   <div class="col-sm-5">
@@ -46,48 +49,117 @@
   </div>
 </div>
 
-<div class="row details-body-section" ng-show="editDetails">
-  <div class="col-sm-offset-1 col-sm-10">
-    <form ng-submit="toggleEdit(); updateCovey()">
-    <div style="display:block">
-      <label>Event Name: </label>
-      <input type="text" name="name" class="details-inputs" ng-model="details.name"></input>
+<!-- Edit Covey -->
+<div ng-show="editDetails">
+
+  <div class="row details-header-section">
+    <div class="col-sm-offset-1 col-sm-5">
+      <h2 class="details-header-title"><b>{{details.name}}</b></h2>
     </div>
-    <div style="display:block">
-      <label>Details: </label>
-      <input type="text" name="details" class="details-inputs" ng-model="details.details"></input>
-    </div>
-    <div style="display:block">
-      <label>Blurb</label>
-      <input type="text" name="blurb" class="details-inputs" ng-model="details.blurb"></input>
-    </div>
-    <div style="display:block">
-      <label>Location</label>
-      <input type="text" name="location" class="details-inputs" ng-model="details.location"></input>
-      <label>Address</label>
-      <input type="text" name="address" class="details-inputs" ng-model="details.address"></input>
-    </div>
-    <div style="display:block">
-      <label>City</label>
-      <input type="text" name="city" class="details-inputs" ng-model="details.city"></input>
-      <label>State</label>
-      <input type="text" name="state" class="details-inputs" ng-model="details.state"></input>
-    </div>
-    <div style="display:block">
-      <label>Start Time</label>
-      <input type="date" name="startDate" class="details-inputs" ng-model="details.startDate"></input>
-      <input type="time" name="startTimeHours" class="details-inputs" ng-model="details.startTimeHours">
-    </div>
-    <div style="display:block">
-      <label>End Time</label>
-      <input type="date" name="endDate" class="details-inputs" ng-model="details.endDate" ng-required="true"></input>
-      <input type="time" name="endTimeHours" class="details-inputs" ng-model="details.endTimeHours" ng-required="true">
-    </div>
-    <div style="display:block">
-      <label>Photo Url</label>
-      <input type="text" name="photoUrl" class="details-inputs" ng-model="details.photoUrl"></input>
-    </div>
-    <input style="display:none" type="submit" id="submit" value="Update" />
-  </form>
+
+    <!-- Save Button: In edit -->
+    <form name="edit" ng-submit="toggleEdit(); updateCovey()">
+       <div class="col-sm-offset-1 col-sm-5">
+        <button class=" btn btn-pineapple" type="submit" id="submit" value="Update">Save&nbsp;<span class="glyphicon glyphicon-pencil"></span></button>
+      </div>
+    </form>
+
   </div>
+
+  <!-- Body: In edit -->
+  <form name="edit">
+    <div class="row">
+      <div class="col-sm-offset-1 col-sm-2 text-left">
+        <label class="covey-edit-title">Event Name: </label>
+      </div>
+      <div class="col-sm-8 text-left">
+        <input type="text" name="name" class="details-inputs" ng-model="details.name"></input>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-offset-1 col-sm-2 text-left">
+        <label>Details: </label>
+      </div>
+      <div class="col-sm-8 text-left">
+        <input type="text" name="details" class="details-inputs" ng-model="details.details"></input>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col-sm-offset-1 col-sm-2 text-left">
+        <label>One liner:</label>
+      </div>
+      <div class="col-sm-8 text-left">
+        <input type="text" name="blurb" class="details-inputs" ng-model="details.blurb" maxlength="150"></input>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-offset-1 col-sm-2 text-left">
+        <label>Location</label>
+      </div>
+      <div class="col-sm-8 text-left">
+        <input type="text" name="location" class="details-inputs" ng-model="details.location"></input>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-offset-1 col-sm-2 text-left">
+        <label>Address</label>
+      </div>
+      <div class="col-sm-8 text-left">
+        <input type="text" name="address" class="details-inputs" ng-model="details.address"></input>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-offset-1 col-sm-2 text-left">
+        <label>City</label>
+      </div>
+      <div class="col-sm-8 text-left">
+        <input type="text" name="city" class="details-inputs" ng-model="details.city"></input>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-offset-1 col-sm-2 text-left">
+        <label>State</label>
+      </div>
+      <div class="col-sm-8 text-left">
+        <input type="text" name="state" class="details-inputs" ng-model="details.state"></input>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-offset-1 col-sm-2 text-left">
+        <label>Start time</label>
+      </div>
+      <div class="col-sm-5 text-left">
+        <input type="date" name="startDate" class="details-inputs-time" ng-model="details.startDate"></input>
+        <input type="time" name="startTimeHours" class="details-inputs-time" ng-model="details.startTimeHours">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-offset-1 col-sm-2 text-left">
+        <label>End time</label>
+      </div>
+      <div class="col-sm-5 text-left">
+        <input type="date" name="endDate" class="details-inputs-time" ng-model="details.endDate" ng-required="true"></input>
+        <input type="time" name="endTimeHours" class="details-inputs-time" ng-model="details.endTimeHours" ng-required="true">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-offset-1 col-sm-2 text-left">
+        <label>Photo URL</label>
+      </div>
+      <div class="col-sm-8 text-left">
+        <input type="text" name="photoUrl" class="details-inputs" ng-model="details.photoUrl"></input>
+      </div>
+    </div>
+<!--     <input style="display:none" type="submit" id="submit" value="Update" /> -->
+  </form>
 </div>

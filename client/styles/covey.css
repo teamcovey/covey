@@ -248,12 +248,21 @@ ul.nav-pills img.nav-car-icon {
 }
 
 .details-inputs {
-  margin: 2px;
+  width: 100%;
+  margin-bottom: 10px;
   border: none;
+  border-bottom: 1px solid grey;
+}
+
+.details-inputs-time{
+  margin-bottom: 10px;
+  border: none;
+  border-bottom: 1px solid grey;
 }
 
 .details-header-section {
-   margin-top:20px;
+   margin-top:30px;
+   margin-bottom:40px;
 }
 
 .details-header-title {
@@ -403,4 +412,14 @@ span.glyphicon-menu-hamburger {
 
 .v-mid {
   margin-top: 10px;
+}
+
+.covey-photo {
+  width: 100%;
+  object-fit: cover;
+};
+
+.buttons-center {
+  width: 100%;
+  margin: 0 auto;
 }

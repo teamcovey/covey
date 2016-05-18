@@ -248,12 +248,26 @@ ul.nav-pills img.nav-car-icon {
 }
 
 .details-inputs {
-  margin: 2px;
+  width: 100%;
+  margin-bottom: 10px;
   border: none;
+  border-bottom: 1px solid grey;
+}
+
+.details-inputs-time{
+  margin-bottom: 10px;
+  border: none;
+  border-bottom: 1px solid grey;
 }
 
 .details-header-section {
+   margin-top:30px;
+   margin-bottom:40px;
+}
+
+.details-header-section-btns {
    margin-top:20px;
+   margin-bottom:40px;
 }
 
 .details-header-title {
@@ -376,8 +390,8 @@ span.glyphicon-menu-hamburger {
 }
 
 .email-text-area {
-  width: 300px;
-  height: 150px;
+  width: 275px;
+  height: 100px;
   padding: 20px 20px;
   box-sizing: border-box;
   border: 2px solid #ccc;
@@ -386,8 +400,10 @@ span.glyphicon-menu-hamburger {
   resize: none;
 }
 
-.margin-left {
-  margin-right: 10px;
+.margin-adjust {
+  margin-left: 10px;
+  margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 .email-spinner {
@@ -403,4 +419,14 @@ span.glyphicon-menu-hamburger {
 
 .v-mid {
   margin-top: 10px;
+}
+
+.covey-photo {
+  width: 100%;
+  object-fit: cover;
+};
+
+.buttons-center {
+  width: 100%;
+  margin: 0 auto;
 }

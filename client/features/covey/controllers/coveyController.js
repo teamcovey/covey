@@ -1,6 +1,7 @@
 angular.module('covey.covey', [])
 .controller('coveyController', function ($scope, $location, coveyService, googleCalendarService, $sce, emailAttendeesService) {
   // Necessary to initialize left side nav & columns at correct height/width:
+
   if (window.innerWidth > 770) {
     $('.covey').css('width', '97%');
   }
@@ -48,9 +49,30 @@ angular.module('covey.covey', [])
     googleCalendarService.addToCalendar($scope.details);
   };
 
-  $scope.emailMessage = 'this';
-
   $scope.emailAttendees = () => {
-    emailAttendeesService.emailAttendees($scope.details, $scope.emailMessage);
+    toggleSpinner(); // spinner on
+    console.log('emailMessage: ', $scope.details.email);
+    emailAttendeesService.emailAttendees($scope.details, $scope.emailMessage)
+      .then((response) => {
+        if (response) {
+          $scope.details.email = '';
+          toggleSpinner(); // spinner off
+          toggleSent();
+        }
+      });
   };
+
+  const toggleSent = () => {
+    $scope.emailSentTick = !$scope.emailSentTick;
+  };
+
+  const toggleSpinner = () => {
+    $scope.spinnerVisible = !$scope.spinnerVisible;
+  };
+
+  $scope.setSentFalse = () => {
+    $scope.emailSentTick = false;
+  };
+
+
 });

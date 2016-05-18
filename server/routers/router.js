@@ -185,7 +185,7 @@ app.post('/api/tel', auth, routeTel.addTel);
 
 app.get('/api/tel', auth, routeTel.hasTel);
 
-// Routes for phone verification
+// Routes for emails
 
 app.post('/api/email/:coveyId/:userId', auth, isValidCoveyMember, routeEmail.sendEmail);
 

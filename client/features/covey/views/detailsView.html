@@ -4,21 +4,37 @@
   <div class="col-sm-offset-1 col-sm-5">
     <h2 class="details-header-title"><b>{{details.name}}</b></h2>
   </div>
-  <div class="col-sm-offset-3 col-sm-2">
-    <button class="covey-details-edit-btn" ng-click="toggleEdit()">
-    Edit&nbsp;<span class="glyphicon glyphicon-pencil"></span>  
-  </button>
+  <div class="col-sm-offset-1 col-sm-5">
+    <table>
+      <tr>
+      <td>
+        <button class="btn btn-pineapple margin-left" ng-click="addToCalendar()">Add to Google calendar</button> 
+      </td>
+      <td>
+        <button class="covey-details-edit-btn" ng-click="toggleEdit()">Edit&nbsp;<span class="glyphicon glyphicon-pencil"></span></button>
+      </td>
+      </tr>
+    </table>
   </div>
 </div>
 <div class="row details-body-section" ng-hide="editDetails">
   <div class="col-sm-offset-1 col-sm-5">
     <br>
-    <br>
     <p><span class="glyphicon glyphicon-time"></span> From {{formatDate(details.startTime)}} to {{formatDate(details.endTime)}}
     <p><i>{{details.details}}</i></p>
-    <button class="btn btn-pineapple" ng-click="addToCalendar()">Add to Google calendar</button>
-    <button class="btn btn-pineapple" ng-click="emailAttendees()">Email the group</button><br><br>
-  <textarea class="email-text-area" ng-model="emailBody"></textarea>
+    <form ng-submit="emailAttendees()">
+      <div class="row">
+        <div class="col-md-offset-3 col-md-4">
+            <button class="btn btn-pineapple send-email" value="submit">Email the group</button>
+        </div>
+        <div class = "col-md-offset-1 col-md-1">
+            <div class="email-spinner v-mid" ng-show="spinnerVisible"></div>
+            <div class="orange v-mid" ng-show="emailSentTick"><span class="glyphicon glyphicon-ok"></span></div>
+        </div>
+      </div>
+      <textarea name="emailMessage" class="email-text-area" ng-model="details.email" ng-focus="setSentFalse()" required></textarea>
+      <!-- <input type="text" name="emailMessage" ng-model="details.email"></input> -->
+    </form>
   </div>
   <div class="col-sm-5">
     <span class="glyphicon glyphicon-map-marker"></span> {{details.location}}

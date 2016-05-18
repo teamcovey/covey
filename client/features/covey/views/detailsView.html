@@ -4,16 +4,16 @@
 <div ng-hide="editDetails">
 
   <div class="col-sm-12">
-  <div class="row details-header-section">
-    <div class="col-sm-offset-1 col-sm-5">
+  <div class="row">
+    <div class="col-sm-offset-1 col-sm-5 details-header-section">
       <h2 class="details-header-title"><b>{{details.name}}</b></h2>
     </div>
 
     <!-- Covey View buttons -->
-    <div class="col-sm-5 text-right">
+    <div class="col-sm-5 text-center details-header-section">
       <!-- <div class="buttons-left"> -->
       <button class="btn btn-pineapple" ng-click="addToCalendar()">Add to Google calendar</button> 
-      <button class="btn btn-pineapple" ng-click="toggleEdit()">Edit&nbsp;<span class="glyphicon glyphicon-pencil"></span></button>
+      <button class="btn btn-pineapple margin-left" ng-click="toggleEdit()">Edit&nbsp;<span class="glyphicon glyphicon-pencil"></span></button>
     <!-- </div> -->
     </div>
   </div>
@@ -23,7 +23,7 @@
   <div class="col-sm-offset-1 col-sm-5">
     <br>
     <p>
-    <span class="glyphicon glyphicon-time"></span><strong>From:</strong> {{convertToTextDate(details.startTime)}}<br>
+    <span class="glyphicon glyphicon-time"></span><strong> From:</strong> {{convertToTextDate(details.startTime)}}<br>
     <strong>To:</strong> {{convertToTextDate(details.endTime)}}
     <p><i>{{details.details}}</i></p>
     <form ng-submit="emailAttendees()">

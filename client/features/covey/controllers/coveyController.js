@@ -26,12 +26,11 @@ angular.module('covey.covey', [])
   });
 
   $scope.toggleEdit = () => {
-    console.log('in toggleEdit ', $scope.details);
     if ($scope.details.startDate === undefined) {
       $scope.details.startDate = new Date($scope.details.startTime);
-      $scope.details.startTimeHours = new Date(Date.parse($scope.details.startTime));
-      $scope.details.endDate = new Date(Date.parse($scope.details.endTime));
-      $scope.details.endTimeHours = new Date(Date.parse($scope.details.endTime));
+      $scope.details.startTimeHours = new Date($scope.details.startTime);
+      $scope.details.endDate = new Date($scope.details.endTime);
+      $scope.details.endTimeHours = new Date($scope.details.endTime);
     }
       $scope.editDetails = !$scope.editDetails;
   };

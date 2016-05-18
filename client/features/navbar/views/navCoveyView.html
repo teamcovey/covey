@@ -2,7 +2,7 @@
 <div ng-class="{'col-sm-2': isExpanded(), 'col-sm-1': !isExpanded()}">
   <ul class="nav nav-pills nav-stacked">
 
-    <li role="presentation" class="brand-nav-pill">
+    <li role="presentation" class="brand-nav-pill"  ng-click="navigateTo('/')">
       <span class="nav-pill-text-align side-nav-title" ng-hide="!isExpanded()">Covey</span>
       <span class="nav-pill-text-align" ng-hide="isExpanded()"><img class="covey-nav-icon" src="styles/assets/quailMiniWhite.png"></span>
     </li>

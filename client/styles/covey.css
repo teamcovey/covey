@@ -348,6 +348,7 @@ ul.chat-messages .chat-body:hover {
 .panel-attendees {
   height: 26vh;
   box-shadow: 2px 2px 2px #CACACA;
+  overflow: auto;
 }
 
 .attendee-block {

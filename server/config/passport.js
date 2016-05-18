@@ -50,7 +50,7 @@ passport.use(new Strategy(
               gender,
               photoUrl,
               accessToken,
-              refreshToken,   // TODO: handle refreshToken
+              refreshToken,
             })
             .then((user) => {
               console.log('Saving user...');
@@ -71,8 +71,8 @@ passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 
-passport.deserializeUser((id, done) => {
-  User.where({ id })
+passport.deserializeUser((userId, done) => {
+  User.where({ userId })
   .fetch()
   .then((user) => {
     done(null, user);

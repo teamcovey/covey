@@ -5,15 +5,12 @@ const knex = require('../../config/config.js').knex;
  * exist, the user is considered inValid and will not be able to make changes to the covey
  */
 exports.isValidCoveyMember = (request, response, next) => {
-  const coveyId = request.params.coveyId
-    || request.params.covey_id
-    || request.body.covey_id
-    || request.body.coveyId;
-  const userId = request.cookies.user_id;
+  const coveyId = request.params.coveyId || request.body.coveyId;
+  const userId = request.cookies.userId;
   knex('coveys_users')
     .where({
-      user_id: userId,
-      covey_id: coveyId,
+      userId,
+      coveyId,
     })
     .then((rows) => {
       if (rows.length > 0) {
@@ -29,25 +26,25 @@ exports.isValidCoveyMember = (request, response, next) => {
  * Authorization is determined by their membership in the covey that contains this resource
  */
 exports.isAuthorizedToUpdateResource = (request, response, next) => {
-  const userId = request.cookies.user_id;
+  const userId = request.cookies.userId;
   const resourceId = request.params.resourceId || request.body.resourceId;
   // Gets coveyId from resources table
   knex
-    .select('covey_id')
+    .select('coveyId')
     .from('resources')
     .where({
-      id: resourceId,
+      resourceId,
     })
     .then((resourcesRows) => {
       if (resourcesRows.length === 0) {
         response.status(404).send();
       } else {
-        const coveyId = resourcesRows[0].covey_id;
+        const coveyId = resourcesRows[0].coveyId;
         // Checks if both coveyId and userId exist in join table
         knex('coveys_users')
           .where({
-            user_id: userId,
-            covey_id: coveyId,
+            userId,
+            coveyId,
           })
           .then((coveysUsersRows) => {
             if (coveysUsersRows.length > 0) {
@@ -65,25 +62,25 @@ exports.isAuthorizedToUpdateResource = (request, response, next) => {
  * Authorization is determined by their membership in the covey that contains this car
  */
 exports.isAuthorizedToUpdateCar = (request, response, next) => {
-  const userId = request.cookies.user_id;
+  const userId = request.cookies.userId;
   const carId = request.params.carId;
   // Gets coveyId from cars table
   knex
-    .select('covey_id')
+    .select('coveyId')
     .from('cars')
     .where({
-      id: carId,
+      carId,
     })
     .then((carsRows) => {
       if (carsRows.length === 0) {
         response.status(404).send();
       } else {
-        const coveyId = carsRows[0].covey_id;
+        const coveyId = carsRows[0].coveyId;
         // Checks if both coveyId and userId exist in join table
         knex('coveys_users')
           .where({
-            user_id: userId,
-            covey_id: coveyId,
+            userId,
+            coveyId,
           })
           .then((coveysUsersRows) => {
             if (coveysUsersRows.length > 0) {
@@ -101,25 +98,25 @@ exports.isAuthorizedToUpdateCar = (request, response, next) => {
  * Authorization is determined by their membership in the covey that contains this expense
  */
 exports.isAuthorizedToUpdateExpense = (request, response, next) => {
-  const userId = request.cookies.user_id;
-  const expenseId = request.params.expense_id || request.body.expense_id;
+  const userId = request.cookies.userId;
+  const expenseId = request.params.expenseId || request.body.expenseId;
   // Gets coveyId from expenses table
   knex
-    .select('covey_id')
+    .select('coveyId')
     .from('expenses')
     .where({
-      expense_id: expenseId,
+      expenseId,
     })
     .then((expensesRows) => {
       if (expensesRows.length === 0) {
         response.status(404).send();
       } else {
-        const coveyId = expensesRows[0].covey_id;
+        const coveyId = expensesRows[0].coveyId;
         // Checks if both coveyId and userId exist in join table
         knex('coveys_users')
           .where({
-            user_id: userId,
-            covey_id: coveyId,
+            userId,
+            coveyId,
           })
           .then((coveysUsersRows) => {
             if (coveysUsersRows.length > 0) {
@@ -137,7 +134,7 @@ exports.isAuthorizedToUpdateExpense = (request, response, next) => {
  */
 exports.isValidUser = (request, response, next) => {
   const userIdParams = request.params.userId || request.body.userId;
-  const userIdCookie = request.cookies.user_id;
+  const userIdCookie = request.cookies.userId;
   if (userIdParams.toString() === userIdCookie.toString()) {
     next();
   } else {

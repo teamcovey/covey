@@ -6,13 +6,13 @@ exports.addResource = (req, res) => {
   const name = req.body.name;
   const quantity = req.body.quantity;
   const type = req.body.type;
-  const coveyId = req.body.covey_id || req.body.coveyId;
+  const coveyId = req.body.coveyId;
 
   Resources.create({
     name,
     quantity,
     type,
-    covey_id: coveyId,
+    coveyId,
   })
   .then((resource) => {
     req.io.sockets.emit(`add resource ${coveyId}`, { response: resource });
@@ -29,15 +29,15 @@ exports.updateResource = (req, res) => {
   const name = req.body.name;
   const quantity = req.body.quantity;
   const type = req.body.type;
-  const coveyId = req.body.covey_id;
+  const coveyId = req.body.coveyId;
 
-  Resource.where({ id: resourceId })
+  Resource.where({ resourceId })
     .fetch()
     .then((resource) => {
       resource.set('name', name);
       resource.set('quantity', quantity);
       resource.set('type', type);
-      resource.set('covey_id', coveyId);
+      resource.set('coveyId', coveyId);
       resource.save()
         .then((updatedResource) => {
           req.io.sockets.emit(`update resource ${coveyId}`, { response: updatedResource });
@@ -53,9 +53,9 @@ exports.removeResource = (req, res) => {
   const coveyId = req.params.coveyId;
   const resourceId = req.params.resourceId;
 
-  // we will remove the join tables that have the user_id in them
+  // we will remove the join tables that have the userId in them
   knex('resources_users')
-    .where('resource_id', resourceId)
+    .where('resourceId', resourceId)
     .del()
     .then((affectedRows) => {
       console.log('deleted rows were: ', affectedRows);
@@ -64,7 +64,7 @@ exports.removeResource = (req, res) => {
       console.log('error in deleting resources_users rows: ', err);
     });
 
-  new Resource({ id: resourceId })
+  new Resource({ resourceId })
     .destroy()
     .then(() => {
       req.io.sockets.emit(`remove resource ${coveyId}`, { response: resourceId });
@@ -79,8 +79,8 @@ exports.getAllSuppliers = (req, res) => {
   const resourceId = req.params.resourceId;
 
   knex.from('users')
-    .innerJoin('resources_users', 'users.id', 'resources_users.user_id')
-    .where('resource_id', '=', resourceId)
+    .innerJoin('resources_users', 'users.userId', 'resources_users.userId')
+    .where('resourceId', '=', resourceId)
     .then((suppliers) => {
       res.status(200).json(suppliers);
     })
@@ -91,8 +91,8 @@ exports.getAllSuppliers = (req, res) => {
 
 const getSuppliers = resource =>
   knex.from('users')
-    .innerJoin('resources_users', 'users.id', 'resources_users.user_id')
-    .where('resource_id', '=', resource.id)
+    .innerJoin('resources_users', 'users.userId', 'resources_users.userId')
+    .where('resourceId', '=', resource.resourceId)
     .then((suppliers) => {
       resource.suppliers = suppliers;
       return resource;
@@ -107,7 +107,7 @@ exports.getAllResources = (req, res) => {
   const coveyId = req.params.coveyId;
 
   knex.from('resources')
-    .where('covey_id', '=', coveyId)
+    .where('coveyId', '=', coveyId)
     .then((resources) => {
       const requests = [];
       const output = [];
@@ -140,8 +140,8 @@ exports.removeSupplier = (req, res) => {
   const coveyId = req.params.coveyId;
 
   knex('resources_users')
-    .where('user_id', userId)
-    .andWhere('resource_id', resourceId)
+    .where('userId', userId)
+    .andWhere('resourceId', resourceId)
     .del()
     .then((affectedRows) => {
       console.log('deleted rows were: ', affectedRows);
@@ -160,11 +160,11 @@ exports.addSupplier = (req, res) => {
   const coveyId = req.body.coveyId;
 
   knex('resources_users')
-      .returning('resource_id')
-      .insert({ user_id: userId, resource_id: resourceId })
-  .then((resourceIs) => {
+      .returning('resourceId')
+      .insert({ userId, resourceId })
+  .then((returnedResourceId) => {
     req.io.sockets.emit(`add supplier ${coveyId}`, { response: { resourceId, userId } });
-    res.status(201).json({ id: resourceIs[0], success: true });
+    res.status(201).json({ resourceId: returnedResourceId[0], success: true });
   })
   .catch((err) => {
     res.status(404).json(err);

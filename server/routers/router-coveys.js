@@ -30,11 +30,15 @@ exports.addCovey = (req, res) => {
   })
   .then((covey) =>
     knex('coveys_users')
-      .returning('covey_id')
-      .insert({ user_id: userId, covey_id: covey.id, isOwner: true })
+      .returning('coveyId')
+      .insert({
+        userId,
+        coveyId: covey.id,
+        isOwner: true,
+      })
   )
   .then((coveyId) => {
-    res.status(201).json({ id: coveyId[0], success: true });
+    res.status(201).json({ coveyId: coveyId[0], success: true });
   })
   .catch((err) => {
     res.status(404).json(err);
@@ -45,8 +49,8 @@ exports.getAllCoveys = (req, res) => {
   const userId = req.params.userId;
 
   knex.from('coveys')
-    .innerJoin('coveys_users', 'coveys.id', 'coveys_users.covey_id')
-    .where('user_id', '=', userId)
+    .innerJoin('coveys_users', 'coveys.coveyId', 'coveys_users.coveyId')
+    .where('userId', '=', userId)
     .then((coveys) => {
       res.status(200).json(coveys);
     })
@@ -58,7 +62,7 @@ exports.getAllCoveys = (req, res) => {
 exports.removeCovey = (req, res) => {
   const coveyId = req.params.coveyId;
 
-  new Covey({ id: coveyId })
+  new Covey({ coveyId })
     .destroy()
     .then(() => {
       res.json({ success: true });
@@ -82,7 +86,7 @@ exports.updateCovey = (req, res) => {
   const details = req.body.details;
   const blurb = req.body.blurb;
 
-  Covey.where({ id: coveyId })
+  Covey.where({ coveyId })
     .fetch()
     .then((covey) => {
       covey.set('name', name);
@@ -111,22 +115,22 @@ exports.addAttendee = (req, res) => {
 
   knex('coveys_users')
     .where({
-      user_id: userId,
-      covey_id: coveyId,
+      userId,
+      coveyId,
     })
     .then((rows) => {
       if (rows.length !== 0) {
         res.status(409).send();
       } else {
         knex('coveys_users')
-            .returning('covey_id')
-            .insert({ user_id: userId, covey_id: coveyId })
-        .then((coveyIs) => {
-          new User({ id: userId })
+            .returning('coveyId')
+            .insert({ userId, coveyId })
+        .then((returnedCoveyId) => {
+          new User({ userId })
             .fetch()
             .then((foundUser) => {
               if (foundUser) {
-                res.status(201).json({ id: coveyIs[0], user: foundUser });
+                res.status(201).json({ coveyId: returnedCoveyId[0], user: foundUser });
               } else {
                 res.status(404).json('Could not find user in database');
               }
@@ -151,19 +155,18 @@ exports.removeAttendee = (req, res) => {
   /* eslint-enable */
 
   knex
-    .select('id')
+    .select('carId')
     .from('cars')
-    .where('covey_id', coveyId)
+    .where('coveyId', coveyId)
     .then((cars) => {
       carArray = [];
-      cars.forEach((car) => carArray.push(car.id));
+      cars.forEach((car) => carArray.push(car.carId));
 
       knex('cars_users')
-        .whereIn('car_id', carArray)
-        .andWhere('user_id', userId)
+        .whereIn('carId', carArray)
+        .andWhere('userId', userId)
         .del()
         .then(() => {
-          // console.log('cars_users match deleted ', affectedRows);
         })
         .catch((err) => {
           console.log('error in removing attendee from cars: ', err);
@@ -171,19 +174,18 @@ exports.removeAttendee = (req, res) => {
     });
 
   knex
-    .select('id')
+    .select('resourceId')
     .from('resources')
-    .where('covey_id', coveyId)
+    .where('coveyId', coveyId)
     .then((resources) => {
       resourceArray = [];
-      resources.forEach((resource) => resourceArray.push(resource.id));
+      resources.forEach((resource) => resourceArray.push(resource.resourceId));
 
       knex('resources_users')
-        .whereIn('resource_id', resourceArray)
-        .andWhere('user_id', userId)
+        .whereIn('resourceId', resourceArray)
+        .andWhere('userId', userId)
         .del()
         .then(() => {
-          // console.log('resources_users match deleted ', affectedRows);
         })
         .catch((err) => {
           console.log('error in removing attendee from resources: ', err);
@@ -191,8 +193,8 @@ exports.removeAttendee = (req, res) => {
     });
 
   knex('coveys_users')
-    .where('user_id', userId)
-    .andWhere('covey_id', coveyId)
+    .where('userId', userId)
+    .andWhere('coveyId', coveyId)
     .del()
     .then(() => {
       res.json({ success: true });
@@ -206,7 +208,7 @@ exports.removeAttendee = (req, res) => {
 exports.getCovey = (req, res) => {
   const coveyId = req.params.coveyId;
 
-  Covey.where({ id: coveyId })
+  Covey.where({ coveyId })
     .fetch()
     .then((covey) => {
       if (covey) {

@@ -8,23 +8,22 @@ exports.addRide = (req, res) => {
   const seats = req.body.seats;
   const location = req.body.location;
   const departureTime = req.body.departureTime;
-  const coveyId = req.body.covey_id;
+  const coveyId = req.body.coveyId;
 
   Cars.create({
     name,
     seats,
     location,
     departureTime,
-    covey_id: coveyId,
+    coveyId,
   })
   .then((car) => {
     req.io.sockets.emit(`add ride ${coveyId}`, { response: car });
     res.status(201).json({ car, success: true });
 
-    // TODO: maybe remove setting driver?
     knex('cars_users')
-        .returning('car_id')
-        .insert({ user_id: userId, car_id: car.attributes.id, isDriver: true })
+        .returning('carId')
+        .insert({ userId, carId: car.attributes.carId, isDriver: true })
     .catch((err) => {
       console.log(err);
     });
@@ -40,17 +39,17 @@ exports.updateRide = (req, res) => {
   const seats = req.body.seats;
   const location = req.body.location;
   const departureTime = req.body.departureTime;
-  const coveyId = req.body.covey_id;
   const riders = req.body.riders;
+  const coveyId = req.body.coveyId;
 
-  Car.where({ id: carId })
+  Car.where({ carId })
     .fetch()
     .then((ride) => {
       ride.set('name', name);
       ride.set('seats', seats);
       ride.set('location', location);
       ride.set('departureTime', departureTime);
-      ride.set('covey_id', coveyId);
+      ride.set('coveyId', coveyId);
       ride.save()
         .then((updatedRide) => {
           updatedRide.attributes.riders = riders;
@@ -69,7 +68,7 @@ exports.removeRide = (req, res) => {
 
   // we will remove the join tables that have the user_id in them
   knex('cars_users')
-    .where('car_id', carId)
+    .where('carId', carId)
     .del()
     .then((affectedRows) => {
       console.log('deleted rows were: ', affectedRows);
@@ -78,7 +77,7 @@ exports.removeRide = (req, res) => {
       console.log('error in deleting cars_users rows: ', err);
     });
 
-  new Car({ id: carId })
+  new Car({ carId })
     .destroy()
     .then(() => {
       req.io.sockets.emit(`remove ride ${coveyId}`, { response: carId });
@@ -93,8 +92,8 @@ exports.getAllRiders = (req, res) => {
   const carId = req.params.carId;
 
   knex.from('users')
-    .innerJoin('cars_users', 'users.id', 'cars_users.user_id')
-    .where('car_id', '=', carId)
+    .innerJoin('cars_users', 'users.userId', 'cars_users.userId')
+    .where('carId', '=', carId)
     .then((riders) => {
       res.status(200).json(riders);
     })
@@ -105,8 +104,8 @@ exports.getAllRiders = (req, res) => {
 
 const getRiders = car =>
   knex.from('users')
-    .innerJoin('cars_users', 'users.id', 'cars_users.user_id')
-    .where('car_id', '=', car.id)
+    .innerJoin('cars_users', 'users.userId', 'cars_users.userId')
+    .where('carId', '=', car.carId)
     .then((riders) => {
       car.riders = riders;
       return car;
@@ -121,9 +120,7 @@ exports.getAllRides = (req, res) => {
   const coveyId = req.params.coveyId;
 
   knex.from('cars')
-    // .innerJoin('cars_users', 'cars.id', 'cars_users.car_id')
-    // .innerJoin('users', 'users.id', 'cars_users.user_id')
-    .where('covey_id', '=', coveyId)
+    .where('coveyId', '=', coveyId)
     .then((cars) => {
       const requests = [];
       const output = [];
@@ -155,8 +152,8 @@ exports.removeRider = (req, res) => {
   const coveyId = req.params.coveyId;
 
   knex('cars_users')
-    .where('user_id', userId)
-    .andWhere('car_id', carId)
+    .where('userId', userId)
+    .andWhere('carId', carId)
     .del()
     .then((affectedRows) => {
       console.log('deleted rows were: ', affectedRows);
@@ -175,11 +172,11 @@ exports.addRider = (req, res) => {
   const coveyId = req.body.coveyId;
 
   knex('cars_users')
-      .returning('car_id')
-      .insert({ user_id: userId, car_id: carId })
-  .then((carIs) => {
+      .returning('carId')
+      .insert({ userId, carId })
+  .then((returnedCarId) => {
     req.io.sockets.emit(`add rider ${coveyId}`, { response: { carId, userId } });
-    res.status(201).json({ id: carIs[0], success: true });
+    res.status(201).json({ carId: returnedCarId[0], success: true });
   })
   .catch((err) => {
     res.status(404).json(err);

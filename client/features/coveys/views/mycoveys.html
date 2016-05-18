@@ -18,10 +18,12 @@
             <img src="{{ covey.photoUrl }}" class="mycoveys-event-image"/>
           </div>
           <div ng-switch on="covey.isOwner">
-            <div class="covey-tile-owner" ng-switch-when="true" ng-switch on="covey.confirmDelete">
+            <div class="covey-tile-owner" ng-switch-when="true">
               <div class="covey-tile-owner-tag">ADMIN</div>
-              <div class="covey-tile-delete-confirm" ng-switch-when="true" ng-click="deleteCovey(covey, $event)">DELETE?</div>
-              <img class="covey-tile-owner-delete-image" src="../../../styles/img/deletecovey.ico" ng-click="confirmDeletion(covey, $event)" ng-switch-default/>
+              <!-- Delete trash can image shown by default -->
+              <img class="covey-tile-owner-delete-image" src="../../../styles/img/deletecovey.ico" ng-click="deleteCovey(covey, $event)" ng-show="!covey.confirmDelete"/>
+              <!-- When user clicks on trash can, a confirmation message is shown -->
+              <div class="covey-tile-delete-confirm" ng-click="deleteCovey(covey, $event)" ng-show="covey.confirmDelete" ng-mouseleave="covey.confirmDelete = false">DELETE?</div>
             </div>
             <div class="covey-tile-attending" ng-switch-default>ATTENDING</div>
           </div>

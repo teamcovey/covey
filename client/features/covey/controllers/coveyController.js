@@ -1,5 +1,5 @@
-angular.module('covey.covey', [])
-.controller('coveyController', function ($scope, $location, coveyService, googleCalendarService, $sce, emailAttendeesService) {
+angular.module('covey.covey', ['date.services'])
+.controller('coveyController', function ($scope, $location, coveyService, googleCalendarService, $sce, emailAttendeesService, dateFactory) {
   // Necessary to initialize left side nav & columns at correct height/width:
 
   if (window.innerWidth > 770) {
@@ -26,17 +26,34 @@ angular.module('covey.covey', [])
   });
 
   $scope.toggleEdit = () => {
-    $scope.editDetails = !$scope.editDetails;
+    if ($scope.details.startDate === undefined) {
+      $scope.details.startDate = new Date($scope.details.startTime);
+      $scope.details.startTimeHours = new Date($scope.details.startTime);
+      $scope.details.endDate = new Date($scope.details.endTime);
+      $scope.details.endTimeHours = new Date($scope.details.endTime);
+    }
+      $scope.editDetails = !$scope.editDetails;
   };
 
-  $scope.formatDate = (dateToFormat) => {
-    if (dateToFormat && dateToFormat.toString().length) {
-      return new Date(dateToFormat).toString().slice(0, 21);
-    }
-    return '';
-  };
+  $scope.convertToTextDate = (dateString) => dateFactory.convertToTextDate(new Date(dateString));
 
   $scope.updateCovey = () => {
+    const combinedStartDateTime = new Date(
+      $scope.details.startDate.getFullYear(),
+      $scope.details.startDate.getMonth(),
+      $scope.details.startDate.getDate(),
+      $scope.details.startTimeHours.getHours(),
+      $scope.details.startTimeHours.getMinutes()
+      );
+    const combinedEndDateTime = new Date(
+      $scope.details.endDate.getFullYear(),
+      $scope.details.endDate.getMonth(),
+      $scope.details.endDate.getDate(),
+      $scope.details.endTimeHours.getHours(),
+      $scope.details.endTimeHours.getMinutes()
+      );
+    $scope.details.startTime = combinedStartDateTime;
+    $scope.details.endTime = combinedEndDateTime;
     coveyService.updateCovey($scope.details);
     // TODO: add validation to check that photoUrl is a real url:
     $scope.gMapUrl = $sce.trustAsResourceUrl('https://www.google.com/maps/embed/v1/place?'

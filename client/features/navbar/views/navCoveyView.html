@@ -2,7 +2,7 @@
 <div ng-class="{'col-sm-2': isExpanded(), 'col-sm-1': !isExpanded()}">
   <ul class="nav nav-pills nav-stacked">
 
-    <li role="presentation" class="brand-nav-pill"  ng-click="navigateTo('/')">
+    <li role="presentation" class="brand-nav-pill"  ng-click="navigateTo('/coveys')">
       <span class="nav-pill-text-align side-nav-title" ng-hide="!isExpanded()">Covey</span>
       <span class="nav-pill-text-align" ng-hide="isExpanded()"><img class="covey-nav-icon" src="styles/assets/quailMiniWhite.png"></span>
     </li>
@@ -19,7 +19,7 @@
     </li>
     <li role="presentation" ng-class="{'active-nav': isSelected('rides'), 'inactive-nav': !isSelected('rides')}" ng-click="navbarSwitch('rides')">
       <div class="nav-pill-text-align">
-        <img class="nav-car-icon" src="styles/assets/car2White.png">
+        <img class="nav-car-icon" src="styles/assets/carWhite.png">
         <span ng-hide="!isExpanded()"> Rides</span>
       </div>
     </li>

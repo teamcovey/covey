@@ -35,15 +35,7 @@ angular.module('covey.covey', ['date.services'])
       $scope.editDetails = !$scope.editDetails;
   };
 
-  $scope.formatDate = (dateToFormat) => {
-    if (dateToFormat && dateToFormat.toString().length) {
-      return new Date(dateToFormat).toString().slice(0, 21);
-    }
-    return '';
-  };
-
   $scope.convertToTextDate = (dateString) => dateFactory.convertToTextDate(new Date(dateString));
-
 
   $scope.updateCovey = () => {
     const combinedStartDateTime = new Date(

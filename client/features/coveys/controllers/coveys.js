@@ -25,7 +25,7 @@ angular.module('coveys', ['covey.services', 'userId.services', 'date.services'])
 
   // Routes user to the specified covey (based on coveyId)
   $scope.goToCovey = (covey) => {
-    $location.path(`/coveys/${covey.covey_id}`);
+    $location.path(`/coveys/${covey.coveyId}`);
   };
 
   // Deletes the covey
@@ -35,7 +35,7 @@ angular.module('coveys', ['covey.services', 'userId.services', 'date.services'])
       event.stopPropagation();
       // Deletes the covey
       const coveyIndex = $scope.coveys.indexOf(covey);
-      coveysFactory.deleteCovey(covey.covey_id);
+      coveysFactory.deleteCovey(covey.coveyId);
       $scope.coveys.splice(coveyIndex, 1);
     } else {
       event.stopPropagation();

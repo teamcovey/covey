@@ -94,7 +94,7 @@ app.get('/api/auth/facebook',
 
 app.get('/api/auth/facebook/return',
   passport.authenticate('facebook', { failureRedirect: '/' }),
-  (req, res) => res.cookie('userId', req.user.userId).redirect('/#/coveys')
+  (req, res) => res.cookie('userId', req.user.id).redirect('/#/coveys')
 );
 
 app.get('/api/logout',

@@ -58,6 +58,7 @@ angular.module('covey', [
     if ($location.path() !== '/about') {
       auth.checkAuthentication()
         .then((isAuth) => {
+          console.log(isAuth);
           if (!isAuth) {
             event.preventDefault();
             $location.path('/');

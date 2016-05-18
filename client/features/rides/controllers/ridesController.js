@@ -115,7 +115,7 @@ angular.module('covey.rides', ['userId.services', 'covey.attendees'])
   };
 
   $scope.removeRide = (ride) => {
-    ridesHttp.removeSupply(ride.id);
+    ridesHttp.removeRide(ride.id);
   };
 
   $scope.addPassenger = (passenger, ride) => {

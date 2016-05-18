@@ -265,6 +265,11 @@ ul.nav-pills img.nav-car-icon {
    margin-bottom:40px;
 }
 
+.details-header-section-btns {
+   margin-top:20px;
+   margin-bottom:40px;
+}
+
 .details-header-title {
   display: inline;
 }
@@ -395,8 +400,10 @@ span.glyphicon-menu-hamburger {
   resize: none;
 }
 
-.margin-left {
+.margin-adjust {
   margin-left: 10px;
+  margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 .email-spinner {

@@ -26,7 +26,14 @@ angular.module('covey.covey', [])
   });
 
   $scope.toggleEdit = () => {
-    $scope.editDetails = !$scope.editDetails;
+    console.log('in toggleEdit ', $scope.details);
+    if ($scope.details.startDate === undefined) {
+      $scope.details.startDate = new Date($scope.details.startTime);
+      $scope.details.startTimeHours = new Date(Date.parse($scope.details.startTime));
+      $scope.details.endDate = new Date(Date.parse($scope.details.endTime));
+      $scope.details.endTimeHours = new Date(Date.parse($scope.details.endTime));
+    }
+      $scope.editDetails = !$scope.editDetails;
   };
 
   $scope.formatDate = (dateToFormat) => {
@@ -37,6 +44,22 @@ angular.module('covey.covey', [])
   };
 
   $scope.updateCovey = () => {
+    const combinedStartDateTime = new Date(
+      $scope.details.startDate.getFullYear(),
+      $scope.details.startDate.getMonth(),
+      $scope.details.startDate.getDate(),
+      $scope.details.startTimeHours.getHours(),
+      $scope.details.startTimeHours.getMinutes()
+      );
+    const combinedEndDateTime = new Date(
+      $scope.details.endDate.getFullYear(),
+      $scope.details.endDate.getMonth(),
+      $scope.details.endDate.getDate(),
+      $scope.details.endTimeHours.getHours(),
+      $scope.details.endTimeHours.getMinutes()
+      );
+    $scope.details.startTime = combinedStartDateTime;
+    $scope.details.endTime = combinedEndDateTime;
     coveyService.updateCovey($scope.details);
     // TODO: add validation to check that photoUrl is a real url:
     $scope.gMapUrl = $sce.trustAsResourceUrl('https://www.google.com/maps/embed/v1/place?'

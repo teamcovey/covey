@@ -75,9 +75,13 @@
     </div>
     <div style="display:block">
       <label>Start Time</label>
-      <input type="text" name="startTime" class="details-inputs" ng-model="details.startTime"></input>
+      <input type="date" name="startDate" class="details-inputs" ng-model="details.startDate"></input>
+      <input type="time" name="startTimeHours" class="details-inputs" ng-model="details.startTimeHours">
+    </div>
+    <div style="display:block">
       <label>End Time</label>
-      <input type="text" name="endTime" class="details-inputs" ng-model="details.endTime"></input>
+      <input type="date" name="endDate" class="details-inputs" ng-model="details.endDate" ng-required="true"></input>
+      <input type="time" name="endTimeHours" class="details-inputs" ng-model="details.endTimeHours" ng-required="true">
     </div>
     <div style="display:block">
       <label>Photo Url</label>

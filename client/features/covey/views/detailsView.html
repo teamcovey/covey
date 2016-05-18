@@ -20,7 +20,7 @@
 <div class="row details-body-section" ng-hide="editDetails">
   <div class="col-sm-offset-1 col-sm-5">
     <br>
-    <p><span class="glyphicon glyphicon-time"></span> From {{formatDate(details.startTime)}} to {{formatDate(details.endTime)}}
+    <p><span class="glyphicon glyphicon-time"></span> <strong>From:</strong> {{convertToTextDate(details.startTime)}}<br> <strong>To:</strong> {{convertToTextDate(details.endTime)}}
     <p><i>{{details.details}}</i></p>
     <form ng-submit="emailAttendees()">
       <div class="row">

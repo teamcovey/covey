@@ -1,5 +1,5 @@
-angular.module('covey.covey', [])
-.controller('coveyController', function ($scope, $location, coveyService, googleCalendarService, $sce, emailAttendeesService) {
+angular.module('covey.covey', ['date.services'])
+.controller('coveyController', function ($scope, $location, coveyService, googleCalendarService, $sce, emailAttendeesService, dateFactory) {
   // Necessary to initialize left side nav & columns at correct height/width:
 
   if (window.innerWidth > 770) {
@@ -41,6 +41,9 @@ angular.module('covey.covey', [])
     }
     return '';
   };
+
+  $scope.convertToTextDate = (dateString) => dateFactory.convertToTextDate(new Date(dateString));
+
 
   $scope.updateCovey = () => {
     const combinedStartDateTime = new Date(

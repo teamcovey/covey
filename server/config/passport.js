@@ -12,9 +12,9 @@ var keys = process.env.covey_env === 'PROD' || process.env.covey_env === 'DEV'
 // Set host based on environment
 var callback;
 if (process.env.covey_env === 'PROD') {
-  callback = 'http://52.10.200.163/api/auth/facebook/return';
+  callback = 'http://www.mycovey.com/api/auth/facebook/return';
 } else if (process.env.covey_env === 'DEV') {
-  callback = 'http://52.10.200.163:3000/api/auth/facebook/return';
+  callback = 'http://www.mycovey.com:3000/api/auth/facebook/return';
 } else {
   callback = 'http://localhost:3000/api/auth/facebook/return';
 }

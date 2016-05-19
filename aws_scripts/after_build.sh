@@ -4,4 +4,4 @@ docker rm -f covey
 docker rmi covey:latest
 docker build -t covey .
 # docker run --name=postgres -d postgres
-docker run -e "covey_env=DEV" -d -p 3000:3000 --name=covey --link postgres:postgres covey
+docker run -e "covey_env=DEV" -d -p 80:80 --name=covey --link postgres:postgres covey

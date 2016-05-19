@@ -11,5 +11,5 @@ RUN bower install --allow-root
 
 RUN gulp go-prod
 
-EXPOSE 3000
+EXPOSE 80
 CMD ["node", "server/server.js"]

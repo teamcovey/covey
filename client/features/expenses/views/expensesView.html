@@ -12,7 +12,7 @@
 
       <div class="current-attendees-added">
         <div class="panel-current-users" ng-click="removeParticipant(participant, expense)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="participant in expense.participants">
-            {{participant.is_owner ? '$' : ''}}{{mouseOverTrue ? 'X' : participant.firstName.slice(0,1)+participant.lastName.slice(0,1)}}
+            {{participant.isOwner ? '$' : ''}}{{mouseOverTrue ? 'X' : participant.firstName.slice(0,1)+participant.lastName.slice(0,1)}}
         </div>
         <div class="panel-potential-users" ng-click="editMode = !editMode">+ Paid</div>
         <div ng-show="editMode">

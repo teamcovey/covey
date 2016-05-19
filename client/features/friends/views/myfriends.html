@@ -65,7 +65,7 @@
         </form>
       </div>
 
-      <div class="row potential-friend-to-add verticle-center" ng-repeat="friend in found" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-click="addFriend(friend.id)">
+      <div class="row potential-friend-to-add verticle-center" ng-repeat="friend in found" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-click="addFriend(friend.userId)">
         <div class="col-sm-4">
           <div><img src="{{ friend.photoUrl }}" height="40px" width="40px" border-radius="3px" margin="10px"/></div>
         </div>

@@ -77,9 +77,13 @@ exports.updateExpense = (request, response) => {
       amount: request.body.amount,
     })
     .then((expenses) => {
-      const expense = expenses[0];
-      request.io.sockets.emit(`update expense ${expense.coveyId}`, { response: expense });
-      response.status(201).send({ success: true, expense });
+      // const expense = expenses[0];
+      getExpenseParticipants(expenses[0])
+        .then((expenseWithParticipants) => {
+          request.io.sockets.emit(`update expense ${expenseWithParticipants.coveyId}`,
+            { response: expenseWithParticipants });
+          response.status(201).send({ success: true, expenseWithParticipants });
+        });
     })
     .catch((err) => {
       /*eslint-disable*/

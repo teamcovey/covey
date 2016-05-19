@@ -15,7 +15,7 @@ angular.module('friends', ['friends.services', 'userId.services'])
         const data = response.data;
         if (data.success && data.success === true) {
           for (let i = 0; i < $scope.friends.length; i++) {
-            if ($scope.friends[i].id === friendId) {
+            if ($scope.friends[i].userId === friendId) {
               friendIndex = i;
               break;
             }
@@ -86,7 +86,7 @@ angular.module('friends', ['friends.services', 'userId.services'])
   $scope.confirmDelete = (friend) => {
     // using a confirm click to make sure people cant accidentally remove friends
     if (friend.removeConfirm) {
-      $scope.removeFriend(friend.id);
+      $scope.removeFriend(friend.userId);
     } else {
       friend.removeConfirm = true;
     }

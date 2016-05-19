@@ -31,7 +31,7 @@ angular.module('covey.supplies', ['userId.services', 'covey.attendees'])
   /* SOCKETS:update resource */
   socket.on(`update resource ${$routeParams.coveyId}`, (data) => {
     for (let i = 0; i < $scope.supplyDetails.length; i++) {
-      if ($scope.supplyDetails[i].id === data.response.id) {
+      if ($scope.supplyDetails[i].resourceId === data.response.resourceId) {
         const currentSuppliers = $scope.supplyDetails[i].suppliers;
         $scope.supplyDetails[i] = data.response;
         $scope.supplyDetails[i].suppliers = currentSuppliers;
@@ -44,7 +44,7 @@ angular.module('covey.supplies', ['userId.services', 'covey.attendees'])
   /* SOCKETS:remove resource */
   socket.on(`remove resource ${$routeParams.coveyId}`, (data) => {
     for (let i = 0; i < $scope.supplyDetails.length; i++) {
-      if ($scope.supplyDetails[i].id.toString() === data.response.toString()) {
+      if ($scope.supplyDetails[i].resourceId.toString() === data.response.toString()) {
         $scope.supplyDetails.splice(i, 1);
         break;
       }
@@ -55,9 +55,9 @@ angular.module('covey.supplies', ['userId.services', 'covey.attendees'])
   /* SOCKETS:add supplier */
   socket.on(`add supplier ${$routeParams.coveyId}`, (data) => {
     for (let i = 0; i < $scope.supplyDetails.length; i++) {
-      if ($scope.supplyDetails[i].id.toString() === data.response.resourceId.toString()) {
+      if ($scope.supplyDetails[i].resourceId.toString() === data.response.resourceId.toString()) {
         for (let j = 0; j < $scope.attendees.length; j++) {
-          if ($scope.attendees[j].id.toString() === data.response.userId.toString()) {
+          if ($scope.attendees[j].userId.toString() === data.response.userId.toString()) {
             if ($scope.supplyDetails[i].suppliers) {
               $scope.supplyDetails[i].suppliers.push($scope.attendees[j]);
             } else {
@@ -79,10 +79,10 @@ angular.module('covey.supplies', ['userId.services', 'covey.attendees'])
   /* SOCKETS:remove supplier */
   socket.on(`remove supplier ${$routeParams.coveyId}`, (data) => {
     for (let i = 0; i < $scope.supplyDetails.length; i++) {
-      if ($scope.supplyDetails[i].id.toString() === data.response.resourceId.toString()) {
+      if ($scope.supplyDetails[i].resourceId.toString() === data.response.resourceId.toString()) {
         // iterate over supplyDetails and find one that matches resourceId; splice out the data.userId from that suppliers
         for (let j = 0; j < $scope.supplyDetails[i].suppliers.length; j++) {
-          const supplierId = $scope.supplyDetails[i].suppliers[j].user_id || $scope.supplyDetails[i].suppliers[j].id || $scope.supplyDetails[i].suppliers[j].userId;;
+          const supplierId = $scope.supplyDetails[i].suppliers[j].userId;;
           if (supplierId.toString() === data.response.userId.toString()) {
             $scope.supplyDetails[i].suppliers.splice(j, 1);
             if (data.response.userId.toString() === userId.toString()) {
@@ -117,17 +117,17 @@ angular.module('covey.supplies', ['userId.services', 'covey.attendees'])
   };
 
   $scope.removeSupply = (supply) => {
-    suppliesHttp.removeSupply(supply.id);
+    suppliesHttp.removeSupply(supply.resourceId);
   };
 
   $scope.addSupplier = (supplier, supply) => {
-    const supplierId = supplier.user_id || supplier.userId || supplier.id;
-    suppliesHttp.addSupplier(supply.id, supplierId);
+    const supplierId = supplier.userId;
+    suppliesHttp.addSupplier(supply.resourceId, supplierId);
   };
 
   $scope.removeSupplier = (supplier, supply) => {
-    const supplierId = supplier.user_id || supplier.userId || supplier.id;
-    suppliesHttp.removeSupplier(supply.id, supplierId);
+    const supplierId = supplier.userId;
+    suppliesHttp.removeSupplier(supply.resourceId, supplierId);
   };
 })
 .filter('alreadySupplier', function () {
@@ -137,7 +137,7 @@ angular.module('covey.supplies', ['userId.services', 'covey.attendees'])
         let result = true;
         if (suppliers) {
           suppliers.forEach((currentSupplier) => {
-            if (currentSupplier.user_id === attendee.id) {
+            if (currentSupplier.userId === attendee.userId) {
               result = false;
             }
           });

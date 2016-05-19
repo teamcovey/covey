@@ -32,7 +32,7 @@ angular.module('covey.rides', ['userId.services', 'covey.attendees'])
   /* SOCKETS:update ride */
   socket.on(`update ride ${$routeParams.coveyId}`, (data) => {
     for (let i = 0; i < $scope.ridesDetails.length; i++) {
-      if ($scope.ridesDetails[i].id === data.response.id) {
+      if ($scope.ridesDetails[i].carId === data.response.carId) {
         $scope.ridesDetails[i] = data.response;
         break;
       }
@@ -43,7 +43,7 @@ angular.module('covey.rides', ['userId.services', 'covey.attendees'])
   /* SOCKETS:remove ride */
   socket.on(`remove ride ${$routeParams.coveyId}`, (data) => {
     for (let i = 0; i < $scope.ridesDetails.length; i++) {
-      if ($scope.ridesDetails[i].id.toString() === data.response.toString()) {
+      if ($scope.ridesDetails[i].carId.toString() === data.response.toString()) {
         $scope.ridesDetails.splice(i, 1);
         break;
       }
@@ -54,9 +54,9 @@ angular.module('covey.rides', ['userId.services', 'covey.attendees'])
   /* SOCKETS:add rider */
   socket.on(`add rider ${$routeParams.coveyId}`, (data) => {
     for (let i = 0; i < $scope.ridesDetails.length; i++) {
-      if ($scope.ridesDetails[i].id.toString() === data.response.carId.toString()) {
+      if ($scope.ridesDetails[i].carId.toString() === data.response.carId.toString()) {
         for (let j = 0; j < $scope.attendees.length; j++) {
-          if ($scope.attendees[j].id.toString() === data.response.userId.toString()) {
+          if ($scope.attendees[j].userId.toString() === data.response.userId.toString()) {
             if ($scope.ridesDetails[i].riders) {
               $scope.ridesDetails[i].riders.push($scope.attendees[j]);
             } else {
@@ -78,10 +78,10 @@ angular.module('covey.rides', ['userId.services', 'covey.attendees'])
   /* SOCKETS:remove rider */
   socket.on(`remove rider ${$routeParams.coveyId}`, (data) => {
     for (let i = 0; i < $scope.ridesDetails.length; i++) {
-      if ($scope.ridesDetails[i].id.toString() === data.response.carId.toString()) {
+      if ($scope.ridesDetails[i].carId.toString() === data.response.carId.toString()) {
         // iterate over ridesDetails and find one that matches rideId; splice out the data.userId from that riders
         for (let j = 0; j < $scope.ridesDetails[i].riders.length; j++) {
-          const riderId = $scope.ridesDetails[i].riders[j].user_id || $scope.ridesDetails[i].riders[j].id || $scope.ridesDetails[i].riders[j].userId;;
+          const riderId = $scope.ridesDetails[i].riders[j].userId;
           if (riderId.toString() === data.response.userId.toString()) {
             $scope.ridesDetails[i].riders.splice(j, 1);
             if (data.response.userId.toString() === userId.toString()) {
@@ -115,16 +115,16 @@ angular.module('covey.rides', ['userId.services', 'covey.attendees'])
   };
 
   $scope.removeRide = (ride) => {
-    ridesHttp.removeRide(ride.id);
+    ridesHttp.removeRide(ride.carId);
   };
 
   $scope.addPassenger = (passenger, ride) => {
-    const passengerId = passenger.user_id || passenger.userId || passenger.id;
-    ridesHttp.addPassenger(ride.id, passengerId);
+    const passengerId = passenger.userId;
+    ridesHttp.addPassenger(ride.carId, passengerId);
   };
 
   $scope.removePassenger = (passenger, ride) => {
-    const passengerId = passenger.user_id || passenger.userId || passenger.id;
-    ridesHttp.removePassenger(ride.id, passengerId);
+    const passengerId = passenger.userId;
+    ridesHttp.removePassenger(ride.carId, passengerId);
   };
 });

@@ -1,4 +1,4 @@
-<img class="covey-photo" ng-show="showPhoto" ng-src="{{details.photoUrl}}" alt="Smiley face" height="200" width="100%">
+<img class="covey-photo" ng-src="{{details.photoUrl ? details.photoUrl : '/styles/assets/stockPhoto2.png'}}" alt="Smiley face" height="200" width="100%">
 
 <!-- Header -->
 <div ng-hide="editDetails">

@@ -15,7 +15,7 @@
       <div ng-repeat="covey in coveys track by $index">
         <div class="col-md-12 text-left covey-tile" ng-click="goToCovey(covey)">
           <div class="mycoveys-event-image-container">
-            <img src="{{ covey.photoUrl }}" class="mycoveys-event-image"/>
+            <img src="{{covey.photoUrl ? covey.photoUrl : '/styles/assets/stockPhoto2.png' }}" class="mycoveys-event-image"/>
           </div>
           <div ng-switch on="covey.isOwner">
             <div class="covey-tile-owner" ng-switch-when="true">

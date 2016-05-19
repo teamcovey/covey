@@ -116,3 +116,7 @@
   display: flex;
   align-items: center;
 }
+.heading-margin {
+  margin-top: 60px;
+  margin-bottom: 20px;
+};

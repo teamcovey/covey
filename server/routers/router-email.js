@@ -4,7 +4,7 @@ const nodemailer = require('nodemailer');
 
 var keys = process.env.covey_env === 'PROD' || process.env.covey_env === 'DEV'
   ? require('../config/keys.js')
-  : require('../config/keys.js');
+  : require('../config/keys.example.js');
 
 const smtpConfig = {
   host: 'auth.smtp.1and1.co.uk',

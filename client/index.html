@@ -7,6 +7,7 @@
   <link href='https://fonts.googleapis.com/css?family=Lora|Open+Sans:400,600,400italic,700' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Lora' rel='stylesheet' type='text/css'>
+  <!-- build:css dist/all.css -->
   <link rel="stylesheet" type="text/css" href="styles/index.css">
   <link rel="stylesheet" type="text/css" href="styles/covey.css">
   <link rel="stylesheet" type="text/css" href="styles/createcovey.css">
@@ -16,6 +17,7 @@
   <link rel="stylesheet" type="text/css" href="styles/friends.css">
   <link rel="stylesheet" type="text/css" href="styles/welcome.css">
   <link rel="stylesheet" type="text/css" href="styles/profile.css">
+  <!-- /build -->
 </head>
 <body class="site-container">
   
@@ -34,18 +36,15 @@
   <script src="bower_components/jquery/dist/jquery.min.js"></script>
   <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
   <script src="bower_components/underscore/underscore-min.js"></script>
-
   <script src="scripts/jquery.easing.js"></script>
 
   <!-- Controllers -->
+  <!-- build:js dist/controllers.min.js -->
   <script src="scripts/controllers/auth.js"></script>
   <script src="features/hamburger/controllers/hamburger.js"></script>
   <script src="features/createcovey/controllers/createcovey.js"></script>
   <script src="features/index/controllers/indexController.js"></script>
-  <script src="features/index/services/indexService.js"></script>
   <script src="features/welcome/controllers/welcomeController.js"></script>
-  <script src="features/welcome/directives/welcomeDirective.js"></script>
-  <script src="features/welcome/services/welcomeService.js"></script>
   <script src="scripts/controllers/auth.js"></script>
   <script src="features/coveys/controllers/coveys.js"></script>
   <script src="features/navbar/controllers/navController.js"></script>
@@ -57,8 +56,12 @@
   <script src="features/chat/controllers/chatController.js"></script>
   <script src="features/profile/controllers/profileController.js"></script>
   <script src="features/expenses/controllers/expensesController.js"></script>
- 
+  <!-- /build -->
+
   <!-- Services -->
+  <!-- build:js dist/services.min.js -->
+  <script src="features/index/services/indexService.js"></script>
+  <script src="features/welcome/services/welcomeService.js"></script>
   <script src="features/coveys/services/services.js"></script>
   <script src="features/attendees/services/attendeesService.js"></script>
   <script src="features/supplies/services/suppliesService.js"></script>
@@ -73,18 +76,25 @@
   <script src="features/expenses/services/expensesService.js"></script>
   <script src="scripts/services/calendarService.js"></script>
   <script src="scripts/services/emailService.js"></script>
-
+  <script src="scripts/services/dateservices.js"></script>
+  <!-- /build -->
+  
   <!-- Directives -->
+  <!-- build:js dist/directives.min.js -->
+  <script src="features/welcome/directives/welcomeDirective.js"></script>
   <script src="features/createcovey/directives/createcoveydirective.js"></script>
   <script src="features/coveys/directives/coveysdirective.js"></script>
   <script src="features/hamburger/directives/hamburgerdirective.js"></script>
   <script src="features/covey/directives/coveyDirectives.js"></script>
   <script src="features/friends/directives/friendsDirective.js"></script>
   <script src="features/profile/directives/profileDirective.js"></script>
+  <!-- /build -->
   
   <!-- App -->
-  <script src="scripts/services/dateservices.js"></script>
+  <!-- build:js dist/app.js -->
   <script src="app.js"></script>
+  <!-- /build -->
+
 </body>
 </html>
 

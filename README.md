@@ -44,7 +44,7 @@ $ npm install
 Set local environment variable to LOCAL
 
 ```
-$ export NODE_ENV=LOCAL
+$ export covey_env=LOCAL
 ```
 
 Create keys.js file local with your Facebook, Email and Twilio secret keys. See server/config/keys.example.js for an example

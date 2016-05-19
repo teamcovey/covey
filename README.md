@@ -1,6 +1,5 @@
 ![Covey](https://raw.githubusercontent.com/teamcovey/covey/master/client/styles/assets/coveyLogo-blue-white-04-01.png)
 
-# Covey
 #### Covey is an interactive tool that simplifies group trip organization.
 Collaborate with your friends to share rides, supplies, and expenses.
 
@@ -41,6 +40,15 @@ $ sudo npm install -g bower
 $ bower install
 $ npm install
 ```
+
+Set local environment variable to LOCAL
+
+```
+$ export NODE_ENV=LOCAL
+```
+
+Create keys.js file local with your Facebook, Email and Twilio secret keys. See server/config/keys.example.js for an example
+
 **For testing**
 ```
 $ npm test
@@ -51,28 +59,29 @@ You're good to go. Start the server with:
 $ npm start
 ```
 
+
 ## Architecture
 ### High Level Architecture
-![Architecture](http://i64.tinypic.co)
+![Architecture](https://raw.githubusercontent.com/teamcovey/covey/master/client/styles/assets/architecture-sml.gif)
 ### Database Schema
 Postgres using Bookshelf and Knex
-![Schema](http://i68.tinypic)
 
-## API
+![Schema](https://raw.githubusercontent.com/teamcovey/covey/master/client/styles/assets/updatedSchema.png)
+
+## API Endpoints
 **For API Documentation, please see the [ENDPOINTS.md](ENDPOINTS.md) file**
+
+## Questions and Issues
+For any issues, please refer to [**our issues page**](https://github.com/teamcovey/covey/issues)
+Please direct any questions regarding Covey to [**our wiki page**](https://github.com/teamcovey/covey/wiki)
 
 ## Contributing
 
 Covey was built using waffle.io as the project organization tool.
 Please visit the [GITFLOW.MD](GITFLOW.md) for our workflow guidelines.
 
-## Questions and Issues
-For any issues, please refer to [**our issues page**](https://github.com/teamcovey/covey/issues)
-Please direct any questions regarding Covey to [**our wiki page**](https://github.com/teamcovey/covey/wiki)
+####Contributors:
 
-## Meta
-Contributors:
-
-[Sky Free](https://github.com/swfree) | [Toben Green](https://github.com/tobensg) | [Rahim Dharssi](https://github.com/rahimftd) | [Freddie Ryder](https://github.com/fredryder)
+[Sky Free](https://github.com/swfree) | [Toben Green](https://github.com/tobensg) | [Rahim Dharssi](https://github.com/rahimftd) | [Fred Ryder](https://github.com/fredryder)
 
 "Distributed under the MIT License."

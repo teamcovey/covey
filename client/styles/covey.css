@@ -262,12 +262,12 @@ ul.nav-pills img.nav-car-icon {
 
 .details-header-section {
    margin-top:30px;
-   margin-bottom:40px;
+   margin-bottom:0px;
 }
 
 .details-header-section-btns {
    margin-top:20px;
-   margin-bottom:40px;
+   margin-bottom: 20px;
 }
 
 .details-header-title {
@@ -384,15 +384,16 @@ span.glyphicon-menu-hamburger {
 }
 
 .map-tile {
-  min-height: 250px;
+  min-height: 200px;
   width: 100%;
-  box-shadow: 1px 1px 0 0 #bfbfbf;
+  /*box-shadow: 1px 1px 0 0 #bfbfbf;*/
+  margin-bottom: 25px;
 }
 
 .email-text-area {
-  width: 275px;
-  height: 100px;
-  padding: 20px 20px;
+  width: 100%;
+  height: 80px;
+  padding: 10px;
   box-sizing: border-box;
   border: 2px solid #ccc;
   border-radius: 4px;
@@ -429,4 +430,12 @@ span.glyphicon-menu-hamburger {
 .buttons-center {
   width: 100%;
   margin: 0 auto;
+}
+
+.emailer {
+  margin-bottom: 20px;
+}
+
+.no-padding-left {
+  /*padding-right: 0px;*/
 }

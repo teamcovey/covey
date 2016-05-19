@@ -24,27 +24,38 @@
     <span class="glyphicon glyphicon-time blue"></span><strong> From:</strong> {{convertToTextDate(details.startTime)}}<br>
     <strong>To:</strong> {{convertToTextDate(details.endTime)}}
     <p><i>{{details.details}}</i></p>
-    <form ng-submit="emailAttendees()">
-      <div class="row">
-        <div class="col-sm-offset-3 col-md-6">
-              <button class="btn btn-pineapple send-email" value="submit">Email the group</button>
-        </div>
-        <div class = "col-sm-1">
-            <div class="email-spinner v-mid" ng-show="spinnerVisible"></div>
-            <div class="orange v-mid" ng-show="emailSentTick"><span class="glyphicon glyphicon-ok"></span></div>
-        </div>
-      </div>
-      <textarea name="emailMessage" class="email-text-area" ng-model="details.email" ng-focus="setSentFalse()" required></textarea>
-    </form>
+    
+
+
   </div>
+
+  <!-- Right column -->
   <div class="col-sm-5">
-    <span class="glyphicon glyphicon-map-marker"></span> {{details.location}}
-    <br>
-    <iframe class="map-tile" frameborder="0" style="border:0"
-      src="{{ gMapUrl }}" allowfullscreen>
-    </iframe>
-    <p>{{details.address}}, {{details.city}}, {{details.state}}</p>
+
+    <!-- Map -->
+    <iframe class="map-tile" frameborder="0" style="border:0" src="{{ gMapUrl }}" allowfullscreen></iframe>
+
+    <!-- Email -->
+    <div class="emailer">
+      <form ng-submit="emailAttendees()">
+        <textarea name="emailMessage" class="email-text-area" placeholder="Send an email to your Covey" ng-model="details.email" ng-focus="setSentFalse()" required></textarea>
+        <div class="row">
+ <!--          <div class = "col-sm-12 text-left">
+            <div class="orange v-mid" ng-show="emailSentTick"><span class="glyphicon glyphicon-ok"></span></div>
+            <div class="email-spinner v-mid" ng-show="spinnerVisible"></div>
+          </div> -->
+          <div class="col-md-8 text-left">
+            <div class="orange v-mid" ng-show="emailSentTick"><span class="glyphicon glyphicon-ok"></span></div>
+            <div class="email-spinner v-mid" ng-show="spinnerVisible"></div>
+          </div>
+          <div class="col-md-4 text-right">
+            <button class="btn btn-pineapple send-email" value="submit">Send</button>
+          </div>
+        </div>
+      </form>
+    </div>
   </div>
+
 </div>
 
 <!-- Edit Covey -->

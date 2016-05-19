@@ -26,7 +26,6 @@ angular.module('covey.expenses', ['userId.services', 'covey.attendees'])
 
   /* SOCKETS:add expense */
   socket.on(`add expense ${$routeParams.coveyId}`, (data) => {
-    console.log(data.response);
     $scope.expensesDetails.push(data.response);
   });
 

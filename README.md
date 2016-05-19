@@ -76,4 +76,3 @@ Contributors:
 [Sky Free](https://github.com/swfree) | [Toben Green](https://github.com/tobensg) | [Rahim Dharssi](https://github.com/rahimftd) | [Freddie Ryder](https://github.com/fredryder)
 
 "Distributed under the MIT License."
-

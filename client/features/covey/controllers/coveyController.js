@@ -21,8 +21,6 @@ angular.module('covey.covey', ['date.services'])
     $scope.gMapUrl = $sce.trustAsResourceUrl('https://www.google.com/maps/embed/v1/place?'
       + 'key=AIzaSyCYGIGwHNJ8Z7KKpSo6-JdK6t7mYfap05I&'
       + `q=${$scope.details.address} ${$scope.details.city} ${$scope.details.state}`);
-    // TODO: add validation to check that photoUrl is a real url:
-    $scope.showPhoto = response.covey.photoUrl || false;
   });
 
   $scope.toggleEdit = () => {

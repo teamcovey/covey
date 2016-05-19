@@ -14,6 +14,9 @@ angular.module('createCovey', ['covey.services', 'userId.services'])
   $scope.toggleErrorVisibility = () => {
     $scope.errorVisible = !$scope.errorVisible;
   };
+
+  $scope.photoUrlRegex = /\.(?:jpe?g|gif|png)/g;
+
   // Resets the form fields to empty
   $scope.resetFormFields = () => {
     $scope.name = '';

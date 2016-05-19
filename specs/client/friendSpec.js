@@ -19,7 +19,7 @@ describe('Friends Factory', () => {
 
   it('Should receive a 200 when getFriends is called', (done) => {
     $httpBackend.expectGET('/api/friends/1').respond(200, '');
-    document.cookie = 'user_id=1';
+    document.cookie = 'userId=1';
     friendsFactory.getFriends()
       .then((response) => {
         expect(response.status).to.equal(200);
@@ -40,11 +40,11 @@ describe('Friends Factory', () => {
   });
 
   it('Should receive a 201 when addFriend is called', (done) => {
-    $httpBackend.expectPOST('/api/friends/1/2').respond(201, { id: 2, success: true });
+    $httpBackend.expectPOST('/api/friends/1/2').respond(201, { userId: 2, success: true });
     friendsFactory.addFriend('2')
       .then((response) => {
         expect(response.status).to.equal(201);
-        expect(response.data.id).to.equal(2);
+        expect(response.data.userId).to.equal(2);
         expect(response.data.success).to.equal(true);
         done();
       });

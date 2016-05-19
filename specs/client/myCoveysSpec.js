@@ -58,7 +58,7 @@ describe('Coveys', () => {
     const $scope = {};
     const controller = $controller(('coveysController'), { $scope: $scope });
     expect($location.path()).to.equal('');
-    $scope.goToCovey({covey_id: 12345});
+    $scope.goToCovey({coveyId: 12345});
     expect($location.path()).to.equal('/coveys/12345');
   });
   it('Should broadcast to the rootscope when clicking creat covey button', (done) => {

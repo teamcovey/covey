@@ -32,7 +32,7 @@
         <form class="form-horizontal" name="coveyForm">
           <div class="form-group">
             <div class="col-sm-2">
-              <label for="name">Event Name</label>
+              <label for="name">Event Name<span class="pineapple-text">*<span></label>
             </div>
             <div class="col-sm-10">
               <input type="text" class="form-control" id="name" placeholder="Event Name" maxlength="100" ng-model="name" ng-required="true">
@@ -40,7 +40,7 @@
           </div>
           <div class="form-group">
             <div class="col-sm-2">
-              <label for="location">Location</label>
+              <label for="location">Location<span class="pineapple-text">*<span></label>
             </div>
             <div class="col-sm-10">
               <input type="text" class="form-control" id="location" placeholder="Location" maxlength="100" ng-model="location" ng-required="true">
@@ -48,7 +48,7 @@
           </div>
           <div class="form-group">
             <div class="col-sm-2">
-              <label for="address">Address</label>
+              <label for="address">Address<span class="pineapple-text">*<span></label>
             </div>
             <div class="col-sm-10">
               <input type="text" class="form-control" id="address" placeholder="Address" maxlength="100" ng-model="address" ng-required="true">
@@ -56,13 +56,13 @@
           </div>
           <div class="form-group">
             <div class="col-sm-2">
-              <label for="city">City</label>
+              <label for="city">City<span class="pineapple-text">*<span></label>
             </div>
             <div class="col-sm-5">
               <input type="text" class="form-control" id="city" placeholder="City" maxlength="100" ng-model="city" ng-required="true">
             </div>
             <div class="col-sm-1">
-              <label for="state">State</label>
+              <label for="state">State<span class="pineapple-text">*<span></label>
             </div>
             <div class="col-sm-4">
               <input type="text" class="form-control" id="state" placeholder="State" maxlength="20" ng-model="state" ng-required="true">
@@ -70,7 +70,7 @@
           </div>
           <div class="form-group">
             <div class="col-sm-2">
-              <label for="startDate">Start</label>
+              <label for="startDate">Start<span class="pineapple-text">*<span></label>
             </div>
             <div class="col-sm-5">
               <input type="date" class="form-control" id="startDate" ng-model="startDate" ng-required="true">
@@ -81,7 +81,7 @@
           </div>
           <div class="form-group">
             <div class="col-sm-2">
-              <label for="endDate">End</label>
+              <label for="endDate">End<span class="pineapple-text">*<span></label>
             </div>
             <div class="col-sm-5">
               <input type="date" class="form-control" id="endDate" ng-model="endDate" ng-required="true">
@@ -92,15 +92,15 @@
           </div>
           <div class="form-group">
             <div class="col-sm-2">
-              <label for="photoUrl">Photo URL</label>
+              <label for="photoUrl">Photo URL<span class="pineapple-text">*<span></label>
             </div>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="photoUrl" placeholder="Photo URL" maxlength="255" ng-model="photoUrl">
+              <input type="text" class="form-control" id="photoUrl" name="photoUrl" placeholder="Photo URL" maxlength="255" ng-model="photoUrl" ng-pattern="photoUrlRegex">
             </div>
           </div>
           <div class="form-group">
             <div class="col-sm-2">
-              <label for="details">Description</label>
+              <label for="details">Description<span class="pineapple-text">*<span></label>
             </div>
             <div class="col-sm-10">
               <textarea class="form-control event-description-input" id="details" rows="2" maxlength="1000" placeholder="Description" ng-model="details"></textarea>

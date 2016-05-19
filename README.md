@@ -3,7 +3,7 @@
 #### Covey is an interactive tool that simplifies group trip organization.
 Collaborate with your friends to share rides, supplies, and expenses.
 
-Please visit [mycovey.com](http://mycovey.com).
+Please visit [mycovey.com](http://mycovey.com)
 
 [![Build Status](https://travis-ci.org/teamcovey/covey.svg?branch=master)](https://travis-ci.org/teamcovey/covey)
 --------------------

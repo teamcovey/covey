@@ -4,7 +4,7 @@ const knex = require('../config/config.js').knex;
 
 var keys = process.env.covey_env === 'PROD' || process.env.covey_env === 'DEV'
   ? require('../config/keys.js')
-  : require('../config/keys.js');
+  : require('../config/keys.example.js');
 
 const generateCode = () => {
   const min = 1000;

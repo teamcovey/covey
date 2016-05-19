@@ -6,6 +6,7 @@ COPY . /app
 
 RUN npm install
 RUN npm install -g bower
+RUN npm install -g gulp
 RUN bower install --allow-root
 
 RUN gulp go-prod

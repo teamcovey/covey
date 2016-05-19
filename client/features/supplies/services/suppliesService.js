@@ -7,7 +7,7 @@ angular.module('covey.supplies')
       supplies.forEach((supply) => {
         if (supply.suppliers) {
           supply.suppliers.forEach((supplier) => {
-            if (supplier.id.toString() === userId.toString()) {
+            if (supplier.userId.toString() === userId.toString()) {
               usersSupplies.push(supply);
             }
           });
@@ -33,7 +33,7 @@ angular.module('covey.supplies')
   this.isASupplier = (supply, potentialSupplier) => {
     let result = false;
     for (let i = 0; i < supply.suppliers.length; i++) {
-      if (supply.suppliers[i].user_id === potentialSupplier.user_id) {
+      if (supply.suppliers[i].userId === potentialSupplier.userId) {
         result = true;
         break;
       }
@@ -75,7 +75,7 @@ angular.module('covey.supplies')
   };
 
   this.updateSupply = (supply) => {
-    return $http.put(`/api/resources/${supply.id}`, supply)
+    return $http.put(`/api/resources/${supply.resourceId}`, supply)
     .then((updatedSupply) => updatedSupply, (error) => {
       console.error(error);
     });

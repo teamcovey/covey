@@ -3,7 +3,8 @@ const Covey = require('./covey.js');
 
 const User = db.Model.extend({
   tableName: 'users',
-  coveys: () => this.belongsToMany(Covey, 'coveys_users', 'covey_id', 'user_id'),
+  idAttribute: 'userId',
+  coveys: () => this.belongsToMany(Covey, 'coveys_users', 'coveyId', 'userId'),
 });
 
 module.exports = User;

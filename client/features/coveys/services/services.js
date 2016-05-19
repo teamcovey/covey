@@ -48,8 +48,8 @@ userIdService.factory('userIdFactory', () => {
   return ({
     // Parses out and returns user_id cookie
     getUserId: () => {
-      return document.cookie && document.cookie.match(/user_id=(\w+);*/)
-        ? document.cookie.match(/user_id=(\d+);*/)[1] || '' : '';
+      return document.cookie && document.cookie.match(/userId=(\d+);*/)
+        ? document.cookie.match(/userId=(\d+);*/)[1] || '' : '';
     },
   });
 });

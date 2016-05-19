@@ -38,10 +38,10 @@ exports.generateCodeAndSend = (req, res) => {
 
 exports.addTel = (req, res) => {
   const phoneNumber = req.body.tel;
-  const userId = req.cookies.user_id;
+  const userId = req.cookies.userId;
 
   knex('users')
-    .where('id', userId)
+    .where('userId', userId)
     .update({ phoneNumber })
     .then((updatedUser) => {
       console.log('In addTel: ', updatedUser);
@@ -53,9 +53,9 @@ exports.addTel = (req, res) => {
 };
 
 exports.hasTel = (req, res) => {
-  const userId = req.cookies.user_id;
+  const userId = req.cookies.userId;
 
-  new User({ id: userId })
+  new User({ userId })
     .fetch()
     .then((foundUser) => {
       if (foundUser.attributes.phoneNumber === null) {

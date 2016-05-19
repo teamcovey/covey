@@ -4,8 +4,9 @@ const Covey = require('./covey.js');
 
 const Car = db.Model.extend({
   tableName: 'cars',
+  idAttribute: 'carId',
   covey: () => this.belongsTo(Covey),
-  users: () => this.belongsToMany(User, 'cars_users', 'car_id', 'user_id'),
+  users: () => this.belongsToMany(User, 'cars_users', 'carId', 'userId'),
 });
 
 module.exports = Car;

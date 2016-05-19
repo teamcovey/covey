@@ -50,9 +50,10 @@ exports.signup = (req, res) => {
             refreshToken,
           })
           .then((user) => {
-            res.status(201).json({ id: user.attributes.id, success: true });
+            res.status(201).json({ userId: user.attributes.userId, success: true });
           })
           .catch((err) => {
+            console.log(err);
             res.status(404).json(err);
           });
         }
@@ -67,7 +68,7 @@ exports.searchUsers = (req, res) => {
   // searchVal = searchVal.toLowerCase();
 
   knex
-    .select(['users.firstName', 'users.lastName', 'users.email', 'users.photoUrl', 'users.id'])
+    .select(['users.firstName', 'users.lastName', 'users.email', 'users.photoUrl', 'users.userId'])
     .from('users')
     .where(knex.raw('LOWER("firstName") like ?', searchVal))
     .orWhere(knex.raw('LOWER("lastName") like ?', searchVal))

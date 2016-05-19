@@ -25,20 +25,18 @@ exports.sendEmail = (req, res) => {
   const emailBody = req.body.email;
   const name = req.body.name;
 
-  console.log('userId: ', userId);
-
   knex
     .select(['users.email'])
     .from('users')
-    .innerJoin('coveys_users', 'users.id', 'coveys_users.user_id')
-    .where('covey_id', '=', coveyId)
+    .innerJoin('coveys_users', 'users.userId', 'coveys_users.userId')
+    .where('coveyId', '=', coveyId)
     .then((emails) => {
       const toEmailsList = _.reduceRight(emails, (a, b) => `${b.email}, ${a}`, '');
 
       knex
         .select(['users.firstName', 'users.lastName', 'users.email'])
         .from('users')
-        .where('id', '=', userId)
+        .where('userId', '=', userId)
         .then((foundUser) => {
           const fromName = `${foundUser[0].firstName} ${foundUser[0].lastName}`;
 

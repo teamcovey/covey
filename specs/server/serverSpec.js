@@ -150,10 +150,10 @@ describe('Testing user creation', () => {
         if (err) {
           done(err);
         } else if (res) {
-          userId = res.body.id;
+          userId = res.body.userId;
           newEvent.userId = userId;
           res.body.should.have.property('success', true);
-          res.body.should.have.property('id');
+          res.body.should.have.property('userId');
           done();
         }
       });
@@ -172,11 +172,11 @@ describe('Testing user creation', () => {
         if (err) {
           done(err);
         } else if (res) {
-          userId2 = res.body.id;
+          userId2 = res.body.userId;
           newEvent2.userId = userId2;
           (userId2).should.be.above(userId);
           res.body.should.have.property('success', true);
-          res.body.should.have.property('id');
+          res.body.should.have.property('userId');
           done();
         }
       });
@@ -185,7 +185,7 @@ describe('Testing user creation', () => {
   it('should repond with 200 when when logged in and user exists', (done) => {
     request(server)
       .get(`/api/user/${userId}`)
-      .set('Cookie', [`user_id=${userId}`])
+      .set('Cookie', [`userId=${userId}`])
       .end((err, res) => {
         should.not.exist(err);
         res.status.should.be.equal(200);
@@ -211,7 +211,7 @@ describe('Testing Covey Creation, Editing, Retrieval', () => {
   it('POST /api/coveys', (done) => {
     request(server)
       .post('/api/coveys')
-      .set('Cookie', [`user_id=${userId}`])
+      .set('Cookie', [`userId=${userId}`])
       .type('json')
       .send(JSON.stringify(newEvent))
       .expect(201)
@@ -219,9 +219,9 @@ describe('Testing Covey Creation, Editing, Retrieval', () => {
         if (err) {
           done(err);
         } else if (res) {
-          coveyId = res.body.id;
+          coveyId = res.body.coveyId;
           res.body.should.have.property('success', true);
-          res.body.should.have.property('id');
+          res.body.should.have.property('coveyId');
           done();
         }
       });
@@ -230,7 +230,7 @@ describe('Testing Covey Creation, Editing, Retrieval', () => {
   it('POST /api/coveys 2nd event', (done) => {
     request(server)
       .post('/api/coveys')
-      .set('Cookie', [`user_id=${userId2}`])
+      .set('Cookie', [`userId=${userId2}`])
       .type('json')
       .send(JSON.stringify(newEvent2))
       .expect(201)
@@ -238,9 +238,9 @@ describe('Testing Covey Creation, Editing, Retrieval', () => {
         if (err) {
           done(err);
         } else if (res) {
-          coveyId2 = res.body.id;
+          coveyId2 = res.body.coveyId;
           res.body.should.have.property('success', true);
-          res.body.should.have.property('id');
+          res.body.should.have.property('coveyId');
           (coveyId2).should.be.above(coveyId);
           done();
         }
@@ -250,14 +250,14 @@ describe('Testing Covey Creation, Editing, Retrieval', () => {
   it('GET /api/covey/*coveyId* for valid coveyId', (done) => {
     request(server)
       .get(`/api/covey/${coveyId}`)
-      .set('Cookie', [`user_id=${userId}`])
+      .set('Cookie', [`userId=${userId}`])
       .expect(200)
       .end((err, res) => {
         if (err) {
           done(err);
         } else if (res) {
           res.body.covey.should.have.property('location', 'My House');
-          res.body.covey.should.have.property('id');
+          res.body.covey.should.have.property('coveyId');
           done();
         }
       });
@@ -267,7 +267,7 @@ describe('Testing Covey Creation, Editing, Retrieval', () => {
     request(server)
       .put(`/api/coveys/${coveyId}`)
       .type('json')
-      .set('Cookie', [`user_id=${userId}`])
+      .set('Cookie', [`userId=${userId}`])
       .send(updateEvent)
       .expect(201)
       .end((err, res) => {
@@ -284,7 +284,7 @@ describe('Testing Covey Creation, Editing, Retrieval', () => {
   it(`GET /api/covey/${coveyId} after PUT. location, city`, (done) => {
     request(server)
       .get(`/api/covey/${coveyId}`)
-      .set('Cookie', [`user_id=${userId}`])
+      .set('Cookie', [`userId=${userId}`])
       .expect(200)
       .end((err, res) => {
         if (err) {
@@ -312,16 +312,16 @@ describe('Testing attendee actions', () => {
   it('POST /api/coveys/1stCovey/2ndUser', (done) => {
     request(server)
       .post(`/api/coveys/${coveyId}/${userId2}`)
-      .set('Cookie', [`user_id=${userId}`])
+      .set('Cookie', [`userId=${userId}`])
       .expect(201)
       .end((err, res) => {
         if (err) {
           done(err);
         } else if (res) {
-          coveyId2 = res.body.id;
+          coveyId2 = res.body.coveyId;
           res.body.should.have.property('user');
-          res.body.should.have.property('id');
-          res.body.user.should.have.property('id', userId2);
+          res.body.should.have.property('coveyId');
+          res.body.user.should.have.property('userId', userId2);
           done();
         }
       });
@@ -330,7 +330,7 @@ describe('Testing attendee actions', () => {
   it('should respond with 409 if user already in covey', (done) => {
     request(server)
       .post(`/api/coveys/${coveyId}/${userId2}`)
-      .set('Cookie', [`user_id=${userId}`])
+      .set('Cookie', [`userId=${userId}`])
       .expect(409)
       .end((err, res) => {
         if (err) {
@@ -344,7 +344,7 @@ describe('Testing attendee actions', () => {
   it('GET /api/coveys/2ndUser after POST attendee', (done) => {
     request(server)
       .get(`/api/coveys/${userId2}`)
-      .set('Cookie', [`user_id=${userId2}`])
+      .set('Cookie', [`userId=${userId2}`])
       .expect(200)
       .end((err, res) => {
         if (err) {
@@ -360,7 +360,7 @@ describe('Testing attendee actions', () => {
   it('DELETE /api/coveys/:coveyId/:userId', (done) => {
     request(server)
       .del(`/api/coveys/${coveyId}/${userId2}`)
-      .set('Cookie', [`user_id=${userId}`])
+      .set('Cookie', [`userId=${userId}`])
       .expect(200)
       .end((err, res) => {
         if (err) {
@@ -374,7 +374,7 @@ describe('Testing attendee actions', () => {
   it('GET /api/covey/${coveyId} should respond with 401 for invalid user', (done) => {
     request(server)
       .get(`/api/covey/${coveyId}`)
-      .set('Cookie', [`user_id=${userId2}`])
+      .set('Cookie', [`userId=${userId2}`])
       .expect(401)
       .end((err, res) => {
         if (err) {
@@ -389,7 +389,7 @@ describe('Testing attendee actions', () => {
     request(server)
       .put(`/api/coveys/${coveyId}`)
       .type('json')
-      .set('Cookie', [`user_id=${userId2}`])
+      .set('Cookie', [`userId=${userId2}`])
       .send(updateEvent)
       .expect(401)
       .end((err, res) => {
@@ -405,7 +405,7 @@ describe('Testing attendee actions', () => {
     request(server)
       .del(`/api/coveys/${coveyId}`)
       .type('json')
-      .set('Cookie', [`user_id=${userId2}`])
+      .set('Cookie', [`userId=${userId2}`])
       .expect(401)
       .end((err, res) => {
         if (err) {
@@ -433,7 +433,7 @@ describe('Testing resources functionality', () => {
       name: 'Beer',
       quantity: '24',
       type: 'food',
-      covey_id: coveyId,
+      coveyId,
     };
     updatedResource = newResource;
     updatedResource.quantity = 12;
@@ -456,7 +456,7 @@ describe('Testing resources functionality', () => {
     request(server)
       .post('/api/resources')
       .type('json')
-      .set('Cookie', [`user_id=${userId}`])
+      .set('Cookie', [`userId=${userId}`])
       .send(newResource)
       .expect(201)
       .end((err, res) => {
@@ -464,7 +464,7 @@ describe('Testing resources functionality', () => {
           done(err);
         } else if (res) {
           res.body.success.should.be.equal(true);
-          resourceId = res.body.resource.id;
+          resourceId = res.body.resource.resourceId;
           done();
         }
       });
@@ -473,7 +473,7 @@ describe('Testing resources functionality', () => {
     request(server)
       .put(`/api/resources/${resourceId}`)
       .type('json')
-      .set('Cookie', [`user_id=${userId}`])
+      .set('Cookie', [`userId=${userId}`])
       .send(updatedResource)
       .expect(201)
       .end((err, res) => {
@@ -514,7 +514,7 @@ describe('Testing resources functionality', () => {
   it('GET /api/resources/:coveyid should return resources, if authorized', (done) => {
     request(server)
       .get(`/api/resources/${coveyId}`)
-      .set('Cookie', [`user_id=${userId}`])
+      .set('Cookie', [`userId=${userId}`])
       .expect(200)
       .end((err, res) => {
         if (err) {
@@ -528,7 +528,7 @@ describe('Testing resources functionality', () => {
   it('POST /api/suppliers/:resourceid/:userid should respond w/ 401 if unauthorized', (done) => {
     request(server)
       .post(`/api/suppliers/${resourceId}/${userId}`)
-      .set('Cookie', ['user_id=-1'])
+      .set('Cookie', ['userId=-1'])
       .expect(401)
       .end((err, res) => {
         if (err) {
@@ -541,7 +541,7 @@ describe('Testing resources functionality', () => {
   it('POST /api/suppliers/:resourceid/:userid should respond w/ 201 if authorized', (done) => {
     request(server)
       .post(`/api/suppliers/${resourceId}/${userId}`)
-      .set('Cookie', [`user_id=${userId}`])
+      .set('Cookie', [`userId=${userId}`])
       .expect(201)
       .end((err, res) => {
         if (err) {
@@ -554,7 +554,7 @@ describe('Testing resources functionality', () => {
   it('GET /api/suppliers/:resourceid should respond w/ 401 if unauthorized', (done) => {
     request(server)
       .get(`/api/suppliers/${resourceId}`)
-      .set('Cookie', ['user_id=-1'])
+      .set('Cookie', ['userId=-1'])
       .expect(401)
       .end((err, res) => {
         if (err) {
@@ -567,13 +567,13 @@ describe('Testing resources functionality', () => {
   it('GET /api/suppliers/:resourceid should respond w/ 200 if authorized', (done) => {
     request(server)
       .get(`/api/suppliers/${resourceId}`)
-      .set('Cookie', [`user_id=${userId}`])
+      .set('Cookie', [`userId=${userId}`])
       .expect(200)
       .end((err, res) => {
         if (err) {
           done(err);
         } else if (res) {
-          res.body[0].user_id.should.be.equal(userId);
+          res.body[0].userId.should.be.equal(userId);
           done();
         }
       });
@@ -593,7 +593,7 @@ describe('Testing resources functionality', () => {
   it('DELETE /api/suppliers/:coveyId/:resourceid/:userid should respond w/ 200 if authorized', (done) => {
     request(server)
       .del(`/api/suppliers/${coveyId}/${resourceId}/${userId}`)
-      .set('Cookie', [`user_id=${userId}`])
+      .set('Cookie', [`userId=${userId}`])
       .expect(200)
       .end((err, res) => {
         if (err) {
@@ -607,7 +607,7 @@ describe('Testing resources functionality', () => {
   it('Should return deleted suppliers', (done) => {
     request(server)
       .get(`/api/suppliers/${resourceId}`)
-      .set('Cookie', [`user_id=${userId}`])
+      .set('Cookie', [`userId=${userId}`])
       .expect(200)
       .end((err, res) => {
         if (err) {
@@ -633,7 +633,7 @@ describe('Testing resources functionality', () => {
   it('DELETE /api/resources/:coveyId/:resourceId should delete resource if authorized', (done) => {
     request(server)
       .del(`/api/resources/${coveyId}/${resourceId}`)
-      .set('Cookie', [`user_id=${userId}`])
+      .set('Cookie', [`userId=${userId}`])
       .expect(200)
       .end((err, res) => {
         if (err) {
@@ -647,7 +647,7 @@ describe('Testing resources functionality', () => {
   it('Should not return resources that were previously deleted', (done) => {
     request(server)
       .get(`/api/resources/${coveyId}`)
-      .set('Cookie', [`user_id=${userId}`])
+      .set('Cookie', [`userId=${userId}`])
       .expect(200)
       .end((err, res) => {
         if (err) {
@@ -673,7 +673,7 @@ describe('Testing expenses functionality', () => {
     passportStub.install(server);
     passportStub.login({ username: 'john.doe' });
     newExpense = {
-      covey_id: coveyId,
+      coveyId,
       name: 'Food',
       amount: 50,
     };
@@ -685,7 +685,7 @@ describe('Testing expenses functionality', () => {
   it('POST /api/expenses should be able to add an expense', (done) => {
     request(server)
       .post('/api/expenses')
-      .set('Cookie', [`user_id=${userId}`])
+      .set('Cookie', [`userId=${userId}`])
       .type('json')
       .send(newExpense)
       .expect(201)
@@ -695,7 +695,7 @@ describe('Testing expenses functionality', () => {
         } else if (res) {
           res.body.expense.name.should.be.equal('Food');
           res.body.expense.amount.should.be.equal(50);
-          expenseId = res.body.expense.expense_id;
+          expenseId = res.body.expense.expenseId;
           done();
         }
       });
@@ -703,7 +703,7 @@ describe('Testing expenses functionality', () => {
   it('POST /api/expenses should not add expense for unauthorized user', (done) => {
     request(server)
       .post('/api/expenses')
-      .set('Cookie', ['user_id=12345'])
+      .set('Cookie', ['userId=12345'])
       .type('json')
       .send(newExpense)
       .expect(401)
@@ -715,10 +715,10 @@ describe('Testing expenses functionality', () => {
         }
       });
   });
-  it('PUT /api/expenses/:expense_id should update the expense', (done) => {
+  it('PUT /api/expenses/:expenseId should update the expense', (done) => {
     request(server)
       .put(`/api/expenses/${expenseId}`)
-      .set('Cookie', [`user_id=${userId}`])
+      .set('Cookie', [`userId=${userId}`])
       .type('json')
       .send(updatedExpense)
       .expect(201)
@@ -731,10 +731,10 @@ describe('Testing expenses functionality', () => {
         }
       });
   });
-  it('PUT /api/expenses/:expense_id should not update expanse for unauthorized user', (done) => {
+  it('PUT /api/expenses/:expenseId should not update expanse for unauthorized user', (done) => {
     request(server)
       .put(`/api/expenses/${expenseId}`)
-      .set('Cookie', ['user_id=12345'])
+      .set('Cookie', ['userId=12345'])
       .type('json')
       .send(updatedExpense)
       .expect(401)
@@ -746,10 +746,10 @@ describe('Testing expenses functionality', () => {
         }
       });
   });
-  it('GET /api/expenses/:covey_id should return all expenses for covey', (done) => {
+  it('GET /api/expenses/:coveyId should return all expenses for covey', (done) => {
     request(server)
       .get(`/api/expenses/${coveyId}`)
-      .set('Cookie', [`user_id=${userId}`])
+      .set('Cookie', [`userId=${userId}`])
       .expect(200)
       .end((err, res) => {
         if (err) {
@@ -758,15 +758,15 @@ describe('Testing expenses functionality', () => {
           res.body.expenses.length.should.be.equal(1);
           res.body.expenses[0].participants.length.should.be.equal(1);
           res.body.expenses[0].participants[0].firstName.should.be.equal('Spider');
-          res.body.expenses[0].participants[0].is_owner.should.be.equal(true);
+          res.body.expenses[0].participants[0].isOwner.should.be.equal(true);
           done();
         }
       });
   });
-  it('GET /api/expenses/:covey_id should not return expenses if unauthorized', (done) => {
+  it('GET /api/expenses/:coveyId should not return expenses if unauthorized', (done) => {
     request(server)
       .get(`/api/expenses/${coveyId}`)
-      .set('Cookie', ['user_id=12345'])
+      .set('Cookie', ['userId=12345'])
       .expect(401)
       .end((err, res) => {
         if (err) {
@@ -776,10 +776,10 @@ describe('Testing expenses functionality', () => {
         }
       });
   });
-  it('POST /api/expenses/participants/:expense_id/:user_id should add particpant', (done) => {
+  it('POST /api/expenses/participants/:expenseId/:userId should add particpant', (done) => {
     request(server)
       .post(`/api/expenses/participants/${expenseId}/${userId2}`)
-      .set('Cookie', [`user_id=${userId}`])
+      .set('Cookie', [`userId=${userId}`])
       .expect(201)
       .end((err, res) => {
         if (err) {
@@ -793,7 +793,7 @@ describe('Testing expenses functionality', () => {
   it('Should contain added participants', (done) => {
     request(server)
       .get(`/api/expenses/participants/${expenseId}`)
-      .set('Cookie', [`user_id=${userId}`])
+      .set('Cookie', [`userId=${userId}`])
       .expect(200)
       .end((err, res) => {
         if (err) {
@@ -801,16 +801,16 @@ describe('Testing expenses functionality', () => {
         } else if (res) {
           res.body.success.should.be.equal(true);
           res.body.participants.length.should.be.equal(2);
-          res.body.participants[0].user_id.should.be.equal(userId);
-          res.body.participants[1].user_id.should.be.equal(userId2);
+          res.body.participants[0].userId.should.be.equal(userId);
+          res.body.participants[1].userId.should.be.equal(userId2);
           done();
         }
       });
   });
-  it('POST /api/expenses/participants/:expense_id/:user_id shouldn\'t update if unauthorized', (done) => {
+  it('POST /api/expenses/participants/:expenseId/:userId shouldn\'t update if unauthorized', (done) => {
     request(server)
       .post(`/api/expenses/participants/${expenseId}/${userId2}`)
-      .set('Cookie', ['user_id=12345'])
+      .set('Cookie', ['userId=12345'])
       .expect(401)
       .end((err, res) => {
         if (err) {
@@ -820,10 +820,10 @@ describe('Testing expenses functionality', () => {
         }
       });
   });
-  it('DELETE /api/expenses/participants/:covey_id/:expense_id/:user_id should delete participant', (done) => {
+  it('DELETE /api/expenses/participants/:coveyId/:expenseId/:userId should delete participant', (done) => {
     request(server)
       .del(`/api/expenses/participants/${coveyId}/${expenseId}/${userId2}`)
-      .set('Cookie', [`user_id=${userId}`])
+      .set('Cookie', [`userId=${userId}`])
       .expect(200)
       .end((err, res) => {
         if (err) {
@@ -837,7 +837,7 @@ describe('Testing expenses functionality', () => {
   it('Should not contain deleted participants', (done) => {
     request(server)
       .get(`/api/expenses/participants/${expenseId}`)
-      .set('Cookie', [`user_id=${userId}`])
+      .set('Cookie', [`userId=${userId}`])
       .expect(200)
       .end((err, res) => {
         if (err) {
@@ -845,15 +845,15 @@ describe('Testing expenses functionality', () => {
         } else if (res) {
           res.body.success.should.be.equal(true);
           res.body.participants.length.should.be.equal(1);
-          res.body.participants[0].user_id.should.be.equal(userId);
+          res.body.participants[0].userId.should.be.equal(userId);
           done();
         }
       });
   });
-  it('DELETE /api/expenses/participants/:covey_id/:expense_id/:user_id should not delete if unauthorized', (done) => {
+  it('DELETE /api/expenses/participants/:coveyId/:expenseId/:userId should not delete if unauthorized', (done) => {
     request(server)
       .del(`/api/expenses/participants/${coveyId}/${expenseId}/${userId2}`)
-      .set('Cookie', ['user_id=12345'])
+      .set('Cookie', ['userId=12345'])
       .expect(401)
       .end((err, res) => {
         if (err) {
@@ -863,10 +863,10 @@ describe('Testing expenses functionality', () => {
         }
       });
   });
-  it('DELETE /api/expenses/:covey_id/:expense_id should delete the expense', (done) => {
+  it('DELETE /api/expenses/:coveyId/:expenseId should delete the expense', (done) => {
     request(server)
       .del(`/api/expenses/${coveyId}/${expenseId}`)
-      .set('Cookie', [`user_id=${userId}`])
+      .set('Cookie', [`userId=${userId}`])
       .expect(200)
       .end((err, res) => {
         if (err) {
@@ -880,7 +880,7 @@ describe('Testing expenses functionality', () => {
   it('Should not contain deleted expenses', (done) => {
     request(server)
       .get(`/api/expenses/${coveyId}`)
-      .set('Cookie', [`user_id=${userId}`])
+      .set('Cookie', [`userId=${userId}`])
       .expect(200)
       .end((err, res) => {
         if (err) {
@@ -891,10 +891,10 @@ describe('Testing expenses functionality', () => {
         }
       });
   });
-  it('DELETE /api/expenses/:covey_id/:expense_id should not delete if unauthorized', (done) => {
+  it('DELETE /api/expenses/:coveyId/:expenseId should not delete if unauthorized', (done) => {
     request(server)
       .del(`/api/expenses/${coveyId}/${expenseId}`)
-      .set('Cookie', ['user_id=12345'])
+      .set('Cookie', ['userId=12345'])
       .expect(401)
       .end((err, res) => {
         if (err) {
@@ -919,12 +919,12 @@ describe('Testing cars functionality', () => {
     passportStub.install(server);
     passportStub.login({ username: 'john.doe' });
     newCar = {
-      userId: userId,
+      userId,
       name: 'Gandalf\'s car',
       seats: 5,
       location: 'The Shire',
       departureTime: 'Whenever',
-      covey_id: coveyId,
+      coveyId,
     };
     updatedCar = newCar;
     updatedCar.seats = 6;
@@ -947,7 +947,7 @@ describe('Testing cars functionality', () => {
   it('POST /api/rides should respond with 201 if authorized', (done) => {
     request(server)
       .post('/api/rides')
-      .set('Cookie', [`user_id=${userId}`])
+      .set('Cookie', [`userId=${userId}`])
       .type('json')
       .send(newCar)
       .expect(201)
@@ -956,8 +956,7 @@ describe('Testing cars functionality', () => {
           done(err);
         } else if (res) {
           res.body.success.should.be.equal(true);
-          console.log(res.body);
-          carId = res.body.car.id;
+          carId = res.body.car.carId;
           done();
         }
       });
@@ -980,7 +979,7 @@ describe('Testing cars functionality', () => {
   it('PUT /api/rides/:carId should respond with 201 if authorized', (done) => {
     request(server)
       .put(`/api/rides/${carId}`)
-      .set('Cookie', [`user_id=${userId}`])
+      .set('Cookie', [`userId=${userId}`])
       .type('json')
       .send(updatedCar)
       .expect(201)
@@ -997,7 +996,7 @@ describe('Testing cars functionality', () => {
   it('GET /api/rides/:coveyId should respond with 401 if unauthorized', (done) => {
     request(server)
       .get(`/api/rides/${coveyId}`)
-      .set('Cookie', ['user_id=-1'])
+      .set('Cookie', ['userId=-1'])
       .expect(401)
       .end((err, res) => {
         if (err) {
@@ -1010,7 +1009,7 @@ describe('Testing cars functionality', () => {
   it('GET /api/rides/:coveyId should respond with 200 if authorized', (done) => {
     request(server)
       .get(`/api/rides/${coveyId}`)
-      .set('Cookie', [`user_id=${userId}`])
+      .set('Cookie', [`userId=${userId}`])
       .expect(200)
       .end((err, res) => {
         if (err) {
@@ -1025,7 +1024,7 @@ describe('Testing cars functionality', () => {
   it('POST /api/riders/:carId/:userId should respond with 401 if unauthorized', (done) => {
     request(server)
       .post(`/api/riders/${carId}/${userId2}`)
-      .set('Cookie', ['user_id=-1'])
+      .set('Cookie', ['userId=-1'])
       .expect(401)
       .end((err, res) => {
         if (err) {
@@ -1038,7 +1037,7 @@ describe('Testing cars functionality', () => {
   it('POST /api/riders/:carId/:userId should respond with 201 if authorized', (done) => {
     request(server)
       .post(`/api/riders/${carId}/${userId2}`)
-      .set('Cookie', [`user_id=${userId}`])
+      .set('Cookie', [`userId=${userId}`])
       .expect(201)
       .end((err, res) => {
         if (err) {
@@ -1053,7 +1052,7 @@ describe('Testing cars functionality', () => {
   it('GET /api/riders/:carId should respond with 401 if unauthorized', (done) => {
     request(server)
       .get(`/api/riders/${carId}`)
-      .set('Cookie', ['user_id=-1'])
+      .set('Cookie', ['userId=-1'])
       .expect(401)
       .end((err, res) => {
         if (err) {
@@ -1066,7 +1065,7 @@ describe('Testing cars functionality', () => {
   it('GET /api/riders/:carId should respond with 200 if authorized', (done) => {
     request(server)
       .get(`/api/riders/${carId}`)
-      .set('Cookie', [`user_id=${userId}`])
+      .set('Cookie', [`userId=${userId}`])
       .expect(200)
       .end((err, res) => {
         if (err) {
@@ -1083,7 +1082,7 @@ describe('Testing cars functionality', () => {
   it('DELETE /api/riders/:coveyId/:carId/:userId should respond with 401 if unauthorized', (done) => {
     request(server)
       .del(`/api/riders/${coveyId}/${carId}/${userId2}`)
-      .set('Cookie', ['user_id=-1'])
+      .set('Cookie', ['userId=-1'])
       .expect(401)
       .end((err, res) => {
         if (err) {
@@ -1096,7 +1095,7 @@ describe('Testing cars functionality', () => {
   it('DELETE /api/riders/:coveyId/:carId/:userId should respond with 201 if authorized', (done) => {
     request(server)
       .del(`/api/riders/${coveyId}/${carId}/${userId2}`)
-      .set('Cookie', [`user_id=${userId}`])
+      .set('Cookie', [`userId=${userId}`])
       .expect(200)
       .end((err, res) => {
         if (err) {
@@ -1110,7 +1109,7 @@ describe('Testing cars functionality', () => {
   it('Should not return deleted riders', (done) => {
     request(server)
       .get(`/api/riders/${carId}`)
-      .set('Cookie', [`user_id=${userId}`])
+      .set('Cookie', [`userId=${userId}`])
       .expect(200)
       .end((err, res) => {
         if (err) {
@@ -1138,7 +1137,7 @@ describe('Testing cars functionality', () => {
   it('DELETE /api/rides/:coveyId/:carId should respond with 200 if authorized', (done) => {
     request(server)
       .del(`/api/rides/${coveyId}/${carId}`)
-      .set('Cookie', [`user_id=${userId}`])
+      .set('Cookie', [`userId=${userId}`])
       .expect(200)
       .end((err, res) => {
         if (err) {
@@ -1152,7 +1151,7 @@ describe('Testing cars functionality', () => {
   it('Should not return deleted cars', (done) => {
     request(server)
       .get(`/api/rides/${coveyId}`)
-      .set('Cookie', [`user_id=${userId}`])
+      .set('Cookie', [`userId=${userId}`])
       .expect(200)
       .end((err, res) => {
         if (err) {
@@ -1185,13 +1184,13 @@ describe('Testing Deletion', () => {
   it(`DELETE /api/coveys/${coveyId}`, (done) => {
     request(server)
       .del(`/api/coveys/${coveyId}`)
-      .set('Cookie', [`user_id=${userId}`])
+      .set('Cookie', [`userId=${userId}`])
       .expect(200)
       .end((err, res) => {
         if (err) {
           done(err);
         } else if (res) {
-          coveyId = res.body.id;
+          coveyId = res.body.coveyId;
           res.body.should.have.property('success', true);
           done();
         }
@@ -1201,7 +1200,7 @@ describe('Testing Deletion', () => {
   it('DELETE /api/user/2ndUser for cleanup testing', (done) => {
     request(server)
       .del(`/api/user/${userId2}`)
-      .set('Cookie', [`user_id=${userId2}`])
+      .set('Cookie', [`userId=${userId2}`])
       .expect(200)
       .end((err, res) => {
         if (err) {
@@ -1216,13 +1215,12 @@ describe('Testing Deletion', () => {
   it('DELETE /api/user/#userId# should delete the user', (done) => {
     request(server)
       .del(`/api/user/${userId}`)
-      .set('Cookie', [`user_id=${userId}`])
+      .set('Cookie', [`userId=${userId}`])
       .expect(200)
       .end((err, res) => {
         if (err) {
           done(err);
         } else if (res) {
-          console.log(res.body);
           res.body.should.have.property('success');
           done();
         }

@@ -23,7 +23,7 @@ const db = require('bookshelf')(knex);
 db.knex.schema.hasTable('users').then((exists) => {
   if (!exists) {
     db.knex.schema.createTable('users', (user) => {
-      user.increments('id').primary();
+      user.increments('userId').primary();
       user.string('facebookId', 255).unique();
       user.string('firstName', 25);
       user.string('lastName', 25);
@@ -42,7 +42,7 @@ db.knex.schema.hasTable('users').then((exists) => {
 db.knex.schema.hasTable('coveys').then((exists) => {
   if (!exists) {
     db.knex.schema.createTable('coveys', (covey) => {
-      covey.increments('id').primary();
+      covey.increments('coveyId').primary();
       covey.string('name', 100);
       covey.string('startTime', 100);
       covey.string('endTime', 100);
@@ -64,14 +64,14 @@ db.knex.schema.hasTable('coveys').then((exists) => {
 db.knex.schema.hasTable('cars').then((exists) => {
   if (!exists) {
     db.knex.schema.createTable('cars', (car) => {
-      car.increments('id').primary();
+      car.increments('carId').primary();
       car.string('name', 100);
       car.integer('seats', 3);
       car.string('location', 1000);
       car.string('departureTime', 60);
-      car.integer('covey_id')
+      car.integer('coveyId')
         .unsigned()
-        .references('id')
+        .references('coveyId')
         .inTable('coveys')
         .onDelete('CASCADE');
     }).then((table) => {
@@ -83,13 +83,13 @@ db.knex.schema.hasTable('cars').then((exists) => {
 db.knex.schema.hasTable('resources').then((exists) => {
   if (!exists) {
     db.knex.schema.createTable('resources', (resource) => {
-      resource.increments('id').primary();
+      resource.increments('resourceId').primary();
       resource.string('name', 100);
       resource.integer('quantity', 3);
       resource.string('type', 80);
-      resource.integer('covey_id')
+      resource.integer('coveyId')
         .unsigned()
-        .references('id')
+        .references('coveyId')
         .inTable('coveys')
         .onDelete('CASCADE');
     }).then((table) => {
@@ -102,14 +102,14 @@ db.knex.schema.hasTable('resources_users').then((exists) => {
   if (!exists) {
     db.knex.schema.createTable('resources_users', (resource) => {
       resource.increments('id').primary();
-      resource.integer('user_id')
+      resource.integer('userId')
         .unsigned()
-        .references('id')
+        .references('userId')
         .inTable('users')
         .onDelete('CASCADE');
-      resource.integer('resource_id')
+      resource.integer('resourceId')
         .unsigned()
-        .references('id')
+        .references('resourceId')
         .inTable('resources')
         .onDelete('CASCADE');
     }).then((table) => {
@@ -122,14 +122,14 @@ db.knex.schema.hasTable('cars_users').then((exists) => {
   if (!exists) {
     db.knex.schema.createTable('cars_users', (resource) => {
       resource.increments('id').primary();
-      resource.integer('user_id')
+      resource.integer('userId')
         .unsigned()
-        .references('id')
+        .references('userId')
         .inTable('users')
         .onDelete('CASCADE');
-      resource.integer('car_id')
+      resource.integer('carId')
         .unsigned()
-        .references('id')
+        .references('carId')
         .inTable('cars')
         .onDelete('CASCADE');
       resource.boolean('isDriver');
@@ -143,14 +143,14 @@ db.knex.schema.hasTable('coveys_users').then((exists) => {
   if (!exists) {
     db.knex.schema.createTable('coveys_users', (resource) => {
       resource.increments('id').primary();
-      resource.integer('user_id')
+      resource.integer('userId')
         .unsigned()
-        .references('id')
+        .references('userId')
         .inTable('users')
         .onDelete('CASCADE');
-      resource.integer('covey_id')
+      resource.integer('coveyId')
         .unsigned()
-        .references('id')
+        .references('coveyId')
         .inTable('coveys')
         .onDelete('CASCADE');
       resource.boolean('isOwner');
@@ -164,14 +164,14 @@ db.knex.schema.hasTable('friends').then((exists) => {
   if (!exists) {
     db.knex.schema.createTable('friends', (resource) => {
       resource.increments('id').primary();
-      resource.integer('user_id')
+      resource.integer('userId')
         .unsigned()
-        .references('id')
+        .references('userId')
         .inTable('users')
         .onDelete('CASCADE');
-      resource.integer('friend_id')
+      resource.integer('friendId')
         .unsigned()
-        .references('id')
+        .references('userId')
         .inTable('users')
         .onDelete('CASCADE');
     }).then((table) => {
@@ -183,12 +183,12 @@ db.knex.schema.hasTable('friends').then((exists) => {
 db.knex.schema.hasTable('expenses').then((exists) => {
   if (!exists) {
     db.knex.schema.createTable('expenses', (expense) => {
-      expense.increments('expense_id').primary();
+      expense.increments('expenseId').primary();
       expense.string('name', 100);
       expense.float('amount');
-      expense.integer('covey_id')
+      expense.integer('coveyId')
         .unsigned()
-        .references('id')
+        .references('coveyId')
         .inTable('coveys')
         .onDelete('CASCADE');
     }).then((table) => {
@@ -201,17 +201,17 @@ db.knex.schema.hasTable('expenses_users').then((exists) => {
   if (!exists) {
     db.knex.schema.createTable('expenses_users', (expense) => {
       expense.increments('id').primary();
-      expense.integer('user_id')
+      expense.integer('userId')
         .unsigned()
-        .references('id')
+        .references('userId')
         .inTable('users')
         .onDelete('CASCADE');
-      expense.integer('expense_id')
+      expense.integer('expenseId')
         .unsigned()
-        .references('expense_id')
+        .references('expenseId')
         .inTable('expenses')
         .onDelete('CASCADE');
-      expense.boolean('is_owner');
+      expense.boolean('isOwner');
     }).then((table) => {
       console.log('Created Expenses_Users Table', table);
     });

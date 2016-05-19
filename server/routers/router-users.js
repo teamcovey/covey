@@ -5,7 +5,7 @@ exports.getUser = (req, res) => {
   const userId = req.params.userId;
 
   if (userId) {
-    new User({ id: userId })
+    new User({ userId })
       .fetch()
       .then((foundUser) => {
         if (foundUser) {
@@ -28,7 +28,7 @@ exports.getUserName = (req, res) => {
   knex
     .select(['users.firstName', 'users.lastName'])
     .from('users')
-    .where('id', '=', userId)
+    .where('userId', '=', userId)
     .then((foundUser) => {
       if (foundUser) {
         res.status(200).json({ user: foundUser });
@@ -46,7 +46,7 @@ exports.removeUser = (req, res) => {
 
   // we will remove the join tables that have the user_id in them
   knex('coveys_users')
-    .where('user_id', userId)
+    .where('userId', userId)
     .del()
     .then(() => {
       // place holder in case we need more actions
@@ -55,7 +55,7 @@ exports.removeUser = (req, res) => {
       console.log('error in deleting coveys_users rows: ', err);
     });
 
-  new User({ id: userId })
+  new User({ userId })
     .destroy()
     .then(() => {
       res.status(200).json({ success: true });
@@ -69,10 +69,10 @@ exports.getAllUsers = (req, res) => {
   const coveyId = req.params.coveyId;
 
   knex
-    .select(['users.firstName', 'users.lastName', 'users.email', 'users.photoUrl', 'users.id'])
+    .select(['users.firstName', 'users.lastName', 'users.email', 'users.photoUrl', 'users.userId'])
     .from('users')
-    .innerJoin('coveys_users', 'users.id', 'coveys_users.user_id')
-    .where('covey_id', '=', coveyId)
+    .innerJoin('coveys_users', 'users.userId', 'coveys_users.userId')
+    .where('coveyId', '=', coveyId)
     .then((users) => {
       res.status(200).json(users);
     })
@@ -102,7 +102,7 @@ exports.updateUser = (req, res) => {
   }
 
   knex('users')
-  .where('id', userId)
+  .where('userId', userId)
   .update(newObj)
   .then((updatedUser) => {
     res.status(201).json({ updatedUser });
@@ -119,19 +119,19 @@ exports.addFriend = (req, res) => {
     res.status(409).json({ error: 'You cannot friend yourself' });
   } else {
     knex('friends')
-    .where('user_id', userId)
-    .andWhere('friend_id', friendId)
+    .where('userId', userId)
+    .andWhere('friendId', friendId)
     .then((results) => {
       if (results.length === 0) {
         knex('friends')
-            .returning('friend_id')
-            .insert({ user_id: userId, friend_id: friendId })
+            .returning('friendId')
+            .insert({ userId, friendId })
         .then(() => {
           knex('friends')
-            .returning('friend_id')
-            .insert({ user_id: friendId, friend_id: userId })
-            .then((friendIs) => {
-              res.status(201).json({ id: friendIs[0], success: true });
+            .returning('friendId')
+            .insert({ userId: friendId, friendId: userId })
+            .then((returnedFriendId) => {
+              res.status(201).json({ friendId: returnedFriendId[0], success: true });
             })
             .catch((err) => {
               res.status(404).json(err);
@@ -157,13 +157,13 @@ exports.removeFriend = (req, res) => {
   const userId = req.params.userId;
 
   knex('friends')
-    .where('user_id', userId)
-    .andWhere('friend_id', friendId)
+    .where('userId', userId)
+    .andWhere('friendId', friendId)
     .del()
     .then(() => {
       knex('friends')
-        .where('friend_id', userId)
-        .andWhere('user_id', friendId)
+        .where('friendId', userId)
+        .andWhere('userId', friendId)
         .del()
         .then(() => {
           res.json({ success: true });
@@ -183,10 +183,10 @@ exports.getFriends = (req, res) => {
   const userId = req.params.userId;
 
   knex
-    .select(['users.firstName', 'users.lastName', 'users.email', 'users.photoUrl', 'users.id'])
+    .select(['users.firstName', 'users.lastName', 'users.email', 'users.photoUrl', 'users.userId'])
     .from('users')
-    .innerJoin('friends', 'users.id', 'friends.user_id')
-    .where('friend_id', '=', userId)
+    .innerJoin('friends', 'users.userId', 'friends.userId')
+    .where('friendId', '=', userId)
     .then((users) => {
       res.status(200).json(users);
     })

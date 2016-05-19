@@ -32,7 +32,7 @@ angular.module('covey.expenses', ['userId.services', 'covey.attendees'])
   /* SOCKETS:update expense */
   socket.on(`update expense ${$routeParams.coveyId}`, (data) => {
     for (let i = 0; i < $scope.expensesDetails.length; i++) {
-      if ($scope.expensesDetails[i].id === data.response.expense_id) {
+      if ($scope.expensesDetails[i].expenseId === data.response.expenseId) {
         $scope.expensesDetails[i] = data.response;
         break;
       }
@@ -43,7 +43,7 @@ angular.module('covey.expenses', ['userId.services', 'covey.attendees'])
   /* SOCKETS:remove expense */
   socket.on(`remove expense ${$routeParams.coveyId}`, (data) => {
     for (let i = 0; i < $scope.expensesDetails.length; i++) {
-      if ($scope.expensesDetails[i].expense_id.toString() === data.response.toString()) {
+      if ($scope.expensesDetails[i].expenseId.toString() === data.response.toString()) {
         $scope.expensesDetails.splice(i, 1);
         break;
       }
@@ -54,9 +54,9 @@ angular.module('covey.expenses', ['userId.services', 'covey.attendees'])
   /* SOCKETS:add participant */
   socket.on(`add participant ${$routeParams.coveyId}`, (data) => {
     for (let i = 0; i < $scope.expensesDetails.length; i++) {
-      if ($scope.expensesDetails[i].expense_id.toString() === data.response.expense_id.toString()) {
+      if ($scope.expensesDetails[i].expenseId.toString() === data.response.expenseId.toString()) {
         for (let j = 0; j < $scope.attendees.length; j++) {
-          if ($scope.attendees[j].id.toString() === data.response.user_id.toString()) {
+          if ($scope.attendees[j].userId.toString() === data.response.userId.toString()) {
             if ($scope.expensesDetails[i].participants) {
               $scope.expensesDetails[i].participants.push($scope.attendees[j]);
             } else {
@@ -73,14 +73,14 @@ angular.module('covey.expenses', ['userId.services', 'covey.attendees'])
   /* SOCKETS:remove participant */
   socket.on(`remove participant ${$routeParams.coveyId}`, (data) => {
     for (let i = 0; i < $scope.expensesDetails.length; i++) {
-      if ($scope.expensesDetails[i].expense_id.toString() === data.response.expense_id.toString()) {
+      if ($scope.expensesDetails[i].expenseId.toString() === data.response.expenseId.toString()) {
         // iterate over expensesDetails and find one that matches expenseId
         // splice out the data.userId from that participants
         for (let j = 0; j < $scope.expensesDetails[i].participants.length; j++) {
-          const participantId = $scope.expensesDetails[i].participants[j].user_id;
-          if (participantId.toString() === data.response.user_id.toString()) {
+          const participantId = $scope.expensesDetails[i].participants[j].userId;
+          if (participantId.toString() === data.response.userId.toString()) {
             $scope.expensesDetails[i].participants.splice(j, 1);
-            if (data.response.user_id.toString() === userId.toString()) {
+            if (data.response.userId.toString() === userId.toString()) {
               $scope.usersExpense = expensesHelpers.getUsersTotal($scope.expensesDetails, userId);
             }
             break;
@@ -111,17 +111,17 @@ angular.module('covey.expenses', ['userId.services', 'covey.attendees'])
   };
 
   $scope.removeExpense = (expense) => {
-    expensesHttp.removeExpense(expense.expense_id);
+    expensesHttp.removeExpense(expense.expenseId);
   };
 
   $scope.addParticipant = (participant, expense) => {
-    const participantId = participant.user_id || participant.userId || participant.id;
-    expensesHttp.addParticipant(expense.expense_id, participantId);
+    const participantId = participant.userId;
+    expensesHttp.addParticipant(expense.expenseId, participantId);
   };
 
   $scope.removeParticipant = (participant, expense) => {
-    const participantId = participant.user_id || participant.userId || participant.id;
-    expensesHttp.removeParticipant(expense.expense_id, participantId);
+    const participantId = participant.userId;
+    expensesHttp.removeParticipant(expense.expenseId, participantId);
   };
 })
 .filter('alreadyParticipant', function () {
@@ -131,7 +131,7 @@ angular.module('covey.expenses', ['userId.services', 'covey.attendees'])
         let result = true;
         if (participants) {
           participants.forEach((currentParticipant) => {
-            if (currentParticipant.user_id === attendee.id || currentParticipant.id === attendee.id) {
+            if (currentParticipant.userId === attendee.userId) {
               result = false;
             }
           });

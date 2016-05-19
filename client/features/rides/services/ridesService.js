@@ -7,7 +7,7 @@ angular.module('covey.rides')
     rides.forEach((ride) => {
       if (ride.riders) {
         ride.riders.forEach((rider) => {
-          if (rider.id.toString() === userId.toString()) {
+          if (rider.userId.toString() === userId.toString()) {
             usersRide = ride;
           }
         });
@@ -19,11 +19,10 @@ angular.module('covey.rides')
 
   /* Creates skeleton ride for easy user input and POSTing */
   this.newRideInput = (userId) => ({
-    name: 'add ride',
+    name: 'driver name',
     seats: 4,
     location: 'The Shire',
     departureTime: 'time',
-    covey_id: $routeParams.coveyId,
     coveyId: $routeParams.coveyId,
     userId,
     riders: [],
@@ -53,7 +52,7 @@ angular.module('covey.rides')
   };
 
   this.updateRide = (updateRide) => {
-    return $http.put(`/api/rides/${updateRide.id}`, updateRide)
+    return $http.put(`/api/rides/${updateRide.carId}`, updateRide)
       .then((response) => response, (error) => {
         console.error(error);
       });

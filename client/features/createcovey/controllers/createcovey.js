@@ -36,6 +36,7 @@ angular.module('createCovey', ['covey.services', 'userId.services'])
    * If there's an error, it will display the error modal.
   */
   $scope.submitCovey = (isInvalid) => {
+    // If form has not been filled out, covey will not submit
     if (isInvalid) return;
     // Combines date/times into a single value
     const combinedStartDateTime = new Date(
@@ -75,9 +76,8 @@ angular.module('createCovey', ['covey.services', 'userId.services'])
         } else {
           $scope.toggleModalVisibility();
           $scope.resetFormFields();
-          const newCoveyId = response.data.id;
           // Redirects the user to the new covey page
-          $location.path(`/coveys/${newCoveyId}`);
+          $location.path(`/coveys/${response.data.coveyId}`);
         }
       });
   };

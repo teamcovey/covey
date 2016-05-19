@@ -3,13 +3,14 @@
   position: absolute;
 
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
 
   padding: 5px 15px 5px 15px;
 
   width: 90%;
-  height: 85%;
+  height: 70%;
   left: 5%;
-  top: 7.5%;
+  top: 15%;
   z-index: 2;
   overflow: auto;
 }

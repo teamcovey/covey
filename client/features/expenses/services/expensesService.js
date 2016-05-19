@@ -7,9 +7,9 @@ angular.module('covey.expenses')
     expenses.forEach((expense) => {
       // need to check each participant
       expense.participants.forEach((participant) => {
-        const testId = participant.user_id || participant.id;
+        const testId = participant.userId;
         if (testId.toString() === userId.toString()) {
-          if (participant.is_owner) {
+          if (participant.isOwner) {
             userTotal.paid += parseFloat(expense.amount);
           } else {
             userTotal.owe += parseFloat(expense.amount / expense.participants.length);
@@ -25,7 +25,7 @@ angular.module('covey.expenses')
       name: 'add expense',
       quantity: 10,
       amount: '0',
-      covey_id: $routeParams.coveyId,
+      coveyId: $routeParams.coveyId,
       suppliers: [],
     }
   );
@@ -46,7 +46,7 @@ angular.module('covey.expenses')
   };
 
   this.updateExpense = (updateExpense) => {
-    return $http.put(`/api/expenses/${updateExpense.expense_id}`, updateExpense)
+    return $http.put(`/api/expenses/${updateExpense.expenseId}`, updateExpense)
       .then((response) => response, (error) => {
         console.error(error);
       });
@@ -60,7 +60,7 @@ angular.module('covey.expenses')
   };
 
   this.addParticipant = (expenseId, userId) => {
-    return $http.post(`/api/expenses/participants/${expenseId}/${userId}`, { covey_id: $routeParams.coveyId })
+    return $http.post(`/api/expenses/participants/${expenseId}/${userId}`, { coveyId: $routeParams.coveyId })
       .then((response) => response, (error) => {
         console.error(error);
       });

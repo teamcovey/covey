@@ -30,9 +30,9 @@ exports.decryptUserId = (request, response, next) => {
      * server to respond with a 401 in the (see 'catch' block below).
      */
     const decipherCookie = crypto.createDecipher('aes192', key);
-    var decrypted = decipherCookie.update(request.cookies.user_id, 'hex', 'utf8');
+    var decrypted = decipherCookie.update(request.cookies.userId, 'hex', 'utf8');
     decrypted += decipherCookie.final('utf8');
-    request.cookies.user_id = decrypted;
+    request.cookies.userId = decrypted;
 
     // Decrypts user id from request parameters, if they exist
     if (request.params && request.params.userId !== undefined) {

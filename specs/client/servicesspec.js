@@ -62,7 +62,7 @@ describe('User Id Factory', () => {
   });
   it('should return the correct cookie if it exists', () => {
     expect(userIdFactory.getUserId()).to.equal('');
-    document.cookie = 'user_id=12345';
+    document.cookie = 'userId=12345';
     expect(userIdFactory.getUserId()).to.equal('12345');
   });
 });

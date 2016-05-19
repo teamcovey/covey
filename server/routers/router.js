@@ -94,13 +94,13 @@ app.get('/api/auth/facebook',
 
 app.get('/api/auth/facebook/return',
   passport.authenticate('facebook', { failureRedirect: '/' }),
-  (req, res) => res.cookie('user_id', req.user.id).redirect('/#/coveys')
+  (req, res) => res.cookie('userId', req.user.id).redirect('/#/coveys')
 );
 
 app.get('/api/logout',
   (req, res) => {
     req.logout();
-    req.session.destroy(() => res.clearCookie('user_id').redirect('/#/'));
+    req.session.destroy(() => res.clearCookie('userId').redirect('/#/'));
   }
 );
 
@@ -157,22 +157,22 @@ app.post('/api/suppliers/:resourceId/:userId', auth, isAuthorizedToUpdateResourc
 app.post('/api/expenses',
   auth, isValidCoveyMember, routeExpenses.postExpense);
 
-app.put('/api/expenses/:expense_id',
+app.put('/api/expenses/:expenseId',
   auth, isAuthorizedToUpdateExpense, routeExpenses.updateExpense);
 
-app.delete('/api/expenses/:covey_id/:expense_id',
+app.delete('/api/expenses/:coveyId/:expenseId',
   auth, isValidCoveyMember, routeExpenses.deleteExpense);
 
-app.get('/api/expenses/:covey_id',
+app.get('/api/expenses/:coveyId',
   auth, isValidCoveyMember, routeExpenses.getExpenses);
 
-app.get('/api/expenses/participants/:expense_id',
+app.get('/api/expenses/participants/:expenseId',
   auth, isAuthorizedToUpdateExpense, routeExpenses.getParticipants);
 
-app.delete('/api/expenses/participants/:covey_id/:expense_id/:user_id',
+app.delete('/api/expenses/participants/:coveyId/:expenseId/:userId',
   auth, isAuthorizedToUpdateExpense, routeExpenses.deleteParticipant);
 
-app.post('/api/expenses/participants/:expense_id/:user_id',
+app.post('/api/expenses/participants/:expenseId/:userId',
   auth, isAuthorizedToUpdateExpense, routeExpenses.addParticipant);
 
 // Routes for phone verification

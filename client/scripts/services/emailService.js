@@ -4,7 +4,7 @@ angular.module('email.services', [])
   this.emailAttendees = (details) => {
     console.log(details);
     const userId = userIdFactory.getUserId();
-    const coveyId = details.id;
+    const coveyId = details.coveyId;
     const message = JSON.stringify({
       email: details.email,
       name: details.name,

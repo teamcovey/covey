@@ -2,7 +2,11 @@ const knex = require('../config/config.js').knex;
 const _ = require('underscore');
 const nodemailer = require('nodemailer');
 
-var keys = process.env.covey_env === 'PROD' || process.env.covey_env === 'DEV'
+/*eslint-disable*/
+// Set keys file based on environment. Keys.example.js is used in the travis-ci build
+var keys = process.env.covey_env === 'PROD'
+  || process.env.covey_env === 'DEV'
+  || process.env.covey_env === 'LOCAL'
   ? require('../config/keys.js')
   : require('../config/keys.example.js');
 
@@ -15,6 +19,7 @@ const smtpConfig = {
     pass: keys.EMAIL_PASSWORD,
   },
 };
+/*eslint-enable*/
 
 // SMTP transport
 const transporter = nodemailer.createTransport(smtpConfig);

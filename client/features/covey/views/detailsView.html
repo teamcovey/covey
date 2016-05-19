@@ -40,10 +40,6 @@
       <form ng-submit="emailAttendees()">
         <textarea name="emailMessage" class="email-text-area" placeholder="Send an email to your Covey" ng-model="details.email" ng-focus="setSentFalse()" required></textarea>
         <div class="row">
- <!--          <div class = "col-sm-12 text-left">
-            <div class="orange v-mid" ng-show="emailSentTick"><span class="glyphicon glyphicon-ok"></span></div>
-            <div class="email-spinner v-mid" ng-show="spinnerVisible"></div>
-          </div> -->
           <div class="col-md-8 text-left">
             <div class="orange v-mid" ng-show="emailSentTick"><span class="glyphicon glyphicon-ok"></span></div>
             <div class="email-spinner v-mid" ng-show="spinnerVisible"></div>
@@ -77,7 +73,7 @@
 
   <!-- Body: In edit -->
   <form name="edit">
-    <div class="row">
+    <div class="row covey-edit-item-margin">
       <div class="col-sm-offset-1 col-sm-2 text-left">
         <label class="covey-edit-title">Event Name: </label>
       </div>

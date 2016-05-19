@@ -1,10 +1,14 @@
 const User = require('../models/user.js');
 const knex = require('../config/config.js').knex;
-// const keys = require('../config/keys.js');
 
-var keys = process.env.covey_env === 'PROD' || process.env.covey_env === 'DEV'
+/*eslint-disable*/
+// Set keys file based on environment. Keys.example.js is used in the travis-ci build
+var keys = process.env.covey_env === 'PROD'
+  || process.env.covey_env === 'DEV'
+  || process.env.covey_env === 'LOCAL'
   ? require('../config/keys.js')
   : require('../config/keys.example.js');
+  /*eslint-enable*/
 
 const generateCode = () => {
   const min = 1000;

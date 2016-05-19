@@ -4,8 +4,11 @@ const Strategy = require('passport-facebook').Strategy;
 const User = require('../models/user.js');
 const Users = require('../collections/users.js');
 
-// Set keys file based on environment
-var keys = process.env.covey_env === 'PROD' || process.env.covey_env === 'DEV'
+/*eslint-disable*/
+// Set keys file based on environment. Keys.example.js is used in the travis-ci build
+var keys = process.env.covey_env === 'PROD'
+  || process.env.covey_env === 'DEV'
+  || process.env.covey_env === 'LOCAL'
   ? require('./keys.js')
   : require('./keys.example.js');
 
@@ -18,7 +21,7 @@ if (process.env.covey_env === 'PROD') {
 } else {
   callback = 'http://localhost:3000/api/auth/facebook/return';
 }
-
+/*eslint-enable*/
 passport.use(new Strategy(
   {
     clientID: keys.FB_CLIENT_ID,

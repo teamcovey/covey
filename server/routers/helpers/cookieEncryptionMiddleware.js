@@ -1,9 +1,13 @@
 const crypto = require('crypto');
 
-// Set keys file based on environment
-const key = process.env.covey_env === 'PROD' || process.env.covey_env === 'DEV'
+/*eslint-disable*/
+// Set keys file based on environment. Keys.example.js is used in the travis-ci build
+const key = process.env.covey_env === 'PROD'
+  || process.env.covey_env === 'DEV'
+  || process.env.covey_env === 'LOCAL'
   ? require('../../config/keys.js').COOKIE_ENCRYPTION_KEY
   : require('../../config/keys.example.js').COOKIE_ENCRYPTION_KEY;
+  /*eslint-enable*/
 
 // Encrypts any value using the COOKIE_ENCRY{TION_KEY}
 exports.encryptValue = (value) => {

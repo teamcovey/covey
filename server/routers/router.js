@@ -43,10 +43,6 @@ const auth = require('connect-ensure-login').ensureLoggedIn('/');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 
-// Encryption and decryption middleware
-const encryptValue = require('./helpers/cookieEncryptionMiddleware.js').encryptValue;
-const decryptUserId = require('./helpers/cookieEncryptionMiddleware.js').decryptUserId;
-
 /*
  * User validation middleware checks if the user is authorized to modify the covey
  * It has been injected into the appropriate routes below

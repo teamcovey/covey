@@ -15,6 +15,7 @@ angular.module('covey.attendees', ['friends.services'])
               if (friends.data[i].userId === attendees[j].userId) {
                 friends.data.splice(i, 1);
                 i--;
+                break;
               }
             }
           }

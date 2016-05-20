@@ -8,7 +8,6 @@ before_install:
 before_script:
   - npm install -g bower
   - bower install
-  - export COVEYENV=DEV
   - node server/server.js &
   - sleep 7
   - jobs
@@ -17,3 +16,4 @@ before_script:
 script:
   - gulp karma
   - gulp mocha
+  

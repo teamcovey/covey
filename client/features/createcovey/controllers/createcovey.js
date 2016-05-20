@@ -66,8 +66,8 @@ angular.module('createCovey', ['covey.services', 'userId.services'])
       startTime: combinedStartDateTime,
       endTime: combinedEndDateTime,
       details: $scope.details,
-      blurb: $scope.details.length > 100
-        ? $scope.details.slice(0, 97).concat('...')
+      blurb: $scope.details.length > 50
+        ? $scope.details.slice(0, 47).concat('...')
         : $scope.details,
       photoUrl: $scope.photoUrl,
     };

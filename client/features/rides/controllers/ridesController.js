@@ -15,7 +15,6 @@ angular.module('covey.rides', ['userId.services', 'covey.attendees'])
   /* Gets all rides (& riders) info for current covey,
   *  and sets logged-in user's current ride for display. */
   const init = () => {
-    console.log('CTRL init called');
     ridesHttp.getAllRides()
       .then((rides) => {
         $scope.ridesDetails = rides;
@@ -27,14 +26,11 @@ angular.module('covey.rides', ['userId.services', 'covey.attendees'])
 
   /* SOCKETS:add ride */
   socket.on(`add ride ${$routeParams.coveyId}`, (data) => {
-    console.log('CTRL: add ride: ', data);
-
     $scope.ridesDetails.push(data.response);
   });
 
   /* SOCKETS:update ride */
   socket.on(`update ride ${$routeParams.coveyId}`, (data) => {
-    console.log('CTRL: socket update ride: ', data);
     for (let i = 0; i < $scope.ridesDetails.length; i++) {
       if ($scope.ridesDetails[i].carId === data.response.carId) {
         $scope.ridesDetails[i] = data.response;
@@ -57,8 +53,6 @@ angular.module('covey.rides', ['userId.services', 'covey.attendees'])
 
   /* SOCKETS:add rider */
   socket.on(`add rider ${$routeParams.coveyId}`, (data) => {
-    console.log('CTRL: socket add rider: ', data);
-
     for (let i = 0; i < $scope.ridesDetails.length; i++) {
       if ($scope.ridesDetails[i].carId.toString() === data.response.carId.toString()) {
         for (let j = 0; j < $scope.attendees.length; j++) {
@@ -112,14 +106,11 @@ angular.module('covey.rides', ['userId.services', 'covey.attendees'])
   };
 
   $scope.addNewRide = () => {
-    console.log('CTRL: scope addNewRide');
     ridesHttp.addRide(ridesHelpers.newRideInput());
   };
 
   /* Creates or updates a ride when user select 'Update' in edit view */
   $scope.submitRide = (ride) => {
-    console.log('CTRL: scope submitRide: ', ride);
-
     ridesHttp.updateRide(ride);
   };
 
@@ -128,7 +119,6 @@ angular.module('covey.rides', ['userId.services', 'covey.attendees'])
   };
 
   $scope.addPassenger = (passenger, ride) => {
-    console.log('CTRL: scope addPassenger: ', ride);
     const passengerId = passenger.userId;
     ridesHttp.addPassenger(ride.carId, passengerId);
   };

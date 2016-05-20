@@ -75,7 +75,7 @@ Postgres using Bookshelf and Knex.
 
 - Covey was built using waffle.io as the project organization tool.
 - Please visit the [GITFLOW.MD](GITFLOW.md) for our workflow guidelines.
-- Please use the [Airbnb ES6 styleguide](https://github.com/airbnb/javascript) for code-style reference. 
+- Please use the [Airbnb ES6 style guide](https://github.com/airbnb/javascript) for code-style reference. 
 
 ####Contributors:
 

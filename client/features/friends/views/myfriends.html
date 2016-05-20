@@ -17,7 +17,7 @@
           <img src="{{ friend.photoUrl }}" height="40px" width="40px" border-radius="3px" margin="10px"/>
         </div>
         <div class="col-sm-2 plus-up" ng-switch on="friend.removeConfirm">
-          <div ng-switch-default class="side-nav-title">{{mouseOverTrue ? '-' : ''}}</div>
+          <div ng-switch-default class="side-nav-title" ><img class="friend-delete-image" src="../../../styles/img/deletecovey.ico" ng-show="mouseOverTrue"></div>
           <div ng-switch-when="true">Remove?</div>
         </div>
         <div class="col-sm-6">

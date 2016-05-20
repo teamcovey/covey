@@ -11,7 +11,7 @@
       <input type="text" name="expenseAmount" class="main-input-styles shared-inputs-color" ng-model="expense.amount" format="currency"></input>
 
       <div class="current-attendees-added">
-        <div class="panel-current-users" ng-click="removeParticipant(participant, expense)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="participant in expense.participants">
+        <div class="panel-current-users" ng-click="removeParticipant(participant, expense)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="participant in expense.participants | unique:'userId'">
             {{participant.isOwner ? '$' : ''}}{{mouseOverTrue ? 'X' : participant.firstName.slice(0,1)+participant.lastName.slice(0,1)}}
         </div>
         <div class="panel-potential-users" ng-click="editMode = !editMode">+ Paid</div>

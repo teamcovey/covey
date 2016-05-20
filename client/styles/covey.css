@@ -411,7 +411,7 @@ span.glyphicon-menu-hamburger {
 .email-spinner {
   width:16px;
   height:16px;
-  background-image:url('./styles/assets/spinner.gif');
+  background-image:url('../../../styles/assets/spinner.gif');
   margin-right: 0px !important;
 }
 

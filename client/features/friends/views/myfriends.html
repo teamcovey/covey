@@ -5,7 +5,7 @@
 <div ng-switch on="showFriends">
 
   <div class="row" ng-switch-when="true">
-    <div class="col-md-12 text-center">
+    <div class="col-sm-12 text-center">
       <div class="row pad-bottom-5">
           <form ng-submit="searchUsers(searchString)">
             <input type="text" name="friendSearch" placeholder="...friend to search for" class="none" ng-model="searchString" />
@@ -13,16 +13,15 @@
           </form>
       </div>
       <div class="row potential-friend-to-remove verticle-center" ng-repeat="friend in friends" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false; friend.removeConfirm = false" ng-click="confirmDelete(friend)">
-        <div class="col-sm-3">
+        <div class="col-sm-offset-1 col-sm-3">
           <img src="{{ friend.photoUrl }}" height="40px" width="40px" border-radius="3px" margin="10px"/>
         </div>
-        <div class="col-sm-2 plus-up" ng-switch on="friend.removeConfirm">
+        <div class="col-sm-5">
+          <p>{{ friend.firstName }} {{ friend.lastName }}</p>
+        </div>
+        <div class="col-sm-1 plus-up" ng-switch on="friend.removeConfirm">
           <div ng-switch-default class="side-nav-title" ><img class="friend-delete-image" src="../../../styles/img/deletecovey.ico" ng-show="mouseOverTrue"></div>
           <div ng-switch-when="true">Remove?</div>
-        </div>
-        <div class="col-sm-6">
-          <h5>{{ friend.firstName }} {{ friend.lastName }}</h5>
-          <h5>{{ friend.email }}</h5>
         </div>
       </div>
     </div>
@@ -30,9 +29,9 @@
 
   <!-- Error view -->
   <div class="row" ng-switch-when="error">
-    <div class="col-md-12 text-center">
+    <div class="col-sm-12 text-center">
       <div class="row">
-        <div class="col-md-2 col-md-offset-10">
+        <div class="col-sm-2 col-sm-offset-10">
           <form ng-submit="searchUsers(searchString)">
             <input type="text" name="friendSearch" placeholder="...friend to search for" class="none" ng-model="searchString" />
             <input type="submit" id="submit" value="Search" />
@@ -40,7 +39,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-12 text-center">
+        <div class="col-sm-12 text-center">
           <h3>There was an error retrieving your friends!</h3>
           <h4>If the problem persists, please contact support@covey.com</h4>
         </div>
@@ -50,7 +49,7 @@
 
   <!-- Search view populated-->
   <div class="row" ng-switch-when="search">
-    <div class="col-md-12 text-center"> 
+    <div class="col-sm-12 text-center"> 
 
       <div class="row"> 
         <h3>
@@ -81,9 +80,9 @@
 
   <!-- Search view empty-->
   <div class="row" ng-switch-when="empty">
-    <div class="col-md-12 text-center">
+    <div class="col-sm-12 text-center">
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-sm-12">
           <h1>
           <button class="btn btn-pineapple" ng-click="hideSearch()">Close Search</button></h1>
         </div>
@@ -95,7 +94,7 @@
           </form>
       </div>
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-sm-12">
           <h3>Sorry, that search didn't match any users.</h3>
           <h4>Search in the box above to find and add friends.</h4>
         </div>
@@ -105,7 +104,7 @@
 
   <!-- 'No friends' view -->
   <div class="row" ng-switch-default>
-    <div class="col-md-12 text-center">
+    <div class="col-sm-12 text-center">
       <div class="row">
         <form ng-submit="searchUsers(searchString)">
           <input type="text" name="friendSearch" placeholder="...friend to search for" class="none" ng-model="searchString"></input>
@@ -113,7 +112,7 @@
         </form>
       </div>
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-sm-12">
           <h3>You have not yet added any friends</h3>
           <h4>Search in the box above to find and add friends.</h4>
         </div>

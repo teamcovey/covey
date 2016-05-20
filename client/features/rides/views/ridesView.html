@@ -8,21 +8,15 @@
     <form ng-submit="submitRide(ride, $index)">
       <input type="text" name="driverName" class="main-input-styles shared-inputs-color" ng-model="ride.name"></input>
       <input type="text" name="timeToLeave" class="main-input-styles shared-inputs-color" ng-model="ride.departureTime"></input>
-
-      <div class="current-attendees-added">
-        <div class="panel-current-users" ng-click="removePassenger(passenger, ride)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="passenger in ride.riders">
-            {{mouseOverTrue ? 'X' : passenger.firstName.slice(0,1)+passenger.lastName.slice(0,1)}}
-        </div>
-        <div class="panel-potential-users" ng-click="editMode = !editMode">+ Passenger</div>
-        <div ng-show="editMode">
-          <div class="panel-current-users potential-user-to-add" ng-click="addPassenger(friend, ride)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="friend in attendees | alreadyPassenger: ridesDetails">
-            {{mouseOverTrue ? '+' : friend.firstName.slice(0,1)+friend.lastName.slice(0,1)}}
-          </div>
-        </div>
-      </div>
-
       <input style="display:none;" type="submit" id="submit" value="Y" />
     </form>
+    <div class="current-attendees-added">
+      <div class="panel-current-users" ng-click="removePassenger(passenger, ride)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="passenger in ride.riders">{{mouseOverTrue ? 'X' : passenger.firstName.slice(0,1)+passenger.lastName.slice(0,1)}}</div>
+      <div class="panel-potential-users" ng-click="editMode = !editMode">+ Passenger</div>
+      <div ng-show="editMode">
+        <div class="panel-current-users potential-user-to-add" ng-click="addPassenger(friend, ride)" ng-mouseover="mouseOverTrue = true" ng-mouseleave="mouseOverTrue = false" ng-repeat="friend in attendees | alreadyPassenger: ridesDetails">{{mouseOverTrue ? '+' : friend.firstName.slice(0,1)+friend.lastName.slice(0,1)}}</div>
+      </div>
+    </div>
     <button class="remove-resource-ride-btn" ng-click="removeRide(ride, $index);">X</button>
   </div>
 </div>

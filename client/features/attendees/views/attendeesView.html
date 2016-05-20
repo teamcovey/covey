@@ -21,7 +21,13 @@
 </div>
 
 <div class="row">
-  <button class="btn btn-pineapple attendees-btn" ng-click="editAttendees = !editAttendees">
-    Edit&nbsp;<span class="glyphicon glyphicon-pencil"></span>  
+  <button class="btn btn-pineapple attendees-btn" ng-hide="editAttendees" ng-click="editAttendees = !editAttendees">
+    Invite friends to this Covey&nbsp;<span class="glyphicon glyphicon-pencil"></span>  
+  </button>
+</div>
+
+<div class="row">
+  <button class="btn btn-pineapple attendees-btn" ng-show="editAttendees" ng-click="editAttendees = !editAttendees">
+    Done!&nbsp;<span class="glyphicon glyphicon-pencil"></span>  
   </button>
 </div>

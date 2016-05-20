@@ -14,7 +14,7 @@
   background-color:#FFFFFF;
 }
 .potential-friend-to-remove:hover {
-  background-color:#FF0000;
+  box-shadow: 0 5px 5px rgba(0,0,0,0.25), 0 5px 5px rgba(0,0,0,0.22);
 }
 .verticle-center {
   display: flex;
@@ -22,4 +22,8 @@
 }
 .plus-up {
   margin-top: -5px;
+}
+.friend-delete-image {
+  height: 25px;
+  width: 25px;
 }

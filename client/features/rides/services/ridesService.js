@@ -38,6 +38,7 @@ angular.module('covey.rides')
   };
 
   this.getAllRiders = (rideId) => {
+    console.log('SRVC: getAllRiders: ', rideId);
     return $http.get(`/api/riders/${rideId}`)
     .then((riders) => riders.data, (error) => {
       console.error(error);
@@ -45,6 +46,7 @@ angular.module('covey.rides')
   };
 
   this.addRide = (newRide) => {
+    console.log('SRVC: addRide: ', newRide);
     return $http.post('/api/rides', newRide)
       .then((response) => response.data, (error) => {
         console.error(error);
@@ -52,6 +54,7 @@ angular.module('covey.rides')
   };
 
   this.updateRide = (updateRide) => {
+    console.log('SRVC: updateRide: ', updateRide);
     return $http.put(`/api/rides/${updateRide.carId}`, updateRide)
       .then((response) => response, (error) => {
         console.error(error);
@@ -67,6 +70,7 @@ angular.module('covey.rides')
 
 
   this.addPassenger = (rideId, userId) => {
+    console.log('SRVC: addPassenger: ', rideId);
     return $http.post(`/api/riders/${rideId}/${userId}`, { coveyId: $routeParams.coveyId })
       .then((response) => response, (error) => {
         console.error(error);

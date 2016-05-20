@@ -70,7 +70,7 @@ angular.module('covey.rides')
 
 
   this.addPassenger = (rideId, userId) => {
-    console.log('SRVC: addPassenger: ',  rideId);
+    console.log('SRVC: addPassenger: ', rideId);
     return $http.post(`/api/riders/${rideId}/${userId}`, { coveyId: $routeParams.coveyId })
       .then((response) => response, (error) => {
         console.error(error);

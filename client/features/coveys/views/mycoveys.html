@@ -13,7 +13,7 @@
 
     <div>
       <div ng-repeat="covey in coveys track by $index">
-        <div class="col-md-12 text-left covey-tile" ng-click="goToCovey(covey)">
+        <div class="col-md-12 text-left covey-tile" ng-click="goToCovey(covey)" ng-mouseover="covey.showTrash = true" ng-mouseleave="covey.showTrash = false">
           <div class="mycoveys-event-image-container">
             <img src="{{covey.photoUrl ? covey.photoUrl : '/styles/assets/stockPhoto2.png' }}" class="mycoveys-event-image"/>
           </div>
@@ -21,7 +21,7 @@
             <div class="covey-tile-owner" ng-switch-when="true">
               <div class="covey-tile-owner-tag">ADMIN</div>
               <!-- Delete trash can image shown by default -->
-              <img class="covey-tile-owner-delete-image" src="../../../styles/img/deletecovey.ico" ng-click="deleteCovey(covey, $event)" ng-show="!covey.confirmDelete"/>
+              <img class="covey-tile-owner-delete-image" src="../../../styles/img/deletecovey.ico" ng-click="deleteCovey(covey, $event)" ng-show="!covey.confirmDelete && covey.showTrash"/>
               <!-- When user clicks on trash can, a confirmation message is shown -->
               <div class="covey-tile-delete-confirm" ng-click="deleteCovey(covey, $event)" ng-show="covey.confirmDelete" ng-mouseleave="covey.confirmDelete = false">DELETE?</div>
             </div>

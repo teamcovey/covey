@@ -20,7 +20,7 @@ angular.module('coveys', ['covey.services', 'userId.services', 'date.services'])
    * the view will automatically change based on the value.
    */
   $scope.hasCoveys = 'false';
-  // Setting to testData for now, will update once server isrunning
+  // Used to store data on user's coveys
   $scope.coveys = [];
 
   // Routes user to the specified covey (based on coveyId)
